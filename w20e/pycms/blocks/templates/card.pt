@@ -1,0 +1,9 @@
+<div class="group flowh"
+  tal:attributes="id view.id; 
+                  style view.style;
+                  class 'group flowh %s' % view.extra_classes"
+>
+  <div tal:replace="structure view.content"/>
+  <dl tal:condition="view.request.is_edit" 
+      tal:replace="structure view.config"></dl>
+</div>

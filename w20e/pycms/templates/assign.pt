@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:tal="http://xml.zope.org/namespaces/tal">
+
+    <head metal:use-macro="macros.macros['head']">
+    </head>
+
+    <body>
+        <div id="wrap">
+
+            <div metal:use-macro="macros.macros['header']"/>
+
+            <div metal:use-macro="macros.macros['content_toolbar']"/>
+
+	    <form action="" method="POST">
+
+	      <select name="assignee">
+		<tal:repeat repeat="view.list_user_ids()">
+		</tal:repeat>
+	      </select>
+
+	      <input type="submit" name="submit" value="save"/>
+	    </form>
+        </div>
+    </body>
+</html>

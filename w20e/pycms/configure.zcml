@@ -1,0 +1,194 @@
+<configure xmlns="http://pylonshq.com/pyramid"
+           xmlns:pycms="http://w20e.com/pycms"
+           >
+
+  <!-- this must be included for the view declarations to work -->
+  <include package="pyramid_zcml" />
+
+  <!-- add security -->
+  <include file="security.zcml"/>
+
+  <include file="meta.zcml" />
+
+  <include package=".blocks" />
+  <include package=".views" />
+  <include package=".models" />
+
+  <static
+     name="static"
+     path="static"
+     />
+
+  <static
+     name="icons"
+     path="icons"
+     />
+
+  <renderer
+     factory="w20e.pycms.renderers.PNGRenderer"
+     name="png"
+     />
+
+  <renderer
+     factory="w20e.pycms.renderers.FileRenderer"
+     name="file"
+     />
+
+  <renderer
+     factory="w20e.pycms.renderers.XMLRenderer"
+     name="xml"
+     />
+
+  <renderer
+     factory="w20e.pycms.renderers.JSRenderer"
+     name="js"
+     />
+
+  <renderer
+     factory="w20e.pycms.renderers.CSSRenderer"
+     name="css"
+     />
+
+  <renderer
+     factory="w20e.pycms.renderers.AjaxRenderer"
+     name="ajax"
+     />
+
+  <pycms:css cssfile="./static/base.css" csstarget="public,manage" />
+  <pycms:css cssfile="./static/main.css" csstarget="public,manage" />
+  <pycms:css cssfile="./static/skeleton.css" csstarget="public,manage" />
+  <pycms:css cssfile="./static/layout.css" csstarget="public,manage" />
+
+  <pycms:css
+     cssfile="./static/jquery-ui-1.8.11.custom.css"
+     csstarget="public,manage"
+     />
+
+  <pycms:css
+     cssfile="./static/forms.css"
+     csstarget="manage"
+     />
+
+  <pycms:css
+     cssfile="./static/cms.css"
+     csstarget="manage"
+     />
+
+  <pycms:js
+     jsfile="./static/jquery-1.6.4.js"
+     jstarget="public,manage"
+     />
+
+  <pycms:js jsfile="./static/tabs.js" jstarget="manage"/>
+
+  <pycms:js
+     jsfile="./static/jquery-zrssfeed.js"
+     jstarget="public"
+     />
+
+  <pycms:js
+     jsfile="./static/jquery-ui-1.8.11.custom.min.js"
+     jstarget="public,manage"
+     />
+
+  <pycms:js
+     jsfile="./static/validation.js"
+     jstarget="manage,public"
+     />
+
+  <pycms:js
+     jsfile="./static/cms.js"
+     jstarget="manage"
+     />
+
+  <pycms:js
+     jsfile="./static/acl.js"
+     jstarget="manage"
+     />
+
+  <pycms:js
+     jsfile="./static/tinymce/jscripts/tiny_mce/jquery.tinymce.js"
+     jstarget="manage"
+     />
+
+  <pycms:js
+     jsfile="./static/tinyupload.js"
+     jstarget="manage"
+     />
+
+  <pycms:action
+     name="admin"
+     target="./admin"
+     category="perspective"
+     />
+
+  <pycms:action
+     name="layout"
+     target="./layout"
+     category="perspective"
+     ctype="page,site"
+     />
+
+  <pycms:action
+     name="users"
+     target="./users"
+     category="perspective"
+     ctype="site"
+     permission="admin"
+     />
+
+  <pycms:action
+     name="edit"
+     target="./edit"
+     category="perspective"
+     permission="edit"
+     />
+
+  <pycms:action
+     name="pack"
+     target="./pack"
+     category="perspective"
+     ctype="site"
+     permission="admin"
+     />
+
+  <pycms:action
+     name="to_parent"
+     target="${view.parent_url}/admin"
+     category="content"
+     permission="view"
+     />
+
+  <pycms:action
+     name="delete"
+     target="./delete"
+     category="content"
+     permission="edit"
+     />
+
+  <pycms:macro
+     name="main"
+     ptfile="w20e.pycms:templates/main.pt"
+     />
+
+  <pycms:macro
+     name="body_admin"
+     ptfile="w20e.pycms:templates/body_admin.pt"
+     />
+
+  <pycms:macro
+     name="macros"
+     ptfile="w20e.pycms:templates/macros.pt"
+     />
+
+  <pycms:macro
+     name="body"
+     ptfile="w20e.pycms:templates/body.pt"
+     />
+
+  <pycms:macro
+     name="content"
+     ptfile="w20e.pycms:templates/content.pt"
+     />
+
+</configure>

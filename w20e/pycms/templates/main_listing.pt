@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:tal="http://xml.zope.org/namespaces/tal">
+
+<head metal:use-macro="macros.macros['head']">
+</head>
+
+<body>
+  <div id="wrap">
+
+    <div metal:use-macro="macros.macros['header']"/>
+
+    <div metal:use-macro="macros.macros['content_toolbar']"/>
+
+    <div id="content">
+
+      <div class="listing" id="pages">
+	      <table class="listingcontent">
+	        <thead>
+	          <tr>
+              <th>Name</th>
+              <th>Status</th>
+	          </tr>
+	        </thead>
+	        <tbody>
+  	        <tal:repeat repeat="page view.list_content()">
+	            <tr>
+		            <td>
+                  <a href="#" tal:attributes="href page.id" 
+		                 tal:content="page.__data__['name']">
+		                content id
+		              </a>
+		            </td>
+		            <td tal:content="page.__data__['status']"></td>
+	            </tr>
+	          </tal:repeat>
+          </tbody>
+	      </table>
+      </div>
+      
+    </div>
+    
+  </div>
+</body>
+</html>

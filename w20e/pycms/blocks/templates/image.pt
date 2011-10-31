@@ -1,0 +1,9 @@
+<div class="block" 
+  tal:attributes="id view.id; 
+                  style view.style;
+                  class 'block %s' % view.type"
+>
+  <img src="#" tal:attributes="src view.img_url"/>
+  <dl tal:condition="view.request.is_edit" 
+      tal:replace="structure view.config"></dl>
+</div>

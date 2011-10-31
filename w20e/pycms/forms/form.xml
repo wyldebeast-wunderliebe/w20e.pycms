@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+     
+<form id="form" 
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+      xsi:noNamespaceSchemaLocation="/home/dokter/Work/w20e/loonwijzer/educoeff/GIT/eggs/wageindicator.educoeff/wageindicator/educoeff/forms/gw20eforms.xsd">
+
+  <data>
+    <name/>
+    <status value="draft"/>
+    <form/>
+  </data>
+
+  <model>
+    <properties id="required">
+      <bind>name</bind>
+      <bind>status</bind>
+      <required>True</required>
+    </properties>
+  </model>
+
+  <view>
+
+    <input id="name" bind="name">
+      <label>Name</label>
+    </input>
+
+    <file id="form" bind="form">
+      <label>XML definition of form</label>
+    </file>
+
+    <select id="status" bind="status">
+      <label>Status</label>
+      <property name="format">full</property>
+      <option value="draft">Draft</option>
+      <option value="published">Published</option>
+    </select>
+
+    <group id="submission" layout="flow">
+      <property name="orientation">h</property>
+      
+      <submit id="save">
+        <label>Save</label>
+      </submit>
+      
+      <cancel id="cancel">
+        <label>Cancel</label>
+      </cancel>
+    </group>
+
+  </view>
+
+  <submission type="attr">
+     <property name="attr_name">_DATA</property>	
+  </submission>
+
+</form>

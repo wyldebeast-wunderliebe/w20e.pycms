@@ -1,0 +1,25 @@
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xml:lang="en" 
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      metal:use-macro="body_admin.macros['master']"
+>
+
+  <head/>
+
+  <body>
+
+    <div metal:fill-slot="content">
+        <div id="title" metal:define-macro="title">
+          Edit <span tal:content="view.title"></span>
+        </div>
+        
+        <div class="status" tal:condition="status">${status}</div>
+        <div class="error" tal:condition="errors">${errors}</div>
+        
+        <p tal:content="structure python:view.renderform()"></p>
+        
+      </div>
+        
+  </body>
+</html>

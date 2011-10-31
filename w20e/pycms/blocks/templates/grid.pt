@@ -1,0 +1,14 @@
+<div class="group grid"
+  tal:attributes="id view.id;
+                  style view.style;
+                  class 'group grid %s' % view.extra_classes"
+>
+  <div tal:condition="view.request.is_edit" class="handle"
+       tal:content="'#%s, type: %s' % (view.id, view.context.type)"
+  >
+    id  
+  </div>
+  <div tal:replace="structure view.content"/>
+  <dl tal:condition="view.request.is_edit" 
+      tal:replace="structure view.config"></dl>
+</div>

@@ -1,0 +1,5 @@
+<ul>
+  <tal:repeat repeat="res results">
+    <li><a href="${res['href']}">${res['title']}</a></li>
+  </tal:repeat>
+</ul>

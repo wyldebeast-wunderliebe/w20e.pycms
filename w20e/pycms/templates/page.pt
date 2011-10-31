@@ -1,0 +1,13 @@
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xml:lang="en" 
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      metal:use-macro="content.macros['master']">
+
+      <metal:content fill-slot="content">
+      
+      <div id="content" tal:replace="structure view.content">
+      </div>
+      
+      </metal:content>
+
+</html>

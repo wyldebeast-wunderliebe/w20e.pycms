@@ -1,0 +1,15 @@
+How to add new blocks
+=====================
+
+* create block class, extending Block
+* create block view, exending BlockView
+* create template
+* create add_form/edit_form in block py
+  - make sure to add hidden field that holds type id
+* add to configure.zcml in .blocks
+* add to parser registry
+* add it to the page actions
+  (this should really get the data from the registry)
+
+Yeahyeah, that's a lot of steps... but it really takes only minutes,
+once you know the drill.

@@ -1,0 +1,24 @@
+<div class="group cards"
+  tal:attributes="id view.id;
+                  style view.style;
+                  class 'group columns %s' % view.extra_classes"
+>
+  <ul>
+    <tal:repeat repeat="card view.context.blocks">
+      <li>
+        <a href="#" tal:attributes="href '#%s' % card.id">
+          <span tal:content="card.id">title</span>
+        </a>
+      </li>
+    </tal:repeat>
+  </ul>
+  <div tal:replace="structure view.content"/>
+  <dl tal:condition="view.request.is_edit" 
+      tal:replace="structure view.config"></dl>
+  <script tal:content="'var tgt = \'#%s\'' % view.id"></script>
+  <script>
+    $(document).ready(function() {
+      $(tgt).tabs();
+    })
+  </script>
+</div>

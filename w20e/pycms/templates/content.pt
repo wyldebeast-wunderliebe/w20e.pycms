@@ -1,0 +1,18 @@
+<metal:define-macro define-macro="master">
+
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xml:lang="en" 
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      metal:use-macro="body.macros['master']"
+>
+
+  <head/>
+
+  <body>
+
+    <div id="content" metal:define-slot="content"/>
+      
+  </body>
+</html>
+
+</metal:define-macro>

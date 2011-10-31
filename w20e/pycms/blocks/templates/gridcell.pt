@@ -1,0 +1,9 @@
+<div class="group cell"
+  tal:attributes="id view.id;
+                  style view.style;
+                  class 'group cell %s' % view.extra_classes"
+>
+  <div tal:replace="structure view.content"/>
+  <dl tal:condition="view.request.is_edit" 
+      tal:replace="structure view.config"></dl>
+</div>

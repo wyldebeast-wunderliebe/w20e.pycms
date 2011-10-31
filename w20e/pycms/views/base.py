@@ -1,0 +1,263 @@
+from w20e.hitman.views.base import ContentView as Base
+from w20e.hitman.views.base import AddView as AddBase
+from w20e.hitman.views.base import DelView as DelBase
+from w20e.hitman.views.base import EditView as EditBase
+from w20e.hitman.views.base import BaseView as BaseBase
+from w20e.hitman.events import ContentRemoved
+
+from pyramid.renderers import get_renderer, render
+from pyramid.security import has_permission, authenticated_userid
+from pyramid.url import resource_url
+
+from ..actions import IActions
+from ..ctypes import ICTypes
+from ..macros import IMacros
+
+
+def add_macros(data, view):
+
+    """ Add macros to rendering """
+
+    if type(data) == type({}):
+
+        macros = view.request.registry.getUtility(IMacros)
+
+        for macro in macros.list_macros():
+
+            data[macro] = get_renderer(macros.get_macro(macro)).implementation()
+
+
+class ViewMixin:
+
+    is_edit = False
+
+
+    @property
+    def viewname(self):
+
+        return self.request.path.split('/')[-1]
+
+
+    @property
+    def keywords(self):
+
+        try:
+            return ",".join((self.context.__data__['keywords'] or "").splitlines())
+        except:
+            return ""
+
+
+    @property
+    def description(self):
+
+        try:
+            return self.context.__data__['description'] or ''
+        except:
+            return ""
+
+
+    @property
+    def perspectives(self):
+
+        reg = self.request.registry
+
+        actions = reg.getUtility(IActions)
+
+        return [action for action in actions.get_actions("perspective",
+                                                         ctype=self.context.content_type)
+                if (not action.permission) or has_permission(action.permission,
+                                                             self.context,
+                                                             self.request)]
+
+
+    @property
+    def siteactions(self):
+
+        reg = self.request.registry
+
+        actions = reg.getUtility(IActions)
+
+        return [action for action in actions.get_actions("site",
+                                                         ctype=self.context.content_type)
+                if (not action.permission) or has_permission(action.permission,
+                                                             self.context,
+                                                             self.request)]
+
+
+    @property
+    def contentactions(self):
+
+        reg = self.request.registry
+
+        actions = reg.getUtility(IActions)
+
+        return [action for action in actions.get_actions("content",
+                                                         ctype=self.context.content_type)
+                if (not action.permission) or has_permission(action.permission,
+                                                             self.context,
+                                                             self.request)]
+
+
+    @property
+    def icon(self):
+        ctypes = self.request.registry.getUtility(ICTypes)
+
+        return ctypes.get_ctype_info(self.content_type).get("icon", "")
+
+
+    def get_icon(self, ctype):
+        ctypes = self.request.registry.getUtility(ICTypes)
+
+        return ctypes.get_ctype_info(ctype).get("icon", "")
+
+
+    @property
+    def footer(self):
+        return render('../templates/footer.pt', {})
+
+
+    @property
+    def base_url(self):
+
+        return resource_url(self.context, self.request)
+
+
+    @property
+    def can_edit(self):
+
+        return has_permission("edit", self.context, self.request)
+
+
+    def user_has_permission(self, permission):
+
+        return has_permission(permission, self.context, self.request)
+
+
+    @property
+    def user(self):
+
+        return authenticated_userid(self.request) or ""
+
+
+    @property
+    def logged_in(self):
+
+        return authenticated_userid(self.request) or None
+
+
+class BaseView(BaseBase, ViewMixin):
+
+    def __call__(self):
+
+        res = BaseBase.__call__(self)
+        add_macros(res, self)
+
+        return res
+
+
+class ContentView(Base, ViewMixin):
+
+    def __call__(self):
+
+        res = Base.__call__(self)
+        add_macros(res, self)
+
+        return res
+
+
+class AddView(AddBase, ViewMixin):
+
+    is_edit = True
+
+    @property
+    def url(self):
+        return "%sadmin" % self.base_url
+
+
+    def __call__(self):
+
+        res = AddBase.__call__(self)
+        add_macros(res, self)
+
+        return res
+
+
+class EditView(EditBase, ViewMixin):
+
+    is_edit = True
+
+
+    @property
+    def url(self):
+        return "%sedit" % super(EditBase, self).url
+
+
+    def __call__(self):
+
+        res = EditBase.__call__(self)
+        add_macros(res, self)
+
+        return res
+
+
+class DelView(DelBase, ViewMixin):
+
+
+    @property
+    def url(self):
+        return "%sadmin" % super(DelBase, self).url
+
+
+    @property
+    def parent_url(self):
+        return "%sadmin" % super(DelBase, self).parent_url
+
+
+    def __call__(self):
+
+        res = DelBase.__call__(self)
+        add_macros(res, self)
+
+        return res
+
+
+class AdminView(Base, ViewMixin):
+
+    is_edit = True
+
+    def __call__(self):
+
+        res = Base.__call__(self)
+        add_macros(res, self)
+
+        return res
+
+
+    def remove_content(self, content_id= None):
+
+        content_id = content_id or self.request.params.get('content_id', None)
+
+        if content_id:
+            
+            content = self.context.get(content_id, None)
+
+            self.context.remove_content(content_id)
+            self.request.registry.notify(ContentRemoved(content, self))
+            return True
+
+        else:
+
+            return False
+
+
+    def order_content(self, order= None):
+
+        order = order or self.request.params.get('order', None)
+
+        if order:
+            
+            self.context.set_order(order.split(","))
+            return True
+        else:
+            return False
+

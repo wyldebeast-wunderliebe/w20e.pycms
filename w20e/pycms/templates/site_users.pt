@@ -1,0 +1,136 @@
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xml:lang="en" 
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="body_admin.macros['master']">
+
+  <head/>
+  
+  <body>
+
+    <div id="toolbar" metal:fill-slot="toolbar">
+      <div class="action" id="add_user" title="Add user">
+        <a href="javascript: pycms_acl.showUserAddForm()">Add user</a>
+      </div>
+    </div>
+
+    <div metal:fill-slot="content">
+    
+      <h1 class="edit_header">Site users</h1>
+      
+      <div id="userscontainer">
+        <h2>
+          <img src="/icons/User48.png" alt="Users"/>
+          Users
+        </h2>
+        
+        <div id="user_add_form">
+        </div>
+        
+		    <table class="listing">
+		      <thead>
+		        <tr>
+              <th/>
+              <th>Id</th>
+		          <th>Name</th>
+		          <th>Email</th>
+              <th/>
+		        </tr>
+		      </thead>
+		      <tbody>
+		        <tal:repeat repeat="user view.list_users()">
+		          <tr>
+                <td><img src="/icons/User16.png" alt="User"/></td>
+			          <td tal:content="user.id">user</td> 
+			          <td tal:content="user.name">user</td> 
+			          <td tal:content="user.email">user</td> 
+                <td>
+                  <div class="lsaction" id="lsdelete">
+                    <a href="#"
+                       tal:attributes="href 'javascript: pycms_acl.deleteUser(\'%s\')' % user.id"
+                       title="Delete user">
+                      <img src="/icons/Delete16.png"/>
+                    </a>
+                  </div>
+                  <div class="lsaction" id="lsnotify">
+                    <a href="#"
+                       tal:attributes="href 'javascript: pycms_acl.inviteUser(\'%s\')' % user.id"
+                       title="Invite user"
+                       >
+                      <img src="/icons/Chat16.png"/>
+                    </a>
+                  </div>
+                  <div class="lsaction" id="lspwd">
+                    <a href="#"
+                       tal:attributes="href 'set_password?user_id=%s' % user.id"
+                       title="Set password"
+                       >
+                      <img src="/icons/Key16.png"/>
+                    </a>
+                  </div>
+                </td>
+              </tr>
+		        </tal:repeat>
+		      </tbody>
+		    </table>
+        
+        <h2>
+          <img src="/icons/Users48.png" alt="Groups"/>
+          Groups
+        </h2>
+        
+		    <table class="listing">
+		      <thead>
+		        <tr>
+              <th/>
+              <th>Id</th>
+              <th/>
+		        </tr>
+		      </thead>
+		      <tbody>
+		        <tal:repeat repeat="group view.list_groups()">
+		          <tr>
+                <td><img src="/icons/Users16.png" alt="Group"/></td>
+			          <td tal:content="group.id">user</td> 
+                <td>
+                  <div class="lsaction" id="lsdelete">
+                    <a href="#"
+                       tal:attributes="href 'javascript: pycms_acl.deleteGroup(\'%s\')' % group.id"
+                       title="Delete user">
+                      <img src="/icons/Delete16.png"/>
+                    </a>
+                  </div>
+                </td>
+              </tr>
+		        </tal:repeat>
+		      </tbody>
+		    </table>
+        
+        <h2>
+          <img src="/icons/Chat48.png" alt="User activation"/>
+          Activation
+        </h2>
+        
+		    <table class="listing">
+		      <thead>
+		        <tr>
+              <th/>
+              <th>Id</th>
+		          <th>Key</th>
+		        </tr>
+		      </thead>
+		      <tbody>
+		        <tal:repeat repeat="act view.list_activation()">
+		          <tr>
+                <td><img src="/icons/User16.png" alt="User"/></td>
+			          <td tal:content="act[0]">user</td> 
+			          <td tal:content="act[1]">key</td> 
+              </tr>
+            </tal:repeat>
+          </tbody>
+        </table>
+        
+      </div>
+    </div>
+  </body>
+</html>

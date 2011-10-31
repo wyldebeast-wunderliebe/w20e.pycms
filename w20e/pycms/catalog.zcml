@@ -1,0 +1,55 @@
+<configure xmlns="http://pylonshq.com/pyramid"
+           xmlns:pycms="http://w20e.com/pycms"
+           >
+
+  <!-- this must be included for the view declarations to work -->
+  <include package="pyramid_zcml" />
+
+  <adapter
+     for=".models.site.Site"
+     provides=".interfaces.ICatalogMapper"
+     factory=".catalog.CatalogMapper"
+     />
+
+  <adapter
+     for=".models.site.Site"
+     provides=".interfaces.ICatalog"
+     factory=".catalog.Catalog"
+     />
+
+  <subscriber
+      for="w20e.hitman.events.IObjectAddedEvent"
+      handler=".catalog.objectAdded"
+      />
+  
+  <subscriber
+      for="w20e.hitman.events.IObjectRemovedEvent"
+      handler=".catalog.objectRemoved"
+      />
+
+  <view
+     context=".models.site.Site"
+     view=".views.catalog.SiteCatalogView"
+     renderer="templates/site_catalog.pt"
+     permission="admin"
+     name="catalog"
+     />
+
+  <view
+     context=".models.site.Site"
+     view=".views.catalog.SiteCatalogView"
+     attr="reindex_catalog"
+     renderer="templates/site_catalog.pt"
+     permission="admin"
+     name="reindex_catalog"
+     />
+
+  <pycms:action
+     name="catalog"
+     target="./catalog"
+     category="perspective"
+     ctype="site"
+     permission="admin"
+     />
+
+</configure>

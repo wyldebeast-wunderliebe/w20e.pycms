@@ -1,0 +1,114 @@
+The w20e.pycms CMS jongu!
+-------------------------
+
+Using the CMS as base
+=====================
+
+- Create a package for your project, requiring:
+
+  w20e.pycms
+
+  You may do so like:
+  # virtualenv -p python2.6 --no-site-packages <env>
+  # cd <env>; ./bin/activate
+  # ./bin/python <path to w20e.pycms paster_setup.py> develop
+  # paster create -t pycms_skel <package name>
+  (pycms_skel should be on your python path...)
+
+- Create a buildout and virtualenv for your stuff. Why not use the 
+  ini files and buildout files we provide in the skel directory here?
+
+- Include any CSS and JS you like, using the pycms zcml directives:
+
+  <pycms:css
+    cssfile="your.css"
+    csstarget="public"
+    media="screen"
+    />      
+
+  <pycms:js
+    jsfile="your.js"
+    jstarget="public"
+    />      
+
+- Override assets like logo and favicon:
+
+  <asset
+    to_override="w20e.pycms:static/favicon.png"
+    override_with="yourapp:static/favicon.png.png"
+    />
+
+- Most likely you'll want to override the 'content' macro, that is
+  called to display a page. To do this, make your own pt file, make
+  that use 'main.macros['master'], and let it fill the 'body' slot:
+
+  <metal:define-macro define-macro="master">
+
+  <html xmlns="http://www.w3.org/1999/xhtml" 
+      xml:lang="en"
+      i18n:domain="w20e"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      metal:use-macro="main.macros['master']"
+      >
+
+    <head/>
+
+    <body metal:fill-slot="body">
+      Good morning Grommit...
+    </body>
+  </html>
+  </metal:define-macro>
+
+and add to your configure.zcml (always assuming you called your macro
+body.pt):
+
+  <pycms:macro
+     name="content"
+     ptfile="yourpackage:templates/body.pt"
+     />
+
+
+
+Using the CMS: core concepts 
+============================
+
+The core CMS consists solely of pages. Pages are composites, that is,
+pages can be arbitrarily complex and consist of 'blocks'. A block can
+be anything that can be displayed: rich text, a snippet, an image,
+etc.
+
+
+Actions
+=======
+
+You can register actions with your content. The currently used setup
+mainly uses 'perspectives' or ways to look at your content. In the
+management interface these are rendered as 'tabs'. Actions are
+configured using zcml. Use the action statment as follows:
+
+<pycms:action
+  name="users"
+  target="./users"
+  category="perspective"
+  ctype="site"
+/>        
+
+ctype is an optional filter.
+
+
+Content types
+=============
+
+Create your own content types if you wish. You can register an icon,
+and possible subtypes with your type using:
+
+<pycms:ctype
+  name="your_type"
+  icon="url"
+  subtypes="comma_separated_list"
+/>
+
+
+robot.txt
+=========
+The default robot.txt disallows all. Override as per your liking...

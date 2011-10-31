@@ -1,0 +1,48 @@
+<configure xmlns="http://pylonshq.com/pyramid"
+           xmlns:pycms="http://w20e.com/pycms"
+           >
+
+  <pycms:ctype
+     name="page"
+     factory="w20e.pycms.models.page.Page"
+     icon="/icons/Page16.png"
+     subtypes="page,file,form"
+     />
+
+  <pycms:ctype
+     name="basefolder"
+     factory="w20e.pycms.models.page.Page"
+     icon="/icons/Folder16.png"
+     />
+
+  <pycms:ctype
+     name="site"
+     subtypes="page,file,form"
+     />
+
+  <pycms:ctype
+     name="imagefolder"
+     factory="w20e.pycms.models.imagefolder.ImageFolder"
+     subtypes="image"
+     icon="/icons/Folder16.png"
+     />
+
+  <pycms:ctype
+     name="image"
+     factory="w20e.pycms.models.image.Image"
+     icon="/icons/Camera20.png"
+     />
+
+  <pycms:ctype
+     name="file"
+     factory="w20e.pycms.models.file.File"
+     icon="/icons/File16.png"
+     />
+
+  <pycms:ctype
+     name="form"
+     factory="w20e.pycms.models.form.Form"
+     icon="/icons/Form16.png"
+     />
+  
+</configure>

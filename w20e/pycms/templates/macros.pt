@@ -1,0 +1,88 @@
+      
+<!-- BEGIN title -->
+<div metal:define-macro="title" class="title">
+  <div id="title" tal:content="view.title">Title</div>
+  <div class="title-byline">
+    created on <span tal:replace="view.created"/>
+    by <span tal:replace="view.creator"/>
+  </div>
+</div>
+<!-- END title -->
+
+
+<!-- BEGIN header -->
+<div id="top" metal:define-macro="header">
+</div>
+<!-- END header -->
+
+
+
+
+<!-- BEGIN content_details -->
+<div id="content_details" metal:define-macro="content_details">
+  
+  <div class="details">
+    <tal:repeat repeat="field view.list_fields()">
+      <div class="field">
+        <div class="label" tal:content="field['label']">Name</div>
+        <div tal:condition="field['type'] != 'reference'"
+             class="value" tal:content="structure field['value'] or '-'">
+          Value
+        </div>
+        <div tal:condition="field['type'] == 'reference'" class="value">
+          <a href="#" tal:attributes="href field['raw']"
+             tal:content="field['value']" tal:condition="field['value']">Value</a>
+          <span tal:condition="not field['value']">None</span>
+        </div>
+      </div>
+    </tal:repeat>
+  </div>
+</div>
+<!-- END content_details -->
+
+
+<!-- BEGIN listing -->
+<div class="listing" id="content-listing" metal:define-macro="listing">
+
+  <div id="rm_confirm">
+    Are you sure you want to delete this item?
+  </div>
+
+    <table class="listingcontent">
+      <thead>
+        <tr>
+        <td/>
+        <td/>
+        <th>Type</th>
+        <th>Name</th>
+        </tr>
+      </thead>
+      <tbody>
+      <tal:repeat repeat="item view.list_content()">
+        <tr id="" tal:attributes="id item.id">
+          <td class="contenttype">
+            <img src="#" tal:attributes="src view.get_icon(item.content_type)" />
+          </td>
+          <td>
+            <div class="lsaction lsdelete"
+                 id="#" tal:attributes="id 'rm_%s' % item.id"
+                 >
+              X
+            </div>
+            <div class="lsaction lsrename">R</div>
+          </td>
+          <td tal:content="item.content_type"></td>
+              <td>
+            <a href="#" tal:attributes="href '%s/admin' % item.id" 
+                   tal:content="item.title">
+                  content id
+                </a>
+              </td>
+          </tr>
+        </tal:repeat>
+    </tbody>
+    </table>
+</div>
+<!-- END listing -->
+
+

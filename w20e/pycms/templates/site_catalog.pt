@@ -1,0 +1,66 @@
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xml:lang="en" 
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="body_admin.macros['master']">
+
+  <head/>
+  
+  <body>
+
+    <div id="toolbar" metal:fill-slot="toolbar">
+      <div class="action" id="reindex_catalog" title="Re-index catalog">
+        <a href="reindex_catalog">Re-index catalog</a>
+      </div>
+    </div>
+
+    <div metal:fill-slot="content">
+    
+      <h1 class="edit_header">Catalog</h1>
+
+      <h2>Indexes</h2>
+      
+      <table>
+        <thead>
+          <tr>
+            <th>id</th>
+            <th>nr. of documents</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tal:repeat repeat="idx view.catalog_indexes()">
+            <tr>
+              <td>${idx['id']}</td>
+              <td>${idx['docs']}</td>
+              <td>${idx['docids']}</td>
+            </tr>
+          </tal:repeat>
+        </tbody>
+      </table>
+        
+
+      <h2>Entries</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>id</th>
+            <th>path</th>
+            <th>title</th>
+            <th>ctype</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tal:repeat repeat="entry view.catalog_entries()">
+            <tr>
+              <td>${entry['id']}</td>
+              <td>${entry['path']}</td>
+              <td>${entry['title']}</td>
+              <td>${entry['ctype']}</td>
+            </tr>
+          </tal:repeat>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

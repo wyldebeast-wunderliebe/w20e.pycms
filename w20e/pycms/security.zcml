@@ -1,0 +1,37 @@
+<configure xmlns="http://pylonshq.com/pyramid">
+
+  <!-- this must be included for the view declarations to work -->
+  <include package="pyramid_zcml" />
+
+  <authtktauthenticationpolicy
+    secret="evilsecret"
+    callback=".security.groupfinder"
+  />
+
+  <aclauthorizationpolicy/>
+
+  <forbidden
+    view=".views.login.loginview"
+    renderer="templates/login.pt"
+    />
+
+  <view
+    context="w20e.hitman.models.base.IContent"
+    view=".views.login.loginview"
+    renderer="templates/login.pt"
+    name="login"
+    />
+
+  <view
+    context="w20e.hitman.models.base.IContent"
+    view=".views.login.logoutview"
+    name="logout"
+    />
+
+  <adapter
+     for="w20e.hitman.models.base.IContent"
+     provides=".security.ISecure"
+     factory=".security.Secure"
+     />
+
+</configure>

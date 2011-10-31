@@ -1,0 +1,285 @@
+<configure xmlns="http://pylonshq.com/pyramid">
+
+  <!-- generic view -->
+  <view
+     context="w20e.hitman.models.base.IContent"
+     view=".base.ContentView"
+     renderer="../templates/view_content.pt"
+     permission="view"
+     />
+
+  <!-- generic add view -->
+  <view
+     context="w20e.hitman.models.base.IFolder"
+     view=".base.AddView"
+     renderer="../templates/add_content.pt"
+     name="add"
+     permission="edit"
+     />
+
+  <!-- generic page properties view -->
+  <view
+     context="w20e.hitman.models.base.IContent"
+     view=".base.EditView"
+     renderer="../templates/edit_content.pt"
+     name="edit"
+     permission="edit"
+     />
+
+  <!-- generic delete view -->
+  <view
+     context="w20e.hitman.models.base.IContent"
+     view=".base.DelView"
+     renderer="../templates/remove_content.pt"
+     name="delete"
+     permission="edit"
+     />
+
+  <view
+     context="w20e.hitman.models.base.IContent"
+     view=".base.AdminView"
+     renderer="../templates/admin.pt"
+     name="admin"
+     permission="edit"
+     />
+
+ <view
+     context="w20e.hitman.models.base.IContent"
+     view=".base.EditView"
+     name="validate"
+     attr="ajax_validate"
+     renderer="ajax"
+     />
+
+  <view
+     context="..models.page.Page"
+     view=".page.PageView"
+     renderer="w20e.pycms:templates/page.pt"
+     />
+
+  <view
+     context="..models.page.Page"
+     view=".page.PageLayout"
+     renderer="../templates/page_layout.pt"
+     name="layout"
+     permission="edit"
+     />
+
+  <view
+     context="..models.page.Page"
+     view=".page.PageEdit"
+     renderer="../templates/page_edit.pt"
+     name="edit"
+     permission="edit"
+     />
+
+  <view
+     context="..models.image.Image"
+     view=".image.ImageView"
+     renderer="png"
+     />
+
+  <view
+     context="..models.image.Image"
+     view=".image.ImageView"
+     renderer="png"
+     name="thumbnail"
+     attr="thumbnail"
+     />
+
+  <view
+     context="..models.imagefolder.ImageFolder"
+     view=".base.AdminView"
+     renderer="../templates/admin.pt"
+     permission="edit"
+     />
+
+  <view
+     context="..models.file.File"
+     view=".file.FileView"
+     renderer="file"
+     />
+
+  <!-- forms -->
+  <view
+     context="..models.form.Form"
+     view=".form.FormView"
+     renderer="w20e.pycms:templates/form.pt"
+     />
+
+  <!-- Show block's add form-->
+  <view
+     context="..models.page.Page"
+     view=".page.PageLayout"
+     attr="add_form"
+     renderer="../templates/add_form.pt"
+     name="add_form"
+     />
+
+  <!-- Show block's edit form-->
+  <view
+     context="..models.page.Page"
+     view=".page.PageLayout"
+     attr="edit_form"
+     renderer="../templates/edit_form.pt"
+     name="edit_form"
+     />
+
+  <view
+     context="..models.page.Page"
+     view=".page.PageView"
+     renderer="../templates/add_group_form.pt"
+     name="add_group"
+     />
+
+  <view
+     context="..models.page.Page"
+     view=".page.PageLayout"
+     attr="save"
+     renderer="../templates/save_page.pt"
+     name="save_page"
+     />
+
+  <!-- show block layout -->
+  <view
+     context="..models.page.Page"
+     view=".page.PageBlocks"
+     renderer="../templates/page_blocks.pt"
+     name="blocks"
+     />
+
+  <view
+     context="..models.page.Page"
+     view=".page.PageLayout"
+     attr="save_block"
+     renderer="../templates/save_block.pt"
+     name="save_block"
+     />
+
+  <!-- list users -->
+  <view
+     context="..models.site.Site"
+     view=".site.SiteView"
+     renderer="../templates/site_users.pt"
+     name="users"
+     permission="admin"
+     />
+
+  <view
+     context="..models.site.Site"
+     view=".site.UserAddView"
+     renderer="string"
+     name="add_user_form"
+     />
+
+  <view
+     context="..models.site.Site"
+     view=".site.SiteView"
+     attr="delete_user"
+     renderer="string"
+     name="delete_user"
+     permission="admin"
+     />
+
+  <view
+     context="..models.site.Site"
+     view=".site.SiteView"
+     attr="invite_user"
+     renderer="string"
+     name="invite_user"
+     permission="admin"
+     />
+
+  <view
+     context="..models.site.Site"
+     view=".site.SiteView"
+     attr="change_password"
+     renderer="../templates/change_password.pt"
+     name="change_password"
+     permission="admin"
+     />
+
+  <view
+     context="..models.site.Site"
+     view=".site.SiteView"
+     attr="set_password"
+     renderer="../templates/change_password.pt"
+     name="set_password"
+     permission="admin"
+     />
+
+  <view
+     context="..models.site.Site"
+     view=".site.SiteView"
+     attr="pack_database"
+     renderer="string"
+     name="ajax_pack"
+     permission="admin"
+     />
+
+  <view
+     context="..models.site.Site"
+     view=".site.SiteView"
+     renderer="../templates/site_pack.pt"
+     name="pack"
+     permission="admin"
+     />
+
+  <!-- Ajax manipulations -->
+  <view
+     context="w20e.hitman.models.base.IFolder"
+     view=".base.AdminView"
+     attr="remove_content"
+     renderer="json"
+     name="ajax_rm"
+     permission="edit"
+     />
+
+  <view
+     context="w20e.hitman.models.base.IFolder"
+     view=".base.AdminView"
+     attr="order_content"
+     renderer="json"
+     name="ajax_order"
+     permission="edit"
+     />
+
+  <!-- CSS and JS resources -->
+  <route
+     name="css"
+     pattern="{whatever}.css"
+     view=".css.CSSView"
+     renderer="css"
+     />
+
+  <route
+     name="js"
+     pattern="{whatever}.js"
+     view=".js.JSView"
+     renderer="js"
+     />
+
+  <!-- tinyMCE views -->
+  <view
+     name="tiny_browse_images"
+     view=".tinybrowser.TinyBrowser"
+     renderer="json"
+     attr="browse_images"
+     />
+
+  <view
+     name="tiny_upload_image"
+     view=".tinybrowser.TinyBrowser"
+     renderer="string"
+     attr="upload_image"
+     />
+
+  <view
+      context="..models.site.Site"
+      name="robots.txt"
+      view=".site.SiteView"
+      renderer="w20e.pycms:templates/robots.txt"
+      attr="robots_txt"
+      />
+
+</configure>

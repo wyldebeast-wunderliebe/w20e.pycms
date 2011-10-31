@@ -1,0 +1,16 @@
+<div class="block" 
+  tal:attributes="id view.id; class 'block %s' % view.type"
+>
+  <div id="" tal:attributes="id tgt"></div>
+  <script>
+    $(document).ready(function() {
+      $('#${tgt}').rssfeed('${feedurl}',
+      {'date':false, 
+      'limit': ${items},
+      'header':false});  
+    })
+  </script>
+
+  <dl tal:condition="view.request.is_edit" 
+      tal:replace="structure view.config"></dl>
+</div>

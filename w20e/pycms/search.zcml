@@ -1,0 +1,17 @@
+<configure xmlns="http://pylonshq.com/pyramid"
+           xmlns:pycms="http://w20e.com/pycms"
+           >
+
+  <!-- this must be included for the view declarations to work -->
+  <include package="pyramid_zcml" />
+
+  <include file="catalog.zcml"/>
+
+  <view
+     context="w20e.hitman.models.base.IContent"
+     view=".views.search.SearchView"
+     renderer="templates/search.pt"
+     name="search"
+     />
+
+</configure>

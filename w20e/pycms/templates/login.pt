@@ -1,0 +1,36 @@
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xml:lang="en" 
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      metal:use-macro="main.macros['master']">
+
+  <head/>
+
+  <body metal:fill-slot="body">
+    <div id="wrap">
+      
+      <div metal:use-macro="macros.macros['header']"/>
+
+	    <h1>Log In</h1>
+
+      <div class="login">
+
+	      <div tal:replace="message"/>
+	      
+	      <div class="main_content">
+	        <form action="${url}" method="post">
+	          <input type="hidden" name="came_from" value="${came_from}"/>
+            <label for="login">Username</label>
+	          <input type="text" name="login" value="${login}"/>
+	          <br/>
+            <label for="password">Password</label>
+	          <input type="password" name="password" value="${password}"/>
+	          <br/>
+	          <input type="submit" name="form.submitted" value="Log In"/>
+	        </form>
+	      </div>  
+	      
+	    </div>
+            
+    </div>
+  </body>
+</html>

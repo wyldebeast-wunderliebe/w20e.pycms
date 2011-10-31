@@ -1,0 +1,32 @@
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xml:lang="en" 
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="body_admin.macros['master']">
+
+  <head/>
+  
+  <body>
+
+    <div id="toolbar" metal:fill-slot="toolbar">
+      <div class="action" id="pack" title="Pack">
+        <a href="javascript: pycms.pack()">Pack DB</a>
+      </div>
+    </div>
+
+    <div metal:fill-slot="content">
+    
+      <h1 class="edit_header">Pack DB</h1>
+
+        <div id="pack_result"></div>
+
+        <dl>
+          <dt>File</dt><dd tal:content="view.db.getName()"></dd>
+          <dt>Size</dt><dd tal:content="view.db.getSize()"></dd>
+          <dt>Cachesize</dt><dd tal:content="view.db.cacheSize()"></dd>
+          <dt>Nr. of objects</dt><dd tal:content="view.db.objectCount()"></dd>
+        </dl>
+
+    </div>
+  </body>
+</html>

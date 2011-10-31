@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+     
+<form id="user_add" 
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+      xsi:noNamespaceSchemaLocation="/home/dokter/Work/w20e/loonwijzer/educoeff/GIT/eggs/wageindicator.educoeff/wageindicator/educoeff/forms/gw20eforms.xsd">
+
+  <data>
+    <name/>
+    <email/>
+  </data>
+
+  <model>
+    <properties id="required">
+      <bind>name</bind>
+      <bind>email</bind>
+      <required>True</required>
+    </properties>
+  </model>
+
+  <view>
+
+    <input id="name" bind="name">
+      <label>Name</label>
+    </input>
+
+    <input id="email" bind="email">
+      <label>Email</label>
+      <hint>Email is also account id!</hint>
+    </input>
+
+    <group id="submission" layout="flow">
+      <property name="orientation">h</property>
+     
+      <submit id="save">
+        <label>Save</label>
+      </submit>
+      
+      <cancel id="cancel">
+        <label>Cancel</label>
+      </cancel>
+    </group>
+
+  </view>
+
+  <submission type="methodcall">
+    <property name="action">javascript: pycms_acl.addUser()</property>
+    <property name="submit_method">add_user</property>
+  </submission>
+
+</form>

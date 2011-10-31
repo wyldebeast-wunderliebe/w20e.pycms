@@ -1,0 +1,35 @@
+<configure 
+    xmlns:meta="http://namespaces.zope.org/meta"
+    xmlns="http://namespaces.zope.org/zope">
+  
+  <meta:directive 
+       namespace="http://w20e.com/pycms"
+       name="css" 
+       schema=".metadirectives.ICSSDirective"
+       handler=".metadirectives.css" />
+
+  <meta:directive 
+       namespace="http://w20e.com/pycms"
+       name="js" 
+       schema=".metadirectives.IJSDirective"
+       handler=".metadirectives.js" />
+
+  <meta:directive 
+       namespace="http://w20e.com/pycms"
+       name="action" 
+       schema=".metadirectives.IActionDirective"
+       handler=".metadirectives.action" />
+
+  <meta:directive 
+       namespace="http://w20e.com/pycms"
+       name="ctype" 
+       schema=".metadirectives.ICTypeDirective"
+       handler=".metadirectives.ctype" />
+
+  <meta:directive 
+       namespace="http://w20e.com/pycms"
+       name="macro" 
+       schema=".metadirectives.IMacroDirective"
+       handler=".metadirectives.macro" />
+
+</configure>

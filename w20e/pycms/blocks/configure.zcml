@@ -1,0 +1,93 @@
+<configure xmlns="http://pylonshq.com/pyramid">
+
+  <view
+    context=".flowh.FlowHGroup"
+    view=".flowh.FlowHGroupView"
+    renderer="templates/flowh.pt"
+    />
+
+  <view
+    context=".flowv.FlowVGroup"
+    view=".flowv.FlowVGroupView"
+    renderer="templates/flowv.pt"
+    />
+
+  <view
+    context=".grid.GridGroup"
+    view=".grid.GridGroupView"
+    renderer="templates/grid.pt"
+    />
+
+  <view
+    context=".grid.GridCellGroup"
+    view=".grid.GridGroupView"
+    renderer="templates/gridcell.pt"
+    />
+
+  <view
+    context=".grid.GridRowGroup"
+    view=".grid.GridGroupView"
+    renderer="templates/gridrow.pt"
+    />
+
+  <view
+    context=".columns.ColumnsGroup"
+    view=".columns.ColumnsGroupView"
+    renderer="templates/columns.pt"
+    />
+
+  <view
+    context=".columns.ColumnGroup"
+    view=".columns.ColumnsGroupView"
+    renderer="templates/column.pt"
+    />
+
+  <view
+    context=".cards.CardsGroup"
+    view=".cards.CardsGroupView"
+    renderer="templates/cards.pt"
+    />
+
+  <view
+    context=".cards.CardGroup"
+    view=".cards.CardsGroupView"
+    renderer="templates/card.pt"
+    />
+
+  <view
+    context=".text.TextBlock"
+    view=".text.TextBlockView"
+    renderer="templates/text.pt"
+    />
+
+  <view
+    context=".ext_content.ExternalContentBlock"
+    view=".ext_content.ExternalContentBlockView"
+    renderer="templates/ext_content.pt"
+    />
+
+  <view
+    context=".image.ImageBlock"
+    view=".image.ImageBlockView"
+    renderer="templates/image.pt"
+    />
+
+  <view
+    context=".feed.FeedBlock"
+    view=".feed.FeedBlockView"
+    renderer="templates/feed.pt"
+    />
+
+  <view
+    context=".snippet.SnippetBlock"
+    view=".snippet.SnippetBlockView"
+    renderer="templates/snippet.pt"
+    />
+
+  <view
+    context=".ref.RefBlock"
+    view=".ref.RefBlockView"
+    renderer="templates/ref.pt"
+    />
+
+</configure>

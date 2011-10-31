@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+
+<form id="basefolder"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="/home/dokter/Work/w20e/loonwijzer/educoeff/GIT/eggs/wageindicator.educoeff/wageindicator/educoeff/forms/gw20eforms.xsd">
+
+  <data>
+    <name/>
+    <description/>
+    <keywords/>
+    <status/>
+  </data>
+
+  <model>
+    <properties id="required">
+      <bind>name</bind>
+      <bind>status</bind>
+      <required>True</required>
+    </properties>
+  </model>
+
+  <view>
+
+    <input id="name" bind="name">
+      <label>Name</label>
+    </input>
+
+    <input id="description" bind="description">
+      <property name="rows">5</property>
+      <property name="cols">80</property>
+      <label>Short description</label>
+      <hint>Description/subject to be used as meta data</hint>
+    </input>
+
+    <input id="keywords" bind="keywords">
+      <hint>Keywords to be used as meta data, one per line or comma-separated</hint>
+      <property name="rows">5</property>
+      <property name="cols">40</property>
+      <label>Keywords</label>
+    </input>
+
+    <select id="status" bind="status">
+      <label>Status</label>
+      <option value=""></option>
+      <option value="draft">Draft</option>
+      <option value="published">Published</option>
+    </select>
+
+    <group id="submission" layout="flow">
+      <property name="orientation">h</property>
+
+
+      <submit id="save">
+        <label>Save</label>
+      </submit>
+
+      <cancel id="cancel">
+        <label>Cancel</label>
+      </cancel>
+    </group>
+
+  </view>
+
+  <submission type="attr">
+     <property name="attr_name">_DATA</property>
+  </submission>
+
+</form>

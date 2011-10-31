@@ -1,0 +1,11 @@
+<div id="add_text" class="cmsform">
+  <form>
+    Type: <input type="text" name="ctype"/><br/>
+    Width: <input type="text" name="width" size="4"/><br/>
+    Heigth: <input type="text" name="height" size="4"/><br/>
+    Items: <input type="text" name="height" size="4"/>
+
+    <input type="submit" value="Save"/>
+    <input type="button" name="cancel" value="Cancel"/>
+  </form>
+</div>

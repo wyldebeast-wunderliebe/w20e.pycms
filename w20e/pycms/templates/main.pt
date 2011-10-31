@@ -1,0 +1,105 @@
+<metal:define-macro define-macro="master">
+
+<!doctype html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xml:lang="en" 
+      xmlns:tal="http://xml.zope.org/namespaces/tal">
+<!--<![endif]-->
+
+  <head>
+
+    <!-- Basic Page Needs
+         ================================================== -->
+
+    <title tal:content="view.context.title">Dik vet CMS</title>
+    
+    <base href="#" tal:attributes="href view.url"/>
+    
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+    <meta name="keywords" content="" 
+             tal:attributes="content view.keywords" />
+    <meta name="description" content="" 
+          tal:attributes="content view.description" />
+
+    <!-- Mobile Specific Metas
+         ================================================== -->
+    <metal:define-slot define-slot="viewport">
+      <meta name="viewport" 
+            content="width=device-width, initial-scale=1, maximum-scale=1" /> 
+    </metal:define-slot>
+
+    <!-- Javascripts
+         ================================================== -->
+
+    <!--[if lt IE 9]>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    
+    <!-- JS 
+         ================================================== -->
+    <metal:define-slot define-slot="js_slot">
+      <script language="JavaScript"
+              src="${request.application_url}/public.js"></script>
+    </metal:define-slot>
+
+    <metal:define-slot define-slot="extra_js_slot"/>
+
+    <!-- CSS 
+         ================================================== -->
+    <metal:define-slot define-slot="css_slot">
+      <link rel="stylesheet" href="${request.application_url}/public.css"
+            type="text/css" media="screen" charset="utf-8" />
+    </metal:define-slot>
+
+    <metal:define-slot define-slot="extra_css_slot"/>
+
+    <!-- Favicons 
+         ================================================== -->
+    
+    <metal:define-slot define-slot="favicon">
+      <link rel="shortcut icon"
+            href="${request.application_url}/static/favicon.ico" />
+      <tal:comment replace="nothing">
+        <link rel="apple-touch-icon"
+              href="${request.application_url}/static/apple-touch-icon.png">
+        <link rel="apple-touch-icon" sizes="72x72"
+              href="${request.application_url}/static/apple-touch-icon-72x72.png" />
+        <link rel="apple-touch-icon" sizes="114x114"
+              href="${request.application_url}/static/apple-touch-icon-114x114.png" />
+      </tal:comment>
+    </metal:define-slot>
+
+  </head>
+
+  <body metal:define-slot="body">
+
+    <!-- Primary Page Layout
+    ================================================== -->
+
+    <div id="main" class="container" metal:define-slot="main">
+
+      <div id="wrapper" class="sixteen columns">
+
+        <div id="header" metal:define-slot="header">
+          <a href="${request.application_url}" class="logo">
+            <img src="${request.application_url}/static/logo.png"/>
+          </a>
+        </div>
+
+        <div id="content" metal:define-slot="content"/>
+      
+        <div id="footer" metal:define-slot="footer">
+          <tal:footer replace="structure view.footer"/>
+        </div>
+      </div>
+
+    </div>
+
+  </body>
+</html>
+
+</metal:define-macro>
