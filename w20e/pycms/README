@@ -1,5 +1,23 @@
-The w20e.pycms CMS jongu!
--------------------------
+The w20e.pycms CMS!
+-------------------
+
+Only fools and nerds create their own CMS nowadays. Hurray! Anyway, so
+here it is, w20e.pycms. Using the Pyramid framework as it's base,
+building on top of good old Zope (and some Plone) concepts. The CMS is
+created using these main ideas:
+
+* ZODB as database
+* ZCML as configuration/glue language
+* small core
+* optional components (like search, catalog, sharing); just include what 
+  you like
+
+The CMS is a framework, not an out of the box app. What you'll need to
+do is create your own Pyramid app, uing the CMS as base. We've tried
+to make this as easy as possible: use w20e.pycms.skeleton to obtain a
+paster template for your app. Run it, and there you go...
+
+
 
 Using the CMS as base
 =====================

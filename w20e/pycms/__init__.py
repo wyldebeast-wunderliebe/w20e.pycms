@@ -20,15 +20,19 @@ def update(app):
 
     """ Any updates can go here... """
 
-    if hasattr(app, 'list_content') and not hasattr(app, "_order"):
+    # Update from gw20e.forms to w20e.forms
+    for obj in [app] + app.find_content():
 
-        setattr(app, "_order", [])
+        try:
+            attr_name = obj.data_attr_name
 
-        for thing in app.values():
+            data = getattr(obj, attr_name, None)
+            setattr(obj, attr_name, data.as_dict())
 
-            update(thing)
-
-
+            obj._p_changed = 1
+        except:
+            pass
+        
 
 def appmaker(zodb_root):
     if not 'app_root' in zodb_root:
