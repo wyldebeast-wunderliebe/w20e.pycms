@@ -14,22 +14,22 @@ pycms.showSubmenu = function(subId) {
 }
 
 
-function cutBlock() {
+pycms.cutBlock = function() {
 
   if (currBlock && !currGroup.hasClass("fixed")) {
     pasteBoard = currBlock.remove();
     currBlock = false;
   }
 }
-
-
-function pasteBlock() {
-
+  
+  
+pycms.pasteBlock = function() {
+    
   if (pasteBoard) {
     currGroup.append(pasteBoard);
     currBlock = pasteBoard;
     
-    addEvents();
+    pycms.addEvents();
   }
 }
 
@@ -37,13 +37,13 @@ function pasteBlock() {
 /**
  * Delete the current block, unless it's fixed.
  */
-function deleteBlock() {
+pycms.deleteBlock = function() {
 
   if (currBlock && !currBlock.hasClass("fixed")) {
     currBlock.remove();
     currBlock = false;
   } else {
-    showMessage("You can't delete the main container");
+    pycms.showMessage("You can't delete the main container");
   }
 }
 
@@ -51,15 +51,15 @@ function deleteBlock() {
 /**
  * Save the entire content block.
  */
-function savePage() {
+pycms.savePage = function() {
 
   var content = $("#content").html();
 
   $.post("save_page", {'content': content}, function(data, status) {
       if (status == 'error') {
-        showMessage("Tough luck");
+        pycms.showMessage("Tough luck");
       } else {
-        showMessage("Saved");
+        pycms.showMessage("Saved");
       }
     });
 }
@@ -69,7 +69,7 @@ function savePage() {
  * Save the created block. This involves creating the html snippet on the
  * server, and adding it to the current document.
  */
-function saveBlock(data) {
+pycms.saveBlock = function(data) {
 
   if (data['type'] == 'image') {
 
@@ -83,7 +83,7 @@ function saveBlock(data) {
           currGroup.append(html);
         }
         
-        addEvents();
+        pycms.addEvents();
       }); 
 
     // Let the original submit handle it from here...
@@ -99,7 +99,7 @@ function saveBlock(data) {
           currGroup.append(data);
         }
         
-        addEvents();
+        pycms.addEvents();
       });
 
     return false;
@@ -107,48 +107,48 @@ function saveBlock(data) {
 }
 
 
-function editBlock() {
+pycms.editBlock = function() {
 
   do_edit = true;
 
-  var data = getConfig(currBlock);  
+  var data = pycms.getConfig(currBlock);  
 
   $("#form_target").load("edit_form", data, function() {
 
       if (status == 'error') {
-        showMessage("Error in loading add form");
+        pycms.showMessage("Error in loading add form");
         return;
       }
 
-      initForm();
+      pycms.initForm();
       $("#mask").show('slow');
       $("#form_target").show('slow');
     });
 }
 
 
-function addBlock(type) {
+pycms.addBlock = function(type) {
 
   do_edit = false;
 
   $("#form_target").load("add_form", {'type': type}, function(txt, status) {
 
       if (status == 'error') {
-        showMessage("Error in loading add form");
+        pycms.showMessage("Error in loading add form");
         return;
       }
 
-      initForm();
+      pycms.initForm();
       $("#mask").show('slow');
       $("#form_target").show('slow');
     });
 }
 
 
-addGroup = addBlock;
+pycms.addGroup = pycms.addBlock;
 
 
-function createConfig(data) {
+pycms.createConfig = function(data) {
 
   html = '<dl class="config">'
 
@@ -162,7 +162,7 @@ function createConfig(data) {
 }
 
 
-function getConfig(tgt) {
+pycms.getConfig = function(tgt) {
 
   var cfg = {};
   
@@ -174,7 +174,7 @@ function getConfig(tgt) {
 }
 
 
-function createDataArray(form) {
+pycms.createDataArray = function(form) {
 
   var dataArray = form.serializeArray();
   var data = {};
@@ -187,7 +187,7 @@ function createDataArray(form) {
 }
 
 
-function initForm() {
+pycms.initForm = function() {
 
   $('#form_target textarea.wysiwyg').tinymce({
         script_url : '/static/tinymce/jscripts/tiny_mce/tiny_mce.js',
@@ -217,11 +217,11 @@ function initForm() {
 
   $("#form_target form").submit(function() {
       
-      var data = createDataArray($("#form_target form"));
+      var data = pycms.createDataArray($("#form_target form"));
       var bubbleUp = false;
       
       try {
-        bubbleUp = saveBlock(data);
+        bubbleUp = pycms.saveBlock(data);
       } catch (e) {
       }
       
@@ -236,21 +236,21 @@ function initForm() {
 /**
  * After-resize call that takes care of setting the size in the config.
  */
-function resized(event, ui) {
+pycms.resized = function(event, ui) {
 
   $(this).find("dt:contains('width')").eq(0).next().html(ui.size.width + "px");
   $(this).find("dt:contains('height')").eq(0).next().html(ui.size.height + "px");
 }
 
 
-function dropped(event, ui) {
+pycms.dropped = function(event, ui) {
 
   $(this).find("dt:contains('top')").eq(0).next().html(ui.position.top + "px");
   $(this).find("dt:contains('left')").eq(0).next().html(ui.position.left + "px");
 }
 
 
-function showMessage(msg) {
+pycms.showMessage = function(msg) {
 
   $("#msg").html(msg);  
   $("#msg").dialog();
@@ -260,7 +260,7 @@ function showMessage(msg) {
 /**
  * Bind event handlers to events.
  */
-function addEvents() {
+pycms.addEvents = function() {
 
   $(".block").click(function(e) {
 
@@ -274,8 +274,8 @@ function addEvents() {
     });
 
   // resize and drag 'n drop...
-  $(".block").resizable({grid: [5, 5], stop: resized}).draggable({
-      'grid': [10, 10], 'stop': dropped});
+  $(".block").resizable({grid: [5, 5], stop: pycms.resized}).draggable({
+      'grid': [10, 10], 'stop': pycms.dropped});
 }
 
 
@@ -294,7 +294,7 @@ $(document).ready(function() {
 
     currGroup = $("#content");
 
-    addEvents();
+    pycms.addEvents();
 
     $(".actionsubs").click(function() {
         $(this).hide();

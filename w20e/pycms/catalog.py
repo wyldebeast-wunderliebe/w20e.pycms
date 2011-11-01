@@ -42,6 +42,15 @@ def objectAdded(event):
     mapper.add_object(uuid, event.object)
 
 
+def objectChanged(event):
+
+    LOGGER.debug("Changed object %s" % event.object.id)
+
+    reg = get_current_registry()
+    cat = reg.getAdapter(event.object.root, ICatalog)
+    cat.reindex_doc(uuid, event.object)
+
+
 class CatalogMapper(object):
 
     def __init__(self, site):

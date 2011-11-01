@@ -27,6 +27,11 @@
       handler=".catalog.objectRemoved"
       />
 
+  <subscriber
+      for="w20e.hitman.events.IObjectChangedEvent"
+      handler=".catalog.objectChanged"
+      />
+
   <view
      context=".models.site.Site"
      view=".views.catalog.SiteCatalogView"

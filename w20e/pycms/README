@@ -18,23 +18,37 @@ to make this as easy as possible: use w20e.pycms.skeleton to obtain a
 paster template for your app. Run it, and there you go...
 
 
-
-Using the CMS as base
+Getting started
 =====================
+
+We assume that you know how to use buildout, create virtual
+environments, like to use paster, etc. But this is only one way to get
+things going...
 
 - Create a package for your project, requiring:
 
   w20e.pycms
 
-  You may do so like:
-  # virtualenv -p python2.6 --no-site-packages <env>
+The easiest way to do so, is using our paster template
+pycms_project. Install the w20e.pycms.sitemaker package (get it from
+github), something along these lines:
+
+  # virtualenv --no-site-packages <env>
   # cd <env>; ./bin/activate
-  # ./bin/python <path to w20e.pycms paster_setup.py> develop
-  # paster create -t pycms_skel <package name>
-  (pycms_skel should be on your python path...)
+  # ./bin/easy_install w20e.pycms.sitemaker
+  # paster create -t pycms_project <package name>
+
 
 - Create a buildout and virtualenv for your stuff. Why not use the 
   ini files and buildout files we provide in the skel directory here?
+
+  # paster create -t pycms_buildout <same package name!>
+  #
+  # python bootstrap.py
+  # ./bin/buildout -v -c buildout-dvl.cfg
+ 
+At this stage you may want to drink a nice cuppa, read a book, etc. 
+
 
 - Include any CSS and JS you like, using the pycms zcml directives:
 
@@ -58,9 +72,10 @@ Using the CMS as base
 
 - Most likely you'll want to override the 'content' macro, that is
   called to display a page. To do this, make your own pt file, make
-  that use 'main.macros['master'], and let it fill the 'body' slot:
+  that extend 'main.macros['master'], and let it fill the 'body' slot:
 
-  <metal:define-macro define-macro="master">
+<metal:define-macro define-macro="master"
+                    metal:extend-macro="main.macros['master']">
 
   <html xmlns="http://www.w3.org/1999/xhtml" 
       xml:lang="en"
@@ -78,13 +93,12 @@ Using the CMS as base
   </metal:define-macro>
 
 and add to your configure.zcml (always assuming you called your macro
-body.pt):
+main.pt):
 
   <pycms:macro
-     name="content"
-     ptfile="yourpackage:templates/body.pt"
+     name="body"
+     ptfile="yourpackage:templates/main.pt"
      />
-
 
 
 Using the CMS: core concepts 
@@ -130,3 +144,21 @@ and possible subtypes with your type using:
 robot.txt
 =========
 The default robot.txt disallows all. Override as per your liking...
+
+
+Search
+======
+Would you like search enabled for your site?
+
+Add this to your configure.zcml:
+
+  <include package="w20e.pycms" file="search.zcml"/>
+
+
+Sharing anyone?
+===============
+Would you like search enabled for your site?
+
+Add this to your configure.zcml:
+
+  <include package="w20e.pycms" file="sharing.zcml"/>

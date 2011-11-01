@@ -21,4 +21,4 @@ class Page(BaseFolder, BlockContainer):
 
         # TODO: handle page complex layout!
 
-        return "%s %s" % (self.title, self.__data__['text'])
+        return "%s %s" % (self.title, self.__data__['text'] or "")

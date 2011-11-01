@@ -27,6 +27,8 @@
     <div id="lb">
       <div id="lbmsg"></div>
     </div>
+
+    <div id="msg"></div>
     <!-- === end lightbox stuff === -->
 
     <div id="editbar" class="reversed">

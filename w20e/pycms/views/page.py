@@ -213,40 +213,40 @@ class PageLayout(PageView):
 
             subs.append({'id': 'add_%s' % tp, 
                      'title': '%s' % tp, 
-                     'action': 'javascript: addBlock("%s")' % tp,
+                     'action': 'javascript: pycms.addBlock("%s")' % tp,
                      'permission': 'edit'
                      })
 
         return [
             {'id': 'add_block', 
              'title': 'Add block...', 
-             'action': 'javascript: addBlock("text")',
+             'action': 'javascript: pycms.addBlock("text")',
              'permission': 'edit',
              'subs': subs
              },
             {'id': 'delete', 
              'title': 'Delete', 
-             'action': 'javascript: deleteBlock()',
+             'action': 'javascript: pycms.deleteBlock()',
              'permission': 'edit'
              },
             {'id': 'edit', 
              'title': 'Edit', 
-             'action': 'javascript: editBlock()',
+             'action': 'javascript: pycms.editBlock()',
              'permission': 'edit'
              },
             {'id': 'cut', 
              'title': 'Cut', 
-             'action': 'javascript: cutBlock()',
+             'action': 'javascript: pycms.cutBlock()',
              'permission': 'edit'
              },
             {'id': 'paste', 
              'title': 'Paste', 
-             'action': 'javascript: pasteBlock()',
+             'action': 'javascript: pycms.pasteBlock()',
              'permission': 'edit'
              },
             {'id': 'save', 
              'title': 'Save', 
-             'action': 'javascript: savePage()',
+             'action': 'javascript: pycms.savePage()',
              'permission': 'edit'
              },
             ]
