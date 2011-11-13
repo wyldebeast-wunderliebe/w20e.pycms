@@ -48,7 +48,9 @@ def objectChanged(event):
 
     reg = get_current_registry()
     cat = reg.getAdapter(event.object.root, ICatalog)
-    cat.reindex_doc(uuid, event.object)
+    #cat.reindex_doc(uuid, event.object)
+
+    # TODO: lookup object uuid
 
 
 class CatalogMapper(object):

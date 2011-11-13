@@ -6,18 +6,18 @@
      name="page"
      factory="w20e.pycms.models.page.Page"
      icon="/icons/Page16.png"
-     subtypes="page,file,form"
+     subtypes="page,file,form,folder"
      />
 
   <pycms:ctype
-     name="basefolder"
-     factory="w20e.pycms.models.page.Page"
+     name="folder"
+     factory="w20e.pycms.models.folder.Folder"
      icon="/icons/Folder16.png"
      />
 
   <pycms:ctype
      name="site"
-     subtypes="page,file,form"
+     subtypes="page,file,form,folder"
      />
 
   <pycms:ctype

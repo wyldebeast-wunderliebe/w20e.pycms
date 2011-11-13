@@ -1,4 +1,4 @@
-.gw20e-form {
+.w20e-form {
   padding-top: 30px;
 }
 
@@ -89,11 +89,11 @@ input[type='radio'] label {
   border: medium solid #CE3229;
 }
 
-.gw20e-form {
+.w20e-form {
   background-color: transparent;
 }
 
-.gw20e-form > .alert { 
+.w20e-form > .alert { 
   border: medium solid #CE3229;
   color: #CE3229;
   display: none;
@@ -251,7 +251,6 @@ fieldset.steps .step.done {
  */
 fieldset.h > div {
   float: left;
-  width: 35%;
 }
 
 #submission {

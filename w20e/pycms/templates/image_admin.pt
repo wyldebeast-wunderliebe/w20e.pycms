@@ -1,23 +1,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml" 
       xml:lang="en" 
       xmlns:tal="http://xml.zope.org/namespaces/tal"
-      metal:use-macro="main.macros['master']"
+      metal:use-macro="body_admin.macros['master']"
       >
 
   <head/>
 
-  <body metal:fill-slot="body">
+  <body>
 
-    <div metal:use-macro="macros.macros['perspectives']"/>
-    <div metal:use-macro="macros.macros['content_toolbar']"/>
+    <div metal:fill-slot="content">
 
-    <div id="mask"></div>
-
-    <div id="wrap">
-      <h2 class="edit_subheader">
+      <h1 class="edit_subheader">
         Manage <tal:blok replace="view.title"/>
-      </h2>
+      </h1>
 
+      <h2>Full size</h2>
+      <img src="./" alt="fullsize"/>
+
+      <h2>Thumbnail</h2>
       <img src="./thumbnail" alt="thumbnail"/>
       
     </div>

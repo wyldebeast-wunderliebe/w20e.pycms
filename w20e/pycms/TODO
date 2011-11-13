@@ -1,7 +1,6 @@
-* Maybe use gw20e.forms for add_* forms?
+* Maybe use w20e.forms for add_* forms?
 * on post, only dl.config and surrounding div's need to be sent
 * Make specific layout configurable (use .fixed class)
-* Make JS stuff into namespace
 * refresh user screen when user added
 * Add admin view without being a formview? Really?
 * enable reset id

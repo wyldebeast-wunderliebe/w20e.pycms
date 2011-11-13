@@ -54,7 +54,8 @@
         <td/>
         <td/>
         <th>Type</th>
-        <th>Name</th>
+        <th>Title</th>
+        <th/>
         </tr>
       </thead>
       <tbody>
@@ -67,20 +68,30 @@
             <div class="lsaction lsdelete"
                  id="#" tal:attributes="id 'rm_%s' % item.id"
                  >
-              X
+              D
+            </div>
+            <div class="lsaction lsedit">
+              <a href="#" tal:attributes="href '%s/edit' % item.id">
+              E
+              </a>
             </div>
             <div class="lsaction lsrename">R</div>
           </td>
           <td tal:content="item.content_type"></td>
-              <td>
+          <td>
             <a href="#" tal:attributes="href '%s/admin' % item.id" 
                    tal:content="item.title">
-                  content id
-                </a>
-              </td>
-          </tr>
-        </tal:repeat>
-    </tbody>
+              content id
+            </a>
+          </td>
+          <td>
+            <tal:condition condition="hasattr(item, 'thumbnail')">
+              <img src="#" tal:attributes="src '%s/thumbnail' % item.id"/>
+            </tal:condition>
+          </td>
+        </tr>
+      </tal:repeat>
+      </tbody>
     </table>
 </div>
 <!-- END listing -->

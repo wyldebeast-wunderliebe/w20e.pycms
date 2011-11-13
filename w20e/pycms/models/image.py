@@ -17,9 +17,12 @@ class Image(BaseContent):
     def __init__(self, content_id, data=None):
 
         BaseContent.__init__(self, content_id)
-        self.__data__['data'] = Blob()
+
+        self._data = getattr(self, self.data_attr_name, {})
+        self._data['data'] = Blob()
         if data:
             self.data = data
+
         self._p_changed = 1
 
     def store_data(self, form, context, *args):
@@ -29,7 +32,6 @@ class Image(BaseContent):
                 setattr(context, field.id, field.value)
             except:
                 pass
-
 
     def retrieve_data(self, form, context, *args):
 
@@ -59,7 +61,7 @@ class Image(BaseContent):
         # todo: do something with the size?
         f.close()
         # store the filename in attribute storage
-        self.__data__['filename'] = value['name']
+        self._data['filename'] = value['name']
         self._p_changed = 1
 
     def _store_resized_image(self, key, data):

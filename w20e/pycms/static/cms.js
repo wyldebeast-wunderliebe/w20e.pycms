@@ -218,6 +218,8 @@ pycms.initForm = function() {
   $("#form_target form").submit(function() {
       
       var data = pycms.createDataArray($("#form_target form"));
+      $.extend(data, pycms.getConfig($("#" + data['id'])));
+
       var bubbleUp = false;
       
       try {
@@ -254,6 +256,8 @@ pycms.showMessage = function(msg) {
 
   $("#msg").html(msg);  
   $("#msg").dialog();
+
+  setTimeout('$("#msg").parents(".ui-dialog").eq(0).fadeOut(300)', 3000);
 }
 
 

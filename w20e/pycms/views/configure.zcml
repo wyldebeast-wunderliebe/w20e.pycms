@@ -81,6 +81,13 @@
 
   <view
      context="..models.image.Image"
+     view=".image.ImageAdminView"
+     renderer="../templates/image_admin.pt"
+     name="admin"
+     />
+
+  <view
+     context="..models.image.Image"
      view=".image.ImageView"
      renderer="png"
      name="thumbnail"
@@ -223,6 +230,30 @@
      renderer="../templates/site_pack.pt"
      name="pack"
      permission="admin"
+     />
+
+  <!-- eye integration -->
+  <view
+     context="..models.site.Site"
+     view=".zodb.ZODBView"
+     renderer="../templates/zodb.pt"
+     name="zodb"
+     />
+
+  <view
+     context="*"
+     view=".zodb.ZODBView"
+     renderer="json"
+     name="tree"
+     attr="as_tree"
+     />
+
+  <view
+     context="w20e.hitman.models.base.IContent"
+     view=".zodb.ZODBView"
+     renderer="json"
+     name="as_json"
+     attr="as_json"
      />
 
   <!-- Ajax manipulations -->

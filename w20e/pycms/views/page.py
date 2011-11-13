@@ -151,7 +151,8 @@ class PageLayout(PageView):
 
                 img_id = self.context.generate_content_id(self.request.params.get('img').filename)
 
-                img = Image(img_id, self.request.params.get('img').value)
+                img = Image(img_id, {'name': img_id,
+                                     'data': self.request.params.get('img').value})
 
                 self.context.add_content(img)
 

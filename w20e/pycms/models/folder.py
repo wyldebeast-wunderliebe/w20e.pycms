@@ -5,7 +5,7 @@ from ..security import ISecure
 from ..ctypes import ICTypes
 
 
-class BaseFolder(Base):
+class Folder(Base):
 
     """ simple folder """
 
@@ -51,3 +51,6 @@ class BaseFolder(Base):
     def title(self):
 
         return self.__data__['name']
+
+
+BaseFolder = Folder

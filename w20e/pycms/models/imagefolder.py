@@ -1,7 +1,7 @@
-from folder import BaseFolder
+from folder import Folder
 
 
-class ImageFolder(BaseFolder):
+class ImageFolder(Folder):
 
     """ simple folder that may only contain images """
 
@@ -9,4 +9,4 @@ class ImageFolder(BaseFolder):
 
     def __init__(self, content_id):
 
-        BaseFolder.__init__(self, content_id)
+        Folder.__init__(self, content_id)

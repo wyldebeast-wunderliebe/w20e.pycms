@@ -63,7 +63,7 @@ class PNGRenderer:
         filename = value['name']
         mimeType = mimetypes.guess_type(filename, strict=False)[0] or 'image/png'
         system['request'].response.content_type = mimeType
-        system['request'].response.etag = etag
+        system['request'].response.etag = str(etag)
         system['request'].response.cache_expires = (3600 * 24 * 7)
 
         return value['data']
