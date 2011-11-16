@@ -17,6 +17,7 @@ requires = [
     'cssmin',
     'w20e.hitman',
     'PasteScript>=1.3',
+    'eye',
     ]
 
 setup(name='w20e.pycms',
