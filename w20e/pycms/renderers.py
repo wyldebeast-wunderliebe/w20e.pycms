@@ -61,7 +61,13 @@ class PNGRenderer:
         etag = len(value['data'])
 
         filename = value['name']
-        mimeType = mimetypes.guess_type(filename, strict=False)[0] or 'image/png'
+
+        mimeType = "image/png";
+
+        try:
+            mimeType = mimetypes.guess_type(filename, strict=False)[0]
+        except:
+            pass
         system['request'].response.content_type = mimeType
         system['request'].response.etag = str(etag)
         system['request'].response.cache_expires = (3600 * 24 * 7)
@@ -131,4 +137,26 @@ class XMLRenderer:
         system['request'].response.content_type = 'text/xml'
 
         return value
+
+
+class HTMLRenderer:
+
+    """ Return value as is """
+
+    def __init__(self, info):
+
+        pass
+
+
+    def __call__(self, value, system):
+
+        """ Value should be a dict with name and data as keys """
+
+        system['request'].response.headerlist = [
+            ('Cache-Control','no-cache'),
+            ('Pragma','No-Cache')]
+
+        system['request'].response.content_type = 'text/html'
+
+        return value    
 

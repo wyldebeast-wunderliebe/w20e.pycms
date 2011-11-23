@@ -159,7 +159,7 @@
      context="..models.page.Page"
      view=".page.PageLayout"
      attr="save_block"
-     renderer="../templates/save_block.pt"
+     renderer="html"
      name="save_block"
      />
 

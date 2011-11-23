@@ -45,6 +45,11 @@
      />
 
   <renderer
+     factory="w20e.pycms.renderers.HTMLRenderer"
+     name="html"
+     />
+
+  <renderer
      factory="w20e.pycms.renderers.JSRenderer"
      name="js"
      />

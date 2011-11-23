@@ -73,36 +73,37 @@ pycms.saveBlock = function(data) {
 
   if (data['type'] == 'image') {
 
-    $("#img_save").load(function() {
-        
-        html = $("#img_save").contents().find("body").html();
+      // Bind onload to img save iframe
+      $("#img_save").load(function() {
+          
+	  var html = $("#img_save").contents().find("html").html();
 
-        if (do_edit) {
-          currBlock.replaceWith(html);
-        } else {
-          currGroup.append(html);
-        }
-        
-        pycms.addEvents();
+          if (do_edit) {
+              currBlock.replaceWith(html);
+          } else {
+              currGroup.append(html);
+          }
+          
+          pycms.addEvents();
       }); 
-
-    // Let the original submit handle it from here...
-    return true;
+      
+      // Let the original submit handle it from here...
+      return true;
 
   } else {
 
-    $.post("save_block", data, function(data) {
-        
-        if (do_edit) {
-          currBlock.replaceWith(data);
-        } else {
-          currGroup.append(data);
-        }
-        
-        pycms.addEvents();
+      $.post("save_block", data, function(data) {
+          
+          if (do_edit) {
+              currBlock.replaceWith(data);
+          } else {
+              currGroup.append(data);
+          }
+          
+          pycms.addEvents();
       });
-
-    return false;
+      
+      return false;
   }
 }
 
@@ -178,7 +179,7 @@ pycms.createDataArray = function(form) {
 
   var dataArray = form.serializeArray();
   var data = {};
-  
+
   for (var i = 0; i < dataArray.length; i++) {
     data[dataArray[i]['name']] = dataArray[i]['value'];
   }
@@ -194,10 +195,10 @@ pycms.initForm = function() {
 
         // General options
         theme : "advanced",
-        plugins : "autolink,lists,pagebreak,style,layer,table,save,advhr,       advimage,advlink,inlinepopups,insertdatetime,preview,media,searchreplace,print, contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,advlist",
+        plugins : "autolink,lists,pagebreak,layer,table,save,advhr,       advimage,advlink,inlinepopups,insertdatetime,preview,media,searchreplace,print, contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,advlist",
 
         // Theme options
-        theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,       justifyleft,justifycenter,justifyright,justifyfull,styleselect,|,cut,copy,paste,pastetext,pasteword,bullist,numlist,|,outdent,indent,blockquote,|,nonbreaking,  pagebreak,|,undo,redo",
+        theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,       justifyleft,justifycenter,justifyright,justifyfull,headerselect,|,cut,copy,paste,pastetext,pasteword,bullist,numlist,|,outdent,indent,blockquote,|,nonbreaking,  pagebreak,|,undo,redo",
         theme_advanced_buttons2 : "link,unlink,anchor,image,cleanup,code,|,     preview,|,forecolor,backcolor,tablecontrols,|,hr,removeformat,|,charmap,media,|,fullscreen",
         theme_advanced_buttons3 : "",
         theme_advanced_toolbar_location : "top",
@@ -218,7 +219,7 @@ pycms.initForm = function() {
   $("#form_target form").submit(function() {
       
       var data = pycms.createDataArray($("#form_target form"));
-      $.extend(data, pycms.getConfig($("#" + data['id'])));
+      data = $.extend({}, pycms.getConfig($("#" + data['id'])), data);
 
       var bubbleUp = false;
       
@@ -316,7 +317,7 @@ $(document).ready(function() {
           plugins : "autolink,lists,pagebreak,style,layer,table,save,advhr,       advimage,advlink,inlinepopups,insertdatetime,preview,media,searchreplace,print, contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,advlist",
           
           // Theme options
-          theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,       justifyleft,justifycenter,justifyright,justifyfull,styleselect,|,cut,copy,paste,pastetext,pasteword,bullist,numlist,|,outdent,indent,blockquote,|,nonbreaking,  pagebreak,|,undo,redo",
+          theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,       justifyleft,justifycenter,justifyright,justifyfull,formatselect,|,cut,copy,paste,pastetext,pasteword,bullist,numlist,|,outdent,indent,blockquote,|,nonbreaking,  pagebreak,|,undo,redo",
           theme_advanced_buttons2 : "link,unlink,anchor,image,cleanup,code,|,     preview,|,forecolor,backcolor,tablecontrols,|,hr,removeformat,|,charmap,media,|,fullscreen",
           theme_advanced_buttons3 : "",
           theme_advanced_toolbar_location : "top",
