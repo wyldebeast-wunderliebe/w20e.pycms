@@ -10,13 +10,11 @@ class Site(Page):
 
     implements(ISite)
 
-
     def __init__(self, content_id):
 
         Page.__init__(self, content_id)
         self.acl = ACL()
 
+    def add_user(self, form, context, args):
 
-    def add_user(self, data):
-        
-        self.acl.create_user(**data.as_dict())
+        self.acl.create_user(**form.data.as_dict())
