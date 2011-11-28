@@ -1,8 +1,8 @@
-from folder import BaseFolder
+from folder import Folder
 from ..blocks.base import BlockContainer
 
 
-class Page(BaseFolder, BlockContainer):
+class Page(Folder, BlockContainer):
 
     """ Software project representation """
 
@@ -10,7 +10,7 @@ class Page(BaseFolder, BlockContainer):
 
     def __init__(self, content_id):
 
-        BaseFolder.__init__(self, content_id)
+        Folder.__init__(self, content_id)
         BlockContainer.__init__(self, refs=True)
 
         self._content = ""

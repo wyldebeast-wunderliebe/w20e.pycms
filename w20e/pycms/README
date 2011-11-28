@@ -134,11 +134,47 @@ Content types
 Create your own content types if you wish. You can register an icon,
 and possible subtypes with your type using:
 
-<pycms:ctype
-  name="your_type"
-  icon="url"
-  subtypes="comma_separated_list"
-/>
+  <pycms:ctype
+     name="your_type_id"
+     factory=".models.yourtype.YourType"
+     subtypes="someothertype,someevenothertype"
+     icon="/static/img/yourtype_icon.png"
+     />
+
+Your actual model should extend either
+  w20e.hitman.models.base.BaseContent 
+or
+  w20e.hitman.models.base.BaseFolder.
+
+You may want to use w20e.forms (read: should) for your model. Create
+an xml form that describes your model, and add it. A simple model
+looks like this:
+
+from w20e.pycms.models.base import BaseContent
+
+
+class SomethingSimple(BaseContent):
+
+    """ Well, actually it's more like an 'object'... """
+
+    add_form = edit_form = "../quote/somethingsimple.xml"
+
+    def __init__(self, content_id, data={}):
+
+        BaseContent.__init__(self, content_id, data)
+
+
+    def base_id(self):
+
+        return self.__data__['title']
+
+
+    @property
+    def title(self):
+
+        return self.__data__['title']
+
+
 
 
 robot.txt

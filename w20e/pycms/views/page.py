@@ -48,15 +48,17 @@ class PageView(ContentView):
 
         for block in self.context.blocks:
 
-            block_height = int(block.get("height", "200px")[:-2])
-            block_top = int(block.get("top", "10px")[:-2])
+            try:
+                block_height = int(float(block.get("height", "200px")[:-2]))
+                block_top = int(float(block.get("top", "10px")[:-2]))
 
-            height = max(height, block_top + block_height)
+                height = max(height, block_top + block_height)
+            except:
+                pass
 
             html.append(render_view(block, self.request))
 
-        return """<div id="content" style="height: %spx">%s</div>""" % (height, 
-                                                                        "".join(html))
+        return """<div class="content" style="min-height: %spx">%s</div>""" % (height + 20, "".join(html))
 
 
     @property
@@ -151,17 +153,20 @@ class PageLayout(PageView):
 
                 img_id = self.context.generate_content_id(self.request.params.get('img').filename)
 
-                img = Image(img_id, self.request.params.get('img').value)
+                img = Image(img_id, {'name': img_id,
+                                     'data': self.request.params.get('img').value})
 
                 self.context.add_content(img)
 
                 block['img_url'] = '%s%s' % (self.url, img_id)
 
+                self.request.is_edit = True
+
+                return "%s" % render_view(block, self.request)
+            
         self.request.is_edit = True
 
-        res = render_view(block, self.request)
-
-        return {'html': res}
+        return render_view(block, self.request)
         
 
     def add_form(self):

@@ -45,9 +45,12 @@ class File(BaseContent):
     @property
     def data(self):
 
-        return {'name': self.__data__['filename'],
-                'data': self.__data__['data'].open('r').read()}
-
+        try:
+            return {'name': self.__data__['filename'],
+                    'data': self.__data__['data'].open('r').read()}
+        except:
+            return ""
+        
 
     @data.setter
     def data(self, value):

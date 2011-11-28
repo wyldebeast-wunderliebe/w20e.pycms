@@ -18,7 +18,10 @@ class CTypes(object):
 
     def register_ctype(self, name, **kwargs):
 
-        self.registry[name] = kwargs
+        if name in self.registry:
+            self.registry[name].update(kwargs)
+        else:
+            self.registry[name] = kwargs
 
         if kwargs.get('factory', None):
             clazz = kwargs['factory']

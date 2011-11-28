@@ -20,6 +20,11 @@
      />
 
   <static
+     name="eye_static"
+     path="eye:/static"
+     />
+
+  <static
      name="icons"
      path="icons"
      />
@@ -37,6 +42,11 @@
   <renderer
      factory="w20e.pycms.renderers.XMLRenderer"
      name="xml"
+     />
+
+  <renderer
+     factory="w20e.pycms.renderers.HTMLRenderer"
+     name="html"
      />
 
   <renderer
@@ -130,6 +140,13 @@
      />
 
   <pycms:action
+     name="zodb"
+     target="./zodb"
+     category="perspective"
+     ctype="site"
+     />
+
+  <pycms:action
      name="users"
      target="./users"
      category="perspective"
@@ -154,7 +171,7 @@
 
   <pycms:action
      name="to_parent"
-     target="${view.parent_url}/admin"
+     target="../admin"
      category="content"
      permission="view"
      />

@@ -2,25 +2,22 @@
       xml:lang="en" 
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       xmlns:tal="http://xml.zope.org/namespaces/tal"
-      metal:use-macro="main.macros['master']"
+      metal:use-macro="body_admin.macros['master']"
       >
 
   <head/>
 
-  <body metal:fill-slot="body">
+  <body>
+    <div metal:fill-slot="content">
 
-  <div id="wrap">
-
-    <div metal:use-macro="macros.macros['header']"/>
-
-    <h1>Remove content</h1>
-
-    <form action="">
-      Are you sure?
-      <input type="submit" name="submit" value="Yes"/>
-      <input type="submit" name="cancel" value="No"/>
-    </form>
-  </div>
-
-</body>
+      <h1>Remove content</h1>
+      
+      <form action="">
+        Are you sure?
+        <input type="submit" name="submit" value="Yes"/>
+        <input type="submit" name="cancel" value="No"/>
+      </form>
+    </div>
+    
+  </body>
 </html>
