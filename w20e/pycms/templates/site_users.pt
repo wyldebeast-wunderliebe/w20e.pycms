@@ -20,39 +20,43 @@
       
       <div id="userscontainer">
         <h2>
-          <img src="/icons/User48.png" alt="Users"/>
+          <img src="/icons/User24.png" alt="Users"/>
           Users
         </h2>
         
         <div id="user_add_form">
         </div>
         
-		    <table class="listing">
-		      <thead>
-		        <tr>
+	<table class="listing">
+	  <thead>
+	    <tr>
               <th/>
               <th>Id</th>
-		          <th>Name</th>
-		          <th>Email</th>
+	      <th>Name</th>
+	      <th>Email</th>
               <th/>
-		        </tr>
+	    </tr>
 		      </thead>
-		      <tbody>
-		        <tal:repeat repeat="user view.list_users()">
-		          <tr>
+	  <tbody>
+	    <tal:repeat repeat="user view.list_users()">
+	      <tr id="" tal:attributes="id user.id">
                 <td><img src="/icons/User16.png" alt="User"/></td>
-			          <td tal:content="user.id">user</td> 
-			          <td tal:content="user.name">user</td> 
-			          <td tal:content="user.email">user</td> 
+		<td tal:content="user.id">user</td> 
+		<td tal:content="user.name">user</td> 
+		<td tal:content="user.email">user</td> 
                 <td>
-                  <div class="lsaction" id="lsdelete">
+                  <div class="lsaction" id="lsdelete"
+		       tal:condition="user.id != 'admin'"
+		       >
                     <a href="#"
                        tal:attributes="href 'javascript: pycms_acl.deleteUser(\'%s\')' % user.id"
                        title="Delete user">
                       <img src="/icons/Delete16.png"/>
                     </a>
                   </div>
-                  <div class="lsaction" id="lsnotify">
+                  <div class="lsaction" id="lsnotify"
+		       tal:condition="user.id != 'admin'"
+		       >
                     <a href="#"
                        tal:attributes="href 'javascript: pycms_acl.inviteUser(\'%s\')' % user.id"
                        title="Invite user"
@@ -60,38 +64,52 @@
                       <img src="/icons/Chat16.png"/>
                     </a>
                   </div>
-                  <div class="lsaction" id="lspwd">
+                  <div class="lsaction minimal" id="lspwd">
                     <a href="#"
                        tal:attributes="href 'set_password?user_id=%s' % user.id"
                        title="Set password"
                        >
                       <img src="/icons/Key16.png"/>
                     </a>
+		    <div class="popup"></div>
+                  </div>
+                  <div class="lsaction minimal" id="lspwd"
+		       tal:condition="user.id != 'admin'"
+		       >
+                    <a href="#"
+                       tal:attributes="href 'user_groups?user_id=%s' % user.id"
+                       title="User groups"
+                       >
+                      <img src="/icons/Users16.png"/>
+                    </a>
+		    <div class="popup"></div>
                   </div>
                 </td>
               </tr>
-		        </tal:repeat>
-		      </tbody>
-		    </table>
+	    </tal:repeat>
+	  </tbody>
+	</table>
         
         <h2>
-          <img src="/icons/Users48.png" alt="Groups"/>
+          <img src="/icons/Users24.png" alt="Groups"/>
           Groups
         </h2>
         
-		    <table class="listing">
-		      <thead>
-		        <tr>
+	<table class="listing">
+	  <thead>
+	    <tr>
               <th/>
               <th>Id</th>
+	      <th>Users</th>
               <th/>
-		        </tr>
-		      </thead>
-		      <tbody>
-		        <tal:repeat repeat="group view.list_groups()">
-		          <tr>
+	    </tr>
+	  </thead>
+	  <tbody>
+	    <tal:repeat repeat="group view.list_groups()">
+	      <tr>
                 <td><img src="/icons/Users16.png" alt="Group"/></td>
-			          <td tal:content="group.id">user</td> 
+		<td tal:content="group.id">user</td> 
+		<td tal:content="', '.join(group.users)"></td>
                 <td>
                   <div class="lsaction" id="lsdelete">
                     <a href="#"
@@ -101,30 +119,40 @@
                     </a>
                   </div>
                 </td>
-              </tr>
-		        </tal:repeat>
-		      </tbody>
-		    </table>
+	      </tr>
+	    </tal:repeat>
+	  </tbody>
+	</table>
         
         <h2>
-          <img src="/icons/Chat48.png" alt="User activation"/>
+          <img src="/icons/Chat24.png" alt="User activation"/>
           Activation
         </h2>
         
-		    <table class="listing">
-		      <thead>
-		        <tr>
+	<table class="listing">
+	  <thead>
+	    <tr>
               <th/>
               <th>Id</th>
-		          <th>Key</th>
-		        </tr>
-		      </thead>
-		      <tbody>
-		        <tal:repeat repeat="act view.list_activation()">
-		          <tr>
-                <td><img src="/icons/User16.png" alt="User"/></td>
-			          <td tal:content="act[0]">user</td> 
-			          <td tal:content="act[1]">key</td> 
+	      <th>Key</th>
+	      <th/>
+	    </tr>
+	  </thead>
+	  <tbody>
+	    <tal:repeat repeat="act view.list_activation()">
+	      <tr id="" tal:attributes="id act[1]">
+                <td><img src="/icons/Chat16.png" alt="User"/></td>
+		<td tal:content="act[0]">user</td> 
+		<td tal:content="act[1]">key</td> 
+                <td>
+                  <div class="lsaction" id="lsdeletekey">
+                    <a href="#"
+                       tal:attributes="href 'javascript: pycms_acl.deleteKey(\'%s\')' % act[1]"
+                       title="Delete user">
+                      <img src="/icons/Delete16.png"/>
+                    </a>
+                  </div>
+		</td>
               </tr>
             </tal:repeat>
           </tbody>

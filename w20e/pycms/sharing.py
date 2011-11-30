@@ -2,7 +2,7 @@ from pyramid.security import Allow
 from zope.interface import Interface
 
 
-SHARING_ATTR="_sharing"
+SHARING_ATTR = "_sharing"
 
 
 class ISharing(Interface):
@@ -16,16 +16,13 @@ class Sharing(object):
 
         self.context = context
 
-
     def set_sharing(self, sharing={}):
 
         setattr(self.context, SHARING_ATTR, sharing)
 
-
     def get_sharing(self):
 
         return getattr(self.context, SHARING_ATTR, {})
-
 
     def edit_list(self):
 
@@ -40,7 +37,6 @@ class Sharing(object):
             editors.append((Allow, user_id, ('view', 'edit')))
 
         return editors
-
 
     def view_list(self):
 

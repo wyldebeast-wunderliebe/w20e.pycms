@@ -25,7 +25,7 @@ def objectRemoved(event):
     reg = get_current_registry()
     cat = reg.getAdapter(event.object.root, ICatalog)
     #cat.unindex_doc(event.object.uuid)
-    
+
 
 def objectAdded(event):
 
@@ -61,23 +61,19 @@ class CatalogMapper(object):
         if not hasattr(self.site, "_catalog_map"):
             setattr(self.site, "_catalog_map", {})
 
-
     def clear(self):
 
         self.site._catalog_map.clear()
         self.site._p_changed = 1
 
-
     def gen_uuid(self):
-        
-        return max(self.site._catalog_map.keys() or [0]) + 1
 
+        return max(self.site._catalog_map.keys() or [0]) + 1
 
     def add_object(self, uuid, obj):
 
         self.site._catalog_map[uuid] = resource_path(obj)
         self.site._p_changed = 1
-
 
     def get_object(self, uuid):
 
@@ -88,16 +84,13 @@ class CatalogMapper(object):
 
         return find_resource(self.site, path)
 
-    
     def list_objects(self):
 
         return self.site._catalog_map.items()
 
-
     def list_object_ids(self):
 
         return self.site._catalog_map.keys()
-        
 
 
 class Catalog(object):
@@ -125,4 +118,4 @@ class Catalog(object):
 
         """ Proxy to real catalog """
 
-        return getattr(self.context._catalog, name) 
+        return getattr(self.context._catalog, name)

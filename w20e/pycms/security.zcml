@@ -29,9 +29,14 @@
     />
 
   <adapter
-     for="w20e.hitman.models.base.IContent"
-     provides=".security.ISecure"
-     factory=".security.Secure"
-     />
+    for="w20e.hitman.models.base.IContent"
+    provides=".security.ISecure"
+    factory=".security.Secure"
+    />
+
+  <subscriber
+    for=".events.IAppRootReady"
+    handler=".security.init"
+    />
 
 </configure>

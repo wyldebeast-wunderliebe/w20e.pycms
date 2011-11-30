@@ -13,11 +13,12 @@ class UserAddView(xmlformview):
 
     def __init__(self, context, request):
 
+        self.site = context
         form = FormFile(find_file("../forms/user_add_form.xml",
                                   context.__class__))
 
-        xmlformview.__init__(self, context, request, form, retrieve_data=True)
-
+        xmlformview.__init__(self, context.acl, request, form,
+                             retrieve_data=False)
 
     def __call__(self):
 
@@ -34,16 +35,13 @@ class SiteView(AdminView):
 
         AdminView.__init__(self, context, request)
 
-
     def list_users(self):
 
         return self.context.acl.users.values()
 
-
     def list_groups(self):
 
         return self.context.acl.groups.values()
-
 
     def list_activation(self):
 
@@ -55,7 +53,6 @@ class SiteView(AdminView):
             acts.append((user.id, key))
 
         return acts
-
 
     def delete_user(self):
 
@@ -78,6 +75,22 @@ class SiteView(AdminView):
 
         mailer.invite_user(self.request, user_id, key)
 
+    def user_groups(self):
+
+        """ admin user groups """
+
+        if self.request.params.get("group", []):
+            self.context.acl.set_user_groups(
+                self.request.params['user'],
+                self.request.params.getall('group'),
+                )
+        
+        return {'groups': self.context.acl.groups.values(),
+                'user': self.request.params.get('user_id', '')}
+
+    def delete_key(self):
+
+        self.context.acl.unset_activation_key(self.request.params.get('key', ''))
 
     def set_password(self):
 
@@ -87,8 +100,9 @@ class SiteView(AdminView):
 
         return self.change_password(token=key)
 
-
     def change_password(self, token=None):
+
+        """ Change password given the token."""
 
         token = token or self.request.params['token']
 
@@ -97,9 +111,9 @@ class SiteView(AdminView):
         if not user:
 
             return {'status': 'error',
+                    'token': '',
                     'macros': get_renderer('../templates/macros.pt').implementation(),
                     'main': get_renderer('../templates/main.pt').implementation(),
-                    'token': '',
                     'message': 'No user found for this key!'}
 
         message = user.id
@@ -108,16 +122,14 @@ class SiteView(AdminView):
             if self.request.params['password'] == self.request.params['password_confirm']:
                 user.set_pwd(self.request.params['password'])
                 self.context.acl.unset_activation_key(token)
-                return HTTPFound(location = "login")
+                message = "Password reset"
             else:
                 message = "Passwords do not match"
 
         return {'status': 'ok', 'message': message, 'token': token,
                 'macros': get_renderer('../templates/macros.pt').implementation(),
-                'main': get_renderer('../templates/main.pt').implementation()
-
+                'main': get_renderer('../templates/main.pt').implementation(),
                 }
-
 
     def pack_database(self):
         """ pack the database """
@@ -130,7 +142,6 @@ class SiteView(AdminView):
         return "pack result: {0} \nOld Data.fs size: {1}\nNew Data.fs size: {2}\n"\
                "check disk to see size of blobdir".format(result, old_size, new_size)
 
-
     @property
     def db(self):
 
@@ -140,13 +151,11 @@ class SiteView(AdminView):
 
         return db
 
-
     def catalog_entries(self):
 
         mapper = self.request.registry.getAdapter(self.context, ICatalogMapper)
 
         return [{'id': obj[0], 'path': obj[1]} for obj in mapper.list_objects()]
-
 
     def robots_txt(self):
 

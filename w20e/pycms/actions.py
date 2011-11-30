@@ -25,11 +25,10 @@ class Actions(object):
 
         self.registry = {}
 
-
     def register_action(self, name, target, category, ctype=[],
                         permission="", condition=True):
 
-        if not self.registry.has_key(category):
+        if not category in self.registry:
             self.registry[category] = []
 
         if ctype:
@@ -39,11 +38,11 @@ class Actions(object):
             Action(name, target, ctype, permission, condition)
             )
 
-
     def get_actions(self, category, ctype=None):
 
         actions = self.registry.get(category, [])
+
         if not ctype:
             return actions
         else:
-            return [action for action in actions if (ctype in action.ctype or not action.ctype)]
+            return [a for a in actions if (ctype in a.ctype or not a.ctype)]

@@ -209,12 +209,40 @@
   <view
      context="..models.site.Site"
      view=".site.SiteView"
+     attr="change_password"
+     renderer="../templates/change_password_minimal.pt"
+     name="change_password_minimal"
+     permission="admin"
+     />
+
+  <view
+     context="..models.site.Site"
+     view=".site.SiteView"
      attr="set_password"
-     renderer="../templates/change_password.pt"
+     renderer="../templates/change_password_minimal.pt"
      name="set_password"
      permission="admin"
      />
 
+  <view
+     context="..models.site.Site"
+     view=".site.SiteView"
+     attr="delete_key"
+     name="delete_key"
+     permission="admin"
+     renderer="json"
+     />
+
+  <view 
+    context="..models.site.Site"
+    view=".site.SiteView"
+    attr="user_groups"
+    renderer="../templates/user_groups.pt"
+    name="user_groups"
+    permission="admin"
+    />
+
+  <!-- packing -->
   <view
      context="..models.site.Site"
      view=".site.SiteView"

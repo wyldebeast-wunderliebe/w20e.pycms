@@ -15,7 +15,6 @@ class CTypes(object):
 
         self.registry = {}
 
-
     def register_ctype(self, name, **kwargs):
 
         if name in self.registry:
@@ -26,11 +25,10 @@ class CTypes(object):
         if kwargs.get('factory', None):
             clazz = kwargs['factory']
             path, clazz = ".".join(clazz.split(".")[:-1]), clazz.split(".")[-1]
-            
+
             exec("from %s import %s" % (path, clazz))
 
             Registry.register(name, eval(clazz))
-
 
     def get_ctype_info(self, name):
 

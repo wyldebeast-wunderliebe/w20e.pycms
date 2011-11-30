@@ -18,11 +18,10 @@ def find_file(filename, context):
     return os.path.join(context.package.__path__[0], filename)
 
 
-
 class ICSSDirective(Interface):
-    
+
     """ Collect css files into one """
-    
+
     cssfile = TextLine(
         title=u"CSS File",
         description=u"Relative path to CSS file.",
@@ -37,7 +36,7 @@ class ICSSDirective(Interface):
         title=u"Media",
         description=u"For media (screen, print, ...)",
         required=False)
-    
+
 
 def css(_context, cssfile, csstarget, media="screen"):
 
@@ -50,14 +49,14 @@ def css(_context, cssfile, csstarget, media="screen"):
 
 
 class IJSDirective(Interface):
-    
+
     """ Collect js files into one """
-    
+
     jsfile = TextLine(
         title=u"JS File",
         description=u"Relative path to JS file.",
         required=True)
-    
+
     jstarget = TextLine(
         title=u"JS target",
         description=u"Target js name as called from client.",
@@ -75,14 +74,14 @@ def js(_context, jsfile, jstarget):
 
 
 class IActionDirective(Interface):
-    
+
     """ Collect js files into one """
-    
+
     name = TextLine(
         title=u"Name",
         description=u"Unique action name",
         required=True)
-    
+
     target = TextLine(
         title=u"Target",
         description=u"Usually http href",
@@ -122,9 +121,9 @@ def action(_context, name, target, category, ctype=[], permission="",
 
 
 class ICTypeDirective(Interface):
-    
+
     """ Register Content type info """
-    
+
     name = TextLine(
         title=u"Type",
         description=u"Unique type name, lowercase",
@@ -134,7 +133,7 @@ class ICTypeDirective(Interface):
         title=u"Factory",
         description=u"Factory that creates this type",
         required=False)
-    
+
     icon = TextLine(
         title=u"icon",
         description=u"Path to icon",
@@ -155,14 +154,14 @@ def ctype(_context, name, **kwargs):
 
 
 class IMacroDirective(Interface):
-    
+
     """ Register Content type info """
 
     name = TextLine(
         title=u"name",
         description=u"Register as...",
         required=True)
-    
+
     ptfile = TextLine(
         title=u"Template",
         description=u"PT file",

@@ -1,0 +1,33 @@
+<div id="user_groups">
+  <form action="user_groups" method="POST">
+    <input type="hidden" name="user" value="${user}"/>
+    <table>
+      <thead>
+	<tr>
+          <th/>
+	  <th>Group</th>
+	</tr>
+      </thead>
+      <tbody>
+	<tal:repeat repeat="group groups">
+	  <tr>
+	    <td>
+	      <tal:condition condition="user in group.users">
+		<input name="group" type="checkbox"
+		       checked="checked"
+		       value="${group.id}"/>
+	      </tal:condition>
+	      <tal:condition condition="not user in group.users">
+		<input name="group" type="checkbox"
+		       value="${group.id}"/>
+	      </tal:condition>
+	    </td>
+	    <td tal:content="group.id"/>
+	  </tr>
+	</tal:repeat>
+      </tbody>
+    </table>
+    <input type="submit" name="submit" value="save"/>
+    <input type="button" class="cancel" value="cancel"/>
+  </form>
+</div>

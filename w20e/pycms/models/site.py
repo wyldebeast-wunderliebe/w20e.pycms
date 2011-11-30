@@ -14,9 +14,3 @@ class Site(Page):
     def __init__(self, content_id):
 
         Page.__init__(self, content_id)
-        self.acl = ACL()
-
-
-    def add_user(self, data):
-        
-        self.acl.create_user(**data.as_dict())

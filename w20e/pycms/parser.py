@@ -14,12 +14,11 @@ class Parser(object):
 
         self._page = page
 
-
     def parse(self, frag):
 
         # wrap frag with container...
         elt = fromstring('<div id="content">' + frag + '</div>')
-        
+
         for child in elt.iterchildren(tag="div"):
 
             cfg = self._get_config(child)
@@ -30,7 +29,6 @@ class Parser(object):
 
             block = clazz(child.get("id"), **cfg)
             self._page.add_block(block)
-
 
     def _get_config(self, elt):
 

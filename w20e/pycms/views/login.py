@@ -52,7 +52,6 @@ class loginview(BaseView):
                 pass
             message = 'Failed login'
 
-
         return dict(
             main = get_renderer('../templates/main.pt').implementation(),
             macros = get_renderer('../templates/macros.pt').implementation(),

@@ -330,8 +330,21 @@ h2 {
     cursor: pointer;
 }
 
+.lsaction.minimal {
+    position: relative;
+}
+
 .lsaction:hover {
     cursor: pointer;
+}
+
+.popup {
+    display: none;
+    padding: 20px;
+    -moz-box-shadow: 3px 3px 3px #505050;
+    background: #ffffff;
+    z-index: 1001;
+    position: absolute;
 }
 
 .listingcontent .ui-sortable .contenttype:hover {

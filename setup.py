@@ -48,4 +48,3 @@ setup(name='w20e.pycms',
       """,
       paster_plugins=['pyramid'],
       )
-

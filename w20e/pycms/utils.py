@@ -1,10 +1,12 @@
 from PIL import Image as PILImage
 from StringIO import StringIO
-import time,random,hashlib
+import time
+import random
+import hashlib
 
 
 THUMBNAIL_SIZE = 128, 128
-KEY_LENGTH=24
+KEY_LENGTH = 24
 
 
 def resize_image(data, size=THUMBNAIL_SIZE):
@@ -16,9 +18,9 @@ def resize_image(data, size=THUMBNAIL_SIZE):
     pil_img.thumbnail(size, PILImage.ANTIALIAS)
 
     thumb_buf = StringIO()
-    pil_img.save(thumb_buf, format= 'PNG')
-    return {'name': data['name'], 'data': thumb_buf.getvalue()}
+    pil_img.save(thumb_buf, format='PNG')
 
+    return {'name': data['name'], 'data': thumb_buf.getvalue()}
 
 
 def generate_id(prefix="", length=KEY_LENGTH):
@@ -28,5 +30,6 @@ def generate_id(prefix="", length=KEY_LENGTH):
     t1 = time.time()
     time.sleep(random.random())
     t2 = time.time()
-    base = hashlib.md5(str(t1 +t2) )
+    base = hashlib.md5(str(t1 + t2))
+
     return prefix + base.hexdigest()[:length]

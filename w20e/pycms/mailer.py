@@ -2,8 +2,8 @@ from pyramid_mailer import get_mailer
 from pyramid_mailer.message import Message
 
 
-FROM="dokter@w20e.com"
-BCC=FROM #"info@w20e.com"
+FROM = "dokter@w20e.com"
+BCC = FROM
 
 TEXT = """
 You can log in using this link... %s
@@ -18,7 +18,6 @@ class Mailer(object):
 
         """ moi """
 
-
     def invite_user(self, request, email, key):
 
         """ Send invoice per email """
@@ -32,6 +31,7 @@ class Mailer(object):
                       sender=from_addr,
                       bcc=bcc_addr,
                       recipients=[email],
-                      html=TEXT % request.host_url.strip() + "/change_password?token=" + key)
+                      html=TEXT % request.host_url.strip() + \
+                      "/change_password?token=" + key)
 
         mailer.send(msg)

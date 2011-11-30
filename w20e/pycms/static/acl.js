@@ -22,10 +22,7 @@ pycms_acl.addUser = function() {
 pycms_acl.deleteUser = function(userId) {
 
   $.post("delete_user", {'user_id': userId}, function() {
-    $("#lbmsg").html("User deleted");
-    $("#lbpanel").fadeIn(300);
-    $("#lb").fadeIn();
-    setTimeout('$("#lb").fadeOut(300); $("#lbpanel").fadeOut(300)', 2000);
+      $("#" + userId).remove();      
     });
 };
 
@@ -39,3 +36,43 @@ pycms_acl.inviteUser = function(userId) {
     });
 };
 
+pycms_acl.deleteKey = function(keyId) {
+
+  $.post("delete_key", {'key': keyId}, function() {
+      $("#" + keyId).remove();
+    });
+};
+
+
+$(document).ready(function() {
+
+    // Ajax style actions
+    $(".lsaction.minimal a").click(function() {
+	
+	var tgt = $(this).siblings(".popup");
+
+	$.get($(this).attr("href"), function(data) {
+
+	    tgt.html(data);
+
+	    tgt.find("form").eq(0).submit(function() {
+		
+		$.post($(this).attr("action"),
+		       $(this).serialize(),
+		       function(data) {
+			   tgt.hide();
+		       });
+		
+		return false;
+	    });
+	    
+	    tgt.find(".cancel").click(function() {
+		tgt.hide();
+	    });
+	});
+
+	tgt.show();
+
+	return false;
+    });
+});

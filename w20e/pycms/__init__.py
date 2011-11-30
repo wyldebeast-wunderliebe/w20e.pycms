@@ -7,13 +7,14 @@ from paste.script import command
 from pyramid.paster import get_app
 from ZODB.FileStorage.FileStorage import FileStorage
 from ZODB.blob import BlobStorage
+from events import AppRootReady
 
 # Register pyramidfile
 from w20e.forms.registry import Registry
 from w20e.forms.pyramid.file import PyramidFile
 
 Registry.register_renderable("file", PyramidFile)
-
+from pack import PackCommand
 
 
 def update(app):
@@ -32,15 +33,19 @@ def update(app):
             obj._p_changed = 1
         except:
             pass
-        
 
-def appmaker(zodb_root):
+
+def appmaker(zodb_root, request):
+
     if not 'app_root' in zodb_root:
         app_root = Site("welcome")
         app_root.__data__['name'] = 'welcome'
         app_root.__parent__ = app_root.__name__ = None
 
         zodb_root['app_root'] = app_root
+
+        request.registry.notify(AppRootReady(app_root))
+        
         import transaction
         transaction.commit()
 
@@ -63,7 +68,11 @@ def appmaker(zodb_root):
 
 def root_factory(request):
     conn = get_connection(request)
-    return appmaker(conn.root())
+    app = appmaker(conn.root(), request)
+
+    return app
+
+
 
 
 def main(global_config, **settings):

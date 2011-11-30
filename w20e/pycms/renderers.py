@@ -10,7 +10,6 @@ class JSRenderer:
 
         pass
 
-
     def __call__(self, value, system):
 
         m = hashlib.md5()
@@ -33,7 +32,6 @@ class CSSRenderer:
 
         pass
 
-
     def __call__(self, value, system):
 
         m = hashlib.md5()
@@ -55,14 +53,13 @@ class PNGRenderer:
 
         pass
 
-
     def __call__(self, value, system):
 
         etag = len(value['data'])
 
         filename = value['name']
 
-        mimeType = "image/png";
+        mimeType = "image/png"
 
         try:
             mimeType = mimetypes.guess_type(filename, strict=False)[0]
@@ -83,7 +80,6 @@ class FileRenderer:
 
         pass
 
-
     def __call__(self, value, system):
 
         filename = value['name']
@@ -103,14 +99,13 @@ class AjaxRenderer:
 
         pass
 
-
     def __call__(self, value, system):
 
         """ Value should be a dict with name and data as keys """
 
         system['request'].response.headerlist = [
-            ('Cache-Control','no-cache'),
-            ('Pragma','No-Cache')]
+            ('Cache-Control', 'no-cache'),
+            ('Pragma', 'No-Cache')]
 
         system['request'].response.content_type = 'text/xml'
 
@@ -125,14 +120,13 @@ class XMLRenderer:
 
         pass
 
-
     def __call__(self, value, system):
 
         """ Value should be a dict with name and data as keys """
 
         system['request'].response.headerlist = [
-            ('Cache-Control','no-cache'),
-            ('Pragma','No-Cache')]
+            ('Cache-Control', 'no-cache'),
+            ('Pragma', 'No-Cache')]
 
         system['request'].response.content_type = 'text/xml'
 
@@ -147,16 +141,14 @@ class HTMLRenderer:
 
         pass
 
-
     def __call__(self, value, system):
 
         """ Value should be a dict with name and data as keys """
 
         system['request'].response.headerlist = [
-            ('Cache-Control','no-cache'),
-            ('Pragma','No-Cache')]
+            ('Cache-Control', 'no-cache'),
+            ('Pragma', 'No-Cache')]
 
         system['request'].response.content_type = 'text/html'
 
-        return value    
-
+        return value

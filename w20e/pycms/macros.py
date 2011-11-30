@@ -14,16 +14,13 @@ class Macros(object):
 
         self.registry = {}
 
-
     def register_macro(self, name, **kwargs):
 
         self.registry[name] = kwargs
 
-
     def list_macros(self):
 
         return self.registry.keys()
-
 
     def get_macro(self, name):
 
