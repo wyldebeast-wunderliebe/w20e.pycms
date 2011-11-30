@@ -10,7 +10,7 @@ class Site(Page):
 
     implements(ISite)
 
-
     def __init__(self, content_id):
 
         Page.__init__(self, content_id)
+
