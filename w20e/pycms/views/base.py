@@ -8,6 +8,7 @@ from w20e.hitman.events import ContentRemoved
 from pyramid.renderers import get_renderer, render
 from pyramid.security import has_permission, authenticated_userid
 from pyramid.url import resource_url
+from pyramid.traversal import find_resource
 
 from ..actions import IActions
 from ..ctypes import ICTypes
@@ -249,7 +250,6 @@ class AdminView(Base, ViewMixin):
 
             return False
 
-
     def order_content(self, order= None):
 
         order = order or self.request.params.get('order', None)
@@ -260,4 +260,38 @@ class AdminView(Base, ViewMixin):
             return True
         else:
             return False
+
+    def move_content(self, objs=[]):
+
+        objs = objs or self.request.params.get('objs', "").split("::")
+
+        moved = []
+
+        for path in objs:
+
+            path = path.split(".")
+
+            if not len(path):
+                continue
+
+            obj = None
+            parent = self.context.root        
+
+            for elt in path[:-1]:
+                parent = parent.get(elt, None)
+                if parent is None:
+                    break
+
+            if parent is not None:
+                obj = parent.get(path[-1], None)
+
+                if self.context == parent:
+                    continue
+
+                if obj is not None:
+                    content = parent.remove_content(obj.id)
+                    self.context.add_content(content)
+                    moved.append(obj.id)
+
+        return moved
 

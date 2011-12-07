@@ -151,40 +151,40 @@ pycms.addGroup = pycms.addBlock;
 
 pycms.createConfig = function(data) {
 
-  html = '<dl class="config">'
-
-  for (var key in data) {
-    html += '<dt>' + key + '</dt><dd>' + data[key] + '</dd>';
-  }
-
-  html += '</dl>';
-
-  return html;
+    html = '<dl class="config">'
+    
+    for (var key in data) {
+	html += '<dt>' + key + '</dt><dd>' + data[key] + '</dd>';
+    }
+    
+    html += '</dl>';
+    
+    return html;
 }
 
 
 pycms.getConfig = function(tgt) {
 
-  var cfg = {};
-  
-  tgt.children("dl").eq(0).children("dt").each(function() {
-      cfg[$(this).html()] = $(this).next().html();
+    var cfg = {};
+    
+    tgt.children("dl").eq(0).children("dt").each(function() {
+	cfg[$(this).html()] = $(this).next().html();
     });
-  
-  return cfg;
+    
+    return cfg;
 }
 
 
 pycms.createDataArray = function(form) {
 
-  var dataArray = form.serializeArray();
-  var data = {};
-
-  for (var i = 0; i < dataArray.length; i++) {
-    data[dataArray[i]['name']] = dataArray[i]['value'];
-  }
-
-  return data;
+    var dataArray = form.serializeArray();
+    var data = {};
+    
+    for (var i = 0; i < dataArray.length; i++) {
+	data[dataArray[i]['name']] = dataArray[i]['value'];
+    }
+    
+    return data;
 }
 
 
@@ -293,6 +293,42 @@ pycms.pack = function() {
          });
 }
 
+/* cut & paste of objects */
+pycms.cut = function(item) {
+
+    /*var cut_n_paste_buff = $.Storage.get("cut_n_paste");
+
+    if (cut_n_paste_buff==undefined) {
+	cut_n_paste_buff = Array();
+    } else {
+	cut_n_paste_buff = cut_n_paste_buff.split("::");
+    }
+    */
+
+    var cut_n_paste_buff = new Array();
+
+    cut_n_paste_buff.push(item.attr("id").substr(4));
+
+    $.Storage.set("cut_n_paste", cut_n_paste_buff.join("::"));
+}
+
+pycms.paste = function() {
+    $.Storage.get("cut_n_paste");
+
+    if ($.Storage.get("cut_n_paste") == undefined) {
+	return;
+    }
+
+    var data = {'objs': $.Storage.get("cut_n_paste")}
+
+    $.post("ajax_move", data, function(data) {
+	
+	alert(data);
+
+	$.Storage.set("cut_n_paste", "");
+    });
+}
+
 
 /* Initialization sequence started... */
 $(document).ready(function() {
@@ -327,6 +363,11 @@ $(document).ready(function() {
           file_browser_callback:tinyupload
           });
 
+    $(".lscut").click(function() {
+
+	pycms.cut($(this));
+    });
+
     $(".lsdelete").click(function() {
 
         var to_remove = $(this);
@@ -357,7 +398,7 @@ $(document).ready(function() {
 
     $(".listingcontent tbody").sortable({
         update: function(event, ui) {
-          var order = $(this).sortable('toArray').toString();
-          $.get('ajax_order', {order:order});
-        }});    
-  });
+            var order = $(this).sortable('toArray').toString();
+            $.get('ajax_order', {order:order});
+        }});
+});

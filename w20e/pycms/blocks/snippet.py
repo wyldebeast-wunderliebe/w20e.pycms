@@ -1,4 +1,5 @@
 from base import Block, BlockView
+from registry import Registry
 
 
 FORM = """
@@ -7,8 +8,6 @@ FORM = """
   <input type="hidden" name="mode" value="${data.get('mode', 'add')}"/>
   ID: <input type="text" name="id" value="${data.get('id', '')}"/><br/>
   <textarea name="snippet" rows="10" cols="80">${data.get('snippet', '')}</textarea><br/>
-  Width: <input type="text" name="width" value="${data.get('width', '')}"/><br/>
-  Heigth: <input type="text" name="height" value="${data.get('height', '')}"/>
   <input type="submit" value="Save"/>
   <input type="button" name="cancel" value="Cancel"/>
 </form>
@@ -32,3 +31,6 @@ class SnippetBlockView(BlockView):
     def snippet(self):
 
         return self.context.get('snippet', '')
+
+
+Registry.register_type("snippet", SnippetBlock)

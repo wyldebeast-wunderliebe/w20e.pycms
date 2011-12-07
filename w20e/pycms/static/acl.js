@@ -54,7 +54,7 @@ $(document).ready(function() {
 	$.get($(this).attr("href"), function(data) {
 
 	    tgt.html(data);
-
+	    
 	    tgt.find("form").eq(0).submit(function() {
 		
 		$.post($(this).attr("action"),

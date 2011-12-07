@@ -73,8 +73,6 @@ def root_factory(request):
     return app
 
 
-
-
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
