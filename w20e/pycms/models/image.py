@@ -100,10 +100,10 @@ class Image(BaseContent):
     @property
     def base_id(self):
 
-        return getattr(self, 'name', 'image')
+        return self.__data__['filename']
 
 
     @property
     def title(self):
 
-        return getattr(self, 'name', 'image')
+        return self.__data__['filename']
