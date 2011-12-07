@@ -16,7 +16,10 @@ class Sharing(object):
 
         self.context = context
 
-    def set_sharing(self, sharing={}):
+    def set_sharing(self, sharing=None):
+
+        if not sharing:
+            sharing = {}
 
         setattr(self.context, SHARING_ATTR, sharing)
 

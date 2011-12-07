@@ -12,7 +12,7 @@ class Folder(Base):
     add_form = edit_form = "../forms/folder.xml"
 
 
-    def __init__(self, content_id, data={}):
+    def __init__(self, content_id, data=None):
 
         Base.__init__(self, content_id, data=data)
 

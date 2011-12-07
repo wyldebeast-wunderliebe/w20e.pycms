@@ -159,7 +159,7 @@ class SomethingSimple(BaseContent):
 
     add_form = edit_form = "../quote/somethingsimple.xml"
 
-    def __init__(self, content_id, data={}):
+    def __init__(self, content_id, data=None):
 
         BaseContent.__init__(self, content_id, data)
 
