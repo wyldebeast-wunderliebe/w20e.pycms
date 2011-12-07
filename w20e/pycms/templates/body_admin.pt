@@ -13,6 +13,8 @@
     </metal:fill-slot>
     <metal:fill-slot fill-slot="js_slot">
       <script language="JavaScript"
+              src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+      <script language="JavaScript"
               src="${request.application_url}/manage.js"></script>
       <metal:define-slot define-slot="extra_js_slot">
     </metal:fill-slot>

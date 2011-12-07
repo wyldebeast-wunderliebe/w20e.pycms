@@ -44,7 +44,7 @@
 
   <submission type="methodcall">
     <property name="action">javascript: pycms_acl.addUser()</property>
-    <property name="submit_method">add_user</property>
+    <property name="submit_method">acl.add_user</property>
   </submission>
 
 </form>

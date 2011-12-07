@@ -43,6 +43,8 @@
          ================================================== -->
     <metal:define-slot define-slot="js_slot">
       <script language="JavaScript"
+              src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+      <script language="JavaScript"
               src="${request.application_url}/public.js"></script>
     </metal:define-slot>
 

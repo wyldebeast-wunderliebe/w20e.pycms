@@ -7,6 +7,8 @@
   <data>
     <name/>
     <status value="draft"/>
+    <header_text/>
+    <footer_text/>
     <form/>
   </data>
 
@@ -23,6 +25,18 @@
     <input id="name" bind="name">
       <label>Name</label>
     </input>
+
+    <richtext id="header_text" bind="header_text">
+      <label>Text above form</label>
+      <property name="rows">5</property>
+      <property name="cols">80</property>      
+    </richtext>
+
+    <richtext id="footer_text" bind="footer_text">
+      <label>Text below form</label>
+      <property name="rows">5</property>
+      <property name="cols">80</property>      
+    </richtext>
 
     <file id="form" bind="form">
       <label>XML definition of form</label>

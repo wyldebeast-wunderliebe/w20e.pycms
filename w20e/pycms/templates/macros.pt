@@ -76,6 +76,9 @@
               </a>
             </div>
             <div class="lsaction lsrename">R</div>
+            <div class="lsaction lscut"
+                 id="#" tal:attributes="id 'cut_%s' % item.dottedpath"
+	    >C</div>
           </td>
           <td tal:content="item.content_type"></td>
           <td>
