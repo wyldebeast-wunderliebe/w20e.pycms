@@ -1,5 +1,3 @@
-import mimetypes
-#from ..blobfile import File
 from w20e.hitman.models.base import BaseContent
 from ..utils import resize_image
 from ZODB.blob import Blob
@@ -16,7 +14,7 @@ class Image(BaseContent):
 
     def __init__(self, content_id, data=None):
 
-        BaseContent.__init__(self, content_id)
+        super(Image, self).__init__(content_id)
 
         self._data = getattr(self, self.data_attr_name, {})
         self._data['data'] = Blob()
@@ -61,8 +59,7 @@ class Image(BaseContent):
         # todo: do something with the size?
         f.close()
         # store the filename in attribute storage
-        self._data['filename'] = value['name']
-        self._p_changed = 1
+        self.set_attribute('filename', value['name'])
 
     def _store_resized_image(self, key, data):
         """ store a blob image as attribute """
