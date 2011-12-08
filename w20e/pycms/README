@@ -2,7 +2,7 @@ The w20e.pycms CMS!
 -------------------
 
 Only fools and nerds create their own CMS nowadays. Hurray! Anyway, so
-here it is, w20e.pycms. Using the Pyramid framework as it's base,
+here it is, w20e.pycms. Using the Pyramid framework as its base,
 building on top of good old Zope (and some Plone) concepts. The CMS is
 created using these main ideas:
 
