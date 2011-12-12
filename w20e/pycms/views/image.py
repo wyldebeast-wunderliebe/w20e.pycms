@@ -16,7 +16,7 @@ class ImageView(object):
         # but it'll have to do for now..
         self.request.response.cache_expires(86400)
         self.request.response.cache_control.public = True
-        return self.context.data
+        return self.context.__data__['data']
 
 
     def thumbnail(self):

@@ -11,56 +11,6 @@ class Image(BaseContent):
 
     add_form = edit_form = "../forms/image.xml"
 
-
-    def __init__(self, content_id, data=None):
-
-        super(Image, self).__init__(content_id)
-
-        self._data = getattr(self, self.data_attr_name, {})
-        self._data['data'] = Blob()
-        if data:
-            self.data = data
-
-        self._p_changed = 1
-
-    def store_data(self, form, context, *args):
-        for field_name in form.data.getFields():
-            try:
-                field = form.data.getField(field_name)
-                setattr(context, field.id, field.value)
-            except:
-                pass
-
-    def retrieve_data(self, form, context, *args):
-
-        data = FormData()
-
-        for field_name in form.data.getFields():
-
-            data.addField(Field(field_name, getattr(context, field_name, None)))
-
-        return data
-
-
-
-    @property
-    def data(self):
-
-        return {'name': self.__data__['filename'],
-                'data': self.__data__['data'].open('r').read()}
-
-
-    @data.setter
-    def data(self, value):
-        """ override the setter """
-
-        f = self.__data__['data'].open('w')
-        f.write(value['data'])
-        # todo: do something with the size?
-        f.close()
-        # store the filename in attribute storage
-        self.set_attribute('filename', value['name'])
-
     def _store_resized_image(self, key, data):
         """ store a blob image as attribute """
         blob = Blob()
@@ -73,7 +23,7 @@ class Image(BaseContent):
     def _get_resized_image(self, key):
         """ retrieve a blob image """
         blob = getattr(self, key)
-        return {'name': self.__data__['filename'],
+        return {'name': self.__data__['data']['name'],
                 'data': blob.open('r').read()}
 
     @property
@@ -84,7 +34,7 @@ class Image(BaseContent):
 
         key = '__cached_blob_thumbnail'
         if not hasattr(self, key):
-            self._store_resized_image(key, resize_image(self.data))
+            self._store_resized_image(key, resize_image(self.__data__['data']))
         return self._get_resized_image(key)
 
     def get_size(self, size=(800, 600)):
@@ -94,16 +44,15 @@ class Image(BaseContent):
 
         key = '_cached_blob_%s_%s' % size
         if not hasattr(self, key):
-            self._store_resized_image(key, resize_image(self.data, size))
+            self._store_resized_image(key, resize_image(self.__data__['data'], size))
         return self._get_resized_image(key)
 
     @property
     def base_id(self):
 
-        return self.__data__['filename']
-
+        return self.__data__['data']['name']
 
     @property
     def title(self):
-
-        return self.__data__['filename']
+		
+        return self.__data__['name']

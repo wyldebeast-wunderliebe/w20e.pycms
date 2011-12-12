@@ -57,9 +57,9 @@
 
   </view>
 
-  <submission type="methodcall">
-     <property name="submit_method">store_data</property>
-     <property name="retrieve_method">retrieve_data</property>
+  <submission type="attr">
+    <property name="attr_name">_DATA</property>
+    <property name="use_blobstorage">True</property>
   </submission>
 
 </form>
