@@ -7,12 +7,6 @@
 
   <adapter
      for=".models.site.Site"
-     provides=".interfaces.ICatalogMapper"
-     factory=".catalog.CatalogMapper"
-     />
-
-  <adapter
-     for=".models.site.Site"
      provides=".interfaces.ICatalog"
      factory=".catalog.Catalog"
      />
