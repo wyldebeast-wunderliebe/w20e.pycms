@@ -18,18 +18,15 @@ class PageView(ContentView):
 
         ContentView.__init__(self, context, request)
 
-
     @property
     def is_edit(self):
 
         return False
 
-
     @property
     def can_edit(self):
 
         return has_permission("edit", self.context, self.request)
-
 
     @property
     def content(self):
@@ -40,7 +37,7 @@ class PageView(ContentView):
 
             return self.context.__data__['text']
 
-        html = []        
+        html = []
 
         self.request.is_edit = self.is_edit
 
@@ -58,13 +55,13 @@ class PageView(ContentView):
 
             html.append(render_view(block, self.request))
 
-        return """<div class="content" style="min-height: %spx">%s</div>""" % (height + 20, "".join(html))
-
+        return """<div class="content" style="min-height: %spx">%s</div>""" \
+                % (height + 20, "".join(html))
 
     @property
     def layout(self):
 
-        html = []        
+        html = []
 
         self.request.is_edit = self.is_edit
 
@@ -90,7 +87,6 @@ class PageBlocks(PageView):
 
         return "".join(res)
 
-        
     def _create_block_repr(self, block, data):
 
         data.append("""<div style="border: 1px solid red; padding: 5px">""")
@@ -112,12 +108,10 @@ class PageLayout(PageView):
 
         return True
 
-
     @property
     def raw_content(self):
 
         return self.context._content
-
 
     def save(self):
 
@@ -125,16 +119,15 @@ class PageLayout(PageView):
 
         parser = Parser(self.context)
 
-        self.context.clear_blocks();
+        self.context.clear_blocks()
 
         parser.parse(self.request.params.get('content', ""))
 
         self.context._p_changed = True
-        
+
         self.context._content = self.request.params.get('content', "")
 
         return {}
-
 
     def save_block(self):
 
@@ -151,10 +144,16 @@ class PageLayout(PageView):
 
             if self.request.params.get('mode') == 'add':
 
-                img_id = self.context.generate_content_id(self.request.params.get('img').filename)
+                img_id = self.context.generate_content_id(
+                        self.request.params.get('img').filename)
 
-                img = Image(img_id, {'name': img_id,
-                                     'data': self.request.params.get('img').value})
+                img = Image(img_id,
+                        {'name': img_id,
+                         'data': {
+                             'name': self.request.params.get('img').filename,
+                             'data': self.request.params.get('img').value
+                             }
+                        })
 
                 self.context.add_content(img)
 
@@ -163,16 +162,15 @@ class PageLayout(PageView):
                 self.request.is_edit = True
 
                 return "%s" % render_view(block, self.request)
-            
+
         self.request.is_edit = True
 
         return render_view(block, self.request)
-        
 
     def add_form(self):
 
         """ show add form for given type """
-       
+
         typp = self.request.params.get('type')
         clazz = Registry.get_type(typp)
 
@@ -181,10 +179,10 @@ class PageLayout(PageView):
 
         tpl = PageTemplate(clazz.add_form)
 
-        form = tpl(data = {'id': generate_id(prefix="%s_" % typp, length=10)})
+        form = tpl(data={
+            'id': generate_id(prefix="%s_" % typp, length=10)})
 
         return {'html': form}
-
 
     def edit_form(self):
 
@@ -200,15 +198,13 @@ class PageLayout(PageView):
         data = self._params_to_dict(self.request.params)
         data['mode'] = 'edit'
 
-        form = tpl(data = data)
+        form = tpl(data=data)
 
         return {'html': form}
-
 
     def get_block(self, block_id):
 
         return self.context.get_block_by_ref(block_id)
-
 
     def page_actions(self):
 
@@ -216,46 +212,45 @@ class PageLayout(PageView):
 
         for tp in Registry.list_types():
 
-            subs.append({'id': 'add_%s' % tp, 
-                     'title': '%s' % tp, 
+            subs.append({'id': 'add_%s' % tp,
+                     'title': '%s' % tp,
                      'action': 'javascript: pycms.addBlock("%s")' % tp,
                      'permission': 'edit'
                      })
 
         return [
-            {'id': 'add_block', 
-             'title': 'Add block...', 
+            {'id': 'add_block',
+             'title': 'Add block...',
              'action': 'javascript: pycms.addBlock("text")',
              'permission': 'edit',
              'subs': subs
              },
-            {'id': 'delete', 
-             'title': 'Delete', 
+            {'id': 'delete',
+             'title': 'Delete',
              'action': 'javascript: pycms.deleteBlock()',
              'permission': 'edit'
              },
-            {'id': 'edit', 
-             'title': 'Edit', 
+            {'id': 'edit',
+             'title': 'Edit',
              'action': 'javascript: pycms.editBlock()',
              'permission': 'edit'
              },
-            {'id': 'cut', 
-             'title': 'Cut', 
+            {'id': 'cut',
+             'title': 'Cut',
              'action': 'javascript: pycms.cutBlock()',
              'permission': 'edit'
              },
-            {'id': 'paste', 
-             'title': 'Paste', 
+            {'id': 'paste',
+             'title': 'Paste',
              'action': 'javascript: pycms.pasteBlock()',
              'permission': 'edit'
              },
-            {'id': 'save', 
-             'title': 'Save', 
+            {'id': 'save',
+             'title': 'Save',
              'action': 'javascript: pycms.savePage()',
              'permission': 'edit'
              },
             ]
-
 
     def _params_to_dict(self, params):
 

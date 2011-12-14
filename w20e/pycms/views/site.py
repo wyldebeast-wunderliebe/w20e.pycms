@@ -2,9 +2,8 @@ from base import AdminView
 from w20e.forms.pyramid.formview import xmlformview
 from w20e.forms.xml.formfile import FormFile, find_file
 from ..interfaces import IMailer
-from ..interfaces import ICatalogMapper
-from pyramid.httpexceptions import HTTPFound
 from pyramid.renderers import get_renderer
+from ..interfaces import ICatalog
 
 
 class UserAddView(xmlformview):
@@ -64,7 +63,6 @@ class SiteView(AdminView):
 
         return "OK"
 
-
     def invite_user(self):
 
         user_id = self.request.params['user_id']
@@ -84,13 +82,14 @@ class SiteView(AdminView):
                 self.request.params['user'],
                 self.request.params.getall('group'),
                 )
-        
+
         return {'groups': self.context.acl.groups.values(),
                 'user': self.request.params.get('user_id', '')}
 
     def delete_key(self):
 
-        self.context.acl.unset_activation_key(self.request.params.get('key', ''))
+        self.context.acl.unset_activation_key(
+                self.request.params.get('key', ''))
 
     def set_password(self):
 
@@ -112,14 +111,17 @@ class SiteView(AdminView):
 
             return {'status': 'error',
                     'token': '',
-                    'macros': get_renderer('../templates/macros.pt').implementation(),
-                    'main': get_renderer('../templates/main.pt').implementation(),
+                    'macros': get_renderer(
+                        '../templates/macros.pt').implementation(),
+                    'main': get_renderer(
+                        '../templates/main.pt').implementation(),
                     'message': 'No user found for this key!'}
 
         message = user.id
 
         if self.request.params.get('form.submitted', None):
-            if self.request.params['password'] == self.request.params['password_confirm']:
+            if self.request.params['password'] == \
+                    self.request.params['password_confirm']:
                 user.set_pwd(self.request.params['password'])
                 self.context.acl.unset_activation_key(token)
                 message = "Password reset"
@@ -127,7 +129,8 @@ class SiteView(AdminView):
                 message = "Passwords do not match"
 
         return {'status': 'ok', 'message': message, 'token': token,
-                'macros': get_renderer('../templates/macros.pt').implementation(),
+                'macros': get_renderer(
+                    '../templates/macros.pt').implementation(),
                 'main': get_renderer('../templates/main.pt').implementation(),
                 }
 
@@ -139,8 +142,10 @@ class SiteView(AdminView):
         old_size = db.getSize()
         result = db.pack() or "Database has been packed succesfully"
         new_size = db.getSize()
-        return "pack result: {0} \nOld Data.fs size: {1}\nNew Data.fs size: {2}\n"\
-               "check disk to see size of blobdir".format(result, old_size, new_size)
+        return "pack result: {0} \nOld Data.fs size: {1}\n" \
+                "New Data.fs size: {2}\n" \
+                "check disk to see size of blobdir".format(
+                        result, old_size, new_size)
 
     @property
     def db(self):
@@ -153,9 +158,10 @@ class SiteView(AdminView):
 
     def catalog_entries(self):
 
-        mapper = self.request.registry.getAdapter(self.context, ICatalogMapper)
+        mapper = self.request.registry.getAdapter(self.context, ICatalog)
 
-        return [{'id': obj[0], 'path': obj[1]} for obj in mapper.list_objects()]
+        return [{'id': obj[0], 'path': obj[1]} for obj in \
+                mapper.list_objects()]
 
     def robots_txt(self):
 

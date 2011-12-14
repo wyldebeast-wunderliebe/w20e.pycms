@@ -29,11 +29,6 @@ class ICatalog(Interface):
     """ Marker for using catalog """
 
 
-class ICatalogMapper(Interface):
-
-    """ Marker """
-
-
 class IMailer(Interface):
 
     """ Marker class """

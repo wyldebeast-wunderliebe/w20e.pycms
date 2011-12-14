@@ -45,8 +45,12 @@ class TinyBrowser:
             images_folder = self._get_images_folder()
             uploaded_image = self.request.params.get('tiny-upload-image')
             img_id = self.context.generate_content_id(uploaded_image.filename)
-            img_data = {'name': uploaded_image.filename,
-                    'data': uploaded_image.value}
+            img_data = {
+                    'name': uploaded_image.filename,
+                    'data': {
+                        'name': uploaded_image.filename,
+                        'data': uploaded_image.value}
+                    }
             img = Image(img_id, img_data)
             images_folder.add_content(img)
         except UniqueConstraint:
