@@ -1,8 +1,6 @@
 from w20e.hitman.models.base import BaseContent
 from ..utils import resize_image
 from ZODB.blob import Blob
-from w20e.forms.formdata import FormData
-from w20e.forms.data.field import Field
 
 
 class Image(BaseContent):
@@ -44,7 +42,8 @@ class Image(BaseContent):
 
         key = '_cached_blob_%s_%s' % size
         if not hasattr(self, key):
-            self._store_resized_image(key, resize_image(self.__data__['data'], size))
+            self._store_resized_image(key, resize_image(
+                self.__data__['data'], size))
         return self._get_resized_image(key)
 
     @property
@@ -54,5 +53,4 @@ class Image(BaseContent):
 
     @property
     def title(self):
-		
         return self.__data__['name']
