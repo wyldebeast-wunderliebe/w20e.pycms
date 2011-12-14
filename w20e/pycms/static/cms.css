@@ -55,8 +55,6 @@ dl.config {
 
 #footer {
     clear: both;
-    position: fixed;
-    bottom: 0px;
     background-color: #c0c0c0;
     width: 100%;
 }
