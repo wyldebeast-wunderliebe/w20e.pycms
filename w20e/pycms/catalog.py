@@ -103,7 +103,7 @@ class Catalog(object):
         self.catalog.index_doc(uuid, object)
         self.uuid_to_path[uuid] = path
         self.path_to_uuid[path] = uuid
-        self._p_changed = 1
+        self.site._p_changed = 1
 
     def reindex_object(self, object):
         path = object_to_path(object)
@@ -114,9 +114,13 @@ class Catalog(object):
         path = object_to_path(object)
         uuid = self.path_to_uuid[path]
         self.catalog.unindex_doc(uuid)
+        del self.uuid_to_path[uuid]
+        del self.path_to_uuid[path]
+        self.site._p_changed = 1
 
     def clear(self):
 
+        self.site._catalog.clear()
         self.site._catalog_uuid_to_path.clear()
         self.site._catalog_path_to_uuid.clear()
         self.site._p_changed = 1
