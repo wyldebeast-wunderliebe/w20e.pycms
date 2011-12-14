@@ -21,19 +21,7 @@ def update(app):
 
     """ Any updates can go here... """
 
-    # Update from gw20e.forms to w20e.forms
-    for obj in [app] + app.find_content():
-
-        try:
-            attr_name = obj.data_attr_name
-
-            data = getattr(obj, attr_name, None)
-            setattr(obj, attr_name, data.as_dict())
-
-            obj._p_changed = 1
-        except:
-            pass
-
+    delattr(app, 'acl')
 
 def appmaker(zodb_root, request):
 
@@ -44,10 +32,10 @@ def appmaker(zodb_root, request):
 
         zodb_root['app_root'] = app_root
 
-        request.registry.notify(AppRootReady(app_root))
-        
         import transaction
         transaction.commit()
+
+    request.registry.notify(AppRootReady(zodb_root['app_root']))
 
     # create a globale images folder
     app_root = zodb_root['app_root']

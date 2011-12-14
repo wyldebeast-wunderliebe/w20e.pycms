@@ -3,6 +3,7 @@ from w20e.forms.pyramid.formview import xmlformview
 from w20e.forms.xml.formfile import FormFile, find_file
 from ..interfaces import IMailer
 from pyramid.renderers import get_renderer
+from pyramid.security import has_permission
 from ..interfaces import ICatalog
 
 
@@ -16,7 +17,7 @@ class UserAddView(xmlformview):
         form = FormFile(find_file("../forms/user_add_form.xml",
                                   context.__class__))
 
-        xmlformview.__init__(self, context.acl, request, form,
+        xmlformview.__init__(self, context, request, form,
                              retrieve_data=False)
 
     def __call__(self):
@@ -103,9 +104,16 @@ class SiteView(AdminView):
 
         """ Change password given the token."""
 
-        token = token or self.request.params['token']
+        token = token or self.request.params.get('token', None)
 
-        user = self.context.acl.get_user_for_activation(token)
+        import pdb; pdb.set_trace()
+
+        # we could be admin...
+        if not token:
+            if has_permission("admin", self.context, self.request):
+                user = self.context.acl.users[self.request.params['user_id']]
+        else:
+            user = self.context.acl.get_user_for_activation(token)
 
         if not user:
 

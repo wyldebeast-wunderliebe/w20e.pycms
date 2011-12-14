@@ -21,6 +21,8 @@ def init(event):
 
     app = event.app_root
 
+    import pdb; pdb.set_trace()
+    
     if not 'acl' in app:
         setattr(app, 'acl', ACL())
 
@@ -197,6 +199,9 @@ class ACL(Persistent):
         self.create_user(**form.data.as_dict())
 
     def create_user(self, profile=None, **data):
+
+        if data['email'] in self.users:
+            return False
 
         self.users[data['email']] = User(data['email'], data['name'],
                                          data['email'], data.get('pwd', ''),
