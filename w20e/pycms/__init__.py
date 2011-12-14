@@ -8,7 +8,7 @@ from pyramid.paster import get_app
 from ZODB.FileStorage.FileStorage import FileStorage
 from ZODB.blob import BlobStorage
 from events import AppRootReady
-
+from pyramid.threadlocal import get_current_registry
 # Register pyramidfile
 from w20e.forms.registry import Registry
 from w20e.forms.pyramid.file import PyramidFile
@@ -17,15 +17,31 @@ Registry.register_renderable("file", PyramidFile)
 from pack import PackCommand
 
 
+class InitRequest(object):
+
+    registry = None
+    cb = None
+
+    def add_finished_callback(self, cb):
+        self.cb = cb
+
+
 def update(app):
 
     """ Any updates can go here... """
 
-    delattr(app, 'acl')
 
-def appmaker(zodb_root, request):
+def appmaker(config):
+
+    initreq = InitRequest()
+    initreq.registry = config.registry
+
+    conn = get_connection(initreq)
+
+    zodb_root = conn.root()
 
     if not 'app_root' in zodb_root:
+
         app_root = Site("welcome")
         app_root.__data__['name'] = 'welcome'
         app_root.__parent__ = app_root.__name__ = None
@@ -35,33 +51,26 @@ def appmaker(zodb_root, request):
         import transaction
         transaction.commit()
 
-    request.registry.notify(AppRootReady(zodb_root['app_root']))
-
     # create a globale images folder
     app_root = zodb_root['app_root']
 
-    IMAGES_ID = 'images'
-    if not IMAGES_ID in app_root:
-        images = ImageFolder(IMAGES_ID)
-        images.__data__['name'] = 'Images'
-        app_root.add_content(images)
-        import transaction
-        transaction.commit()
-
     # Do necessary updates
     update(zodb_root['app_root'])
+
+    initreq.registry.notify(AppRootReady(app_root, config.registry.settings))
 
     return zodb_root['app_root']
 
 
 def root_factory(request):
-    conn = get_connection(request)
-    app = appmaker(conn.root(), request)
 
-    return app
+    conn = get_connection(request)
+
+    return conn.root()['app_root']
 
 
 def main(global_config, **settings):
+
     """ This function returns a Pyramid WSGI application.
     """
 
@@ -71,9 +80,12 @@ def main(global_config, **settings):
     config.hook_zca()
     config.include(pyramid_zcml)
     config.include('pyramid_mailer')
-
     config.commit()
 
     config.scan('w20e.pycms')
     config.load_zcml(zcml_file)
+    config.commit()
+
+    appmaker(config)
+
     return config.make_wsgi_app()

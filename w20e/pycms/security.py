@@ -8,8 +8,6 @@ from persistent.list import PersistentList
 from persistent.mapping import PersistentMapping
 import time
 import random
-from authorization import ACLAuthorizationPolicy
-from pyramid.config import Configurator
 
 
 KEY_LENGTH = 24
@@ -21,18 +19,9 @@ def init(event):
 
     app = event.app_root
 
-    import pdb; pdb.set_trace()
-    
-    if not 'acl' in app:
-        setattr(app, 'acl', ACL())
+    if not hasattr(app, 'acl'):
 
-    policy = ACLAuthorizationPolicy()
-    config = Configurator.with_context(app)
-    if hasattr(config, 'set_authorization_policy'): # pragma: no cover
-        # pyramid 1.2dev
-        config.set_authorization_policy(policy)
-    else: # pragma: no cover
-        config._set_authorization_policy(policy)
+        setattr(app, 'acl', ACL(event.settings))
 
 
 class ISecure(Interface):
@@ -46,8 +35,10 @@ class Secure:
 
         self.context = context
         self.sharing = None
+
         try:
-            self.sharing = get_current_registry().queryAdapter(context, ISharing)
+            self.sharing = get_current_registry().queryAdapter(context,
+                                                               ISharing)
         except:
             pass
 
@@ -102,7 +93,10 @@ class User(Persistent):
 
 class Group(Persistent):
 
-    def __init__(self, group_id, users=PersistentList()):
+    def __init__(self, group_id, users=None):
+
+        if users is None:
+            users = PersistentList()
 
         self.id = group_id
         self.users = users
@@ -113,19 +107,17 @@ class ACL(Persistent):
     """ Access control hub. The ACL can be instantiated and added to, say
     the root object, with attribute name acl. """
 
-    def __init__(self):
+    def __init__(self, settings):
 
         self.users = PersistentMapping()
         self.groups = PersistentMapping()
         self.activation = PersistentMapping()
 
-        reg = get_current_registry()
-
-        admin, pwd = reg.settings.get('pycms.admin_user',
-                                      "admin:admin").split(":")
+        admin, pwd = settings.get('pycms.admin_user',
+                                  "admin:admin").split(":")
 
         self.users['admin'] = User(admin, "Administrator", "", pwd)
-        self.groups['admin'] = Group('admin', users=['admin'])
+        self.groups['admin'] = Group('admin', users=PersistentList(['admin']))
         self.groups['viewers'] = Group('viewers')
         self.groups['editors'] = Group('editors')
 

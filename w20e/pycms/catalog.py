@@ -11,7 +11,33 @@ from BTrees.OOBTree import OOBTree
 LOGGER = getLogger("w20e.pycms")
 
 
-# TODO: move mapping to DocumentMap of repoze.catalog
+def init(event):
+
+    """ Set up catalog for site. """
+
+    app = event.app_root
+
+    if not hasattr(app, "_catalog_uuid_to_path"):
+        setattr(app, "_catalog_uuid_to_path", OOBTree())
+
+    if not hasattr(app, "_catalog_path_to_uuid"):
+        setattr(app, "_catalog_path_to_uuid", OOBTree())
+
+    if not hasattr(app, "_catalog"):
+        app._catalog = RepozeCatalog()
+
+    if not 'id' in app._catalog.keys():
+        app._catalog['id'] = CatalogFieldIndex('id')
+
+    if not 'title' in app._catalog.keys():
+        app._catalog['title'] = CatalogFieldIndex('title')
+
+    if not 'ctype' in app._catalog.keys():
+        app._catalog['ctype'] = CatalogFieldIndex('content_type')
+
+    if not 'text' in app._catalog.keys():
+        app._catalog['text'] = CatalogTextIndex('full_text')
+    
 
 # event handlers
 #
@@ -39,35 +65,17 @@ def objectChanged(event):
 
     reg = get_current_registry()
     cat = reg.getAdapter(event.object.root, ICatalog)
-    cat.unindex_object(event.object)
 
+    try:
+        cat.unindex_object(event.object)
+    except:
+        pass
 
 class Catalog(object):
 
     def __init__(self, site):
 
         self.site = site
-
-        if not hasattr(self.site, "_catalog_uuid_to_path"):
-            setattr(self.site, "_catalog_uuid_to_path", OOBTree())
-
-        if not hasattr(self.site, "_catalog_path_to_uuid"):
-            setattr(self.site, "_catalog_path_to_uuid", OOBTree())
-
-        if not hasattr(self.site, "_catalog"):
-            self.site._catalog = RepozeCatalog()
-
-        if not 'id' in self.site._catalog.keys():
-            self.site._catalog['id'] = CatalogFieldIndex('id')
-
-        if not 'title' in self.site._catalog.keys():
-            self.site._catalog['title'] = CatalogFieldIndex('title')
-
-        if not 'ctype' in self.site._catalog.keys():
-            self.site._catalog['ctype'] = CatalogFieldIndex('content_type')
-
-        if not 'text' in self.site._catalog.keys():
-            self.site._catalog['text'] = CatalogTextIndex('full_text')
 
     def __getattr__(self, name):
 

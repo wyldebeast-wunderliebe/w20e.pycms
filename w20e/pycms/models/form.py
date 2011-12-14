@@ -1,4 +1,4 @@
-from w20e.hitman.models.base import BaseContent
+from base import BaseContent
 
 
 class Form(BaseContent):

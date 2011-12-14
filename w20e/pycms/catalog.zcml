@@ -51,4 +51,9 @@
      permission="admin"
      />
 
+  <subscriber
+    for=".events.IAppRootReady"
+    handler=".catalog.init"
+    />
+
 </configure>
