@@ -233,7 +233,6 @@ class AdminView(Base, ViewMixin):
 
         return res
 
-
     def remove_content(self, content_id= None):
 
         content_id = content_id or self.request.params.get('content_id', None)
@@ -295,3 +294,27 @@ class AdminView(Base, ViewMixin):
 
         return moved
 
+    def rename_content(self, rename_map=None):
+
+        """ Rename all content ids based on rename map"""
+
+        rename = rename_map or self.request.params
+
+        ret = {'status': 0, 'renamed': {}, 'errors': []}
+
+        for id_from in rename.keys():
+
+            if id_from == rename[id_from]:
+                continue
+
+            if id_from in self.context:
+
+                id_to = rename[id_from]
+
+                try:
+                    self.context.rename_content(id_from, id_to)
+                    ret['renamed'][id_from] = id_to
+                except:
+                    ret['status'] = -1
+                    ret['errors'].append("%s already exists" % id_to)
+        return ret
