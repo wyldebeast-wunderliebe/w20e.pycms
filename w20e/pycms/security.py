@@ -8,6 +8,8 @@ from persistent.list import PersistentList
 from persistent.mapping import PersistentMapping
 import time
 import random
+from authorization import ACLAuthorizationPolicy
+from pyramid.config import Configurator
 
 
 KEY_LENGTH = 24
@@ -22,6 +24,14 @@ def init(event):
     if not 'acl' in app:
         setattr(app, 'acl', ACL())
 
+    policy = ACLAuthorizationPolicy()
+    config = Configurator.with_context(app)
+    if hasattr(config, 'set_authorization_policy'): # pragma: no cover
+        # pyramid 1.2dev
+        config.set_authorization_policy(policy)
+    else: # pragma: no cover
+        config._set_authorization_policy(policy)
+
 
 class ISecure(Interface):
 
@@ -34,8 +44,10 @@ class Secure:
 
         self.context = context
         self.sharing = None
-
-        self.sharing = get_current_registry().queryAdapter(context, ISharing)
+        try:
+            self.sharing = get_current_registry().queryAdapter(context, ISharing)
+        except:
+            pass
 
     @property
     def __acl__(self):

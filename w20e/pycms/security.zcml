@@ -3,12 +3,12 @@
   <!-- this must be included for the view declarations to work -->
   <include package="pyramid_zcml" />
 
+  <aclauthorizationpolicy/>
+
   <authtktauthenticationpolicy
     secret="evilsecret"
     callback=".security.groupfinder"
   />
-
-  <aclauthorizationpolicy/>
 
   <forbidden
     view=".views.login.loginview"

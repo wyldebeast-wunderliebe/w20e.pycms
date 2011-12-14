@@ -329,6 +329,9 @@ pycms.paste = function() {
     });
 }
 
+pycms.rename = function() {
+    $("#rename").show();
+}
 
 /* Initialization sequence started... */
 $(document).ready(function() {
@@ -367,6 +370,39 @@ $(document).ready(function() {
 
 	pycms.cut($(this));
     });
+
+    // Handle rename function
+    $(".rename").click(function() {
+        $(this).find(".rename_in").show();
+        $(this).find(".rename_in").focus();
+
+      });
+
+    // Losing focus here...
+    $(".rename_in").blur(function() {
+        $(this).val($(this).prev().text());
+        $(this).hide();
+      });
+
+    $("#rename").submit(function() {
+
+        $.post($(this).attr("action"), $(this).serialize(),
+               function(data) {
+                 
+                 for (id_from in data['renamed']) {
+
+                   var id_to = data['renamed'][id_from];
+                   var input = $("input[name='" + id_from + "']").eq(0);
+
+                   input.attr("name", id_to);
+                   input.attr("value", id_to);
+                   input.prev().html(id_to);
+                   input.hide();
+                 }
+               });
+
+        return false;
+      })    
 
     $(".lsdelete").click(function() {
 

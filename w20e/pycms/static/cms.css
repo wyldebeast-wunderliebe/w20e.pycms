@@ -368,9 +368,17 @@ h2 {
     color: transparent;
 }
 
-.lsrename {
-    color: transparent;
-    background: #ffffff url("/icons/Wrench16.png") 2px 2px no-repeat;
+.rename {
+    position: relative;
+    width: 100%;
+}
+
+input.rename_in {
+    display: none;
+    z-index: 1001;
+    position: absolute;
+    top: 0px;
+    left: 0px;
 }
 
 #user_add_form {
