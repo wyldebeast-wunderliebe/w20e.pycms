@@ -5,7 +5,6 @@ class TemplatesJSView(object):
         self.context = context
         self.request = request
 
-
     def __call__(self):
 
         return ""

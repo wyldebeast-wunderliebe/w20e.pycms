@@ -25,28 +25,27 @@ def add_macros(data, view):
 
         for macro in macros.list_macros():
 
-            data[macro] = get_renderer(macros.get_macro(macro)).implementation()
+            data[macro] = get_renderer(
+                macros.get_macro(macro)).implementation()
 
 
 class ViewMixin:
 
     is_edit = False
 
-
     @property
     def viewname(self):
 
         return self.request.path.split('/')[-1]
 
-
     @property
     def keywords(self):
 
         try:
-            return ",".join((self.context.__data__['keywords'] or "").splitlines())
+            return ",".join(
+                (self.context.__data__['keywords'] or "").splitlines())
         except:
             return ""
-
 
     @property
     def description(self):
@@ -55,7 +54,6 @@ class ViewMixin:
             return self.context.__data__['description'] or ''
         except:
             return ""
-
 
     @property
     def perspectives(self):
@@ -70,7 +68,6 @@ class ViewMixin:
                                                              self.context,
                                                              self.request)]
 
-
     @property
     def siteactions(self):
 
@@ -83,7 +80,6 @@ class ViewMixin:
                 if (not action.permission) or has_permission(action.permission,
                                                              self.context,
                                                              self.request)]
-
 
     @property
     def contentactions(self):
@@ -98,47 +94,39 @@ class ViewMixin:
                                                              self.context,
                                                              self.request)]
 
-
     @property
     def icon(self):
         ctypes = self.request.registry.getUtility(ICTypes)
 
         return ctypes.get_ctype_info(self.content_type).get("icon", "")
 
-
     def get_icon(self, ctype):
         ctypes = self.request.registry.getUtility(ICTypes)
 
         return ctypes.get_ctype_info(ctype).get("icon", "")
 
-
     @property
     def footer(self):
         return render('../templates/footer.pt', {})
-
 
     @property
     def base_url(self):
 
         return resource_url(self.context, self.request)
 
-
     @property
     def can_edit(self):
 
         return has_permission("edit", self.context, self.request)
 
-
     def user_has_permission(self, permission):
 
         return has_permission(permission, self.context, self.request)
-
 
     @property
     def user(self):
 
         return authenticated_userid(self.request) or ""
-
 
     @property
     def logged_in(self):
@@ -174,7 +162,6 @@ class AddView(AddBase, ViewMixin):
     def url(self):
         return "%sadmin" % self.base_url
 
-
     def __call__(self):
 
         res = AddBase.__call__(self)
@@ -187,11 +174,9 @@ class EditView(EditBase, ViewMixin):
 
     is_edit = True
 
-
     @property
     def url(self):
         return "%sedit" % super(EditBase, self).url
-
 
     def __call__(self):
 
@@ -203,16 +188,13 @@ class EditView(EditBase, ViewMixin):
 
 class DelView(DelBase, ViewMixin):
 
-
     @property
     def url(self):
         return "%sadmin" % super(DelBase, self).url
 
-
     @property
     def parent_url(self):
         return "%sadmin" % super(DelBase, self).parent_url
-
 
     def __call__(self):
 
@@ -233,12 +215,12 @@ class AdminView(Base, ViewMixin):
 
         return res
 
-    def remove_content(self, content_id= None):
+    def remove_content(self, content_id=None):
 
         content_id = content_id or self.request.params.get('content_id', None)
 
         if content_id:
-            
+
             content = self.context.get(content_id, None)
 
             self.context.remove_content(content_id)
@@ -249,12 +231,12 @@ class AdminView(Base, ViewMixin):
 
             return False
 
-    def order_content(self, order= None):
+    def order_content(self, order=None):
 
         order = order or self.request.params.get('order', None)
 
         if order:
-            
+
             self.context.set_order(order.split(","))
             return True
         else:
@@ -274,7 +256,7 @@ class AdminView(Base, ViewMixin):
                 continue
 
             obj = None
-            parent = self.context.root        
+            parent = self.context.root
 
             for elt in path[:-1]:
                 parent = parent.get(elt, None)

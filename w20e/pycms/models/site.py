@@ -13,3 +13,6 @@ class Site(Page):
 
         Page.__init__(self, content_id)
 
+    @property
+    def cms_version(self):
+        return 'PyCMS version: %s' % getattr(self, 'pycms_version', 'unknown')

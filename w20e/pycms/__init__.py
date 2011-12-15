@@ -1,20 +1,16 @@
+import os
 from pyramid.config import Configurator
 from pyramid_zodbconn import get_connection
 import pyramid_zcml
-from models.site import Site
-from models.imagefolder import ImageFolder
-from paste.script import command
-from pyramid.paster import get_app
-from ZODB.FileStorage.FileStorage import FileStorage
-from ZODB.blob import BlobStorage
 from events import AppRootReady
-from pyramid.threadlocal import get_current_registry
-# Register pyramidfile
 from w20e.forms.registry import Registry
 from w20e.forms.pyramid.file import PyramidFile
 
 Registry.register_renderable("file", PyramidFile)
-from pack import PackCommand
+
+here = os.path.abspath(os.path.dirname(__file__))
+version = open(os.path.join(here, "version.txt")
+               ).readlines()[0].strip()
 
 
 class InitRequest(object):
@@ -42,9 +38,15 @@ def appmaker(config):
 
     if not 'app_root' in zodb_root:
 
-        app_root = Site("welcome")
+        root_clazz = registry.settings.get("pycms.rootclass",
+                                           "w20e.pycms.models.site.Site")
+        root_title = registry.settings.get("pycms.roottitle",
+                                           "Welcome")
+        app_root = root_clazz(root_title)
         app_root.__data__['name'] = 'welcome'
         app_root.__parent__ = app_root.__name__ = None
+
+        setattr(app_root, 'pycms_version', version)
 
         zodb_root['app_root'] = app_root
 

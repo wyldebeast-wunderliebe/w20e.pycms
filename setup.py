@@ -5,6 +5,8 @@ from setuptools import setup, find_packages
 here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.txt')).read()
 CHANGES = open(os.path.join(here, 'CHANGES.txt')).read()
+version = open(os.path.join("w20e", "pycms", "version.txt")
+               ).readlines()[0].strip()
 
 requires = [
     'pyramid',
@@ -21,7 +23,7 @@ requires = [
     ]
 
 setup(name='w20e.pycms',
-      version='0.1a',
+      version=version,
       description='Pyramid CMS',
       long_description=README + '\n\n' +  CHANGES,
       classifiers=[

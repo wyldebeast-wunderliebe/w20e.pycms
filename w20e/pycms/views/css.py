@@ -9,7 +9,6 @@ class CSSView(object):
         self.context = context
         self.request = request
 
-
     def __call__(self):
 
         csstarget = self.request.path.split("/")[-1].split(".")[0]

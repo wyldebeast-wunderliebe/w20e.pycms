@@ -15,7 +15,6 @@ class Page(Folder, BlockContainer):
 
         self._content = ""
 
-
     @property
     def full_text(self):
 

@@ -9,7 +9,6 @@ class JSView(object):
         self.context = context
         self.request = request
 
-
     def __call__(self):
 
         jstarget = self.request.path.split("/")[-1].split(".")[0]

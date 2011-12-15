@@ -61,4 +61,3 @@ class TinyBrowser:
             message = "Unexpected error occured: %s " % err
 
         return {'status': status, 'message': message}
-

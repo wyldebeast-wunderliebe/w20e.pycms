@@ -3,12 +3,10 @@ from base import AdminView
 
 class ImageView(object):
 
-
     def __init__(self, context, request):
 
         self.context = context
         self.request = request
-
 
     def __call__(self):
 
@@ -17,7 +15,6 @@ class ImageView(object):
         self.request.response.cache_expires(86400)
         self.request.response.cache_control.public = True
         return self.context.__data__['data']
-
 
     def thumbnail(self):
 

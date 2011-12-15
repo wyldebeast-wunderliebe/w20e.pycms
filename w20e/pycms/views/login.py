@@ -24,7 +24,6 @@ class loginview(BaseView):
 
         return ''
 
-
     def __call__(self):
 
         login_url = resource_url(self.context, self.request, 'login')
@@ -46,20 +45,20 @@ class loginview(BaseView):
             try:
                 if acl.users[login].challenge(password):
                     headers = remember(self.request, login)
-                    return HTTPFound(location = came_from,
-                                     headers = headers)
+                    return HTTPFound(location=came_from,
+                                     headers=headers)
             except:
                 pass
             message = 'Failed login'
 
         return dict(
-            main = get_renderer('../templates/main.pt').implementation(),
-            macros = get_renderer('../templates/macros.pt').implementation(),
-            message = message,
-            url = self.request.application_url + '/login',
-            came_from = came_from,
-            login = login,
-            password = password,
+            main=get_renderer('../templates/main.pt').implementation(),
+            macros=get_renderer('../templates/macros.pt').implementation(),
+            message=message,
+            url=self.request.application_url + '/login',
+            came_from=came_from,
+            login=login,
+            password=password,
             )
 
 
@@ -70,16 +69,15 @@ class logoutview(object):
         self.context = context
         self.request = request
 
-
     def __call__(self):
 
         logout_url = resource_url(self.context, self.request, 'logout')
         referrer = self.request.url
         if referrer == logout_url:
-            referrer = '/' # never use the login form itself as came_from
+            referrer = '/'  # never use the login form itself as came_from
         came_from = self.request.params.get('came_from', referrer)
 
         headers = forget(self.request)
 
-        return HTTPFound(location = came_from,
-                         headers = headers)
+        return HTTPFound(location=came_from,
+                         headers=headers)

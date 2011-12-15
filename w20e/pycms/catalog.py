@@ -37,7 +37,7 @@ def init(event):
 
     if not 'text' in app._catalog.keys():
         app._catalog['text'] = CatalogTextIndex('full_text')
-    
+
 
 # event handlers
 #
@@ -70,6 +70,7 @@ def objectChanged(event):
         cat.unindex_object(event.object)
     except:
         pass
+
 
 class Catalog(object):
 

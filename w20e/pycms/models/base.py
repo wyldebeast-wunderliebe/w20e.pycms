@@ -13,11 +13,12 @@ class PyCMSMixin:
             return get_current_registry().getAdapter(self, ISecure).__acl__
         except:
             return []
-    
+
 
 class BaseContent(HitmanBaseContent, PyCMSMixin):
 
     pass
+
 
 class BaseFolder(HitmanBaseFolder, PyCMSMixin):
 

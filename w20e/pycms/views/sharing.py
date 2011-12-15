@@ -10,16 +10,13 @@ class SharingView(AdminView):
         AdminView.__init__(self, context, request)
         self.sharing = request.registry.getAdapter(self.context, ISharing)
 
-
     def list_user_ids(self):
-        
-        return self.context.root.acl.list_users()
 
+        return self.context.root.acl.list_users()
 
     def list_group_ids(self):
 
         return self.context.root.acl.list_groups()
-
 
     def __call__(self):
 
@@ -34,7 +31,7 @@ class SharingView(AdminView):
                 for group_id in self.list_group_ids():
 
                     if self.request.params.get("map--%s--%s" % (group_id, user_id), None):
-                        if not _sharing.has_key(group_id):
+                        if not group_id in _sharing:
                             _sharing[group_id] = []
 
                         _sharing[group_id].append(user_id)
@@ -47,16 +44,13 @@ class SharingView(AdminView):
 
         return res
 
-
     def get_sharing(self):
 
         return self.sharing.get_sharing()
 
-
     def inherited(self, user_id, group_id):
 
         return user_id in self.context.root.acl.groups[group_id].users
-
 
     def is_shared(self, group_id, user_id):
 

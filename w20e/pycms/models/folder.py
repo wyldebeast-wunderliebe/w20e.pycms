@@ -15,7 +15,8 @@ class Folder(BaseFolder):
 
         ctypes = get_current_registry().getUtility(ICTypes)
 
-        return ctypes.get_ctype_info(self.content_type).get("subtypes", "").split(",")
+        return ctypes.get_ctype_info(
+            self.content_type).get("subtypes", "").split(",")
 
     @property
     def base_id(self):

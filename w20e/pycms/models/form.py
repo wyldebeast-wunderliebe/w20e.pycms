@@ -11,7 +11,6 @@ class Form(BaseContent):
 
         BaseContent.__init__(self, content_id)
 
-
     @property
     def base_id(self):
 

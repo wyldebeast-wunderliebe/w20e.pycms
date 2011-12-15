@@ -106,8 +106,6 @@ class SiteView(AdminView):
 
         token = token or self.request.params.get('token', None)
 
-        import pdb; pdb.set_trace()
-
         # we could be admin...
         if not token:
             if has_permission("admin", self.context, self.request):

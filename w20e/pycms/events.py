@@ -5,7 +5,7 @@ class IAppRootReady(Interface):
 
     """ Application is initialized and (almost) ready to serve..."""
 
-    app_root = Attribute("The application root object") 
+    app_root = Attribute("The application root object")
     settings = Attribute("The application settings")
 
 
@@ -16,4 +16,4 @@ class AppRootReady(object):
     def __init__(self, app_root, settings):
 
         self.app_root = app_root
-        self.settings = settings        
+        self.settings = settings
