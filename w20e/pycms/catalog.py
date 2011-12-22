@@ -16,7 +16,7 @@ def init(event):
 
     app = event.app_root
 
-    if event.registry.settings.get("w20e.pycms.catalog.force_new", False) \
+    if event.registry.settings.get("pycms.catalog.force_new", False) \
            or not hasattr(app, "_catalog"):
         app._catalog = Catalog()
         app._catalog.__parent__ = app

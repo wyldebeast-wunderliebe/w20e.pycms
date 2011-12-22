@@ -19,7 +19,7 @@ def init(event):
 
     app = event.app_root
 
-    if event.registry.settings.get("w20e.pycms.acl.force_new", False) \
+    if event.registry.settings.get("pycms.acl.force_new", False) \
            or not hasattr(app, "acl"):
 
         setattr(app, 'acl', ACL(event.registry.settings))
