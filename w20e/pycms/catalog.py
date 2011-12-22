@@ -27,10 +27,12 @@ def init(event):
 
     for idx in indexes.get_indexes():
         if not idx[0] in app._catalog.catalog.keys():
-            if idx[1] == "field":
-                app._catalog.catalog[idx[0]] = CatalogFieldIndex(idx[0])
+            if idx[1]['type'] == "field":
+                app._catalog.catalog[idx[0]] = \
+                                             CatalogFieldIndex(idx[1]['field'])
             else:
-                app._catalog.catalog[idx[0]] = CatalogTextIndex(idx[0])
+                app._catalog.catalog[idx[0]] = \
+                                             CatalogTextIndex(idx[1]['field'])
 
 
 # event handlers
@@ -80,6 +82,10 @@ class Catalog(object):
         """ convenient proxy to real catalog """
 
         return self._catalog
+
+    def query(self, *args, **kwargs):
+
+        return self._catalog.query(*args, **kwargs)
 
     def index_object(self, object):
 

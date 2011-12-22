@@ -18,10 +18,12 @@ class SiteCatalogView(AdminView):
 
             obj = self.cat.get_object(obj_uuid)
             try:
-                res.append({'id': obj.id,
-                            'path': path,
-                            'title': obj.title,
-                            'ctype': obj.content_type})
+                res.append({
+                    'uuid': obj_uuid,
+                    'id': obj.id,
+                    'path': path,
+                    'title': obj.title,
+                    'ctype': obj.content_type})
             except:
                 pass
         return res
@@ -33,8 +35,9 @@ class SiteCatalogView(AdminView):
         for item in self.cat.catalog.items():
 
             res.append({'id': item[0],
+                        'type': item[1].__class__.__name__,
                         'docs': (hasattr(item[1], "_num_docs") and \
-                                item[1]._num_docs() or -1),
+                                item[1]._num_docs() or 0),
                         'docids': item[1].docids()
                     })
 

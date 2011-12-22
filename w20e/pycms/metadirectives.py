@@ -179,10 +179,15 @@ def macro(_context, name, **kwargs):
 
 class IIndexDirective(Interface):
 
-    """ Register Content type info """
+    """ Register index """
+
+    name = TextLine(
+        title=u"Index name",
+        description=u"Index id",
+        required=True)
 
     field = TextLine(
-        title=u"name",
+        title=u"Field name",
         description=u"Index field",
         required=True)
 
@@ -192,9 +197,9 @@ class IIndexDirective(Interface):
         required=True)
 
 
-def index(_context, field, idxtype, **kwargs):
+def index(_context, name, field, idxtype, **kwargs):
 
     reg = _context.context.registry
     indexes = reg.getUtility(IIndexes)
 
-    indexes.register_index(field, idxtype, **kwargs)
+    indexes.register_index(name, field, idxtype, **kwargs)

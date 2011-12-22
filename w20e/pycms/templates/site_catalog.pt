@@ -24,6 +24,7 @@
         <thead>
           <tr>
             <th>id</th>
+            <th>type</th>
             <th>nr. of documents</th>
           </tr>
         </thead>
@@ -31,8 +32,11 @@
           <tal:repeat repeat="idx view.catalog_indexes()">
             <tr>
               <td>${idx['id']}</td>
+              <td>${idx['type']}</td>
               <td>${idx['docs']}</td>
-              <td>${idx['docids']}</td>
+            </tr>
+            <tr>
+              <td colspan="3">${idx['docids']}</td>
             </tr>
           </tal:repeat>
         </tbody>
@@ -44,6 +48,7 @@
       <table>
         <thead>
           <tr>
+            <th>uuid</th>
             <th>id</th>
             <th>path</th>
             <th>title</th>
@@ -53,6 +58,7 @@
         <tbody>
           <tal:repeat repeat="entry view.catalog_entries()">
             <tr>
+              <td>${entry['uuid']}</td>
               <td>${entry['id']}</td>
               <td>${entry['path']}</td>
               <td>${entry['title']}</td>

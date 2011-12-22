@@ -51,22 +51,26 @@
     />
 
   <pycms:index
+      name="id"
       field="id"
       idxtype="field"
       />
 
   <pycms:index
+      name="title"
       field="title"
       idxtype="field"
       />
 
   <pycms:index
-      field="ctype"
+      name="ctype"
+      field="content_type"
       idxtype="field"
       />
 
   <pycms:index
-      field="text"
+      name="text"
+      field="full_text"
       idxtype="text"
       />
 

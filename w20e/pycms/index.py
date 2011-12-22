@@ -14,9 +14,9 @@ class Indexes(object):
 
         self.registry = {}
 
-    def register_index(self, field, idxtype):
+    def register_index(self, name, field, idxtype):
 
-        self.registry[field] = {'type': idxtype}
+        self.registry[name] = {'field': field, 'type': idxtype}
 
     def get_indexes(self):
 
