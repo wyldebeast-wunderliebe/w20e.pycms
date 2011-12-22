@@ -41,7 +41,7 @@ def objectRemoved(event):
 
     LOGGER.debug("Removing object %s" % event.object.id)
 
-    cat = object.root._catalog
+    cat = event.object.root._catalog
     cat.unindex_object(event.object)
 
 
@@ -49,7 +49,7 @@ def objectAdded(event):
 
     LOGGER.debug("Adding object %s" % event.object.id)
 
-    cat = object.root._catalog
+    cat = event.object.root._catalog
     cat.index_object(event.object)
 
 
@@ -57,7 +57,7 @@ def objectChanged(event):
 
     LOGGER.debug("Changed object %s" % event.object.id)
 
-    cat = object.root._catalog
+    cat = event.object.root._catalog
 
     try:
         cat.unindex_object(event.object)
