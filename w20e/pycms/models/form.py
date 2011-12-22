@@ -15,3 +15,8 @@ class Form(BaseContent):
     def base_id(self):
 
         return self.__data__['name']
+
+    @property
+    def title(self):
+
+        return self.__data__['name']
