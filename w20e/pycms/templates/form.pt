@@ -4,13 +4,17 @@
       metal:use-macro="content.macros['master']">
 
       <metal:content fill-slot="content">
-      
-      <div class="status" tal:condition="status">${status}</div>
-      <div class="error" tal:condition="errors">${errors}</div>
 
-      <div id="content" tal:replace="structure view.renderform()">
-      </div>
+        <div tal:replace="structure view.header"/>
       
+        <div class="status" tal:condition="status">${status}</div>
+        <div class="error" tal:condition="errors">${errors}</div>
+        
+        <div id="content" tal:replace="structure view.renderform()">
+        </div>
+      
+        <div tal:replace="structure view.footer"/>
+
       </metal:content>
 
 </html>

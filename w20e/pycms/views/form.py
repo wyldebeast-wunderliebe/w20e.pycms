@@ -20,3 +20,11 @@ class FormView(BaseView, pyramidformview):
         res.update(pyramidformview.__call__(self))
 
         return res
+
+    @property
+    def header(self):
+        return self.context.__data__['header_text']
+
+    @property
+    def footer(self):
+        return self.context.__data__['footer_text']    
