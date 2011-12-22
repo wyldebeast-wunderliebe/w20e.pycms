@@ -19,9 +19,13 @@ def init(event):
 
     app = event.app_root
 
-    if not hasattr(app, 'acl'):
+    if event.registry.settings.get("w20e.pycms.acl.force_new", False) \
+           or not hasattr(app, "acl"):
 
-        setattr(app, 'acl', ACL(event.settings))
+        setattr(app, 'acl', ACL(event.registry.settings))
+        app.acl.__parent__ = app
+        app.acl.__name__ = "ACL"
+        app._p_changed = 1
 
 
 class ISecure(Interface):

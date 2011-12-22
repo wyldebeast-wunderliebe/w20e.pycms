@@ -4,7 +4,6 @@ from w20e.forms.xml.formfile import FormFile, find_file
 from ..interfaces import IMailer
 from pyramid.renderers import get_renderer
 from pyramid.security import has_permission
-from ..interfaces import ICatalog
 
 
 class UserAddView(xmlformview):
@@ -164,10 +163,8 @@ class SiteView(AdminView):
 
     def catalog_entries(self):
 
-        mapper = self.request.registry.getAdapter(self.context, ICatalog)
-
         return [{'id': obj[0], 'path': obj[1]} for obj in \
-                mapper.list_objects()]
+                self.context._catalog.list_objects()]
 
     def robots_txt(self):
 

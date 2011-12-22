@@ -1,11 +1,10 @@
 from repoze.catalog.catalog import Catalog as RepozeCatalog
 from repoze.catalog.indexes.field import CatalogFieldIndex
 from repoze.catalog.indexes.text import CatalogTextIndex
-from pyramid.threadlocal import get_current_registry
 from logging import getLogger
-from interfaces import ICatalog
 from w20e.hitman.utils import path_to_object, object_to_path
 from BTrees.OOBTree import OOBTree
+from index import IIndexes
 
 
 LOGGER = getLogger("w20e.pycms")
@@ -17,26 +16,21 @@ def init(event):
 
     app = event.app_root
 
-    if not hasattr(app, "_catalog_uuid_to_path"):
-        setattr(app, "_catalog_uuid_to_path", OOBTree())
+    if event.registry.settings.get("w20e.pycms.catalog.force_new", False) \
+           or not hasattr(app, "_catalog"):
+        app._catalog = Catalog()
+        app._catalog.__parent__ = app
+        app._catalog.__name__ = "catalog"
+        app._p_changed
 
-    if not hasattr(app, "_catalog_path_to_uuid"):
-        setattr(app, "_catalog_path_to_uuid", OOBTree())
+    indexes = event.registry.getUtility(IIndexes)
 
-    if not hasattr(app, "_catalog"):
-        app._catalog = RepozeCatalog()
-
-    if not 'id' in app._catalog.keys():
-        app._catalog['id'] = CatalogFieldIndex('id')
-
-    if not 'title' in app._catalog.keys():
-        app._catalog['title'] = CatalogFieldIndex('title')
-
-    if not 'ctype' in app._catalog.keys():
-        app._catalog['ctype'] = CatalogFieldIndex('content_type')
-
-    if not 'text' in app._catalog.keys():
-        app._catalog['text'] = CatalogTextIndex('full_text')
+    for idx in indexes.get_indexes():
+        if not idx[0] in app._catalog.catalog.keys():
+            if idx[1] == "field":
+                app._catalog.catalog[idx[0]] = CatalogFieldIndex(idx[0])
+            else:
+                app._catalog.catalog[idx[0]] = CatalogTextIndex(idx[0])
 
 
 # event handlers
@@ -45,8 +39,7 @@ def objectRemoved(event):
 
     LOGGER.debug("Removing object %s" % event.object.id)
 
-    reg = get_current_registry()
-    cat = reg.getAdapter(event.object.root, ICatalog)
+    cat = object.root._catalog
     cat.unindex_object(event.object)
 
 
@@ -54,8 +47,7 @@ def objectAdded(event):
 
     LOGGER.debug("Adding object %s" % event.object.id)
 
-    reg = get_current_registry()
-    cat = reg.getAdapter(event.object.root, ICatalog)
+    cat = object.root._catalog
     cat.index_object(event.object)
 
 
@@ -63,8 +55,7 @@ def objectChanged(event):
 
     LOGGER.debug("Changed object %s" % event.object.id)
 
-    reg = get_current_registry()
-    cat = reg.getAdapter(event.object.root, ICatalog)
+    cat = object.root._catalog
 
     try:
         cat.unindex_object(event.object)
@@ -74,15 +65,11 @@ def objectChanged(event):
 
 class Catalog(object):
 
-    def __init__(self, site):
+    def __init__(self):
 
-        self.site = site
-
-    def __getattr__(self, name):
-
-        """ Proxy to real catalog """
-
-        return getattr(self.site._catalog, name)
+        self._catalog = RepozeCatalog()
+        self.uuid_to_path = OOBTree()
+        self.path_to_uuid = OOBTree()
 
     def gen_uuid(self):
 
@@ -92,52 +79,44 @@ class Catalog(object):
     def catalog(self):
         """ convenient proxy to real catalog """
 
-        return self.site._catalog
-
-    @property
-    def uuid_to_path(self):
-        """ Get the uuid to path mapper """
-
-        return self.site._catalog_uuid_to_path
-
-    @property
-    def path_to_uuid(self):
-        """ Get the path to uuid mapper """
-
-        return self.site._catalog_path_to_uuid
+        return self._catalog
 
     def index_object(self, object):
+
         path = object_to_path(object)
         uuid = self.gen_uuid()
         self.catalog.index_doc(uuid, object)
         self.uuid_to_path[uuid] = path
         self.path_to_uuid[path] = uuid
-        self.site._p_changed = 1
+        self._p_changed = 1
 
     def reindex_object(self, object):
+
         path = object_to_path(object)
         uuid = self.path_to_uuid[path]
         self.catalog.reindex_doc(uuid, object)
+        self.__parent__._p_changed = 1
 
     def unindex_object(self, object):
+
         path = object_to_path(object)
         uuid = self.path_to_uuid[path]
         self.catalog.unindex_doc(uuid)
         del self.uuid_to_path[uuid]
         del self.path_to_uuid[path]
-        self.site._p_changed = 1
+        self.__parent__._p_changed = 1
 
     def clear(self):
 
-        self.site._catalog.clear()
-        self.site._catalog_uuid_to_path.clear()
-        self.site._catalog_path_to_uuid.clear()
-        self.site._p_changed = 1
+        self._catalog.clear()
+        self.uuid_to_path.clear()
+        self.path_to_uuid.clear()
+        self.__parent__._p_changed = 1
 
     def get_object(self, uuid):
 
         path = self.uuid_to_path[uuid]
-        return path_to_object(path, self.site)
+        return path_to_object(path, self.__parent__)
 
     def list_objects(self):
 

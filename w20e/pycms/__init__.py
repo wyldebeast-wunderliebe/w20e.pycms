@@ -59,7 +59,10 @@ def appmaker(config):
     # Do necessary updates
     update(zodb_root['app_root'])
 
-    initreq.registry.notify(AppRootReady(app_root, config.registry.settings))
+    initreq.registry.notify(AppRootReady(app_root, config.registry))
+
+    import transaction
+    transaction.commit()
 
     return zodb_root['app_root']
 

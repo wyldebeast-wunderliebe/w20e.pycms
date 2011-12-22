@@ -1,5 +1,4 @@
 from base import AdminView
-from ..interfaces import ICatalog
 
 
 class SiteCatalogView(AdminView):
@@ -9,30 +8,29 @@ class SiteCatalogView(AdminView):
     def __init__(self, context, request):
 
         AdminView.__init__(self, context, request)
+        self.cat = self.context.root._catalog
 
     def catalog_entries(self):
 
-        cat = self.request.registry.getAdapter(self.context, ICatalog)
-
         res = []
 
-        for obj_uuid, path in cat.list_objects():
+        for obj_uuid, path in self.cat.list_objects():
 
-            obj = cat.get_object(obj_uuid)
-
-            res.append({'id': obj.id,
-                        'path': path,
-                        'title': obj.title,
-                        'ctype': obj.content_type})
+            obj = self.cat.get_object(obj_uuid)
+            try:
+                res.append({'id': obj.id,
+                            'path': path,
+                            'title': obj.title,
+                            'ctype': obj.content_type})
+            except:
+                pass
         return res
 
     def catalog_indexes(self):
 
-        cat = self.request.registry.getAdapter(self.context, ICatalog)
-
         res = []
 
-        for item in cat.items():
+        for item in self.cat.catalog.items():
 
             res.append({'id': item[0],
                         'docs': (hasattr(item[1], "_num_docs") and \
@@ -44,19 +42,15 @@ class SiteCatalogView(AdminView):
 
     def reindex_catalog(self):
 
-        reg = self.request.registry
+        for path in self.cat.list_object_ids():
+            self.cat.unindex_doc(path)
 
-        cat = reg.getAdapter(self.context, ICatalog)
+        self.cat.clear()
 
-        for path in cat.list_object_ids():
-            cat.unindex_doc(path)
-
-        cat.clear()
-
-        cat.index_object(self.context)
+        self.cat.index_object(self.context)
 
         for obj in self.context.find_content():
 
-            cat.index_object(obj)
+            self.cat.index_object(obj)
 
         return self.__call__()

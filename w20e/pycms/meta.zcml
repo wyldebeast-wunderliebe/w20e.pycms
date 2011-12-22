@@ -32,4 +32,10 @@
        schema=".metadirectives.IMacroDirective"
        handler=".metadirectives.macro" />
 
+  <meta:directive 
+       namespace="http://w20e.com/pycms"
+       name="index" 
+       schema=".metadirectives.IIndexDirective"
+       handler=".metadirectives.index" />
+
 </configure>

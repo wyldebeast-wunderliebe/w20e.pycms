@@ -1,5 +1,4 @@
 from base import BaseView
-from ..interfaces import ICatalog
 from repoze.catalog.query import Contains
 from pyramid.url import resource_url
 
@@ -20,7 +19,7 @@ class SearchView(BaseView):
         if not qry:
             return {'found': 0, 'results': []}
 
-        cat = self.request.registry.getAdapter(self.context.root, ICatalog)
+        cat = self.context.root._catalog
 
         res = cat.query(Contains('text', qry))
 

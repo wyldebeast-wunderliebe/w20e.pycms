@@ -5,6 +5,7 @@ import os
 from actions import IActions
 from ctypes import ICTypes
 from macros import IMacros
+from index import IIndexes
 
 
 def find_file(filename, context):
@@ -174,3 +175,26 @@ def macro(_context, name, **kwargs):
     macro_registry = reg.getUtility(IMacros)
 
     macro_registry.register_macro(name, **kwargs)
+
+
+class IIndexDirective(Interface):
+
+    """ Register Content type info """
+
+    field = TextLine(
+        title=u"name",
+        description=u"Index field",
+        required=True)
+
+    idxtype = TextLine(
+        title=u"Type",
+        description=u"Index type",
+        required=True)
+
+
+def index(_context, field, idxtype, **kwargs):
+
+    reg = _context.context.registry
+    indexes = reg.getUtility(IIndexes)
+
+    indexes.register_index(field, idxtype, **kwargs)

@@ -13,7 +13,7 @@ class AppRootReady(object):
 
     implements(IAppRootReady)
 
-    def __init__(self, app_root, settings):
+    def __init__(self, app_root, registry):
 
         self.app_root = app_root
-        self.settings = settings
+        self.registry = registry

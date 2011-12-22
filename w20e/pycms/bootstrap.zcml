@@ -32,4 +32,9 @@
      factory=".mailer.Mailer"
      />
 
+  <utility
+     provides=".index.IIndexes"
+     factory=".index.Indexes"
+     />
+
 </configure>

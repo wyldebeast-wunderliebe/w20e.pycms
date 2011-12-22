@@ -191,7 +191,7 @@ pycms.createDataArray = function(form) {
 pycms.initForm = function() {
 
   $('#form_target textarea.wysiwyg').tinymce({
-        script_url : '/static/tinymce/jscripts/tiny_mce/tiny_mce.js',
+        script_url : '/static/js/tiny_mce/tiny_mce.js',
 
         // General options
         theme : "advanced",
