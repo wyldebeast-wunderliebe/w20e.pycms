@@ -60,7 +60,7 @@ def objectChanged(event):
     cat = event.object.root._catalog
 
     try:
-        cat.unindex_object(event.object)
+        cat.reindex_object(event.object)
     except:
         pass
 
@@ -94,13 +94,17 @@ class Catalog(object):
         self.catalog.index_doc(uuid, object)
         self.uuid_to_path[uuid] = path
         self.path_to_uuid[path] = uuid
-        self._p_changed = 1
+        self.__parent__._p_changed = 1
 
     def reindex_object(self, object):
 
         path = object_to_path(object)
-        uuid = self.path_to_uuid[path]
-        self.catalog.reindex_doc(uuid, object)
+        uuid = self.path_to_uuid.get(path, None)
+
+        if uuid:
+            self.catalog.reindex_doc(uuid, object)
+        else:
+            self.index_object(object)
         self.__parent__._p_changed = 1
 
     def unindex_object(self, object):

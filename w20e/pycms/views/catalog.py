@@ -45,9 +45,6 @@ class SiteCatalogView(AdminView):
 
     def reindex_catalog(self):
 
-        for path in self.cat.list_object_ids():
-            self.cat.unindex_doc(path)
-
         self.cat.clear()
 
         self.cat.index_object(self.context)
