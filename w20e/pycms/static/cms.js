@@ -368,14 +368,13 @@ $(document).ready(function() {
 
     $(".lscut").click(function() {
 
-	pycms.cut($(this));
-    });
+        pycms.cut($(this));
+      });
 
     // Handle rename function
     $(".rename").click(function() {
         $(this).find(".rename_in").show();
-        $(this).find(".rename_in").focus();
-
+        $(this).find(".rename_in").focus();        
       });
 
     // Losing focus here...
@@ -398,43 +397,44 @@ $(document).ready(function() {
                    input.attr("value", id_to);
                    input.prev().html(id_to);
                    input.hide();
+
+                   input.parents("tr").eq(0).attr("id", id_to);
                  }
                });
 
         return false;
       })    
-
-    $(".lsdelete").click(function() {
-
-        var to_remove = $(this);
-
-        $("#rm_confirm").dialog({
-            resizable: false,
-              height:140,
-              modal: true,
-              buttons: {
-              "Delete": function() {
-                $( this ).dialog( "close" );
-
-                var row = to_remove.parents("tr").eq(0);
-        
-                $.post("ajax_rm", 
-                       {'content_id': to_remove.attr("id").substr(3)}, 
-                       function() {
-                         
-                         row.remove();
-                       });
-              },
-                "Cancel": function() {
+      
+      // Remove object and row
+      $(".lsdelete").click(function() {
+          
+          var row = $(this).parents("tr").eq(0);
+          
+          $("#rm_confirm").dialog({
+              resizable: false,
+                height:140,
+                modal: true,
+                buttons: {
+                "Delete": function() {
                   $( this ).dialog( "close" );
-                }
-            }
-          });
-      });
-
+                  
+                  $.post("ajax_rm", 
+                         {'content_id': row.attr("id")}, 
+                         function() {                         
+                           row.remove();
+                         });
+                },
+                  "Cancel": function() {
+                    $( this ).dialog( "close" );
+                  }
+              }
+            });
+        });
+    
+    // Order on ui and on server
     $(".listingcontent tbody").sortable({
         update: function(event, ui) {
-            var order = $(this).sortable('toArray').toString();
-            $.get('ajax_order', {order:order});
+          var order = $(this).sortable('toArray').toString();
+          $.get('ajax_order', {order: order});
         }});
 });

@@ -4,7 +4,7 @@
   <view
      context="w20e.hitman.models.base.IContent"
      view=".base.ContentView"
-     renderer="../templates/view_content.pt"
+     renderer="w20e.pycms:templates/view_content.pt"
      permission="view"
      />
 

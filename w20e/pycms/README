@@ -198,3 +198,27 @@ Would you like search enabled for your site?
 Add this to your configure.zcml:
 
   <include package="w20e.pycms" file="sharing.zcml"/>
+
+
+Settings
+========
+pycms.acl.force_new = True|False
+        Force new version of ACL. All your security data will be lost
+pycms.catalog.force_new = True|False
+        Force new version of catalog. All your entries will be lost, but you
+        can just run reindex-catalog and all is well again...
+pycms.admin_user = <user>:<pwd>
+        Admin user and password, like so: pycms.admin_user = admin:pipo
+pycms.minify_css = True|False
+        Minify CSS. Defaults to False
+pycms.minify_js = True|False
+        Minify JS. Defaults to False
+pycms.logged_in_redirect = <url>
+pycms.rootclass = <full dotted classname>
+        Defaults to w20e.pycms.models.site.Site
+pycms.roottitle = <string>
+        Defaults to "Welcome"
+pycms.from_addr
+        Send email as ...
+pycms.bcc_addr
+        Send also to bcc

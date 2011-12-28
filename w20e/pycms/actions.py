@@ -29,18 +29,20 @@ class Actions(object):
                         permission="", condition=True):
 
         if not category in self.registry:
-            self.registry[category] = []
+            self.registry[category] = {}
 
         if ctype:
             ctype = [typ.strip() for typ in ctype.split(",")]
 
-        self.registry[category].append(
-            Action(name, target, ctype, permission, condition)
-            )
+        self.registry[category][name] = Action(name,
+                                               target,
+                                               ctype,
+                                               permission,
+                                               condition)
 
     def get_actions(self, category, ctype=None):
 
-        actions = self.registry.get(category, [])
+        actions = self.registry.get(category, {}).values()
 
         if not ctype:
             return actions

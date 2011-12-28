@@ -63,12 +63,10 @@
       <tal:repeat repeat="item view.list_content()">
         <tr id="" tal:attributes="id item.id">
           <td class="contenttype">
-            <img src="#" tal:attributes="src view.get_icon(item.content_type)" />
+            <img src="#" tal:attributes="src view.get_icon(item.content_type)"/>
           </td>
           <td>
-            <div class="lsaction lsdelete"
-                 id="#" tal:attributes="id 'rm_%s' % item.id"
-                 >
+            <div class="lsaction lsdelete">
               D
             </div>
             <div class="lsaction lsedit">
@@ -78,19 +76,19 @@
             </div>
             <div class="lsaction lscut"
                  id="#" tal:attributes="id 'cut_%s' % item.dottedpath"
-	    >C</div>
+	               >C</div>
           </td>
           <td tal:content="item.content_type"></td>
           <td>
             <div class="rename">
               <span tal:content="item.id"/>
               <input type="text" name="${item.id}" value="${item.id}" 
-                   class="rename_in"/>
+                     class="rename_in"/>
             </div>
           </td>
           <td>
             <a href="#" tal:attributes="href '%s/admin' % item.id" 
-                   tal:content="item.title">
+               tal:content="item.title">
               content id
             </a>
           </td>
@@ -107,5 +105,3 @@
     </form>
 </div>
 <!-- END listing -->
-
-
