@@ -30,7 +30,7 @@ def init(event):
             if idx[1]['type'] == "field":
                 app._catalog.catalog[idx[0]] = \
                                              CatalogFieldIndex(idx[1]['field'])
-            else:
+            elif idx[1]['type'] == "text":
                 app._catalog.catalog[idx[0]] = \
                                              CatalogTextIndex(idx[1]['field'])
 

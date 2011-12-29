@@ -160,7 +160,18 @@ class AddView(AddBase, ViewMixin):
 
     @property
     def url(self):
+
         return "%sadmin" % self.base_url
+
+    @property
+    def after_add_redirect(self):
+        return "%s%s" % (self.base_url,
+                         self.request.registry.settings.get('pycms.after_add_redirect', ''))
+
+    @property
+    def cancel_add_redirect(self):
+        return "%s%s" % (self.base_url,
+                         self.request.registry.settings.get('pycms.cancel_add_redirect', ''))
 
     def __call__(self):
 
@@ -178,6 +189,14 @@ class EditView(EditBase, ViewMixin):
     def url(self):
         return "%sedit" % super(EditBase, self).url
 
+    @property
+    def after_edit_redirect(self):
+
+        """ Where to go after successfull edit?"""
+
+        return "%s%s" % (self.base_url,
+                         self.request.registry.settings.get('pycms.after_edit_redirect', 'edit'))
+
     def __call__(self):
 
         res = EditBase.__call__(self)
@@ -191,6 +210,14 @@ class DelView(DelBase, ViewMixin):
     @property
     def url(self):
         return "%sadmin" % super(DelBase, self).url
+
+    @property
+    def after_del_redirect(self):
+
+        """ Where to go after successfull edit?"""
+
+        return "%s%s" % (self.base_url,
+                         self.request.registry.settings.get('pycms.after_del_redirect', 'admin'))
 
     @property
     def parent_url(self):

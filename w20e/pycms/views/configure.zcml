@@ -12,7 +12,7 @@
   <view
      context="w20e.hitman.models.base.IFolder"
      view=".base.AddView"
-     renderer="../templates/add_content.pt"
+     renderer="w20e.pycms:templates/add_content.pt"
      name="add"
      permission="edit"
      />
@@ -21,7 +21,7 @@
   <view
      context="w20e.hitman.models.base.IContent"
      view=".base.EditView"
-     renderer="../templates/edit_content.pt"
+     renderer="w20e.pycms:templates/edit_content.pt"
      name="edit"
      permission="edit"
      />
@@ -30,7 +30,7 @@
   <view
      context="w20e.hitman.models.base.IContent"
      view=".base.DelView"
-     renderer="../templates/remove_content.pt"
+     renderer="w20e.pycms:templates/remove_content.pt"
      name="delete"
      permission="edit"
      />
@@ -165,7 +165,7 @@
 
   <!-- list users -->
   <view
-     context="..models.site.Site"
+     context="w20e.pycms.interfaces.ISite"
      view=".site.SiteView"
      renderer="../templates/site_users.pt"
      name="users"
@@ -173,14 +173,14 @@
      />
 
   <view
-     context="..models.site.Site"
+     context="w20e.pycms.interfaces.ISite"
      view=".site.UserAddView"
      renderer="string"
      name="add_user_form"
      />
 
   <view
-     context="..models.site.Site"
+     context="w20e.pycms.interfaces.ISite"
      view=".site.SiteView"
      attr="delete_user"
      renderer="string"
@@ -189,7 +189,7 @@
      />
 
   <view
-     context="..models.site.Site"
+     context="w20e.pycms.interfaces.ISite"
      view=".site.SiteView"
      attr="invite_user"
      renderer="string"
@@ -198,7 +198,7 @@
      />
 
   <view
-     context="..models.site.Site"
+     context="w20e.pycms.interfaces.ISite"
      view=".site.SiteView"
      attr="change_password"
      renderer="../templates/change_password.pt"
@@ -207,7 +207,7 @@
      />
 
   <view
-     context="..models.site.Site"
+     context="w20e.pycms.interfaces.ISite"
      view=".site.SiteView"
      attr="change_password"
      renderer="../templates/change_password_minimal.pt"
@@ -216,7 +216,7 @@
      />
 
   <view
-     context="..models.site.Site"
+     context="w20e.pycms.interfaces.ISite"
      view=".site.SiteView"
      attr="set_password"
      renderer="../templates/change_password_minimal.pt"
@@ -225,7 +225,7 @@
      />
 
   <view
-     context="..models.site.Site"
+     context="w20e.pycms.interfaces.ISite"
      view=".site.SiteView"
      attr="delete_key"
      name="delete_key"
@@ -234,7 +234,7 @@
      />
 
   <view 
-    context="..models.site.Site"
+    context="w20e.pycms.interfaces.ISite"
     view=".site.SiteView"
     attr="user_groups"
     renderer="../templates/user_groups.pt"
@@ -244,7 +244,7 @@
 
   <!-- packing -->
   <view
-     context="..models.site.Site"
+     context="w20e.pycms.interfaces.ISite"
      view=".site.SiteView"
      attr="pack_database"
      renderer="string"
@@ -253,7 +253,7 @@
      />
 
   <view
-     context="..models.site.Site"
+     context="w20e.pycms.interfaces.ISite"
      view=".site.SiteView"
      renderer="../templates/site_pack.pt"
      name="pack"
@@ -262,7 +262,7 @@
 
   <!-- eye integration -->
   <view
-     context="..models.site.Site"
+     context="w20e.pycms.interfaces.ISite"
      view=".zodb.ZODBView"
      renderer="../templates/zodb.pt"
      name="zodb"
@@ -352,7 +352,7 @@
      />
 
   <view
-      context="..models.site.Site"
+      context="w20e.pycms.interfaces.ISite"
       name="robots.txt"
       view=".site.SiteView"
       renderer="w20e.pycms:templates/robots.txt"
