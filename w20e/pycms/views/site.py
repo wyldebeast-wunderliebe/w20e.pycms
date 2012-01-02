@@ -6,24 +6,41 @@ from pyramid.renderers import get_renderer
 from pyramid.security import has_permission
 
 
-class UserAddView(xmlformview):
+class UserAddView(AdminView):
 
     """ Add user form """
 
     def __init__(self, context, request):
 
-        self.site = context
-        form = FormFile(find_file("../forms/user_add_form.xml",
-                                  context.__class__))
-
-        xmlformview.__init__(self, context, request, form,
-                             retrieve_data=False)
+        AdminView.__init__(self, context, request)
 
     def __call__(self):
 
-        res = xmlformview.__call__(self)
+        res = super(UserAddView, self).__call__()
 
-        return self.renderform(errors=res['errors'])
+        res.update({'status': '', 'errors': ''})
+
+        if self.request.method == "POST":
+
+            params = self.request.params
+
+            if not (params.get('name') and params.get('email')):
+                res.update({'status': 'error',
+                            'errors': "not all required fields filled in"})
+                return res
+
+            elif params.get('pwd', None) != params.get('pwd_confirm', None):
+                res.update({'status': 'error',
+                            'errors': "passwords do not match"})
+                return res
+            else:
+                self.context.root.acl.create_user(
+                    params['email'], pwd=params.get('pwd', None),
+                    name=params.get('name', None)
+                    )
+
+            res.update({'status': 'ok'})
+        return res
 
 
 class SiteView(AdminView):
@@ -91,53 +108,53 @@ class SiteView(AdminView):
         self.context.acl.unset_activation_key(
                 self.request.params.get('key', ''))
 
-    def set_password(self):
-
-        user_id = self.request.params['user_id']
-
-        key = self.context.acl.generate_user_invite_key(user_id)
-
-        return self.change_password(token=key)
-
-    def change_password(self, token=None):
+    def change_password(self, token=None, user_id=None):
 
         """ Change password given the token."""
 
+        res = super(SiteView, self).__call__()
+        res.update({'status': '', 'token': '', 'errors': ''})
+
+        user_id = user_id or self.request.params.get('user_id', None)
         token = token or self.request.params.get('token', None)
+
+        res.update({'user_id': user_id, 'token': token})
+
+        if self.request.method != "POST":
+            return res
 
         # we could be admin...
         if not token:
-            if has_permission("admin", self.context, self.request):
-                user = self.context.acl.users[self.request.params['user_id']]
+            if user_id and has_permission("admin", self.context, self.request):
+                user = self.context.acl.users[user_id]
         else:
             user = self.context.acl.get_user_for_activation(token)
 
         if not user:
 
-            return {'status': 'error',
-                    'token': '',
-                    'macros': get_renderer(
-                        '../templates/macros.pt').implementation(),
-                    'main': get_renderer(
-                        '../templates/main.pt').implementation(),
-                    'message': 'No user found for this key!'}
+            res.update({'status': 'error',
+                        'errors': 'No user found for this key!'})
+            return res
 
         message = user.id
+        status = 'ok'
 
-        if self.request.params.get('form.submitted', None):
-            if self.request.params['password'] == \
-                    self.request.params['password_confirm']:
-                user.set_pwd(self.request.params['password'])
+        if not self.request.params.get('password', None):
+            message = "Cannot be empty"
+            status = "error"
+        elif self.request.params['password'] == \
+               self.request.params['password_confirm']:
+            user.set_pwd(self.request.params['password'])
+            if token:
                 self.context.acl.unset_activation_key(token)
-                message = "Password reset"
-            else:
-                message = "Passwords do not match"
+            message = "Password reset"
+        else:
+            message = "Passwords do not match"
+            status = 'error'
 
-        return {'status': 'ok', 'message': message, 'token': token,
-                'macros': get_renderer(
-                    '../templates/macros.pt').implementation(),
-                'main': get_renderer('../templates/main.pt').implementation(),
-                }
+        res.update({'status': status, 'errors': message,
+                    'token': token})
+        return res
 
     def pack_database(self):
         """ pack the database """

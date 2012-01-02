@@ -1,0 +1,30 @@
+<div id="add_user">
+  <div id="add_user_status">${status}</div>
+  <div class="errors" tal:condition="errors">${errors}</div>
+
+  <form 
+     tal:condition="status != 'ok'"
+     action="add_user_form" method="POST">
+    <div class="control relevant required">
+      <label>User name</label>
+      <input type="text" name="name"/>
+    </div>
+    <div class="control relevant required">
+      <label>User email</label>
+      <div class="hint">Used as user id!</div>
+      <input type="text" name="email"/>      
+    </div>
+    <div class="control relevant">
+      <label>Password (optional)</label>
+      <input type="password" name="pwd"/>
+    </div>
+    <div class="control relevant">
+      <label>Password confirm (optional)</label>
+      <input type="password" name="pwd_confirm"/>
+    </div>
+
+    <input type="submit" value="Add"/>
+    <input type="button" class="cancel" value="Cancel"/>
+  </form>
+</div>
+

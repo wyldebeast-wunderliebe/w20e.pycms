@@ -188,20 +188,14 @@ class ACL(Persistent):
         if not user_id in self.groups[group_id].users:
             self.groups[group_id].users.append(user_id)
 
-    def add_user(self, form, *args):
+    def create_user(self, email, pwd=None, name='', profile=None):
 
-        """ form data input..."""
-
-        self.create_user(**form.data.as_dict())
-
-    def create_user(self, profile=None, **data):
-
-        if data['email'] in self.users:
+        if email in self.users:
             return False
 
-        self.users[data['email']] = User(data['email'], data['name'],
-                                         data['email'], data.get('pwd', ''),
-                                         profile=profile)
+        self.users[email] = User(email, name or email,
+                                 email, pwd,
+                                 profile=profile)
 
     def remove_user(self, user_id):
 

@@ -387,6 +387,10 @@ input.rename_in {
     top: 100px;
     left: 200px;
     z-index: 1001;
+    background-color: #ffffff;
+    padding: 20px;
+    -moz-border-radius: 10px;
+    display: none;
 }
 
 .listing {

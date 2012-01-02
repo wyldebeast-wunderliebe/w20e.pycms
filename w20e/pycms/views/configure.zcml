@@ -175,7 +175,7 @@
   <view
      context="w20e.pycms.interfaces.ISite"
      view=".site.UserAddView"
-     renderer="string"
+     renderer="../templates/add_user.pt"
      name="add_user_form"
      />
 
@@ -218,7 +218,7 @@
   <view
      context="w20e.pycms.interfaces.ISite"
      view=".site.SiteView"
-     attr="set_password"
+     attr="change_password"
      renderer="../templates/change_password_minimal.pt"
      name="set_password"
      permission="admin"

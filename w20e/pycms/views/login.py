@@ -26,6 +26,8 @@ class loginview(BaseView):
 
     def __call__(self):
 
+        res = super(loginview, self).__call__()
+
         login_url = resource_url(self.context, self.request, 'login')
         referrer = self.request.url
         if referrer == login_url:
@@ -51,15 +53,14 @@ class loginview(BaseView):
                 pass
             message = 'Failed login'
 
-        return dict(
-            main=get_renderer('../templates/main.pt').implementation(),
-            macros=get_renderer('../templates/macros.pt').implementation(),
-            message=message,
-            url=self.request.application_url + '/login',
-            came_from=came_from,
-            login=login,
-            password=password,
-            )
+        res.update({
+            'message': message,
+            'url': self.request.application_url + '/login',
+            'came_from': came_from,
+            'login': login,
+            'password': password}
+                   )
+        return res
 
 
 class logoutview(object):

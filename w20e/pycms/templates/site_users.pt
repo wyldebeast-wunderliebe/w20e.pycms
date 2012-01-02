@@ -71,7 +71,7 @@
                        >
                       <img src="/icons/Key16.png"/>
                     </a>
-		    <div class="popup"></div>
+		                <div class="popup"></div>
                   </div>
                   <div class="lsaction minimal" id="lspwd"
 		       tal:condition="user.id != 'admin'"

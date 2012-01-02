@@ -1,22 +1,36 @@
 var pycms_acl = {};
 
-pycms_acl.showUserAddForm = function() {
-    $("#user_add_form").load("add_user_form");
-    $("#lbpanel").fadeIn(300);
-    $("#user_add_form").fadeIn(300);
-};
+pycms.initPartial = function(tgt) {
 
-pycms_acl.addUser = function() {
-  var data = $("#user_add_form form").serialize();
-  
-  data += '&submit=1';
-
-  $.post("add_user_form", data, function() {
-    $("#user_add_form").hide();
-    $("#lbmsg").html("User added");
-    $("#lb").fadeIn();
-    setTimeout('$("#lb").fadeOut(300); $("#lbpanel").fadeOut(300)', 2000);
+  tgt.find("form").eq(0).submit(function() {
+      
+      $.post($(this).attr("action"),
+             $(this).serialize(),
+             function(data) {
+               
+               tgt.html(data);
+               
+               if ($("#change_pwd_status").text() == 'ok') {
+                 tgt.hide();
+               } else {
+                 pycms.initPartial(tgt);
+               }
+             });
+      
+      return false;
     });
+  
+  tgt.find(".cancel").click(function() {
+      tgt.hide();
+    });
+}
+
+pycms_acl.showUserAddForm = function() {
+  $.get("add_user_form", {}, function(data) {
+      $("#user_add_form").html(data);
+      pycms.initPartial($("#user_add_form"));
+    });
+    $("#user_add_form").fadeIn(300);
 };
 
 pycms_acl.deleteUser = function(userId) {
@@ -49,30 +63,17 @@ $(document).ready(function() {
     // Ajax style actions
     $(".lsaction.minimal a").click(function() {
 	
-	var tgt = $(this).siblings(".popup");
-
-	$.get($(this).attr("href"), function(data) {
-
-	    tgt.html(data);
-	    
-	    tgt.find("form").eq(0).submit(function() {
-		
-		$.post($(this).attr("action"),
-		       $(this).serialize(),
-		       function(data) {
-			   tgt.hide();
-		       });
-		
-		return false;
-	    });
-	    
-	    tgt.find(".cancel").click(function() {
-		tgt.hide();
-	    });
-	});
-
-	tgt.show();
-
-	return false;
-    });
-});
+        var tgt = $(this).siblings(".popup");
+        
+        $.get($(this).attr("href"), function(data) {
+            
+            tgt.html(data);
+            
+            pycms.initPartial(tgt);
+          });
+        
+        tgt.show();
+        
+        return false;
+      });
+  });
