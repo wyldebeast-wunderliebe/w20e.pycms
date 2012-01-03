@@ -130,6 +130,9 @@ class XMLRenderer:
 
         system['request'].response.content_type = 'text/xml'
 
+        if isinstance(value, unicode):
+            value = value.encode('utf-8')
+
         return value
 
 
