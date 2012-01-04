@@ -114,6 +114,12 @@ class ViewMixin:
 
         return resource_url(self.context, self.request)
 
+    def object_url(self, obj):
+
+        """ return URL for the given object"""
+
+        return resource_url(obj, self.request)
+
     @property
     def can_edit(self):
 
@@ -166,12 +172,12 @@ class AddView(AddBase, ViewMixin):
     @property
     def after_add_redirect(self):
         return "%s%s" % (self.base_url,
-                         self.request.registry.settings.get('pycms.after_add_redirect', ''))
+                         self.request.registry.settings.get('pycms.after_add_redirect', 'admin'))
 
     @property
     def cancel_add_redirect(self):
         return "%s%s" % (self.base_url,
-                         self.request.registry.settings.get('pycms.cancel_add_redirect', ''))
+                         self.request.registry.settings.get('pycms.cancel_add_redirect', 'admin'))
 
     def __call__(self):
 

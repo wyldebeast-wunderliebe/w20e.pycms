@@ -53,7 +53,7 @@
 
   <view
      context="..models.page.Page"
-     view=".page.PageView"
+     view="w20e.pycms.views.page.PageView"
      renderer="w20e.pycms:templates/page.pt"
      />
 
