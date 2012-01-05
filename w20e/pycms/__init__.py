@@ -5,6 +5,7 @@ import pyramid_zcml
 from events import AppRootReady
 from w20e.forms.registry import Registry
 from w20e.forms.pyramid.file import PyramidFile
+from pack import PackCommand
 
 Registry.register_renderable("file", PyramidFile)
 

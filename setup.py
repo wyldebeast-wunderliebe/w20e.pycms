@@ -46,7 +46,7 @@ setup(name='w20e.pycms',
       [paste.app_factory]
       main = w20e.pycms:main
       [paste.paster_command]
-      pack = w20e.pycms:PackCommand
+      pycms_pack = w20e.pycms:PackCommand
       """,
       paster_plugins=['pyramid'],
       )

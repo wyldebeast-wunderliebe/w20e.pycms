@@ -209,6 +209,9 @@ pycms.catalog.force_new = True|False
         can just run reindex-catalog and all is well again...
 pycms.admin_user = <user>:<pwd>
         Admin user and password, like so: pycms.admin_user = admin:pipo
+pycms.admin_secret = <somesecret>
+        This secret may be used as URL parameter to obtain admin permission
+        Use it wisely!
 pycms.minify_css = True|False
         Minify CSS. Defaults to False
 pycms.minify_js = True|False
