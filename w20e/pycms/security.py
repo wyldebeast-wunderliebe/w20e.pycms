@@ -27,6 +27,12 @@ def init(event):
         app.acl.__name__ = "ACL"
         app._p_changed = 1
 
+    # ALWAYS reset admin pwd...
+    admin, pwd = settings.get('pycms.admin_user',
+                              "admin:admin").split(":")
+
+    app.acl.users['admin'] = User(admin, "Administrator", "", pwd)
+
 
 class ISecure(Interface):
 
