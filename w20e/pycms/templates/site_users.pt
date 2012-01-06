@@ -41,13 +41,13 @@
 	    <tal:repeat repeat="user view.list_users()">
 	      <tr id="" tal:attributes="id user.id">
                 <td><img src="/icons/User16.png" alt="User"/></td>
-		<td tal:content="user.id">user</td> 
-		<td tal:content="user.name">user</td> 
-		<td tal:content="user.email">user</td> 
+		            <td tal:content="user.id">user</td> 
+		            <td tal:content="user.name">user</td> 
+		            <td tal:content="user.email">user</td> 
                 <td>
                   <div class="lsaction" id="lsdelete"
-		       tal:condition="user.id != 'admin'"
-		       >
+		                   tal:condition="user.id != 'admin'"
+		                   >
                     <a href="#"
                        tal:attributes="href 'javascript: pycms_acl.deleteUser(\'%s\')' % user.id"
                        title="Delete user">
@@ -55,8 +55,8 @@
                     </a>
                   </div>
                   <div class="lsaction" id="lsnotify"
-		       tal:condition="user.id != 'admin'"
-		       >
+		                   tal:condition="user.id != 'admin'"
+		                   >
                     <a href="#"
                        tal:attributes="href 'javascript: pycms_acl.inviteUser(\'%s\')' % user.id"
                        title="Invite user"
@@ -64,7 +64,9 @@
                       <img src="/icons/Chat16.png"/>
                     </a>
                   </div>
-                  <div class="lsaction minimal" id="lspwd">
+                  <div class="lsaction minimal" id="lspwd"
+                       tal:condition="user.id != 'admin'"
+                       >
                     <a href="#"
                        tal:attributes="href 'set_password?user_id=%s' % user.id"
                        title="Set password"
@@ -74,27 +76,27 @@
 		                <div class="popup"></div>
                   </div>
                   <div class="lsaction minimal" id="lspwd"
-		       tal:condition="user.id != 'admin'"
-		       >
+		                   tal:condition="user.id != 'admin'"
+		                   >
                     <a href="#"
                        tal:attributes="href 'user_groups?user_id=%s' % user.id"
                        title="User groups"
                        >
                       <img src="/icons/Users16.png"/>
                     </a>
-		    <div class="popup"></div>
+		                <div class="popup"></div>
                   </div>
                 </td>
-              </tr>
+        </tr>
 	    </tal:repeat>
 	  </tbody>
 	</table>
-        
-        <h2>
-          <img src="/icons/Users24.png" alt="Groups"/>
-          Groups
-        </h2>
-        
+  
+  <h2>
+    <img src="/icons/Users24.png" alt="Groups"/>
+    Groups
+  </h2>
+  
 	<table class="listing">
 	  <thead>
 	    <tr>
