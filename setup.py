@@ -16,6 +16,7 @@ requires = [
     'pyramid_debugtoolbar',
     'pyramid_mailer',
     'ZODB3',
+    'repoze.catalog',
     'cssmin',
     'w20e.hitman',
     'PasteScript>=1.3',

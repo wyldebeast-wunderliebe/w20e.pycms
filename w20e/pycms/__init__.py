@@ -1,4 +1,5 @@
 import os
+import sys
 from pyramid.config import Configurator
 from pyramid_zodbconn import get_connection
 import pyramid_zcml
@@ -12,6 +13,28 @@ Registry.register_renderable("file", PyramidFile)
 here = os.path.abspath(os.path.dirname(__file__))
 version = open(os.path.join(here, "version.txt")
                ).readlines()[0].strip()
+
+
+def class_from_string(clazz_name):
+
+    """ We'll need to follow the dotted path, and find the module that
+    starts with some part, and provides the rest of the path... """
+
+    clazz_path = clazz_name.split(".")
+
+    if len(clazz_path) == 1:
+        mod_name = __name__
+        clazz = clazz_name
+    else:
+        if ".".join(clazz_path[:-1]) in sys.modules:
+            mod_name = ".".join(clazz_path[:-1])
+            clazz = clazz_path[-1]
+        else:
+            mod_name = ".".join(clazz_path[:-2])
+            clazz = ".".join(clazz_path[-2:])
+            __import__(".".join(clazz_path[:-1]))
+
+    return reduce(getattr, clazz.split("."), sys.modules[mod_name])
 
 
 class InitRequest(object):
@@ -39,12 +62,16 @@ def appmaker(config):
 
     if not 'app_root' in zodb_root:
 
-        root_clazz = registry.settings.get("pycms.rootclass",
+        root_clazz_name = config.registry.settings.get("pycms.rootclass",
                                            "w20e.pycms.models.site.Site")
-        root_title = registry.settings.get("pycms.roottitle",
-                                           "Welcome")
-        app_root = root_clazz(root_title)
-        app_root.__data__['name'] = 'welcome'
+        root_title = config.registry.settings.get("pycms.roottitle",
+                                           "Yet another PyCMS app!")
+
+
+        root_clazz = class_from_string(root_clazz_name)
+
+        app_root = root_clazz("root")
+        app_root.__data__['name'] = root_title
         app_root.__parent__ = app_root.__name__ = None
 
         setattr(app_root, 'pycms_version', version)
