@@ -42,7 +42,11 @@ class Actions(object):
 
     def get_actions(self, category, ctype=None):
 
+        """ Return actions that actually have a target..."""
+
         actions = self.registry.get(category, {}).values()
+
+        actions = [action for action in actions if action.target]
 
         if not ctype:
             return actions
