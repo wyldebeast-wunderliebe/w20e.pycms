@@ -5,14 +5,14 @@
   <pycms:ctype
      name="page"
      factory="w20e.pycms.models.page.Page"
-     icon="/icons/Page16.png"
+     icon="/pycms_icons/Page16.png"
      subtypes="page,file,form,folder"
      />
 
   <pycms:ctype
      name="folder"
      factory="w20e.pycms.models.folder.Folder"
-     icon="/icons/Folder16.png"
+     icon="/pycms_icons/Folder16.png"
      />
 
   <pycms:ctype
@@ -24,25 +24,25 @@
      name="imagefolder"
      factory="w20e.pycms.models.imagefolder.ImageFolder"
      subtypes="image"
-     icon="/icons/Folder16.png"
+     icon="/pycms_icons/Folder16.png"
      />
 
   <pycms:ctype
      name="image"
      factory="w20e.pycms.models.image.Image"
-     icon="/icons/Camera20.png"
+     icon="/pycms_icons/Camera20.png"
      />
 
   <pycms:ctype
      name="file"
      factory="w20e.pycms.models.file.File"
-     icon="/icons/File16.png"
+     icon="/pycms_icons/File16.png"
      />
 
   <pycms:ctype
      name="form"
      factory="w20e.pycms.models.form.Form"
-     icon="/icons/Form16.png"
+     icon="/pycms_icons/Form16.png"
      />
   
 </configure>

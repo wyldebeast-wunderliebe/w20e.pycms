@@ -28,7 +28,7 @@
 		        <tbody>
 		          <tal:repeat repeat="user_id view.list_user_ids()">
 		            <tr>
-                  <td><img src="/icons/User16.png" alt="User"/></td>
+                  <td><img src="/pycms_icons/User16.png" alt="User"/></td>
 			            <th tal:content="user_id">user</th> 
 			            <tal:repeat repeat="group_id view.list_group_ids()">
 			              <td>

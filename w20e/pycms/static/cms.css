@@ -351,17 +351,17 @@ h2 {
 
 .lscut {
     color: transparent;
-    background: #ffffff url("/icons/Cut16.png") 2px 2px no-repeat;
+    background: #ffffff url("/pycms_icons/Cut16.png") 2px 2px no-repeat;
 }
 
 .lsdelete {
     color: transparent;
-    background: #ffffff url("/icons/Delete16.png") 2px 2px no-repeat;
+    background: #ffffff url("/pycms_icons/Delete16.png") 2px 2px no-repeat;
 }
 
 .lsedit {
     color: transparent;
-    background: #ffffff url("/icons/Edit16.png") 2px 2px no-repeat;
+    background: #ffffff url("/pycms_icons/Edit16.png") 2px 2px no-repeat;
 }
 
 .lsedit a {
@@ -435,7 +435,7 @@ input.rename_in {
 
 .ui-icon-closethick {
     color: transparent;
-    background: transparent url("/icons/Delete16.png") left top no-repeat !important;
+    background: transparent url("/pycms_icons/Delete16.png") left top no-repeat !important;
 }
 
 #rm_confirm {
