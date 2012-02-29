@@ -6,6 +6,7 @@ import pyramid_zcml
 from events import AppRootReady
 from w20e.forms.registry import Registry
 from w20e.forms.pyramid.file import PyramidFile
+from models.imagefolder import ImageFolder
 from pack import PackCommand
 
 Registry.register_renderable("file", PyramidFile)
@@ -83,6 +84,13 @@ def appmaker(config):
 
     # create a globale images folder
     app_root = zodb_root['app_root']
+    IMAGES_ID = 'images'
+    if not IMAGES_ID in app_root:
+        images = ImageFolder(IMAGES_ID)
+        images.__data__['name'] = 'Images'
+        app_root.add_content(images)
+        import transaction
+        transaction.commit()
 
     # Do necessary updates
     update(zodb_root['app_root'])
