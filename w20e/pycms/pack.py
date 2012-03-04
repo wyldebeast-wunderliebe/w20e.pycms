@@ -44,8 +44,6 @@ class PackCommand(command.Command):
 
         print handle.info()
         
-        #import pdb; pdb.set_trace()
-        
         #url = "http://%s:%s/ajax_pack" % (host, port)
 
         #r = opener.open(url)

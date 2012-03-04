@@ -29,7 +29,6 @@ class Image(BaseContent):
 
         """ return the thumbnail, or lazy create it when not present
         yet """
-
         key = '__cached_blob_thumbnail'
         if not hasattr(self, key):
             self._store_resized_image(key, resize_image(self.__data__['data']))

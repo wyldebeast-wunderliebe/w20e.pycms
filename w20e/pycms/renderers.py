@@ -62,9 +62,12 @@ class PNGRenderer:
         mimeType = "image/png"
 
         try:
-            mimeType = mimetypes.guess_type(filename, strict=False)[0]
+            guessed = mimetypes.guess_type(filename, strict=False)[0]
+            if guessed:
+                mimeType = guessd
         except:
             pass
+
         system['request'].response.content_type = mimeType
         system['request'].response.etag = str(etag)
         system['request'].response.cache_expires = (3600 * 24 * 7)
