@@ -23,22 +23,28 @@ class ImageView(object):
         except:
             pass
 
-        self.request.response.content_type = mimeType
-        self.request.response.cache_expires = (3600 * 24 * 7)
-
         if isinstance(value['data'], str):
             # hmm. no blob image.. (should probably never happen)
-            return Response(value['data'], content_type=mimeType)
+            response = Response(value['data'], content_type=mimeType)
+            etag = len(value['data'])
 
-        # get file path.. don't know the proper way to do this..
-        # but open() sort of works..
-        opened_file = blob.open('r')
+        else:
 
-        etag = blob._p_mtime
-        self.request.response.etag = str(etag)
+            # get file path.. don't know the proper way to do this..
+            # but open() sort of works..
+            opened_file = blob.open('r')
 
-        return FileResponse(opened_file.name, self.request,
-                content_type=mimeType)
+            etag = blob._p_mtime
+
+            response = FileResponse(opened_file.name, self.request,
+                    content_type=mimeType)
+
+        # set response caching headers..
+
+        response.etag = str(etag)
+        response.cache_expires = (3600 * 24 * 7)
+
+        return response
 
     def __call__(self):
 
