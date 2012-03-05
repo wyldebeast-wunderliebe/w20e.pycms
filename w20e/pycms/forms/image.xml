@@ -17,6 +17,12 @@
       <bind>data</bind>
       <required>True</required>
     </properties>
+
+    <properties id="file_types">
+      <bind>data</bind>
+      <datatype>file</datatype>
+    </properties>
+
   </model>
 
   <view>

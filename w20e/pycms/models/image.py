@@ -22,7 +22,7 @@ class Image(BaseContent):
         """ retrieve a blob image """
         blob = getattr(self, key)
         return {'name': self.__data__['data']['name'],
-                'data': blob.open('r').read()}
+                'data': blob}
 
     @property
     def thumbnail(self):

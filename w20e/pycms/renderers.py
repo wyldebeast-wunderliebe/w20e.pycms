@@ -1,5 +1,6 @@
 import hashlib
 import mimetypes
+from pyramid.response import FileResponse
 
 
 class JSRenderer:
@@ -64,7 +65,7 @@ class PNGRenderer:
         try:
             guessed = mimetypes.guess_type(filename, strict=False)[0]
             if guessed:
-                mimeType = guessd
+                mimeType = guessed
         except:
             pass
 

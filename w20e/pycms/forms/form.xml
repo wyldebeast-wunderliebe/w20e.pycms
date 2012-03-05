@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
-     
-<form id="form" 
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+
+<form id="form"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="/home/dokter/Work/w20e/loonwijzer/educoeff/GIT/eggs/wageindicator.educoeff/wageindicator/educoeff/forms/gw20eforms.xsd">
 
   <data>
@@ -18,6 +18,12 @@
       <bind>status</bind>
       <required>True</required>
     </properties>
+
+    <properties id="file_types">
+      <bind>form</bind>
+      <datatype>file</datatype>
+    </properties>
+
   </model>
 
   <view>
@@ -29,13 +35,13 @@
     <richtext id="header_text" bind="header_text">
       <label>Text above form</label>
       <property name="rows">5</property>
-      <property name="cols">80</property>      
+      <property name="cols">80</property>
     </richtext>
 
     <richtext id="footer_text" bind="footer_text">
       <label>Text below form</label>
       <property name="rows">5</property>
-      <property name="cols">80</property>      
+      <property name="cols">80</property>
     </richtext>
 
     <file id="form" bind="form">
@@ -51,11 +57,11 @@
 
     <group id="submission" layout="flow">
       <property name="orientation">h</property>
-      
+
       <submit id="save">
         <label>Save</label>
       </submit>
-      
+
       <cancel id="cancel">
         <label>Cancel</label>
       </cancel>
@@ -64,7 +70,7 @@
   </view>
 
   <submission type="attr">
-     <property name="attr_name">_DATA</property>	
+     <property name="attr_name">_DATA</property>
   </submission>
 
 </form>

@@ -76,7 +76,6 @@
   <view
      context="..models.image.Image"
      view=".image.ImageView"
-     renderer="png"
      />
 
   <view
@@ -89,7 +88,6 @@
   <view
      context="..models.image.Image"
      view=".image.ImageView"
-     renderer="png"
      name="thumbnail"
      attr="thumbnail"
      />
