@@ -10,7 +10,7 @@ class loginview(BaseView):
 
     def __init__(self, context, request):
 
-        self.context = context
+        self.context = request.context
         self.request = request
 
     @property
