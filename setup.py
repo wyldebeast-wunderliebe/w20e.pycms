@@ -9,7 +9,7 @@ version = open(os.path.join("w20e", "pycms", "version.txt")
                ).readlines()[0].strip()
 
 requires = [
-    'pyramid',
+    'pyramid>=1.3',
     'pyramid_zodbconn',
     'pyramid_tm',
     'pyramid_zcml',

@@ -10,10 +10,11 @@
     callback=".security.groupfinder"
   />
 
-  <forbidden
+  <view
     view=".views.login.loginview"
+    context="pyramid.exceptions.Forbidden"
     renderer="templates/login.pt"
-    />
+  />
 
   <view
     context="w20e.hitman.models.base.IContent"
