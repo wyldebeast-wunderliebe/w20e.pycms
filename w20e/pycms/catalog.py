@@ -65,6 +65,24 @@ def objectChanged(event):
         pass
 
 
+class ObjectSummary(object):
+
+    """ 'Brain'..."""
+
+    def __init__(self, props={}):
+
+        self.props = props
+
+    def __getattr__(self, attrname):
+
+        return self.props.get(attrname, '')
+        
+    @property
+    def content_type(self):
+
+        return self.ctype
+
+
 class Catalog(object):
 
     def __init__(self):
@@ -85,7 +103,17 @@ class Catalog(object):
 
     def query(self, *args, **kwargs):
 
-        return self._catalog.query(*args, **kwargs)
+        """ Query the catalog. If as_summary is set, return object summaries,
+        as fetched from info from the indexes"""
+
+        res = self._catalog.query(*args, **kwargs)
+
+        if kwargs.get('as_summary', False):
+            return [self.get_object_summary(uuid) for uuid in res]
+        elif kwargs.get('as_object', False):
+            return [self.get_object(uuid) for uuid in res]            
+        else:
+            return res
 
     def index_object(self, object):
 
@@ -127,6 +155,20 @@ class Catalog(object):
 
         path = self.uuid_to_path[uuid]
         return path_to_object(path, self.__parent__)
+
+    def get_object_summary(self, uuid): 
+
+        """ Return a summary of the found object, based on the values that
+        the indexes hold on the given uuid"""
+
+        summ = {}
+
+        for key in self.catalog.keys():
+            idx = self.catalog[key]
+            if hasattr(idx, "_rev_index"):
+                summ[key] = idx._rev_index[uuid]
+
+        return ObjectSummary(summ)
 
     def list_objects(self):
 

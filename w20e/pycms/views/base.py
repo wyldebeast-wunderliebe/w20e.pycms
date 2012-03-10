@@ -333,3 +333,26 @@ class AdminView(Base, ViewMixin):
                     ret['status'] = -1
                     ret['errors'].append("%s already exists" % id_to)
         return ret
+
+    def list_content(self, **kwargs):
+
+        """ If we're using the calalog, use the summary, otherwise do the
+        usual"""
+
+        if hasattr(self.context.root, "_catalog"):
+
+            cat = self.context.root._catalog
+            from repoze.catalog.query import Eq
+
+            summaries = []
+            
+            for obj_id in self.context.list_content_ids():
+                uuid = cat.query(Eq("id", obj_id))[1][0]
+                
+                summaries.append(cat.get_object_summary(uuid))
+
+            return summaries
+
+        else:
+
+            return super(AdminView, self).list_content(**kwargs)

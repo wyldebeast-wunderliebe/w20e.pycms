@@ -208,6 +208,29 @@ class PageLayout(PageView):
 
     def page_actions(self):
 
+        layoutsubs = [
+            {'id': 'grid',
+             'title': 'Grid',
+             'action': 'javascript: pycms.selectLayout("grid")',
+             'permission': 'edit'
+             },
+            {'id': '2col',
+             'title': '2 columns',
+             'action': 'javascript: pycms.selectLayout("2col")',
+             'permission': 'edit'
+             },
+            {'id': '3col',
+             'title': '3 columns',
+             'action': 'javascript: pycms.selectLayout("3col")',
+             'permission': 'edit'
+             },
+            {'id': '4col',
+             'title': '4 columns',
+             'action': 'javascript: pycms.selectLayout("4col")',
+             'permission': 'edit'
+             },                        
+            ]
+
         subs = []
 
         for tp in Registry.list_types():
@@ -219,12 +242,18 @@ class PageLayout(PageView):
                      })
 
         return [
+            {'id': 'pick_layout',
+             'title': 'Select layout...',
+             'action': '',
+             'permission': 'edit',
+             'subs': layoutsubs
+             },
             {'id': 'add_block',
              'title': 'Add block...',
-             'action': 'javascript: pycms.addBlock("text")',
+             'action': '',
              'permission': 'edit',
              'subs': subs
-             },
+             },            
             {'id': 'delete',
              'title': 'Delete',
              'action': 'javascript: pycms.deleteBlock()',

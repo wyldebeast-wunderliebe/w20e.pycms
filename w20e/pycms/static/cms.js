@@ -149,6 +149,11 @@ pycms.addBlock = function(type) {
 pycms.addGroup = pycms.addBlock;
 
 
+pycms.selectLayout = function(type) {
+
+}
+
+
 pycms.createConfig = function(data) {
 
     html = '<dl class="config">'
