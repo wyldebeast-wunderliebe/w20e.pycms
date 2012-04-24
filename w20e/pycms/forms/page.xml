@@ -30,6 +30,7 @@
 
     <input id="name" bind="name">
       <label>Name</label>
+      <property name="cols">40</property>
     </input>
 
     <input id="description" bind="description">

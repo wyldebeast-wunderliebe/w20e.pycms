@@ -64,68 +64,6 @@
      name="ajax"
      />
 
-  <pycms:css cssfile="./static/base.css" csstarget="public,manage" />
-  <pycms:css cssfile="./static/main.css" csstarget="public,manage" />
-  <pycms:css cssfile="./static/skeleton.css" csstarget="public,manage" />
-  <pycms:css cssfile="./static/layout.css" csstarget="public,manage" />
-
-  <pycms:css
-     cssfile="./static/jquery-ui-1.8.11.custom.css"
-     csstarget="public,manage"
-     />
-
-  <pycms:css
-     cssfile="./static/forms.css"
-     csstarget="manage"
-     />
-
-  <pycms:css
-     cssfile="./static/cms.css"
-     csstarget="manage"
-     />
-
-  <pycms:js
-     jsfile="./static/jquery-ui-1.8.11.custom.min.js"
-     jstarget="public,manage"
-     />
-
-  <pycms:js
-     jsfile="./static/jquery-zrssfeed.js"
-     jstarget="public"
-     />
-
-  <pycms:js jsfile="./static/tabs.js" jstarget="manage"/>
-
-  <pycms:js
-     jsfile="./static/validation.js"
-     jstarget="manage,public"
-     />
-
-  <pycms:js
-     jsfile="./static/cms.js"
-     jstarget="manage"
-     />
-
-  <pycms:js
-     jsfile="./static/jquery.Storage.js"
-     jstarget="manage"
-     />
-
-  <pycms:js
-     jsfile="./static/acl.js"
-     jstarget="manage"
-     />
-
-  <pycms:js
-     jsfile="./static/tinymce/jscripts/tiny_mce/jquery.tinymce.js"
-     jstarget="manage"
-     />
-
-  <pycms:js
-     jsfile="./static/tinyupload.js"
-     jstarget="manage"
-     />
-
   <pycms:action
      name="admin"
      target="./admin"

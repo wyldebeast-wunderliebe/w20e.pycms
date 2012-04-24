@@ -339,20 +339,25 @@ class AdminView(Base, ViewMixin):
         """ If we're using the calalog, use the summary, otherwise do the
         usual"""
 
-        if hasattr(self.context.root, "_catalog"):
+# TODO
+# HUUB: I don't think this will work.. we need a path query, because the
+# id is not unique within the application
+#
+#        if hasattr(self.context.root, "_catalog"):
+#
+#            cat = self.context.root._catalog
+#            from repoze.catalog.query import Eq
+#
+#            summaries = []
+#
+#            for obj_id in self.context.list_content_ids():
+#                uuid = cat.query(Eq("id", obj_id))[1][0]
+#
+#                summaries.append(cat.get_object_summary(uuid))
+#
+#            return summaries
 
-            cat = self.context.root._catalog
-            from repoze.catalog.query import Eq
-
-            summaries = []
-            
-            for obj_id in self.context.list_content_ids():
-                uuid = cat.query(Eq("id", obj_id))[1][0]
-                
-                summaries.append(cat.get_object_summary(uuid))
-
-            return summaries
-
+        if False:
+            pass
         else:
-
             return super(AdminView, self).list_content(**kwargs)

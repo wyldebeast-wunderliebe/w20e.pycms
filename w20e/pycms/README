@@ -9,7 +9,7 @@ created using these main ideas:
 * ZODB as database
 * ZCML as configuration/glue language
 * small core
-* optional components (like search, catalog, sharing); just include what 
+* optional components (like search, catalog, sharing); just include what
   you like
 
 The CMS is a framework, not an out of the box app. What you'll need to
@@ -39,29 +39,35 @@ github), something along these lines:
   # paster create -t pycms_project <package name>
 
 
-- Create a buildout and virtualenv for your stuff. Why not use the 
+- Create a buildout and virtualenv for your stuff. Why not use the
   ini files and buildout files we provide in the skel directory here?
 
   # paster create -t pycms_buildout <same package name!>
   #
   # python bootstrap.py
   # ./bin/buildout -v -c buildout-dvl.cfg
- 
-At this stage you may want to drink a nice cuppa, read a book, etc. 
 
+At this stage you may want to drink a nice cuppa, read a book, etc.
 
-- Include any CSS and JS you like, using the pycms zcml directives:
+- Add the default management and public css / js files (if you want):
+
+ add this to your configure.zcml:
+
+ <include package="w20e.pycms" file="public_resources.zcml"/>
+ <include package="w20e.pycms" file="manage_resources.zcml"/>
+
+- Include any other CSS and JS you like, using the pycms zcml directives:
 
   <pycms:css
     cssfile="your.css"
     csstarget="public"
     media="screen"
-    />      
+    />
 
   <pycms:js
     jsfile="your.js"
     jstarget="public"
-    />      
+    />
 
 - Override assets like logo and favicon:
 
@@ -77,7 +83,7 @@ At this stage you may want to drink a nice cuppa, read a book, etc.
 <metal:define-macro define-macro="master"
                     metal:extend-macro="main.macros['master']">
 
-  <html xmlns="http://www.w3.org/1999/xhtml" 
+  <html xmlns="http://www.w3.org/1999/xhtml"
       xml:lang="en"
       i18n:domain="w20e"
       xmlns:tal="http://xml.zope.org/namespaces/tal"
@@ -101,7 +107,7 @@ main.pt):
      />
 
 
-Using the CMS: core concepts 
+Using the CMS: core concepts
 ============================
 
 The core CMS consists solely of pages. Pages are composites, that is,
@@ -123,7 +129,7 @@ configured using zcml. Use the action statment as follows:
   target="./users"
   category="perspective"
   ctype="site"
-/>        
+/>
 
 ctype is an optional filter.
 
@@ -142,9 +148,9 @@ and possible subtypes with your type using:
      />
 
 Your actual model should extend either
-  w20e.hitman.models.base.BaseContent 
+  w20e.pycms.models.base.BaseContent
 or
-  w20e.hitman.models.base.BaseFolder.
+  w20e.pycms.models.base.BaseFolder.
 
 You may want to use w20e.forms (read: should) for your model. Create
 an xml form that describes your model, and add it. A simple model
@@ -177,9 +183,9 @@ class SomethingSimple(BaseContent):
 
 
 
-robot.txt
+robots.txt
 =========
-The default robot.txt disallows all. Override as per your liking...
+The default robots.txt disallows all. Override as per your liking...
 
 
 Search

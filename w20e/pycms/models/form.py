@@ -3,7 +3,7 @@ from base import BaseContent
 
 class Form(BaseContent):
 
-    """ Software project representation """
+    """ Generic Form """
 
     add_form = edit_form = "../forms/form.xml"
 

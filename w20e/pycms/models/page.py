@@ -4,7 +4,7 @@ from ..blocks.base import BlockContainer
 
 class Page(Folder, BlockContainer):
 
-    """ Software project representation """
+    """ Basic Page """
 
     add_form = edit_form = "../forms/page.xml"
 
