@@ -1,0 +1,25 @@
+<configure xmlns="http://pylonshq.com/pyramid"
+           xmlns:pycms="http://w20e.com/pycms"
+           >
+
+  <!-- this must be included for the view declarations to work -->
+  <include package="pyramid_zcml" />
+
+  <pycms:css cssfile="./static/base.css" csstarget="public" />
+  <pycms:css cssfile="./static/main.css" csstarget="public" />
+  <pycms:css cssfile="./static/skeleton.css" csstarget="public" />
+  <pycms:css cssfile="./static/layout.css" csstarget="public" />
+
+  <pycms:css cssfile="./static/jquery-ui-1.8.11.custom.css"
+     csstarget="public"
+     />
+
+  <pycms:js jsfile="./static/jquery-ui-1.8.11.custom.min.js"
+     jstarget="public"
+     />
+
+  <pycms:js jsfile="./static/jquery-zrssfeed.js" jstarget="public" />
+
+  <pycms:js jsfile="./static/validation.js" jstarget="public" />
+
+</configure>
