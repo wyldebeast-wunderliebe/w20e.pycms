@@ -106,10 +106,6 @@ class ViewMixin:
         return ctypes.get_ctype_info(ctype).get("icon", "")
 
     @property
-    def content_type(self):
-        return self.context.content_type
-
-    @property
     def footer(self):
         return render('../templates/footer.pt', {})
 
