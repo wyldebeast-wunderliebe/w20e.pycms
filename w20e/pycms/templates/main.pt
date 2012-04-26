@@ -10,7 +10,9 @@
     <!-- Basic Page Needs
          ================================================== -->
 
-    <title tal:content="view.context.title">Dik vet CMS</title>
+    <metal:define-slot define-slot="title">
+      <title tal:content="view.context.title">Dik vet CMS</title>
+    </metal:define-slot>
     
     <base href="#" tal:attributes="href view.url"/>
     
