@@ -1,4 +1,5 @@
 from PIL import Image as PILImage
+from ZODB.blob import Blob
 from StringIO import StringIO
 import time
 import random
@@ -13,8 +14,13 @@ def resize_image(data, size=THUMBNAIL_SIZE):
 
     """ generate the thumbnail, and store it as an attribute """
 
-    image_data = StringIO(data['data'])
-    pil_img = PILImage.open(image_data)
+    # TODO: blob handling needs some streamlining..
+    if isinstance(data['data'], Blob):
+        pil_img = PILImage.open(data['data'].open())
+    else:
+        image_data = StringIO(data['data'])
+        pil_img = PILImage.open(image_data)
+
     pil_img.thumbnail(size, PILImage.ANTIALIAS)
 
     thumb_buf = StringIO()
