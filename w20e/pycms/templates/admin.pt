@@ -14,7 +14,7 @@
         Manage <tal:blok replace="view.title"/>
       </h2>
 
-      <div metal:use-macro="macros.macros['listing']"/>      
+      <!--div metal:use-macro="macros.macros['listing']"/-->      
       
     </div>
   </body>

@@ -373,6 +373,10 @@ h2 {
     width: 100%;
 }
 
+#actions_col {
+    width: 100px;
+}
+
 input.rename_in {
     display: none;
     z-index: 1001;

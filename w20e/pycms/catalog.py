@@ -138,11 +138,13 @@ class Catalog(object):
     def unindex_object(self, object):
 
         path = object_to_path(object)
-        uuid = self.path_to_uuid[path]
-        self.catalog.unindex_doc(uuid)
-        del self.uuid_to_path[uuid]
-        del self.path_to_uuid[path]
-        self.__parent__._p_changed = 1
+        uuid = self.path_to_uuid.get(path, None)
+
+        if uuid:
+            self.catalog.unindex_doc(uuid)
+            del self.uuid_to_path[uuid]
+            del self.path_to_uuid[path]
+            self.__parent__._p_changed = 1
 
     def clear(self):
 

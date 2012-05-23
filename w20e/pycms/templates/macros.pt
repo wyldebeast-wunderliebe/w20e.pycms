@@ -65,7 +65,7 @@
           <td class="contenttype">
             <img src="#" tal:attributes="src view.get_icon(item.content_type)"/>
           </td>
-          <td>
+          <td id="actions_col">
             <div class="lsaction lsdelete">
               D
             </div>

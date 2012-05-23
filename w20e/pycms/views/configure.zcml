@@ -43,6 +43,14 @@
      permission="edit"
      />
 
+  <view
+     context="w20e.hitman.models.base.IFolder"
+     view=".base.AdminView"
+     renderer="../templates/folderadmin.pt"
+     name="admin"
+     permission="edit"
+     />
+
  <view
      context="w20e.hitman.models.base.IContent"
      view=".base.EditView"
