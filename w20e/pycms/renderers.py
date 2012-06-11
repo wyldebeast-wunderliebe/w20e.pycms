@@ -18,9 +18,15 @@ class JSRenderer:
         etag = m.hexdigest()
 
         system['request'].response.content_type = 'text/javascript'
-        system['request'].response.headerlist = [('ETag', etag),
-                                                 ('Vary', 'Accept-Encoding')]
-        system['request'].response.cache_expires = (3600 * 24 * 7)
+
+        system['request'].response.conditional_response = True
+        system['request'].response.etag = etag
+        system['request'].response.vary = 'Accept-Encoding'
+
+        # should we set the expires explicitly?
+        # don't set expires to 0, or no-cache will be set, and it will
+        # disable the conditional get (304 response with etag)
+        system['request'].response.cache_expires = 1
 
         return value
 
@@ -40,8 +46,15 @@ class CSSRenderer:
         etag = m.hexdigest()
 
         system['request'].response.content_type = 'text/css'
+
+        system['request'].response.conditional_response = True
         system['request'].response.etag = etag
-        system['request'].response.cache_expires = (3600 * 24 * 7)
+        system['request'].response.vary = 'Accept-Encoding'
+
+        # should we set the expires explicitly?
+        # don't set expires to 0, or no-cache will be set, and it will
+        # disable the conditional get (304 response with etag)
+        system['request'].response.cache_expires = 1
 
         return value
 
@@ -56,7 +69,7 @@ class PNGRenderer:
 
     def __call__(self, value, system):
 
-        etag = len(value['data'])
+        etag = str(len(value['data']))
 
         filename = value['name']
 
@@ -70,8 +83,15 @@ class PNGRenderer:
             pass
 
         system['request'].response.content_type = mimeType
-        system['request'].response.etag = str(etag)
-        system['request'].response.cache_expires = (3600 * 24 * 7)
+
+        system['request'].response.conditional_response = True
+        system['request'].response.etag = etag
+        system['request'].response.vary = 'Accept-Encoding'
+
+        # should we set the expires explicitly?
+        # don't set expires to 0, or no-cache will be set, and it will
+        # disable the conditional get (304 response with etag)
+        system['request'].response.cache_expires = 1
 
         return value['data']
 
