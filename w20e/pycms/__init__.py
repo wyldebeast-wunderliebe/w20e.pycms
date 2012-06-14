@@ -8,6 +8,8 @@ from w20e.forms.registry import Registry
 from w20e.forms.pyramid.file import PyramidFile
 from models.imagefolder import ImageFolder
 from pack import PackCommand
+#import formtemplates
+
 
 Registry.register_renderable("file", PyramidFile)
 

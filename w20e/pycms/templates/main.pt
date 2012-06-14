@@ -1,6 +1,6 @@
 <metal:define-macro define-macro="master">
 
-<!doctype html>
+<!DOCTYPE html>
 <!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
 <!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
 <!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
@@ -11,7 +11,7 @@
          ================================================== -->
 
     <metal:define-slot define-slot="title">
-      <title tal:content="view.context.title">Dik vet CMS</title>
+      <title tal:content="view.context.title">PyCMS rules</title>
     </metal:define-slot>
     
     <base href="#" tal:attributes="href view.url"/>
@@ -79,21 +79,17 @@
 
     <div id="main" class="container" metal:define-slot="main">
 
-      <div id="wrapper" class="sixteen columns">
-
-        <div id="header" metal:define-slot="header">
-          <a href="${request.application_url}" class="logo">
-            <img src="${request.application_url}/static/logo.png"/>
-          </a>
-        </div>
-
-        <div id="content" metal:define-slot="content"/>
-      
-        <div id="footer" metal:define-slot="footer">
-          <tal:footer replace="structure view.footer"/>
-        </div>
+      <div id="header" metal:define-slot="header">
+        <a href="${request.application_url}" class="logo">
+          <img src="${request.application_url}/static/logo.png"/>
+        </a>
       </div>
-
+      
+      <div id="content" metal:define-slot="content"/>
+      
+      <div id="footer" metal:define-slot="footer">
+        <tal:footer replace="structure view.footer"/>
+      </div>
     </div>
 
   </body>

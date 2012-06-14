@@ -255,7 +255,7 @@ pycms.dropped = function(event, ui) {
 
   $(this).find("dt:contains('top')").eq(0).next().html(ui.position.top + "px");
   $(this).find("dt:contains('left')").eq(0).next().html(ui.position.left + "px");
-}
+};
 
 
 pycms.showMessage = function(msg) {
@@ -264,6 +264,11 @@ pycms.showMessage = function(msg) {
   $("#msg").dialog();
 
   setTimeout('$("#msg").parents(".ui-dialog").eq(0).fadeOut(300)', 3000);
+};
+
+
+pycms.about = function() {
+  $("#about").show();
 }
 
 
@@ -289,13 +294,31 @@ pycms.addEvents = function() {
 }
 
 
-/* db pack */
-pycms.pack = function() {
+/**
+ * Pack DB.
+ * @param e Event containing the button that fired the event.
+ */
+pycms.pack = function(e) {
 
-  $.post("ajax_pack",          
-         function(data) {
-           $("#pack_result").html(data);
-         });
+  if ($(e.target).hasClass("disabled")) {
+    return;
+  }
+  
+  $("body").css("cursor", "progress");
+  $(e.target).addClass("disabled");
+
+  $.ajax({'url': "ajax_pack",          
+        'type': "POST",
+        'success': function(data) {
+        $("#pack_result").html(data);
+        $("body").css("cursor", "auto");           
+        $(e.target).removeClass("disabled");
+      },
+        'error': function(data) {
+        $("#pack_result").html(data);
+        $("body").css("cursor", "auto");           
+        $(e.target).removeClass("disabled");
+      }});
 }
 
 /* cut & paste of objects */
@@ -345,13 +368,19 @@ $(document).ready(function() {
 
     pycms.addEvents();
 
-    $(".actionsubs").click(function() {
-        $(this).hide();
+    $(".jsaction").click(function(e) {
+        try {
+          var f = eval($(this).attr("data-jscall"));
+          f.call(e, e);
+        } catch(e) {
+          console.log(e);
+        }
+
+        return false;
       });
 
-    $(".actionsubs").mouseleave(function() {
-        $(this).hide();
-      });
+    // Enable dropdowns
+    $('.dropdown-toggle').dropdown()
 
     $('textarea.wysiwyg').tinymce({
         script_url : '/static/tinymce/jscripts/tiny_mce/tiny_mce.js',
@@ -411,33 +440,32 @@ $(document).ready(function() {
       })    
       
       // Remove object and row
+      //
       $(".lsdelete").click(function() {
           
           var row = $(this).parents("tr").eq(0);
           
-          $("#rm_confirm").dialog({
-              resizable: false,
-                height:140,
-                modal: true,
-                buttons: {
-                "Delete": function() {
-                  $( this ).dialog( "close" );
-                  
-                  $.post("ajax_rm", 
-                         {'content_id': row.attr("id")}, 
-                         function() {                         
-                           row.remove();
-                         });
-                },
-                  "Cancel": function() {
-                    $( this ).dialog( "close" );
-                  }
-              }
+          $("#confirm_delete .confirm").unbind('click');
+          $("#confirm_delete .confirm").click(function() {
+              $.post("ajax_rm", 
+                     {'content_id': row.attr("data-objectid")}, 
+                     function() {                         
+                       row.remove();
+                     });
+              $("#confirm_delete").modal('hide');              
+              return false;
             });
+          
+          $("#confirm_delete #object_title").html(row.attr("data-objecttitle"));
+          $("#confirm_delete").modal();
+
+          return false;
         });
     
-    // Order on ui and on server
-    $(".listingcontent tbody").sortable({
+    // Order objects on screen and on server
+    //
+    $(".contentlisting tbody").sortable({
+        handle: '.contenttype',
         update: function(event, ui) {
           var order = $(this).sortable('toArray').toString();
           $.get('ajax_order', {order: order});

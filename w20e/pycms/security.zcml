@@ -1,7 +1,9 @@
-<configure xmlns="http://pylonshq.com/pyramid">
+<configure xmlns="http://pylonshq.com/pyramid"
+           xmlns:pycms="http://w20e.com/pycms">
 
   <!-- this must be included for the view declarations to work -->
   <include package="pyramid_zcml" />
+  <include file="meta.zcml" />
 
   <aclauthorizationpolicy/>
 
@@ -28,6 +30,14 @@
     view=".views.login.logoutview"
     name="logout"
     />
+
+  <pycms:action
+     name="logout"
+     target="./logout"
+     category="site"
+     permission="edit"
+     condition="view.logged_in"
+     />
 
   <adapter
     for="w20e.hitman.models.base.IContent"

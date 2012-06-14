@@ -1,7 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" 
       xml:lang="en" 
       xmlns:tal="http://xml.zope.org/namespaces/tal"
-      metal:use-macro="body_admin.macros['master']">
+      metal:use-macro="admin.macros['master']">
 
   <head/>
   
@@ -15,7 +15,7 @@
 	      <form action="" method="POST"
 		          tal:define="sharing view.get_sharing()"
 		          >
-		      <table class="sharing">
+		      <table class="table table-bordered">
 		        <thead>
 		          <tr>
                 <th/>
@@ -43,8 +43,12 @@
 		          </tal:repeat>
 		        </tbody>
 		      </table>
-		      <input type="submit" name="submit" value="save"/>
-		      <input type="submit" name="submit" value="cancel"/>
+          <div class="btn-group">
+		        <input type="submit" class="btn btn-primary" 
+                   name="submit" value="save"/>
+		        <input type="submit" class="btn" 
+                   name="submit" value="cancel"/>
+          </div>
 	      </form>
 	    </div>
     </div>

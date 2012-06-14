@@ -2,7 +2,7 @@
       xml:lang="en" 
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
-      metal:use-macro="body_admin.macros['master']">
+      metal:use-macro="admin.macros['master']">
 
   <head>
     <metal:fill-slot fill-slot="extra_js_slot">

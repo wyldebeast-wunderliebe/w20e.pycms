@@ -2,7 +2,7 @@
       xml:lang="en" 
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       xmlns:tal="http://xml.zope.org/namespaces/tal"
-      metal:use-macro="body_admin.macros['master']"
+      metal:use-macro="admin.macros['master']"
 >
 
   <head/>

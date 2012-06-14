@@ -1,7 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" 
       xml:lang="en" 
       xmlns:tal="http://xml.zope.org/namespaces/tal"
-      metal:use-macro="body_admin.macros['master']"
+      metal:use-macro="admin.macros['master']"
       >
 
   <head/>
@@ -9,7 +9,7 @@
   <body>
     
     <!-- BEGIN page_toolbar -->
-    <div id="toolbar" metal:fill-slot="toolbar">
+    <div metal:fill-slot="toolbar">
       <div id="page-toolbar" metal:define-macro="page_toolbar">
         <tal:repeat repeat="action view.page_actions()">
           <tal:condition condition="not action.get('subs', [])">

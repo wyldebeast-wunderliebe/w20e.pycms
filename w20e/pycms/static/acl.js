@@ -1,46 +1,28 @@
-var pycms_acl = {};
-
-pycms.initPartial = function(tgt) {
-
-  tgt.find("form").eq(0).submit(function() {
-      
-      $.post($(this).attr("action"),
-             $(this).serialize(),
-             function(data) {
-               
-               tgt.html(data);
-               
-               if ($("#change_pwd_status").text() == 'ok') {
-                 tgt.hide();
-               } else {
-                 pycms.initPartial(tgt);
-               }
-             });
-      
-      return false;
-    });
-  
-  tgt.find(".cancel").click(function() {
-      tgt.hide();
-    });
+if (pycms == undefined) {
+  var pycms = {};
 }
 
-pycms_acl.showUserAddForm = function() {
-  $.get("add_user_form", {}, function(data) {
-      $("#user_add_form").html(data);
-      pycms.initPartial($("#user_add_form"));
+pycms.acl = {};
+
+pycms.acl.addUser = function() {
+  $.post("add_user", data,
+         function() {
+         });
+}
+
+pycms.acl.showUserAddForm = function() {
+      $("#user_add_form").modal();
     });
-    $("#user_add_form").fadeIn(300);
 };
 
-pycms_acl.deleteUser = function(userId) {
+pycms.acl.deleteUser = function(userId) {
 
   $.post("delete_user", {'user_id': userId}, function() {
       $("#" + userId).remove();      
     });
 };
 
-pycms_acl.inviteUser = function(userId) {
+pycms.acl.inviteUser = function(userId) {
 
   $.post("invite_user", {'user_id': userId}, function() {
     $("#lbmsg").html("User invited");
@@ -50,30 +32,9 @@ pycms_acl.inviteUser = function(userId) {
     });
 };
 
-pycms_acl.deleteKey = function(keyId) {
+pycms.acl.deleteKey = function(keyId) {
 
   $.post("delete_key", {'key': keyId}, function() {
       $("#" + keyId).remove();
     });
 };
-
-
-$(document).ready(function() {
-
-    // Ajax style actions
-    $(".lsaction.minimal a").click(function() {
-	
-        var tgt = $(this).siblings(".popup");
-        
-        $.get($(this).attr("href"), function(data) {
-            
-            tgt.html(data);
-            
-            pycms.initPartial(tgt);
-          });
-        
-        tgt.show();
-        
-        return false;
-      });
-  });

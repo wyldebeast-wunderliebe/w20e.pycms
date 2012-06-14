@@ -2,16 +2,15 @@
       xml:lang="en" 
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
-      metal:use-macro="body_admin.macros['master']">
+      metal:use-macro="admin.macros['master']">
 
   <head/>
   
   <body>
 
-    <div id="toolbar" metal:fill-slot="toolbar">
-      <div class="action" id="pack" title="Pack">
-        <a href="javascript: pycms.pack()">Pack DB</a>
-      </div>
+    <div metal:fill-slot="toolbar">
+      <a class="btn btn-danger jsaction" href="#" 
+         data-jscall="pycms.pack">Pack DB</a>
     </div>
 
     <div metal:fill-slot="content">

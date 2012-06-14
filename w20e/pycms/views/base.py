@@ -8,7 +8,6 @@ from w20e.hitman.events import ContentRemoved
 from pyramid.renderers import get_renderer, render
 from pyramid.security import has_permission, authenticated_userid
 from pyramid.url import resource_url
-from pyramid.traversal import find_resource
 
 from ..actions import IActions
 from ..ctypes import ICTypes
@@ -56,6 +55,25 @@ class ViewMixin:
             return ""
 
     @property
+    def breadcrumbs(self):
+
+        """ Find path to root """
+
+        path = [[self.context.title, resource_url(self.context, self.request)]]
+
+        _root = self.context
+
+        while getattr(_root, "__parent__", None) is not None:
+            _root = _root.__parent__
+            path.append([_root.title, resource_url(_root, self.request)])
+            
+        path.reverse()
+
+        path[0][0] = "Root"
+            
+        return path
+
+    @property
     def perspectives(self):
 
         reg = self.request.registry
@@ -73,10 +91,11 @@ class ViewMixin:
 
         reg = self.request.registry
 
-        actions = reg.getUtility(IActions)
+        util = reg.getUtility(IActions)
 
-        return [action for action in actions.get_actions("site",
-                                                         ctype=self.context.content_type)
+        actions = util.get_actions("site", ctype=self.context.content_type)
+
+        return [action for action in actions
                 if (not action.permission) or has_permission(action.permission,
                                                              self.context,
                                                              self.request)]

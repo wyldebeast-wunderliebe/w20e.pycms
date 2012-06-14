@@ -2,116 +2,138 @@
       xml:lang="en" 
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
-      metal:use-macro="body_admin.macros['master']">
+      metal:use-macro="admin.macros['master']">
 
   <head/>
   
   <body>
 
-    <div id="toolbar" metal:fill-slot="toolbar">
-      <div class="action" id="add_user" title="Add user">
-        <a href="javascript: pycms_acl.showUserAddForm()">Add user</a>
-      </div>
+    <div metal:fill-slot="toolbar">
+      <a class="btn" href="javascript: pycms_acl.showUserAddForm()">
+        <i class="icon-plus"></i>
+        Add user
+      </a>
     </div>
 
     <div metal:fill-slot="content">
+
+      <div class="modal hide" id="user_add_form">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <h3>Add user</h3>
+        </div>
+        <div class="modal-body">        
+          <form action="add_user_form" method="POST">
+            <label>User name</label>
+            <input type="text" name="name"/>
+
+            <label>User email</label>
+            <div class="help-text">Used as user id!</div>
+            <input type="text" name="email"/>      
+
+            <label>Password (optional)</label>
+            <input type="password" name="pwd"/>
+
+            <label>Password confirm (optional)</label>
+            <input type="password" name="pwd_confirm"/>
+
+            <div class="btn-group">
+              <input type="submit" value="Add" class="bnt btn-primary"/>
+              <input type="button" class="cancel btn" value="Cancel"/>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
     
-      <h1 class="edit_header">Site users</h1>
+      <h1 class="edit_header">Site users &amp; groups</h1>
       
       <div id="userscontainer">
         <h2>
-          <img src="/pycms_icons/User24.png" alt="Users"/>
+          <i class="icon-user"></i>
           Users
         </h2>
-        
-        <div id="user_add_form">
-        </div>
-        
-	<table class="listing">
-	  <thead>
-	    <tr>
+                
+	      <table class="contentlisting table table-striped">
+	        <thead>
+	          <tr>
+              <th/>
               <th/>
               <th>Id</th>
-	      <th>Name</th>
-	      <th>Email</th>
+	            <th>Name</th>
+	            <th>Email</th>
               <th/>
-	    </tr>
+	          </tr>
 		      </thead>
-	  <tbody>
-	    <tal:repeat repeat="user view.list_users()">
-	      <tr id="" tal:attributes="id user.id">
-                <td><img src="/pycms_icons/User16.png" alt="User"/></td>
-		            <td tal:content="user.id">user</td> 
-		            <td tal:content="user.name">user</td> 
-		            <td tal:content="user.email">user</td> 
-                <td>
-                  <div class="lsaction" id="lsdelete"
+	        <tbody>
+	          <tal:repeat repeat="user view.list_users()">
+	            <tr id="" tal:attributes="id user.id">
+                <td><i class="icon-user"></i></td>
+                <td class="actions_col">
+                  <div class="btn-group">
+                    <a class="btn btn-danger"
 		                   tal:condition="user.id != 'admin'"
-		                   >
-                    <a href="#"
-                       tal:attributes="href 'javascript: pycms_acl.deleteUser(\'%s\')' % user.id"
-                       title="Delete user">
-                      <img src="/pycms_icons/Delete16.png"/>
+                       href="#"
+                       tal:attributes="href 'javascript: pycms_acl.deleteUser(\'%s\')' % user.id">
+                      <i class="icon-trash"></i>
                     </a>
-                  </div>
-                  <div class="lsaction" id="lsnotify"
-		                   tal:condition="user.id != 'admin'"
-		                   >
-                    <a href="#"
+                    <!--a class="btn" href="#" tal:attributes="href '%s/edit' % item.id"
+                       title="Edit">
+                      <i class="icon-edit"></i>
+                    </a-->
+                    <a href="#" tal:condition="user.id != 'admin'"
                        tal:attributes="href 'javascript: pycms_acl.inviteUser(\'%s\')' % user.id"
                        title="Invite user"
+                       class="btn"
                        >
-                      <img src="/pycms_icons/Chat16.png"/>
+                      <i class="icon-comment"></i>
                     </a>
-                  </div>
-                  <div class="lsaction minimal" id="lspwd"
-                       tal:condition="user.id != 'admin'"
-                       >
-                    <a href="#"
+                    <a href="#" tal:condition="user.id != 'admin'"
                        tal:attributes="href 'set_password?user_id=%s' % user.id"
                        title="Set password"
+                       class="btn"
                        >
-                      <img src="/pycms_icons/Key16.png"/>
+                      <i class="icon-key"></i>
                     </a>
-		                <div class="popup"></div>
-                  </div>
-                  <div class="lsaction minimal" id="lspwd"
-		                   tal:condition="user.id != 'admin'"
-		                   >
-                    <a href="#"
+                    <a href="#" tal:condition="user.id != 'admin'"
                        tal:attributes="href 'user_groups?user_id=%s' % user.id"
                        title="User groups"
+                       class="btn"
                        >
-                      <img src="/pycms_icons/Users16.png"/>
+                      <i class="icon-group"></i>
                     </a>
 		                <div class="popup"></div>
                   </div>
                 </td>
-        </tr>
-	    </tal:repeat>
-	  </tbody>
-	</table>
-  
-  <h2>
-    <img src="/pycms_icons/Users24.png" alt="Groups"/>
-    Groups
-  </h2>
-  
-	<table class="listing">
-	  <thead>
-	    <tr>
+		            <td tal:content="user.id">user</td> 
+		            <td tal:content="user.name">user</td> 
+		            <td tal:content="user.email">user</td> 
+              </tr>
+	          </tal:repeat>
+	        </tbody>
+	      </table>
+        
+        <h2>
+          <i class="icon-group"></i>
+          Groups
+        </h2>
+        
+	      <table class="listing table table-striped">
+	        <thead>
+	          <tr>
               <th/>
               <th>Id</th>
-	      <th>Users</th>
+	            <th>Users</th>
               <th/>
-	    </tr>
-	  </thead>
-	  <tbody>
-	    <tal:repeat repeat="group view.list_groups()">
-	      <tr>
+	          </tr>
+	        </thead>
+	        <tbody>
+	          <tal:repeat repeat="group view.list_groups()">
+	            <tr>
                 <td><img src="/pycms_icons/Users16.png" alt="Group"/></td>
-		<td tal:content="group.id">user</td> 
-		<td tal:content="', '.join(group.users)"></td>
+		            <td tal:content="group.id">user</td> 
+		            <td tal:content="', '.join(group.users)"></td>
                 <td>
                   <div class="lsaction" id="lsdelete">
                     <a href="#"
@@ -121,31 +143,31 @@
                     </a>
                   </div>
                 </td>
-	      </tr>
-	    </tal:repeat>
-	  </tbody>
-	</table>
+	            </tr>
+	          </tal:repeat>
+	        </tbody>
+	      </table>
         
         <h2>
           <img src="/pycms_icons/Chat24.png" alt="User activation"/>
           Activation
         </h2>
         
-	<table class="listing">
-	  <thead>
-	    <tr>
+	      <table class="listing">
+	        <thead>
+	          <tr>
               <th/>
               <th>Id</th>
-	      <th>Key</th>
-	      <th/>
-	    </tr>
-	  </thead>
-	  <tbody>
-	    <tal:repeat repeat="act view.list_activation()">
-	      <tr id="" tal:attributes="id act[1]">
+	            <th>Key</th>
+	            <th/>
+	          </tr>
+	        </thead>
+	        <tbody>
+	          <tal:repeat repeat="act view.list_activation()">
+	            <tr id="" tal:attributes="id act[1]">
                 <td><img src="/pycms_icons/Chat16.png" alt="User"/></td>
-		<td tal:content="act[0]">user</td> 
-		<td tal:content="act[1]">key</td> 
+		            <td tal:content="act[0]">user</td> 
+		            <td tal:content="act[1]">key</td> 
                 <td>
                   <div class="lsaction" id="lsdeletekey">
                     <a href="#"
@@ -154,7 +176,7 @@
                       <img src="/pycms_icons/Delete16.png"/>
                     </a>
                   </div>
-		</td>
+		            </td>
               </tr>
             </tal:repeat>
           </tbody>

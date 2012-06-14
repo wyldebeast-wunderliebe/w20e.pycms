@@ -38,7 +38,7 @@
   <view
      context="w20e.hitman.models.base.IContent"
      view=".base.AdminView"
-     renderer="../templates/admin.pt"
+     renderer="../templates/content.pt"
      name="admin"
      permission="edit"
      />
@@ -181,8 +181,8 @@
   <view
      context="w20e.pycms.interfaces.ISite"
      view=".site.UserAddView"
-     renderer="../templates/add_user.pt"
-     name="add_user_form"
+     renderer="json"
+     name="add_user"
      />
 
   <view

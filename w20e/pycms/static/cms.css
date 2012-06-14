@@ -2,6 +2,7 @@
  * CSS styles for CMS system. Not to be used for public.
  */
 
+/*
 #content {
   background: #ffffff url("/static/grid.png") top left;
   margin-top: 20px;
@@ -59,7 +60,6 @@ dl.config {
     width: 100%;
 }
 
-/* clear */
 .clear {
   clear: both;
 }
@@ -68,7 +68,6 @@ dl.config {
     text-align: center;
 }
 
-/* lightbox */
 #lbpanel {
   position: fixed;
   display:none;
@@ -140,7 +139,7 @@ dl.config {
     border: 1px solid #ff9090 !important;
 }
 
-/* toolbar & actions */
+
 #toolbar {
     padding: 10px;
     height: 30px;
@@ -199,7 +198,6 @@ dl.config {
 }
 
 
-/* Sharing */
 #sharingcontainer {
     margin-left: 50px;
     margin-top: 50px;
@@ -228,7 +226,6 @@ dl.config {
     font-weight: normal;
 }
 
-/* menu shite */
 .actionsubs {
     display: none;
     position: absolute;
@@ -312,8 +309,6 @@ h2 {
     font-weight: bold;
     margin-bottom: 20px;
 }
-
-/* Listing stuff */
 
 .lsaction {
     height: 20px;
@@ -422,7 +417,6 @@ input.rename_in {
     font-weight: normal;
 }
 
-/* dialogs */
 .ui-dialog {
     background-color: #ffffff;
     border: 1px solid #c0c0c0;
@@ -446,7 +440,6 @@ input.rename_in {
     display: none;
 }
 
-/* packing */
 #pack_result {
     -moz-border-radius: 1ex;
     border-radius: 1ex;
@@ -474,3 +467,4 @@ dt {
     font-weight: bold;
     width: 100px;
 }
+*/
