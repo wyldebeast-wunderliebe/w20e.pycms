@@ -17,6 +17,37 @@
 
     <div metal:fill-slot="content">
 
+      <div class="modal hide" id="set_pwd_form">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <h3>Set password</h3>
+        </div>
+        <div class="modal-body">        
+          
+          <div class="alert alert-error hide"></div>
+
+          <form action="javascript: pycms.acl.setPwd()" method="POST">
+
+            <input name="userid" type="hidden" id="userid"/>
+            
+            <label>Password</label>
+            <input type="password" name="password"/>
+
+            <label>Password confirm</label>
+            <input type="password" name="password_confirm"/>
+
+            <div class="btn-group">
+              <input type="submit" value="Add" class="btn btn-primary"/>
+              <input type="button" class="btn" value="Cancel"
+                     data-dismiss="modal"
+                     />
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    
       <div class="modal hide" id="user_add_form">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">×</button>
@@ -24,7 +55,7 @@
         </div>
         <div class="modal-body">        
           
-          <div id="user_add_alert" class="alert alert-error"></div>
+          <div class="alert alert-error hide"></div>
 
           <form action="javascript: pycms.acl.addUser()" method="POST">
             
@@ -90,9 +121,9 @@
                       <i class="icon-comment"></i>
                     </a>
                     <a href="#" tal:condition="user.id != 'admin'"
-                       tal:attributes="href 'set_password?user_id=%s' % user.id"
+                       href="#"
                        title="Set password"
-                       class="btn"
+                       class="btn setpwd"
                        >
                       <i class="icon-key"></i>
                     </a>

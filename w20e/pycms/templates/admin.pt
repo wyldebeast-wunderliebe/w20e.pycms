@@ -43,7 +43,7 @@
 
   <body metal:define-slot="body">
 
-    <div id="about" class="alert alert-info">
+    <div id="about" class="alert alert-info hide">
       <a class="close" href="#" onclick="$('#about').hide(); return false">×</a>
       PyCMS &copy; Copyright 2011, <a href="http://www.w20e.com/">wyldebeast &amp; wunderliebe</a>.
       <div tal:content="view.context.root.cms_version">

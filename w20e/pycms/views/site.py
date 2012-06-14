@@ -77,6 +77,7 @@ class SiteView(AdminView):
 
         res = super(SiteView, self).__call__()
         res.update({'status': '', 'token': '', 'errors': ''})
+        user = None
 
         user_id = user_id or self.request.params.get('user_id', None)
         token = token or self.request.params.get('token', None)

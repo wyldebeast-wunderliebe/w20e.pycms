@@ -33,12 +33,27 @@ pycms.acl.addUser = function() {
       },
           "error": function(data) {}
     });
+};
+
+/**
+ * Set password for given user.
+ */
+pycms.acl.setPwd = function() {
+  
+  $.post("set_password", $("#set_pwd_form form").serialize(),
+         function(data) {
+           $("#set_pwd_form").modal('hide');
+         });
 }
 
 pycms.acl.showUserAddForm = function() {
   $("#user_add_form").modal();
 };
 
+/**
+ * Delete user, using Ajax. If success, remove row in view too.
+ * @param userId User id
+ */
 pycms.acl.deleteUser = function(userId) {
 
   $.post("delete_user", {'user_id': userId}, function() {
@@ -84,6 +99,23 @@ pycms.acl.initActions = function(row) {
         console.log(e);
       }
       
+      return false;
+    });
+
+  if (row) {
+    elts = row.find(".btn.setpwd");
+  } else {
+    elts = $(".btn.setpwd");
+  }
+
+  elts.click(function() {
+      
+      var tr = $(this).parents("tr").first();
+      var userId = tr.attr("data-userid");
+
+      $("#set_pwd_form #userid").val(userId);
+      $("#set_pwd_form").modal();      
+
       return false;
     });
 }

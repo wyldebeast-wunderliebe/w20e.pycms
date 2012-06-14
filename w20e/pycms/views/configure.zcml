@@ -225,9 +225,9 @@
 
   <view
      context="w20e.pycms.interfaces.ISite"
-     view=".site.SiteView"
+     view=".users.UserAdminView"
      attr="change_password"
-     renderer="../templates/change_password_minimal.pt"
+     renderer="json"
      name="set_password"
      permission="admin"
      />

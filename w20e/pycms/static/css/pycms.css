@@ -25,7 +25,6 @@ input.rename_in {
 }
 
 #about {
-    display: none;
     position: absolute;
     width: 400px;
     top: 50px;
@@ -43,6 +42,3 @@ input.rename_in {
     -moz-border-radius: 10px;
 }
 
-#user_add_alert {
-    display: none;
-}

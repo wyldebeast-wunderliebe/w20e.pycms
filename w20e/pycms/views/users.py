@@ -86,10 +86,10 @@ class UserAdminView(object):
 
         """ Change password given the token."""
 
-        res = super(SiteView, self).__call__()
-        res.update({'status': '', 'token': '', 'errors': ''})
+        res = {'status': '', 'token': '', 'errors': ''}
 
-        user_id = user_id or self.request.params.get('user_id', None)
+        user = None
+        user_id = user_id or self.request.params.get('userid', None)
         token = token or self.request.params.get('token', None)
 
         res.update({'user_id': user_id, 'token': token})
