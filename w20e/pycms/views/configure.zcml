@@ -180,9 +180,11 @@
 
   <view
      context="w20e.pycms.interfaces.ISite"
-     view=".site.UserAddView"
+     view=".users.UserAdminView"
      renderer="json"
+     attr="add_user"
      name="add_user"
+     permission="admin"
      />
 
   <view

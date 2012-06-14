@@ -9,7 +9,7 @@
   <body>
 
     <div metal:fill-slot="toolbar">
-      <a class="btn" href="javascript: pycms_acl.showUserAddForm()">
+      <a class="btn" href="javascript: pycms.acl.showUserAddForm()">
         <i class="icon-plus"></i>
         Add user
       </a>
@@ -23,7 +23,11 @@
           <h3>Add user</h3>
         </div>
         <div class="modal-body">        
-          <form action="add_user_form" method="POST">
+          
+          <div id="user_add_alert" class="alert alert-error"></div>
+
+          <form action="javascript: pycms.acl.addUser()" method="POST">
+            
             <label>User name</label>
             <input type="text" name="name"/>
 
@@ -38,8 +42,10 @@
             <input type="password" name="pwd_confirm"/>
 
             <div class="btn-group">
-              <input type="submit" value="Add" class="bnt btn-primary"/>
-              <input type="button" class="cancel btn" value="Cancel"/>
+              <input type="submit" value="Add" class="btn btn-primary"/>
+              <input type="button" class="btn" value="Cancel"
+                     data-dismiss="modal"
+                     />
             </div>
           </form>
         </div>
@@ -55,7 +61,7 @@
           Users
         </h2>
                 
-	      <table class="contentlisting table table-striped">
+	      <table class="contentlisting table table-striped" id="userlisting">
 	        <thead>
 	          <tr>
               <th/>
@@ -68,24 +74,18 @@
 		      </thead>
 	        <tbody>
 	          <tal:repeat repeat="user view.list_users()">
-	            <tr id="" tal:attributes="id user.id">
+	            <tr data-userid="${user.id}" class="userrow">
                 <td><i class="icon-user"></i></td>
                 <td class="actions_col">
                   <div class="btn-group">
-                    <a class="btn btn-danger"
+                    <a class="btn btn-danger delete"
 		                   tal:condition="user.id != 'admin'"
-                       href="#"
-                       tal:attributes="href 'javascript: pycms_acl.deleteUser(\'%s\')' % user.id">
+                       href="#">
                       <i class="icon-trash"></i>
                     </a>
-                    <!--a class="btn" href="#" tal:attributes="href '%s/edit' % item.id"
-                       title="Edit">
-                      <i class="icon-edit"></i>
-                    </a-->
                     <a href="#" tal:condition="user.id != 'admin'"
-                       tal:attributes="href 'javascript: pycms_acl.inviteUser(\'%s\')' % user.id"
                        title="Invite user"
-                       class="btn"
+                       class="btn invite"
                        >
                       <i class="icon-comment"></i>
                     </a>
@@ -103,7 +103,6 @@
                        >
                       <i class="icon-group"></i>
                     </a>
-		                <div class="popup"></div>
                   </div>
                 </td>
 		            <td tal:content="user.id">user</td> 
@@ -119,41 +118,42 @@
           Groups
         </h2>
         
-	      <table class="listing table table-striped">
+	      <table class="contentlisting table table-striped" id="grouplisting">
 	        <thead>
 	          <tr>
               <th/>
+              <th/>
               <th>Id</th>
 	            <th>Users</th>
-              <th/>
 	          </tr>
 	        </thead>
 	        <tbody>
 	          <tal:repeat repeat="group view.list_groups()">
 	            <tr>
-                <td><img src="/pycms_icons/Users16.png" alt="Group"/></td>
-		            <td tal:content="group.id">user</td> 
-		            <td tal:content="', '.join(group.users)"></td>
-                <td>
-                  <div class="lsaction" id="lsdelete">
-                    <a href="#"
-                       tal:attributes="href 'javascript: pycms_acl.deleteGroup(\'%s\')' % group.id"
-                       title="Delete user">
-                      <img src="/pycms_icons/Delete16.png"/>
+                <td><i class="icon-group"></i></td>
+                <td class="actions_col">
+                  <div class="btn-group">
+                    <a href="#" class="btn btn-danger"
+                       tal:attributes="href 'javascript: pycms.acl.deleteGroup(\'%s\')' % group.id"
+                       title="Delete group">
+                      <i class="icon-trash"></i>
                     </a>
                   </div>
                 </td>
+		            <td tal:content="group.id">user</td> 
+		            <td tal:content="', '.join(group.users)"></td>
 	            </tr>
 	          </tal:repeat>
 	        </tbody>
 	      </table>
         
         <h2>
-          <img src="/pycms_icons/Chat24.png" alt="User activation"/>
+          <i class="icon-comment"></i>
           Activation
         </h2>
         
-	      <table class="listing">
+	      <table class="contentlisting table table-striped" 
+               id="activationlisting">
 	        <thead>
 	          <tr>
               <th/>
@@ -171,7 +171,7 @@
                 <td>
                   <div class="lsaction" id="lsdeletekey">
                     <a href="#"
-                       tal:attributes="href 'javascript: pycms_acl.deleteKey(\'%s\')' % act[1]"
+                       tal:attributes="href 'javascript: pycms.acl.deleteKey(\'%s\')' % act[1]"
                        title="Delete user">
                       <img src="/pycms_icons/Delete16.png"/>
                     </a>

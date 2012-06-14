@@ -43,3 +43,6 @@ input.rename_in {
     -moz-border-radius: 10px;
 }
 
+#user_add_alert {
+    display: none;
+}

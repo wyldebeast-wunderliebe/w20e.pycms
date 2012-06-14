@@ -1,4 +1,3 @@
-from base import AdminView
 from w20e.forms.pyramid.formview import xmlformview
 from w20e.forms.xml.formfile import FormFile, find_file
 from ..interfaces import IMailer
@@ -6,32 +5,44 @@ from pyramid.renderers import get_renderer
 from pyramid.security import has_permission
 
 
-class SiteView(AdminView):
+class UserAdminView(object):
 
-    """ Site admin view """
+    """ User admin methods, all JSON """
 
     def __init__(self, context, request):
 
-        AdminView.__init__(self, context, request)
+        self.context = context
+        self.request = request
 
-    def list_users(self):
+    def add_user(self):
 
-        return self.context.acl.users.values()
+        res = {'status': '', 'errors': ''}
 
-    def list_groups(self):
+        params = self.request.params
 
-        return self.context.acl.groups.values()
+        if not (params.get('name') and params.get('email')):
+            res.update({'status': 'error',
+                        'errmsg': "not all required fields filled in"})
+        elif params.get('pwd', None) != params.get('pwd_confirm', None):
+            res.update({'status': 'error',
+                        'errmsg': "passwords do not match"})
+        else:
+            user = self.context.root.acl.create_user(
+                params['email'], pwd=params.get('pwd', None),
+                name=params.get('name', None)
+                )
 
-    def list_activation(self):
-
-        acts = []
-
-        for key in self.context.acl.activation.keys():
-            user = self.context.acl.get_user_for_activation(key)
-
-            acts.append((user.id, key))
-
-        return acts
+            if user:
+                res.update({'status': 'ok',
+                            'user': {'name': user.name,
+                                     'id': user.id,
+                                     'email': user.email}
+                            })
+            else:
+                res.update({'status': 'error',
+                            'errmsg': 'User not created'
+                            })
+        return res
 
     def delete_user(self):
 
@@ -118,36 +129,3 @@ class SiteView(AdminView):
         res.update({'status': status, 'errors': message,
                     'token': token})
         return res
-
-    def pack_database(self):
-        """ pack the database """
-
-        db = self.db
-
-        old_size = db.getSize()
-        result = db.pack() or "Database has been packed succesfully"
-        new_size = db.getSize()
-        return "pack result: {0} \nOld Data.fs size: {1}\n" \
-                "New Data.fs size: {2}\n" \
-                "check disk to see size of blobdir".format(
-                        result, old_size, new_size)
-
-    @property
-    def db(self):
-
-        from pyramid_zodbconn import get_connection
-        conn = get_connection(self.request)
-        db = conn.db()
-
-        return db
-
-    def catalog_entries(self):
-
-        return [{'id': obj[0], 'path': obj[1]} for obj in \
-                self.context._catalog.list_objects()]
-
-    def robots_txt(self):
-
-        self.request.response.content_type = 'text/plain'
-
-        return {}
