@@ -88,6 +88,11 @@ class IActionDirective(Interface):
         description=u"Label to show",
         required=False)
 
+    icon = TextLine(
+        title=u"Icon class as used by Awesome Fonts",
+        description=u"Icon class",
+        required=False)    
+
     target = TextLine(
         title=u"Target",
         description=u"Usually http href",
@@ -114,7 +119,7 @@ class IActionDirective(Interface):
         required=False)
 
 
-def action(_context, name, target, category, label=None, ctype=[],
+def action(_context, name, target, category, label=None, icon=None, ctype=[],
            permission="", condition=None):
 
     reg = _context.context.registry
@@ -122,6 +127,7 @@ def action(_context, name, target, category, label=None, ctype=[],
 
     action_registry.register_action(name, target, category,
                                     label=label,
+                                    icon=icon,
                                     ctype=ctype,
                                     permission=permission,
                                     condition=condition)

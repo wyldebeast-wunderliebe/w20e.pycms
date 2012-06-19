@@ -117,7 +117,18 @@
 
   <pycms:action
      name="paste"
+     label="Paste"
+     icon="icon-paste"
      target="javascript:pycms.paste()"
+     category="content"
+     permission="edit"
+     />
+
+  <pycms:action
+     name="clear_paste"
+     label="Clear paste buffer"
+     icon="icon-refresh"
+     target="javascript:pycms.clearCutBuffer()"
      category="content"
      permission="edit"
      />

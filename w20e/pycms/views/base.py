@@ -4,6 +4,7 @@ from w20e.hitman.views.base import DelView as DelBase
 from w20e.hitman.views.base import EditView as EditBase
 from w20e.hitman.views.base import BaseView as BaseBase
 from w20e.hitman.events import ContentRemoved
+from w20e.hitman.utils import path_to_object
 
 from pyramid.renderers import get_renderer, render
 from pyramid.security import has_permission, authenticated_userid
@@ -294,7 +295,31 @@ class AdminView(Base, ViewMixin):
         else:
             return False
 
+    def paste_content(self):
+
+        """ Ajax paste. This should recive a 'buffer' parameter """
+
+        actions = self.request.params.get("buffer", "").split("::")
+        result = {'status': 'ok'}
+        mv = []
+
+        for action in actions:
+            try:
+                title, path, action_id = action.split(";;")
+                if action_id == "copy":
+                    pass
+                else:
+                    mv.append(path)
+            except:
+                result['status'] = "error"
+
+        self.move_content(objs=mv)
+
+        return result
+
     def move_content(self, objs=[]):
+
+        """ Should receive a list of dotted paths """
 
         objs = objs or self.request.params.get('objs', "").split("::")
 
@@ -302,30 +327,13 @@ class AdminView(Base, ViewMixin):
 
         for path in objs:
 
-            path = path.split(".")
-
-            if not len(path):
-                continue
-
-            obj = None
-            parent = self.context.root
-
-            for elt in path[:-1]:
-                parent = parent.get(elt, None)
-                if parent is None:
-                    break
-
-            if parent is not None:
-                obj = parent.get(path[-1], None)
-
-                if self.context == parent:
-                    continue
-
-                if obj is not None:
-                    content = parent.remove_content(obj.id)
-                    self.context.add_content(content)
-                    moved.append(obj.id)
-
+            obj = path_to_object(path, self.context.root, path_sep=".")
+            
+            if obj is not None:
+                content = obj.__parent__.remove_content(obj.id)
+                self.context.add_content(content)
+                moved.append(obj.id)
+                
         return moved
 
     def rename_content(self, rename_map=None):

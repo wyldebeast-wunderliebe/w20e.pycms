@@ -31,6 +31,14 @@ input.rename_in {
     right: 30%;
 }
 
+#alert {
+    position: fixed;
+    width: 400px;
+    top: 100px;
+    left: 30%;
+    z-index: 1001;
+}
+
 .login {
     margin-left: auto;
     margin-right: auto;

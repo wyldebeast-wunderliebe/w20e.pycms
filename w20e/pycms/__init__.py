@@ -8,7 +8,7 @@ from w20e.forms.registry import Registry
 from w20e.forms.pyramid.file import PyramidFile
 from models.imagefolder import ImageFolder
 from pack import PackCommand
-#import formtemplates
+from migration import migrate
 
 
 Registry.register_renderable("file", PyramidFile)
@@ -52,6 +52,14 @@ class InitRequest(object):
 def update(app):
 
     """ Any updates can go here... """
+
+    curr_version = getattr(app, "pycms_version", "unknown")
+    tgt_version = version
+
+    migrated = migrate(curr_version, tgt_version)
+
+    if migrated:
+        setattr(app, "pycms_version", tgt_version)
 
 
 def appmaker(config):

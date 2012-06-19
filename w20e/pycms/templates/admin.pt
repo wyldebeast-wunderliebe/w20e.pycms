@@ -49,6 +49,11 @@
       <div tal:content="view.context.root.cms_version">
       </div>
     </div>
+
+    <div id="alert" class="alert hide">
+      <a class="close" href="#" onclick="$('#alert').hide(); return false">×</a>
+      <div id="alert_msg"></div>
+    </div>
     
     <div class="modal hide" id="confirm_delete">
       <div class="modal-header">
@@ -129,7 +134,10 @@
             <tal:repeat repeat="action view.contentactions">
               <a href="#" 
                  class="btn"
-                 tal:attributes="href action.target">${action.name}</a>
+                 tal:attributes="href action.target">
+                <i tal:condition="action.icon" class="${action.icon}"></i>
+                ${action.label}
+              </a>
             </tal:repeat>
           </div>
           

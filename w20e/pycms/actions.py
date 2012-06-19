@@ -3,11 +3,12 @@ from zope.interface import Interface
 
 class Action(object):
 
-    def __init__(self, name, target, label=None,
+    def __init__(self, name, target, label=None, icon=None,
                  ctype=[], permission="", condition=True):
 
         self.name = name
         self.label = label or name
+        self.icon = icon
         self.target = target
         self.ctype = ctype
         self.permission = permission
@@ -28,8 +29,8 @@ class Actions(object):
         self.order = {}
         self.registry = {}
 
-    def register_action(self, name, target, category, label=None, ctype=[],
-                        permission="", condition=True):
+    def register_action(self, name, target, category, label=None, icon=None,
+                        ctype=[], permission="", condition=True):
 
         if not category in self.registry:
             self.registry[category] = {}
@@ -41,6 +42,7 @@ class Actions(object):
         self.registry[category][name] = Action(name,
                                                target,
                                                label=label,
+                                               icon=icon,
                                                ctype=ctype,
                                                permission=permission,
                                                condition=condition)

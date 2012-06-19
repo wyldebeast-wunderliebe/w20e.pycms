@@ -314,6 +314,15 @@
   <view
      context="w20e.hitman.models.base.IFolder"
      view=".base.AdminView"
+     attr="paste_content"
+     renderer="json"
+     name="ajax_paste"
+     permission="edit"
+     />
+
+  <view
+     context="w20e.hitman.models.base.IFolder"
+     view=".base.AdminView"
      attr="rename_content"
      renderer="json"
      name="ajax_rename"
