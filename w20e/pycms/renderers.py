@@ -26,7 +26,7 @@ class JSRenderer:
         # should we set the expires explicitly?
         # don't set expires to 0, or no-cache will be set, and it will
         # disable the conditional get (304 response with etag)
-        system['request'].response.cache_expires = 1
+        system['request'].response.cache_expires = 300
 
         return value
 
@@ -54,7 +54,7 @@ class CSSRenderer:
         # should we set the expires explicitly?
         # don't set expires to 0, or no-cache will be set, and it will
         # disable the conditional get (304 response with etag)
-        system['request'].response.cache_expires = 1
+        system['request'].response.cache_expires = 300
 
         return value
 
@@ -91,7 +91,7 @@ class PNGRenderer:
         # should we set the expires explicitly?
         # don't set expires to 0, or no-cache will be set, and it will
         # disable the conditional get (304 response with etag)
-        system['request'].response.cache_expires = 1
+        system['request'].response.cache_expires = 300
 
         return value['data']
 
