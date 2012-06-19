@@ -5,8 +5,6 @@
   <!-- this must be included for the view declarations to work -->
   <include package="pyramid_zcml" />
 
-  <!--pycms:css cssfile="./static/base.css" csstarget="manage" /-->
-  <!--pycms:css cssfile="./static/main.css" csstarget="manage" /-->
   <pycms:css cssfile="./static/3dparty/bootstrap/css/bootstrap.css" 
              csstarget="manage" />
   <pycms:css cssfile="./static/3dparty/font-awesome/css/font-awesome.css" 
@@ -15,24 +13,6 @@
              csstarget="manage" />
   <pycms:css cssfile="./static/css/pycms.css" 
              csstarget="manage" />
-
-  <!--pycms:css cssfile="./static/skeleton.css" csstarget="manage" /-->
-  <!--pycms:css cssfile="./static/layout.css" csstarget="manage" /-->
-
-  <!--pycms:css
-     cssfile="./static/jquery-ui-1.8.11.custom.css"
-     csstarget="manage"
-     />
-
-  <pycms:css
-     cssfile="./static/forms.css"
-     csstarget="manage"
-     />
-
-  <pycms:css
-     cssfile="./static/cms.css"
-     csstarget="manage"
-     /-->
 
   <pycms:js
      jsfile="./static/jquery-ui-1.8.11.custom.min.js"
@@ -47,8 +27,6 @@
 
   <pycms:js jsfile="./static/3dparty/bootstrap/js/bootstrap-popover.js" 
             jstarget="manage"/>
-
-  <!--pycms:js jsfile="./static/tabs.js" jstarget="manage"/-->
 
   <pycms:js
      jsfile="./static/validation.js"
