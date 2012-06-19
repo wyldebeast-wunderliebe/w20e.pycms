@@ -20,6 +20,7 @@
 
   <pycms:action
      name="sharing"
+     label="Sharing"
      target="./sharing"
      category="perspective"
      />

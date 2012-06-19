@@ -14,6 +14,9 @@
   <include package=".views" />
   <include package=".models" />
 
+  <!-- management UI resources -->
+  <include package="w20e.pycms" file="manage_resources.zcml"/>
+
   <static
      name="static"
      path="static"
@@ -66,6 +69,7 @@
 
   <pycms:action
      name="admin"
+     label="Contents"
      target="./admin"
      category="perspective"
      />
@@ -79,6 +83,7 @@
 
   <pycms:action
      name="zodb"
+     label="ZODB"
      target="./zodb"
      category="perspective"
      ctype="site"
@@ -86,6 +91,7 @@
 
   <pycms:action
      name="users"
+     label="Users &amp; Groups"
      target="./users"
      category="perspective"
      ctype="site"
@@ -94,6 +100,7 @@
 
   <pycms:action
      name="edit"
+     label="Edit"
      target="./edit"
      category="perspective"
      permission="edit"
@@ -101,6 +108,7 @@
 
   <pycms:action
      name="pack"
+     label="Pack DB"
      target="./pack"
      category="perspective"
      ctype="site"
@@ -108,34 +116,40 @@
      />
 
   <pycms:action
-     name="to_parent"
-     target="../admin"
-     category="content"
-     permission="view"
-     />
-
-  <pycms:action
      name="paste"
+     label="Paste"
+     icon="icon-paste"
      target="javascript:pycms.paste()"
      category="content"
      permission="edit"
      />
 
   <pycms:action
-     name="delete"
-     target="./delete"
+     name="clear_paste"
+     label="Clear paste buffer"
+     icon="icon-refresh"
+     target="javascript:pycms.clearCutBuffer()"
      category="content"
      permission="edit"
      />
 
+  <pycms:action
+     name="about"
+     label="About"
+     target="javascript:pycms.about()"
+     category="site"
+     />
+
+  <!-- main for pulic -->
   <pycms:macro
      name="main"
      ptfile="w20e.pycms:templates/main.pt"
      />
 
+  <!-- Main for admin -->
   <pycms:macro
-     name="body_admin"
-     ptfile="w20e.pycms:templates/body_admin.pt"
+     name="admin"
+     ptfile="w20e.pycms:templates/admin.pt"
      />
 
   <pycms:macro
@@ -146,11 +160,6 @@
   <pycms:macro
      name="body"
      ptfile="w20e.pycms:templates/body.pt"
-     />
-
-  <pycms:macro
-     name="content"
-     ptfile="w20e.pycms:templates/content.pt"
      />
 
 </configure>

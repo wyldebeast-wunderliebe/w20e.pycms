@@ -16,8 +16,6 @@
 <!-- END header -->
 
 
-
-
 <!-- BEGIN content_details -->
 <div id="content_details" metal:define-macro="content_details">
   
@@ -44,16 +42,13 @@
 <!-- BEGIN listing -->
 <div class="listing" id="content-listing" metal:define-macro="listing">
 
-  <div id="rm_confirm">
-    Are you sure you want to delete this item?
-  </div>
     <form id="rename" action="ajax_rename" method="POST">
-    <table class="listingcontent">
+
+    <table class="table table-striped contentlisting">
       <thead>
         <tr>
         <td/>
         <td/>
-        <th>Type</th>
         <th>Id</th>
         <th>Title</th>
         <th/>
@@ -61,24 +56,33 @@
       </thead>
       <tbody>
       <tal:repeat repeat="item view.list_content()">
-        <tr id="" tal:attributes="id item.id">
+        <tr data-objectid="${item.id}" 
+            data-objectpath="${item.dottedpath}"
+            data-objecttitle="${item.title}">
           <td class="contenttype">
-            <img src="#" tal:attributes="src view.get_icon(item.content_type)"/>
+            <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+            <img src="#" tal:attributes="src view.get_icon(item.content_type);
+                                         title item.content_type"
+                 />
           </td>
-          <td id="actions_col">
-            <div class="lsaction lsdelete">
-              D
-            </div>
-            <div class="lsaction lsedit">
-              <a href="#" tal:attributes="href '%s/edit' % item.id">
-              E
+          <td class="actions_col">
+            <div class="btn-group">
+              <a class="btn btn-danger lsdelete"
+                 href="#confirm_delete">
+                <i class="icon-trash"></i>
               </a>
+              <a class="btn" href="#" tal:attributes="href '%s/edit' % item.id"
+                 title="Edit">
+                <i class="icon-edit"></i>
+              </a>
+              <a class="btn lscut" title="Cut" href="#">
+                <i class="icon-cut"></i>
+              </a>
+              <!--a class="btn lscopy" title="Copy" href="#">
+                <i class="icon-copy"></i>
+              </a-->
             </div>
-            <div class="lsaction lscut"
-                 id="#" tal:attributes="id 'cut_%s' % item.dottedpath"
-	               >C</div>
           </td>
-          <td tal:content="item.content_type"></td>
           <td>
             <div class="rename">
               <span tal:content="item.id"/>

@@ -76,12 +76,22 @@ def js(_context, jsfile, jstarget):
 
 class IActionDirective(Interface):
 
-    """ Collect js files into one """
+    """ Actions """
 
     name = TextLine(
         title=u"Name",
         description=u"Unique action name",
         required=True)
+
+    label = TextLine(
+        title=u"Label",
+        description=u"Label to show",
+        required=False)
+
+    icon = TextLine(
+        title=u"Icon class as used by Awesome Fonts",
+        description=u"Icon class",
+        required=False)    
 
     target = TextLine(
         title=u"Target",
@@ -109,13 +119,15 @@ class IActionDirective(Interface):
         required=False)
 
 
-def action(_context, name, target, category, ctype=[], permission="",
-           condition=None):
+def action(_context, name, target, category, label=None, icon=None, ctype=[],
+           permission="", condition=None):
 
     reg = _context.context.registry
     action_registry = reg.getUtility(IActions)
 
     action_registry.register_action(name, target, category,
+                                    label=label,
+                                    icon=icon,
                                     ctype=ctype,
                                     permission=permission,
                                     condition=condition)

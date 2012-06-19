@@ -2,16 +2,14 @@
       xml:lang="en" 
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
-      metal:use-macro="body_admin.macros['master']">
+      metal:use-macro="admin.macros['master']">
 
   <head/>
   
   <body>
 
-    <div id="toolbar" metal:fill-slot="toolbar">
-      <div class="action" id="reindex_catalog" title="Re-index catalog">
-        <a href="reindex_catalog">Re-index catalog</a>
-      </div>
+    <div metal:fill-slot="toolbar">
+      <a class="btn" href="reindex_catalog">Re-index catalog</a>
     </div>
 
     <div metal:fill-slot="content">

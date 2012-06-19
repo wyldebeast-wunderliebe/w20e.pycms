@@ -1,0 +1,34 @@
+#editbar {
+    background-color: #000000;
+    color: #ffffff;
+    opacity: 0.7;
+    height: 30px;
+    min-width: 80px;
+    position: absolute;
+    right: 50px;
+    top: 0;
+    z-index: 1002;
+    text-align:center;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    -moz-border-radius-bottomleft: 5px;
+    -moz-border-radius-bottomright: 5px;
+}
+
+#editbar.reversed {
+    background-color: #ffffff;
+}
+
+#editbar.reversed a {
+    color: #000000;
+}
+
+#editbar a {
+    background-color: transparent !important;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+#editbar a:hover {
+    color: #333333;
+}

@@ -1,0 +1,8 @@
+
+.icon-white {
+  background-image: url("/static/3dparty/bootstrap/img/glyphicons-halflings-white.png");
+}
+
+[class^="icon-"], [class*=" icon-"] {
+    background-image: none;
+}

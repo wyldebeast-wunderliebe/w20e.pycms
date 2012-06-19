@@ -5,10 +5,8 @@
   <!-- this must be included for the view declarations to work -->
   <include package="pyramid_zcml" />
 
-  <pycms:css cssfile="./static/base.css" csstarget="public" />
-  <pycms:css cssfile="./static/main.css" csstarget="public" />
-  <pycms:css cssfile="./static/skeleton.css" csstarget="public" />
-  <pycms:css cssfile="./static/layout.css" csstarget="public" />
+  <pycms:css cssfile="./static/css/public_base.css" csstarget="public" />
+  <pycms:css cssfile="./static/3dparty/bootstrap/css/bootstrap.css" csstarget="public" />
 
   <pycms:css cssfile="./static/jquery-ui-1.8.11.custom.css"
      csstarget="public"

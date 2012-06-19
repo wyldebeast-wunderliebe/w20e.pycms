@@ -38,7 +38,7 @@
   <view
      context="w20e.hitman.models.base.IContent"
      view=".base.AdminView"
-     renderer="../templates/admin.pt"
+     renderer="../templates/content.pt"
      name="admin"
      permission="edit"
      />
@@ -180,9 +180,11 @@
 
   <view
      context="w20e.pycms.interfaces.ISite"
-     view=".site.UserAddView"
-     renderer="../templates/add_user.pt"
-     name="add_user_form"
+     view=".users.UserAdminView"
+     renderer="json"
+     attr="add_user"
+     name="add_user"
+     permission="admin"
      />
 
   <view
@@ -223,9 +225,9 @@
 
   <view
      context="w20e.pycms.interfaces.ISite"
-     view=".site.SiteView"
+     view=".users.UserAdminView"
      attr="change_password"
-     renderer="../templates/change_password_minimal.pt"
+     renderer="json"
      name="set_password"
      permission="admin"
      />
@@ -306,6 +308,15 @@
      attr="move_content"
      renderer="json"
      name="ajax_move"
+     permission="edit"
+     />
+
+  <view
+     context="w20e.hitman.models.base.IFolder"
+     view=".base.AdminView"
+     attr="paste_content"
+     renderer="json"
+     name="ajax_paste"
      permission="edit"
      />
 

@@ -197,11 +197,13 @@ class ACL(Persistent):
     def create_user(self, email, pwd=None, name='', profile=None):
 
         if email in self.users:
-            return False
+            return None
 
         self.users[email] = User(email, name or email,
                                  email, pwd,
                                  profile=profile)
+
+        return self.users[email]
 
     def remove_user(self, user_id):
 

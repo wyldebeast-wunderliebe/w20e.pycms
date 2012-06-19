@@ -6,43 +6,6 @@ from pyramid.renderers import get_renderer
 from pyramid.security import has_permission
 
 
-class UserAddView(AdminView):
-
-    """ Add user form """
-
-    def __init__(self, context, request):
-
-        AdminView.__init__(self, context, request)
-
-    def __call__(self):
-
-        res = super(UserAddView, self).__call__()
-
-        res.update({'status': '', 'errors': ''})
-
-        if self.request.method == "POST":
-
-            params = self.request.params
-
-            if not (params.get('name') and params.get('email')):
-                res.update({'status': 'error',
-                            'errors': "not all required fields filled in"})
-                return res
-
-            elif params.get('pwd', None) != params.get('pwd_confirm', None):
-                res.update({'status': 'error',
-                            'errors': "passwords do not match"})
-                return res
-            else:
-                self.context.root.acl.create_user(
-                    params['email'], pwd=params.get('pwd', None),
-                    name=params.get('name', None)
-                    )
-
-            res.update({'status': 'ok'})
-        return res
-
-
 class SiteView(AdminView):
 
     """ Site admin view """
@@ -114,6 +77,7 @@ class SiteView(AdminView):
 
         res = super(SiteView, self).__call__()
         res.update({'status': '', 'token': '', 'errors': ''})
+        user = None
 
         user_id = user_id or self.request.params.get('user_id', None)
         token = token or self.request.params.get('token', None)

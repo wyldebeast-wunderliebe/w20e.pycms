@@ -1,46 +1,67 @@
-var pycms_acl = {};
+/** 
+ * Security related functions for PyCMS.
+ */
 
-pycms.initPartial = function(tgt) {
-
-  tgt.find("form").eq(0).submit(function() {
-      
-      $.post($(this).attr("action"),
-             $(this).serialize(),
-             function(data) {
-               
-               tgt.html(data);
-               
-               if ($("#change_pwd_status").text() == 'ok') {
-                 tgt.hide();
-               } else {
-                 pycms.initPartial(tgt);
-               }
-             });
-      
-      return false;
-    });
-  
-  tgt.find(".cancel").click(function() {
-      tgt.hide();
-    });
+if (pycms == undefined) {
+  var pycms = {};
 }
 
-pycms_acl.showUserAddForm = function() {
-  $.get("add_user_form", {}, function(data) {
-      $("#user_add_form").html(data);
-      pycms.initPartial($("#user_add_form"));
+pycms.acl = {};
+
+/**
+ * Add user AJAX style and if successful, add to view.
+ */
+pycms.acl.addUser = function() {
+
+  $.ajax({"url": "add_user", 
+          "type": "POST",
+          "data": $("#user_add_form form").serialize(),
+          "success": function(data) {
+        if (data['status'] == "error") {
+          $("#user_add_alert").html(data['errmsg']);
+          $("#user_add_alert").show();
+        } else {
+          var tr = $("#userlisting tr").last().clone();
+          tr.attr("data-userid", data['user']['id']);
+          tr.find("td").eq(2).html(data['user']['id']);
+          tr.find("td").eq(3).html(data['user']['name']);
+          tr.find("td").eq(4).html(data['user']['email']);
+          $("#userlisting").append(tr);
+          pycms.acl.initActions(tr);
+          $("#user_add_form").modal('hide');
+        }
+      },
+          "error": function(data) {}
     });
-    $("#user_add_form").fadeIn(300);
 };
 
-pycms_acl.deleteUser = function(userId) {
+/**
+ * Set password for given user.
+ */
+pycms.acl.setPwd = function() {
+  
+  $.post("set_password", $("#set_pwd_form form").serialize(),
+         function(data) {
+           $("#set_pwd_form").modal('hide');
+         });
+}
+
+pycms.acl.showUserAddForm = function() {
+  $("#user_add_form").modal();
+};
+
+/**
+ * Delete user, using Ajax. If success, remove row in view too.
+ * @param userId User id
+ */
+pycms.acl.deleteUser = function(userId) {
 
   $.post("delete_user", {'user_id': userId}, function() {
       $("#" + userId).remove();      
     });
 };
 
-pycms_acl.inviteUser = function(userId) {
+pycms.acl.inviteUser = function(userId) {
 
   $.post("invite_user", {'user_id': userId}, function() {
     $("#lbmsg").html("User invited");
@@ -50,30 +71,56 @@ pycms_acl.inviteUser = function(userId) {
     });
 };
 
-pycms_acl.deleteKey = function(keyId) {
+pycms.acl.deleteKey = function(keyId) {
 
   $.post("delete_key", {'key': keyId}, function() {
       $("#" + keyId).remove();
     });
 };
 
+pycms.acl.initActions = function(row) {
+
+  var elts;
+  
+  if (row) {
+    elts = row.find(".btn.delete");
+  } else {
+    elts = $(".btn.delete");
+  }
+
+  elts.click(function() {
+      
+      try {
+        var tr = $(this).parents("tr").first();
+        var userId = tr.attr("data-userid");
+        pycms.acl.deleteUser(userId);
+        tr.remove();
+      } catch (e) {
+        console.log(e);
+      }
+      
+      return false;
+    });
+
+  if (row) {
+    elts = row.find(".btn.setpwd");
+  } else {
+    elts = $(".btn.setpwd");
+  }
+
+  elts.click(function() {
+      
+      var tr = $(this).parents("tr").first();
+      var userId = tr.attr("data-userid");
+
+      $("#set_pwd_form #userid").val(userId);
+      $("#set_pwd_form").modal();      
+
+      return false;
+    });
+}
 
 $(document).ready(function() {
 
-    // Ajax style actions
-    $(".lsaction.minimal a").click(function() {
-	
-        var tgt = $(this).siblings(".popup");
-        
-        $.get($(this).attr("href"), function(data) {
-            
-            tgt.html(data);
-            
-            pycms.initPartial(tgt);
-          });
-        
-        tgt.show();
-        
-        return false;
-      });
+    pycms.acl.initActions();
   });

@@ -1,21 +1,180 @@
+<metal:define-macro define-macro="master">
+  <!DOCTYPE html>
+
 <html xmlns="http://www.w3.org/1999/xhtml" 
       xml:lang="en" 
-      xmlns:tal="http://xml.zope.org/namespaces/tal"
-      metal:use-macro="body_admin.macros['master']"
-      >
+      xmlns:tal="http://xml.zope.org/namespaces/tal">
 
-  <head/>
+  <head>    
+    <title>PyCMS</title>    
+    <base href="#" tal:attributes="href view.url"/>
+    
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
 
-  <body>
+    <!-- Mobile Specific Metas
+         ================================================== -->
+    <meta name="viewport" 
+          content="width=device-width, initial-scale=1, maximum-scale=1" /> 
 
-    <div metal:fill-slot="content">
+    <link rel="stylesheet" href="${request.application_url}/manage.css"
+          type="text/css" media="screen" charset="utf-8" />
 
-      <h2 class="edit_subheader">
-        Manage <tal:blok replace="view.title"/>
-      </h2>
+    <metal:define-slot define-slot="extra_css_slot">
+    </metal:define-slot>
+    
+    <script language="JavaScript"
+            src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+    <script language="JavaScript"
+            src="${request.application_url}/manage.js"></script>
 
-      <!--div metal:use-macro="macros.macros['listing']"/-->      
+    <metal:define-slot define-slot="extra_js_slot">
+    </metal:define-slot>
+
+    <tal:comment replace="nothing">
+      <link rel="apple-touch-icon"
+            href="${request.application_url}/static/apple-touch-icon.png">
+      <link rel="apple-touch-icon" sizes="72x72"
+            href="${request.application_url}/static/apple-touch-icon-72x72.png" />
+      <link rel="apple-touch-icon" sizes="114x114"
+            href="${request.application_url}/static/apple-touch-icon-114x114.png" />
+    </tal:comment>
+
+  </head>
+
+  <body metal:define-slot="body">
+
+    <div id="about" class="alert alert-info hide">
+      <a class="close" href="#" onclick="$('#about').hide(); return false">×</a>
+      PyCMS &copy; Copyright 2011, <a href="http://www.w20e.com/">wyldebeast &amp; wunderliebe</a>.
+      <div tal:content="view.context.root.cms_version">
+      </div>
+    </div>
+
+    <div id="alert" class="alert hide">
+      <a class="close" href="#" onclick="$('#alert').hide(); return false">×</a>
+      <div id="alert_msg"></div>
+    </div>
+    
+    <div class="modal hide" id="confirm_delete">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">×</button>
+        <h3>Delete</h3>
+      </div>
+      <div class="modal-body">
+        <p>Do you really want to delete '<span id="object_title"></span>'?</p>
+      </div>
+      <div class="modal-footer">
+        <a href="#" class="btn" data-dismiss="modal">Close</a>
+        <a href="#" class="confirm btn btn-primary">Confirm</a>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <!-- BEGIN: navbar -->
+      <div class="navbar">
+        <div class="navbar-inner">
+          <div class="container">
+            <a class="brand" href="#">
+              PyCMS
+            </a>
+            <ul class="nav pull-right">
+              <tal:repeat repeat="action view.siteactions">
+                <li>
+                  <a href="#" tal:attributes="href action.target"
+                     tal:content="action.label"
+                     condition="action.condition">
+                    Title
+                  </a>
+                </li>
+              </tal:repeat>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- END: navbar -->
+
+      <!-- BEGIN: breadcrumb -->
+      <ul class="breadcrumb">
+        <tal:repeat repeat="crumb view.breadcrumbs">          
+          <li>
+            <a href="#" tal:content="crumb[0]" 
+               tal:attributes="href '%sadmin' % crumb[1]">
+              Crumb
+            </a> 
+            <span class="divider">/</span>
+          </li>
+        </tal:repeat>
+      </ul>
+      <!-- END: breadcrumb -->
+
+      <!-- === BEGIN: perspectives === -->
+      <ul class="nav nav-tabs" id="page-perspectives" 
+          metal:define-macro="perspectives">
+        <tal:repeat repeat="perspective view.perspectives">
+          
+          <li
+             tal:attributes="class '%s' % (view.viewname == perspective.name and 'active' or '')"
+             >
+            <a href="#" tal:attributes="href perspective.target"
+               tal:content="perspective.label"
+               >Content</a>
+          </li>
+        </tal:repeat>
+        
+      </ul>    
+      <!-- === END: perspectives === -->
       
+      
+      <!-- === BEGIN: content_toolbar === -->
+      <div class="btn-toolbar well">
+        <div metal:define-slot="toolbar">
+
+          <div class="btn-group">
+            <tal:repeat repeat="action view.contentactions">
+              <a href="#" 
+                 class="btn"
+                 tal:attributes="href action.target">
+                <i tal:condition="action.icon" class="${action.icon}"></i>
+                ${action.label}
+              </a>
+            </tal:repeat>
+          </div>
+          
+          <tal:condition condition="view.allowed_content_types">
+            <div class="btn-group"
+                 tal:condition="view.user_has_permission('admin')"
+                 >
+              <a class="btn dropdown-toggle" href="#" data-toggle="dropdown">
+                <i class="icon-plus"></i>
+                Add <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                <tal:repeat repeat="subaction view.allowed_content_types">
+                  <a href="#" tal:content="subaction"
+                     tal:attributes="href '%sadd?ctype=%s' % (view.base_url, subaction)"
+                     >Add something</a>
+                </tal:repeat>
+              </ul>
+            </div>
+          </tal:condition>
+        </div>
+      </div>
+      <!-- END content_toolbar -->
+      
+      <div id="main" class="container" metal:define-slot="main">
+        
+        <div id="wrapper" class="sixteen columns">
+          
+          <div id="content" metal:define-slot="content"/>
+          
+          <div id="footer" metal:define-slot="footer">
+          </div>
+        </div>
+        
+      </div>
     </div>
   </body>
 </html>
+
+</metal:define-macro>
