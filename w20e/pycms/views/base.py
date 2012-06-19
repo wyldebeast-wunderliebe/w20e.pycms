@@ -57,21 +57,16 @@ class ViewMixin:
 
     @property
     def breadcrumbs(self):
+        """ Find all parent objects to root """
 
-        """ Find path to root """
-
-        path = [[self.context.title, resource_url(self.context, self.request)]]
-
+        path = [self.context]
         _root = self.context
 
         while getattr(_root, "__parent__", None) is not None:
             _root = _root.__parent__
-            path.append([_root.title, resource_url(_root, self.request)])
-            
-        path.reverse()
+            path.append(_root)
 
-        path[0][0] = "Root"
-            
+        path.reverse()
         return path
 
     @property
@@ -82,10 +77,8 @@ class ViewMixin:
         actions = reg.getUtility(IActions)
 
         return [action for action in actions.get_actions("perspective",
-                                                         ctype=self.context.content_type)
-                if (not action.permission) or has_permission(action.permission,
-                                                             self.context,
-                                                             self.request)]
+            ctype=self.context.content_type) if (not action.permission) or
+            has_permission(action.permission, self.context, self.request)]
 
     @property
     def siteactions(self):
@@ -109,10 +102,8 @@ class ViewMixin:
         actions = reg.getUtility(IActions)
 
         return [action for action in actions.get_actions("content",
-                                                         ctype=self.context.content_type)
-                if (not action.permission) or has_permission(action.permission,
-                                                             self.context,
-                                                             self.request)]
+            ctype=self.context.content_type) if (not action.permission) or
+            has_permission(action.permission, self.context, self.request)]
 
     @property
     def icon(self):
@@ -192,12 +183,13 @@ class AddView(AddBase, ViewMixin):
     @property
     def after_add_redirect(self):
         return "%s%s" % (self.base_url,
-                         self.request.registry.settings.get('pycms.after_add_redirect', 'admin'))
+                self.request.registry.settings.get('pycms.after_add_redirect',
+                    'admin'))
 
     @property
     def cancel_add_redirect(self):
-        return "%s%s" % (self.base_url,
-                         self.request.registry.settings.get('pycms.cancel_add_redirect', 'admin'))
+        return "%s%s" % (self.base_url, self.request.registry.settings.get(
+            'pycms.cancel_add_redirect', 'admin'))
 
     def __call__(self):
 
@@ -220,8 +212,8 @@ class EditView(EditBase, ViewMixin):
 
         """ Where to go after successfull edit?"""
 
-        return "%s%s" % (self.base_url,
-                         self.request.registry.settings.get('pycms.after_edit_redirect', 'edit'))
+        return "%s%s" % (self.base_url, self.request.registry.settings.get(
+            'pycms.after_edit_redirect', 'edit'))
 
     def __call__(self):
 
@@ -242,8 +234,8 @@ class DelView(DelBase, ViewMixin):
 
         """ Where to go after successfull edit?"""
 
-        return "%s%s" % (self.base_url,
-                         self.request.registry.settings.get('pycms.after_del_redirect', 'admin'))
+        return "%s%s" % (self.base_url, self.request.registry.settings.get(
+            'pycms.after_del_redirect', 'admin'))
 
     @property
     def parent_url(self):
@@ -328,12 +320,12 @@ class AdminView(Base, ViewMixin):
         for path in objs:
 
             obj = path_to_object(path, self.context.root, path_sep=".")
-            
+
             if obj is not None:
                 content = obj.__parent__.remove_content(obj.id)
                 self.context.add_content(content)
                 moved.append(obj.id)
-                
+
         return moved
 
     def rename_content(self, rename_map=None):

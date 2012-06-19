@@ -1,27 +1,27 @@
 <metal:define-macro define-macro="master">
   <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml" 
-      xml:lang="en" 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
       xmlns:tal="http://xml.zope.org/namespaces/tal">
 
-  <head>    
-    <title>PyCMS</title>    
+  <head>
+    <title>PyCMS</title>
     <base href="#" tal:attributes="href view.url"/>
-    
+
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
 
     <!-- Mobile Specific Metas
          ================================================== -->
-    <meta name="viewport" 
-          content="width=device-width, initial-scale=1, maximum-scale=1" /> 
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1" />
 
     <link rel="stylesheet" href="${request.application_url}/manage.css"
           type="text/css" media="screen" charset="utf-8" />
 
     <metal:define-slot define-slot="extra_css_slot">
     </metal:define-slot>
-    
+
     <script language="JavaScript"
             src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
     <script language="JavaScript"
@@ -54,7 +54,7 @@
       <a class="close" href="#" onclick="$('#alert').hide(); return false">×</a>
       <div id="alert_msg"></div>
     </div>
-    
+
     <div class="modal hide" id="confirm_delete">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">×</button>
@@ -96,23 +96,20 @@
 
       <!-- BEGIN: breadcrumb -->
       <ul class="breadcrumb">
-        <tal:repeat repeat="crumb view.breadcrumbs">          
+        <tal:repeat repeat="crumb view.breadcrumbs">
           <li>
-            <a href="#" tal:content="crumb[0]" 
-               tal:attributes="href '%sadmin' % crumb[1]">
-              Crumb
-            </a> 
-            <span class="divider">/</span>
+            <a href="${view.object_url(crumb)}admin">${crumb.title}</a>
+            <span tal:condition="not: repeat.crumb.end" class="divider">/</span>
           </li>
         </tal:repeat>
       </ul>
       <!-- END: breadcrumb -->
 
       <!-- === BEGIN: perspectives === -->
-      <ul class="nav nav-tabs" id="page-perspectives" 
+      <ul class="nav nav-tabs" id="page-perspectives"
           metal:define-macro="perspectives">
         <tal:repeat repeat="perspective view.perspectives">
-          
+
           <li
              tal:attributes="class '%s' % (view.viewname == perspective.name and 'active' or '')"
              >
@@ -121,18 +118,18 @@
                >Content</a>
           </li>
         </tal:repeat>
-        
-      </ul>    
+
+      </ul>
       <!-- === END: perspectives === -->
-      
-      
+
+
       <!-- === BEGIN: content_toolbar === -->
       <div class="btn-toolbar well">
         <div metal:define-slot="toolbar">
 
           <div class="btn-group">
             <tal:repeat repeat="action view.contentactions">
-              <a href="#" 
+              <a href="#"
                  class="btn"
                  tal:attributes="href action.target">
                 <i tal:condition="action.icon" class="${action.icon}"></i>
@@ -140,7 +137,7 @@
               </a>
             </tal:repeat>
           </div>
-          
+
           <tal:condition condition="view.allowed_content_types">
             <div class="btn-group"
                  tal:condition="view.user_has_permission('admin')"
@@ -161,17 +158,17 @@
         </div>
       </div>
       <!-- END content_toolbar -->
-      
+
       <div id="main" class="container" metal:define-slot="main">
-        
+
         <div id="wrapper" class="sixteen columns">
-          
+
           <div id="content" metal:define-slot="content"/>
-          
+
           <div id="footer" metal:define-slot="footer">
           </div>
         </div>
-        
+
       </div>
     </div>
   </body>

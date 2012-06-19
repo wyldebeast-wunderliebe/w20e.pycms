@@ -21,7 +21,10 @@ class CSSView(object):
 
             all_css.append(open(filename).read())
 
-        if self.request.registry.settings.get('pycms.minify_css', False):
+        val = self.request.registry.settings.get('pycms.minify_css', False)
+        if isinstance(val, str):
+            val = val.lower() == 'true'
+        if val:
             return cssmin.cssmin("".join(all_css))
 
         return "".join(all_css)
