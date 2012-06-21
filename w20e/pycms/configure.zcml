@@ -140,7 +140,7 @@
      category="site"
      />
 
-  <!-- main for pulic -->
+  <!-- main for public -->
   <pycms:macro
      name="main"
      ptfile="w20e.pycms:templates/main.pt"

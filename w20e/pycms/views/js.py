@@ -23,7 +23,10 @@ class JSView(object):
             all_js.append(open(filename).read())
             all_js.append("\n")
 
-        if self.request.registry.settings.get('pycms.minify_js', False):
+        val = self.request.registry.settings.get('pycms.minify_js', False)
+        if isinstance(val, str):
+            val = val.lower() == 'true'
+        if val:
             return jsmin("".join(all_js))
 
         return "".join(all_js)

@@ -32,3 +32,4 @@ class ICatalog(Interface):
 class IMailer(Interface):
 
     """ Marker class """
+
