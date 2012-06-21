@@ -18,6 +18,7 @@ input.rename_in {
 
 .actions_col {
     opacity: 0.3;
+    min-width: 100px;
 }
 
 .contentlisting tr:hover .actions_col {

@@ -67,7 +67,6 @@
 
     <group id="submission" layout="flow">
       <property name="orientation">h</property>
-      
 
       <submit id="save">
         <label>Save</label>

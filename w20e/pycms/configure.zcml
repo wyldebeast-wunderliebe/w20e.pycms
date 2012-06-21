@@ -6,7 +6,7 @@
   <include package="pyramid_zcml" />
 
   <!-- add security -->
-  <include file="security.zcml"/>
+  <include file="security.zcml" />
 
   <include file="meta.zcml" />
 

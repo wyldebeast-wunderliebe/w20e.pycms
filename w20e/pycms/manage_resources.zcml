@@ -14,11 +14,6 @@
   <pycms:css cssfile="./static/css/pycms.css" 
              csstarget="manage" />
 
-  <pycms:js
-     jsfile="./static/jquery-ui-1.8.11.custom.min.js"
-     jstarget="manage"
-     />
-
   <pycms:js jsfile="./static/3dparty/bootstrap/js/bootstrap.js" 
             jstarget="manage"/>
 
@@ -27,6 +22,11 @@
 
   <pycms:js jsfile="./static/3dparty/bootstrap/js/bootstrap-popover.js" 
             jstarget="manage"/>
+
+  <pycms:js
+     jsfile="./static/jquery-ui-1.8.11.custom.min.js"
+     jstarget="manage"
+     />
 
   <pycms:js
      jsfile="./static/validation.js"

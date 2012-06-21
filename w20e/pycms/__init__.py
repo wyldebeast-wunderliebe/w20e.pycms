@@ -12,6 +12,7 @@ from migration import migrate
 
 
 Registry.register_renderable("file", PyramidFile)
+Registry.set_html_template_path("./bootstrap")
 
 here = os.path.abspath(os.path.dirname(__file__))
 version = open(os.path.join(here, "version.txt")
