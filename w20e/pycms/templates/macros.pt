@@ -56,7 +56,8 @@
       </thead>
       <tbody>
       <tal:repeat repeat="item view.list_content()">
-        <tr data-objectid="${item.id}" 
+      <tr   id="${item.id}"
+            data-objectid="${item.id}"
             data-objectpath="${item.dottedpath}"
             data-objecttitle="${item.title}">
           <td class="contenttype">
