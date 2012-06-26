@@ -63,6 +63,12 @@
       />
 
   <pycms:index
+      name="searchable_title"
+      field="title"
+      idxtype="text"
+      />
+
+  <pycms:index
       name="ctype"
       field="content_type"
       idxtype="field"

@@ -1,3 +1,5 @@
+import sys
+import os
 from PIL import Image as PILImage
 from ZODB.blob import Blob
 from StringIO import StringIO
@@ -39,3 +41,14 @@ def generate_id(prefix="", length=KEY_LENGTH):
     base = hashlib.md5(str(t1 + t2))
 
     return prefix + base.hexdigest()[:length]
+
+def package_home(globals_dict):
+    __name__=globals_dict['__name__']
+    m=sys.modules[__name__]
+    if hasattr(m,'__path__'):
+        r=m.__path__[0]
+    elif "." in __name__:
+        r=sys.modules[__name__[:__name__.rfind('.')]].__path__[0]
+    else:
+        r=__name__
+    return os.path.abspath(r)

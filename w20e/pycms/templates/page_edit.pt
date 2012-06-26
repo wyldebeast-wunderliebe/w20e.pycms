@@ -14,7 +14,7 @@
       <div class="status" tal:condition="status">${status}</div>
       <div class="error" tal:condition="errors">${errors}</div>
       
-      <p tal:content="structure python:view.renderform()"></p>      
+      <p tal:content="structure python:view.renderform(errors=errors, status=status)"></p>      
       
     </div>
 
