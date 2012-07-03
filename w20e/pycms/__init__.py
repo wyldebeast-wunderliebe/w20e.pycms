@@ -57,13 +57,18 @@ def update(app):
     curr_version = getattr(app, "pycms_version", "unknown")
     tgt_version = version
 
-    migrated = migrate(curr_version, tgt_version)
+    if curr_version != tgt_version:
 
-    if migrated:
-        setattr(app, "pycms_version", tgt_version)
+        migrated = migrate(curr_version, tgt_version)
+
+        if migrated:
+            setattr(app, "pycms_version", tgt_version)
 
 
 def appmaker(config):
+
+    """ Create the application. Call this method from your main Pyramid
+    setup """
 
     initreq = InitRequest()
     initreq.registry = config.registry

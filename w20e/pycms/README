@@ -13,9 +13,10 @@ created using these main ideas:
   you like
 
 The CMS is a framework, not an out of the box app. What you'll need to
-do is create your own Pyramid app, uing the CMS as base. We've tried
-to make this as easy as possible: use w20e.pycms.skeleton to obtain a
-paster template for your app. Run it, and there you go...
+do is create your own Pyramid app, using the CMS as base. We've tried
+to make this as easy as possible: use w20e.pycms.skeleton (to be found
+on github) to obtain a paster template for your app. Run it, and there
+you go...
 
 
 Getting started
@@ -33,7 +34,7 @@ The easiest way to do so, is using our paster template
 pycms_project. Install the w20e.pycms.sitemaker package (get it from
 github), something along these lines:
 
-  # virtualenv --no-site-packages <env>
+  # virtualenv <env>
   # cd <env>; ./bin/activate
   # ./bin/easy_install w20e.pycms.sitemaker
   # paster create -t pycms_project <package name>
