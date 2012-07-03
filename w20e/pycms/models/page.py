@@ -1,12 +1,18 @@
+import os
 from folder import Folder
 from ..blocks.base import BlockContainer
+from ..utils import package_home
+
+
+current_folder = package_home(globals())
 
 
 class Page(Folder, BlockContainer):
 
     """ Basic Page """
 
-    add_form = edit_form = "../forms/page.xml"
+    add_form = edit_form = os.path.join(
+            current_folder, '..', 'forms', 'page.xml')
 
     def __init__(self, content_id):
 

@@ -1,7 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" 
       xml:lang="en" 
       xmlns:tal="http://xml.zope.org/namespaces/tal"
-      metal:use-macro="content.macros['master']">
+      metal:use-macro="body.macros['master']">
 
       <metal:content fill-slot="content">
 
@@ -10,7 +10,7 @@
         <div class="status" tal:condition="status">${status}</div>
         <div class="error" tal:condition="errors">${errors}</div>
         
-        <div id="content" tal:replace="structure view.renderform()">
+        <div id="content" tal:replace="structure view.renderform(errors=errors, status=status)">
         </div>
       
         <div tal:replace="structure view.footer"/>

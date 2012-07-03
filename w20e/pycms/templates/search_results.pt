@@ -1,0 +1,20 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      metal:use-macro="body.macros['master']">
+
+      <metal:content fill-slot="content">
+
+      <div id="content">
+
+        <ul id="search_results">
+          <tal:repeat repeat="res results">
+            <li><a href="${res['href']}">${res['title']}</a></li>
+          </tal:repeat>
+        </ul>
+
+      </div>
+
+      </metal:content>
+
+</html>
