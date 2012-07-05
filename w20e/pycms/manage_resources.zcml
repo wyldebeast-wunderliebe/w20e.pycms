@@ -22,11 +22,13 @@
   <pycms:js jsfile="./static/3dparty/bootstrap/js/bootstrap.js" 
             jstarget="manage"/>
 
+<!--
   <pycms:js jsfile="./static/3dparty/bootstrap/js/bootstrap-modal.js" 
             jstarget="manage"/>
 
   <pycms:js jsfile="./static/3dparty/bootstrap/js/bootstrap-popover.js" 
             jstarget="manage"/>
+-->
 
   <pycms:js
      jsfile="./static/3dparty/jquery/js/jquery-ui-1.8.11.custom.min.js"
