@@ -1,7 +1,6 @@
 import hashlib
 from pyramid.threadlocal import get_current_registry
-from zope.interface import Interface
-from sharing import ISharing
+from zope.interface import Interface, Attribute, implements
 from pyramid.security import Allow, DENY_ALL
 from persistent import Persistent
 from persistent.list import PersistentList
@@ -34,6 +33,22 @@ def init(event):
     app.acl.users['admin'] = User(admin, "Administrator", "", pwd)
 
 
+class IACLRequest(Interface):
+
+    acl = Attribute("The ACL list")
+    context = Attribute("The context of which the ACL is requested")
+
+
+class ACLRequest(object):
+
+    implements(IACLRequest)
+
+    def __init__(self, acl, context):
+
+        self.acl = acl
+        self.context = context
+        
+
 class ISecure(Interface):
 
     """ Marker """
@@ -44,38 +59,23 @@ class Secure:
     def __init__(self, context):
 
         self.context = context
-        self.sharing = None
-
-        try:
-            self.sharing = get_current_registry().queryAdapter(context,
-                                                               ISharing)
-        except:
-            pass
 
     @property
     def __acl__(self):
 
-        return self.view_list() + self.edit_list() + [DENY_ALL]
+        acl = self.viewers() + self.editors() + [DENY_ALL]
 
-    def edit_list(self):
+        get_current_registry().notify(ACLRequest(acl, self.context))
 
-        editors = [(Allow, 'group:admin', ('view', 'edit', 'admin'))]
+        return acl
 
-        if self.sharing:
-            for user_id in self.sharing.get_sharing().get('admin', []):
-                editors.append((Allow, user_id, ('view', 'edit')))
+    def editors(self):
 
-        return editors
+        return [(Allow, 'group:admin', ('view', 'edit', 'admin'))]
 
-    def view_list(self):
+    def viewers(self):
 
-        viewers = [(Allow, 'group:viewer', 'view')]
-
-        if self.sharing:
-            for user_id in self.sharing.get_sharing().get('viewer', []):
-                viewers.append((Allow, user_id, 'view'))
-
-        return viewers
+        return [(Allow, 'group:viewer', 'view')]
 
 
 class User(Persistent):

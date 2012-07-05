@@ -41,7 +41,7 @@
 
   <adapter
     for="w20e.hitman.models.base.IContent"
-    provides=".security.ISecure"
+    provides="w20e.pycms.security.ISecure"
     factory=".security.Secure"
     />
 

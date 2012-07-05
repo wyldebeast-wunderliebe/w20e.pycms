@@ -204,7 +204,7 @@ Would you like search enabled for your site?
 
 Add this to your configure.zcml:
 
-  <include package="w20e.pycms" file="sharing.zcml"/>
+  <include package="w20e.pycms" file="search.zcml"/>
 
 
 Settings

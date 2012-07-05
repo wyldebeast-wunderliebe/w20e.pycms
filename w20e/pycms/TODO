@@ -6,3 +6,5 @@
 * enable reset id
 * move local actions to CMS (from hitman)
 * remove layout stuff; move to different package and refactor
+* move out sharing to separate module
+* move out catalog/search to separate module
