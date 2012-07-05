@@ -118,9 +118,15 @@ class IActionDirective(Interface):
         description=u"Condition",
         required=False)
 
+    template = TextLine(
+        title=u"Template",
+        description=u"Template to use for rendering",
+        required=False)    
+
 
 def action(_context, name, target, category, label=None, icon=None, ctype=[],
-           permission="", condition=None):
+           permission="", condition=None,
+           template="w20e.pycms:templates/action.pt"):
 
     reg = _context.context.registry
     action_registry = reg.getUtility(IActions)
@@ -130,7 +136,8 @@ def action(_context, name, target, category, label=None, icon=None, ctype=[],
                                     icon=icon,
                                     ctype=ctype,
                                     permission=permission,
-                                    condition=condition)
+                                    condition=condition,
+                                    template=template)
 
 
 class ICTypeDirective(Interface):

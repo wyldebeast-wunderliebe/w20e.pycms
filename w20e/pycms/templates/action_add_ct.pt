@@ -1,0 +1,13 @@
+<div class="btn-group" tal:condition="context.allowed_content_types">
+  <a class="btn dropdown-toggle" href="#" data-toggle="dropdown">
+    <i class="icon-plus"></i>
+    Add <b class="caret"></b>
+  </a>
+  <ul class="dropdown-menu">
+    <tal:repeat repeat="subaction context.allowed_content_types">
+      <a href="#" tal:content="subaction"
+         tal:attributes="href 'add?ctype=%s' % subaction"
+         >Add something</a>
+    </tal:repeat>
+  </ul>
+</div>

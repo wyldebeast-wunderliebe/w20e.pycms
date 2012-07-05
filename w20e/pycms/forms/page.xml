@@ -8,7 +8,6 @@
     <name/>
     <description/>
     <keywords/>
-    <status value="draft"/>
     <text/>
     <use_complex_layout/>
   </data>
@@ -16,7 +15,6 @@
   <model>
     <properties id="required">
       <bind>name</bind>
-      <bind>status</bind>
       <required>True</required>
     </properties>
 
@@ -57,13 +55,6 @@
       <property name="rows">20</property>
       <property name="cols">80</property>      
     </richtext>
-
-    <select id="status" bind="status">
-      <label>Status</label>
-      <property name="format">full</property>
-      <option value="draft">Draft</option>
-      <option value="published">Published</option>
-    </select>
 
     <group id="submission" layout="flow">
       <property name="orientation">h</property>

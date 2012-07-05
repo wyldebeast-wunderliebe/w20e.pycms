@@ -1,10 +1,12 @@
 from zope.interface import Interface
+from pyramid.renderers import render
 
 
 class Action(object):
 
     def __init__(self, name, target, label=None, icon=None,
-                 ctype=[], permission="", condition=True):
+                 ctype=[], permission="", condition=True,
+                 template="w20e.pycms:templates/action.pt"):
 
         self.name = name
         self.label = label or name
@@ -13,6 +15,13 @@ class Action(object):
         self.ctype = ctype
         self.permission = permission
         self.condition = condition
+        self.template = template
+
+    def render(self, request, context):
+
+        return render(self.template,
+                      {'action': self, 'context': context,
+                       'request': request}, request=request)
 
 
 class IActions(Interface):
@@ -30,7 +39,8 @@ class Actions(object):
         self.registry = {}
 
     def register_action(self, name, target, category, label=None, icon=None,
-                        ctype=[], permission="", condition=True):
+                        ctype=[], permission="", condition=True,
+                        template="w20e.pycms:templates/action.pt"):
 
         if not category in self.registry:
             self.registry[category] = {}
@@ -45,8 +55,13 @@ class Actions(object):
                                                icon=icon,
                                                ctype=ctype,
                                                permission=permission,
-                                               condition=condition)
+                                               condition=condition,
+                                               template=template)
         self.order[category].append(name)
+
+    def get_action(self, category, name):
+
+        return self.registry.get(category, {}).get(name, None)
 
     def get_actions(self, category, ctype=None):
 

@@ -6,18 +6,15 @@
   <include package="pyramid_zcml" />
 
   <pycms:css cssfile="./static/css/public_base.css" csstarget="public" />
-  <pycms:css cssfile="./static/3dparty/bootstrap/css/bootstrap.css" csstarget="public" />
-
-  <pycms:css cssfile="./static/jquery-ui-1.8.11.custom.css"
-     csstarget="public"
+  <pycms:css cssfile="./static/3dparty/bootstrap/css/bootstrap.css" 
+             csstarget="public" />
+  <pycms:css cssfile="./static/3dparty/jquery/css/jquery-ui-1.8.11.custom.css"
+             csstarget="public"
      />
 
-  <pycms:js jsfile="./static/jquery-ui-1.8.11.custom.min.js"
-     jstarget="public"
+  <pycms:js jsfile="./static/3dparty/jquery/js/jquery-ui-1.8.11.custom.min.js"
+            jstarget="public"
      />
-
-  <pycms:js jsfile="./static/jquery-zrssfeed.js" jstarget="public" />
-
   <pycms:js jsfile="./static/validation.js" jstarget="public" />
 
 </configure>

@@ -1,0 +1,8 @@
+<div class="btn-group">
+  <a href="#"
+     class="btn"
+     tal:attributes="href action.target">
+    <i tal:condition="action.icon" class="${action.icon}"></i>
+    ${action.label}
+  </a>
+</div>

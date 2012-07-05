@@ -125,37 +125,11 @@
 
       <!-- === BEGIN: content_toolbar === -->
       <div class="btn-toolbar well">
-        <div metal:define-slot="toolbar">
-
-          <div class="btn-group">
-            <tal:repeat repeat="action view.contentactions">
-              <a href="#"
-                 class="btn"
-                 tal:attributes="href action.target">
-                <i tal:condition="action.icon" class="${action.icon}"></i>
-                ${action.label}
-              </a>
-            </tal:repeat>
-          </div>
-
-          <tal:condition condition="view.allowed_content_types">
-            <div class="btn-group"
-                 tal:condition="view.user_has_permission('admin')"
-                 >
-              <a class="btn dropdown-toggle" href="#" data-toggle="dropdown">
-                <i class="icon-plus"></i>
-                Add <b class="caret"></b>
-              </a>
-              <ul class="dropdown-menu">
-                <tal:repeat repeat="subaction view.allowed_content_types">
-                  <a href="#" tal:content="subaction"
-                     tal:attributes="href '%sadd?ctype=%s' % (view.base_url, subaction)"
-                     >Add something</a>
-                </tal:repeat>
-              </ul>
-            </div>
-          </tal:condition>
-        </div>
+        <metal:define define-slot="toolbar">
+          <tal:repeat repeat="action view.contentactions">
+            <tal:replace replace="structure action.render(request, context)"/>
+          </tal:repeat>
+        </metal:define>
       </div>
       <!-- END content_toolbar -->
 

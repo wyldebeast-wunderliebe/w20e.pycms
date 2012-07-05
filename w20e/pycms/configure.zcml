@@ -116,6 +116,16 @@
      />
 
   <pycms:action
+     name="add"
+     label="Add"
+     icon="icon-plus"
+     target="#"
+     category="content"
+     permission="edit"
+     template="w20e.pycms:templates/action_add_ct.pt"
+     />
+
+  <pycms:action
      name="paste"
      label="Paste"
      icon="icon-paste"

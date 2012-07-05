@@ -5,4 +5,4 @@
 * Add admin view without being a formview? Really?
 * enable reset id
 * move local actions to CMS (from hitman)
-* make indexes for catalog configurable through zcml
+* remove layout stuff; move to different package and refactor

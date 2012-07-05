@@ -1,5 +1,6 @@
 import os
 import sys
+from zope.component import getSiteManager
 from pyramid.config import Configurator
 from pyramid_zodbconn import get_connection
 import pyramid_zcml
@@ -126,23 +127,34 @@ def root_factory(request):
     return conn.root()['app_root']
 
 
-def main(global_config, **settings):
+def make_pycms_app(app, **settings):
+    
+    """ Create a w20e.pycms application and return it. The app is a
+    router instance as created by Configurator.make_wsgi_app."""
+    
+    config = Configurator(package=app,
+                          root_factory=root_factory,
+                          settings=settings)
 
-    """ This function returns a Pyramid WSGI application.
-    """
+    def get_registry():
 
-    config = Configurator(root_factory=root_factory, settings=settings)
-    zcml_file = settings.get('configure_zcml', 'configure.zcml')
+        return config.registry
 
-    config.hook_zca()
+    # hook up registry
+    getSiteManager.sethook(get_registry)    
+
     config.include(pyramid_zcml)
     config.include('pyramid_mailer')
-    config.commit()
 
-    config.scan('w20e.pycms')
-    config.load_zcml(zcml_file)
+    config.load_zcml('w20e.pycms:bootstrap.zcml')
+    config.commit()
+    
+    config.load_zcml("configure.zcml")
     config.commit()
 
     appmaker(config)
+
+    getSiteManager.reset()
+    config.hook_zca()
 
     return config.make_wsgi_app()

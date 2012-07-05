@@ -18,8 +18,8 @@ class PyCMSMixin:
 
 class BaseContent(HitmanBaseContent, PyCMSMixin):
 
-    pass
-
+    allowed_content_types = []
+        
 
 class BaseFolder(HitmanBaseFolder, PyCMSMixin):
 
