@@ -17,7 +17,7 @@ def has_permission(permission, context, request):
 
     """ Cache permission in request """
 
-    key = 'permission_%s_%s' % (permission, context.id)
+    key = 'permission_%s_%s' % (permission, context.dottedpath)
 
     if not key in request:
         request[key] = base_has_permission(permission, context, request)
