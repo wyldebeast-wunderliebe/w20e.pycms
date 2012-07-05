@@ -6,10 +6,23 @@ from StringIO import StringIO
 import time
 import random
 import hashlib
+from pyramid.security import has_permission as base_has_permission
 
 
 THUMBNAIL_SIZE = 128, 128
 KEY_LENGTH = 24
+
+
+def has_permission(permission, context, request):
+
+    """ Cache permission in request """
+
+    key = 'permission_%s_%s' % (permission, context.id)
+
+    if not key in request:
+        request[key] = base_has_permission(permission, context, request)
+        
+    return request[key]
 
 
 def resize_image(data, size=THUMBNAIL_SIZE):

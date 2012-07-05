@@ -1,8 +1,5 @@
 from base import AdminView
-from w20e.forms.pyramid.formview import xmlformview
-from w20e.forms.xml.formfile import FormFile, find_file
 from ..interfaces import IMailer
-from pyramid.renderers import get_renderer
 from pyramid.security import has_permission
 
 

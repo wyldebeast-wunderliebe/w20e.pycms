@@ -7,7 +7,8 @@ from w20e.hitman.events import ContentRemoved
 from w20e.hitman.utils import path_to_object
 
 from pyramid.renderers import get_renderer, render
-from pyramid.security import has_permission, authenticated_userid
+from pyramid.security import authenticated_userid
+from w20e.pycms.utils import has_permission
 from pyramid.url import resource_url
 
 from ..actions import IActions

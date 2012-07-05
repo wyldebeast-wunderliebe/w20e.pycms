@@ -1,5 +1,4 @@
 from pyramid.url import resource_url
-from pyramid.response import Response
 from ..models.image import Image
 from w20e.hitman.models.exceptions import UniqueConstraint
 

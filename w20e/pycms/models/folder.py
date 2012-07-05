@@ -1,6 +1,5 @@
 import os
 from base import BaseFolder
-from ..blocks.base import BlockContainer
 from ..utils import package_home
 
 

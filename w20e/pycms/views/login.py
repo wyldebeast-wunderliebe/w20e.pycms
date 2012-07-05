@@ -1,5 +1,4 @@
 from pyramid.httpexceptions import HTTPFound
-from pyramid.renderers import get_renderer
 from pyramid.url import resource_url
 
 from pyramid.security import remember, forget
