@@ -75,13 +75,6 @@
      />
 
   <pycms:action
-     name="layout"
-     target="./layout"
-     category="perspective"
-     ctype="page,site"
-     />
-
-  <pycms:action
      name="zodb"
      label="ZODB"
      target="./zodb"

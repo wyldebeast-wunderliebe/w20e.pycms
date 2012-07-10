@@ -9,7 +9,6 @@
     <description/>
     <keywords/>
     <text/>
-    <use_complex_layout/>
   </data>
 
   <model>
@@ -18,10 +17,6 @@
       <required>True</required>
     </properties>
 
-    <properties id="complex">
-      <bind>text</bind>
-      <relevant>not data['use_complex_layout']</relevant>
-    </properties>
   </model>
 
   <view>
@@ -44,10 +39,6 @@
       <property name="rows">5</property>
       <property name="cols">40</property>
     </input>
-
-    <checkbox id="complex" bind="use_complex_layout">
-      <label>Use the layout tab for more complex layout</label>
-    </checkbox>
 
     <richtext id="text" bind="text">
       <label>Page text (including images)</label>

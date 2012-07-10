@@ -6,7 +6,6 @@
 
   <data>
     <name/>
-    <status value="draft"/>
     <header_text/>
     <footer_text/>
     <form/>
@@ -15,7 +14,6 @@
   <model>
     <properties id="required">
       <bind>name</bind>
-      <bind>status</bind>
       <required>True</required>
     </properties>
 
@@ -47,13 +45,6 @@
     <file id="form" bind="form">
       <label>XML definition of form</label>
     </file>
-
-    <select id="status" bind="status">
-      <label>Status</label>
-      <property name="format">full</property>
-      <option value="draft">Draft</option>
-      <option value="published">Published</option>
-    </select>
 
     <group id="submission" layout="flow">
       <property name="orientation">h</property>

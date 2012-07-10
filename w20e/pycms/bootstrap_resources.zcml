@@ -1,0 +1,9 @@
+<configure xmlns="http://pylonshq.com/pyramid"
+           xmlns:pycms="http://w20e.com/pycms"
+           >
+
+  <!-- All admin CSS -->
+  <pycms:css cssfile="./static/3dparty/bootstrap/css/bootstrap.css" 
+             csstarget="public" />
+
+</configure>
