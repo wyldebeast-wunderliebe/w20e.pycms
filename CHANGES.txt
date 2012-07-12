@@ -1,0 +1,3 @@
+1.0.1a
+======
+* Enabled call to render viewlet through base view

@@ -1,3 +1,5 @@
+from zope.interface import providedBy
+
 from w20e.hitman.views.base import ContentView as Base
 from w20e.hitman.views.base import AddView as AddBase
 from w20e.hitman.views.base import DelView as DelBase
@@ -7,9 +9,11 @@ from w20e.hitman.events import ContentRemoved
 from w20e.hitman.utils import path_to_object
 
 from pyramid.renderers import get_renderer, render
+from pyramid.interfaces import IView, IViewClassifier
 from pyramid.security import authenticated_userid
 from w20e.pycms.utils import has_permission
 from pyramid.url import resource_url
+from pyramid.compat import map_
 
 from ..actions import IActions
 from ..ctypes import ICTypes
@@ -150,6 +154,18 @@ class ViewMixin:
     def logged_in(self):
 
         return authenticated_userid(self.request) or None
+
+    def render_viewlet(self, name, **kwargs):
+
+        """ Render a viewlet """
+
+        provides = [IViewClassifier] + map_(providedBy,
+                                            (self.request, self.context))
+        view = self.request.registry.adapters.lookup(provides, IView, name=name)
+
+        self.request.update({'kwargs': kwargs})
+
+        return "".join(view(self.context, self.request).app_iter)
 
 
 class BaseView(BaseBase, ViewMixin):

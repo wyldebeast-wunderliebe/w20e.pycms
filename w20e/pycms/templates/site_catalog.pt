@@ -9,7 +9,7 @@
   <body>
 
     <div metal:fill-slot="toolbar">
-      <a class="btn" href="reindex_catalog">Re-index catalog</a>
+      <a class="btn btn-warning" href="reindex_catalog">Re-index catalog</a>
     </div>
 
     <div metal:fill-slot="content">
