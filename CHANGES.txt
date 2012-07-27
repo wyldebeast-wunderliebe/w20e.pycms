@@ -1,3 +1,7 @@
+1.0.2a
+======
+* Finally we have a serious (?) licence. Also updated some metadata.
+
 1.0.1a
 ======
 * Enabled call to render viewlet through base view

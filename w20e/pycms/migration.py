@@ -20,7 +20,7 @@ def migrate(current_version, target_version):
                  (current_version, target_version)
 
     try:
-        module = __import__(update_mod)
+        __import__(update_mod)
         LOGGER.info("Found upgrade")
 
         return True

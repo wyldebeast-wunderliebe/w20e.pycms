@@ -1,19 +1,11 @@
-import os
 from w20e.hitman.models.base import BaseContent
 from ..utils import resize_image
 from ZODB.blob import Blob
-from ..utils import package_home
-
-
-current_folder = package_home(globals())
 
 
 class Image(BaseContent):
 
     """ Image model """
-
-    add_form = edit_form = os.path.join(
-            current_folder, '..', 'forms', 'image.xml')
 
     def _store_resized_image(self, key, data):
         """ store a blob image as attribute """

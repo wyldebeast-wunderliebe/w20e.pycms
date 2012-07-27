@@ -27,10 +27,13 @@ setup(name='w20e.pycms',
       description='Pyramid CMS',
       long_description=README + '\n\n' +  CHANGES,
       classifiers=[
-        "Programming Language :: Python",
+        "Development Status :: 3 - Alpha",
         "Framework :: Pyramid",
-        "Topic :: Internet :: WWW/HTTP",
-        "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
+        "Intended Audience :: Developers",
+        "License :: Freely Distributable",
+        "Programming Language :: Python",
+        "Topic :: Internet :: WWW/HTTP :: Site Management",
+        "Topic :: Software Development :: Libraries :: Application Frameworks"
         ],
       author='D.A.Dokter, H.Bouma',
       author_email='dokter@w20e.com, bouma@w20e.com',
@@ -45,7 +48,7 @@ setup(name='w20e.pycms',
       test_suite="w20e.pycms",
       entry_points = """\
       [paste.global_paster_command]
-      pycms_pack = w20e.pycms:PackCommand
+      pycms_pack = w20e.pycms:pack.PackCommand
       """,
       paster_plugins=['pyramid'],
       )

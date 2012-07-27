@@ -1,6 +1,5 @@
 import hashlib
 import mimetypes
-from pyramid.response import FileResponse
 
 
 class JSRenderer:

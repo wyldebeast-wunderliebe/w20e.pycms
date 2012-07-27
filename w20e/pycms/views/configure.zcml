@@ -73,13 +73,13 @@
      permission="edit"
      />
 
-  <view
+  <!--view
      context="..models.page.Page"
      view=".page.PageEdit"
      renderer="../templates/page_edit.pt"
      name="edit"
      permission="edit"
-     />
+     /-->
 
   <view
      context="..models.image.Image"

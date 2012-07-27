@@ -2,6 +2,17 @@
            xmlns:pycms="http://w20e.com/pycms"
            >
 
+  <!-- Base implementation for forms. -->
+  <adapter
+      factory=".base.XMLFormFactory" 
+      for="w20e.hitman.models.base.IContent" 
+      provides="w20e.forms.interfaces.IFormFactory" />
+
+  <adapter
+      factory=".base.SiteFormFactory" 
+      for="w20e.pycms.interfaces.ISite" 
+      provides="w20e.forms.interfaces.IFormFactory" />
+
   <pycms:ctype
      name="page"
      factory="w20e.pycms.models.page.Page"

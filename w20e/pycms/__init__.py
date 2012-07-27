@@ -8,7 +8,6 @@ from events import AppRootReady
 from w20e.forms.registry import Registry
 from w20e.forms.pyramid.file import PyramidFile
 from models.imagefolder import ImageFolder
-from pack import PackCommand
 from migration import migrate
 
 

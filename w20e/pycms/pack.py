@@ -44,10 +44,6 @@ class PackCommand(command.Command):
 
         print handle.info()
         
-        #url = "http://%s:%s/ajax_pack" % (host, port)
-
-        #r = opener.open(url)
-
         result = handle.read()
 
         print result

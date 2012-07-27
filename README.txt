@@ -240,9 +240,12 @@ Your actual model should extend either
 or
   w20e.pycms.models.base.BaseFolder.
 
-You may want to use w20e.forms (read: should) for your model. Create
-an xml form that describes your model, and add it. A simple model
-looks like this:
+You may want to use w20e.forms (read: should) for your model. You can
+either create an xml form that describes your model, or if you insist
+on doing things more Pythonic, create your form
+programmatically. Checkout out w20e.forms for details.
+
+A simple model looks like this:
 
 from w20e.pycms.models.base import BaseContent
 
@@ -251,30 +254,41 @@ class SomethingSimple(BaseContent):
 
     """ Well, actually it's more like an 'object'... """
 
-    add_form = edit_form = "../quote/somethingsimple.xml"
-
     def __init__(self, content_id, data=None):
 
         BaseContent.__init__(self, content_id, data)
 
-
     def base_id(self):
 
         return self.__data__['title']
-
 
     @property
     def title(self):
 
         return self.__data__['title']
 
+You can configure how your form for editing and adding is
+found. Default is that PyCMS looks for a file in <your package
+home>/forms/<content type>.xml, so in this case:
 
+  <package home>/forms/somethingsimple.xml
+
+If you want something completely different, configure an adapter for your
+content type that provides a form factory:
+
+  <adapter
+      factory=".your.Factory" 
+      for=".your.content.Type" 
+      provides="w20e.forms.interfaces.IFormFactory" />
+
+And make sure it actually implements IFormFactory and can create a
+form (w20e.forms.interfaces.IForm).
 
 
 robots.txt
 ----------
 
-The default robots.txt disallows all. Override as per your liking...
+The default robots.txt allows all. Override as per your liking...
 
 
 Search
