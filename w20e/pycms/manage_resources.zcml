@@ -15,8 +15,8 @@
   <pycms:css cssfile="./static/css/bootstrap_custom.css" 
              csstarget="manage" />
 
-  <!--pycms:css cssfile="./static/3dparty/jquery/css/jquery.dropdown.css" 
-             csstarget="manage" /-->
+  <pycms:css cssfile="./static/3dparty/jquery/css/jquery-ui-1.8.22.custom.css" 
+             csstarget="manage" />
 
   <pycms:css cssfile="./static/css/pycms.css" 
              csstarget="manage" />
@@ -26,7 +26,7 @@
             jstarget="manage"/>
 
   <pycms:js
-     jsfile="./static/3dparty/jquery/js/jquery-ui-1.8.11.custom.min.js"
+     jsfile="./static/3dparty/jquery/js/jquery-ui-1.8.22.custom.min.js"
      jstarget="manage"
      />
 

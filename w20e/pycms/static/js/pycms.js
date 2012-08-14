@@ -296,8 +296,8 @@ pycms.addEvents = function() {
     });
 
   // resize and drag 'n drop...
-  $(".block").resizable({grid: [5, 5], stop: pycms.resized}).draggable({
-      'grid': [10, 10], 'stop': pycms.dropped});
+  //$(".block").resizable({grid: [5, 5], stop: pycms.resized}).draggable({
+  //    'grid': [10, 10], 'stop': pycms.dropped});
 }
 
 
@@ -545,5 +545,5 @@ $(document).ready(function() {
           $.get('ajax_order', {order: order});
         }});
 
-    $(".control.datetime input").datetimepicker();
+    $(".datetime input").datetimepicker();
 });
