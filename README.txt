@@ -285,6 +285,71 @@ And make sure it actually implements IFormFactory and can create a
 form (w20e.forms.interfaces.IForm).
 
 
+Natures
+-------
+
+An alternative for defining content types is defining 'natures'. Let's
+face it: what is so special about an event? It is really just a page
+thing with a start- and end date and a location, isn't it? And what
+about news? Isn't that not very much like a page too? If you agree,
+read on...
+
+A page can be not only a page, but it can also be news-ish, or
+event-ish. That is it's nature. You can register natures like so:
+
+  <pycms:nature
+      name="event"
+      interface="w20e.pycms_events.interfaces.IEvent"
+      />
+
+This will make the nature show up in the 'natures' dropdown menu. Now
+either you leave it like this, or you also modify the form for the
+page with an w20e.forms.interfaces.IFormModifier implementation:
+
+  <subscriber
+      for="w20e.pycms_events.interfaces.IEvent"
+      factory="w20e.pycms_events.models.event.Event"
+      provides="w20e.forms.interfaces.IFormModifier"
+      />
+
+And create a class Event along these lines:
+
+  from zope.interface import implements
+  from w20e.forms.interfaces import IForm, IFormModifier
+  from w20e.forms.data.field import Field
+  from w20e.forms.model.fieldproperties import FieldProperties
+  from w20e.forms.rendering.control import Input
+  from w20e.forms.rendering.group import FlowGroup
+
+
+  class Event(object):
+
+      implements(IFormModifier)
+
+      def __init__(self, form):
+
+          self.form = form
+
+      def modify(self, form):
+
+          """ Add begin, end and location to form """
+
+          form.data.addField(Field("start"))
+          form.data.addField(Field("end"))
+          form.data.addField(Field("location"))
+
+          grp = FlowGroup("eventgroup", label="Event")
+          grp.addRenderable(Input("start", "Start of event",
+                                  extra_classes="datetime",
+                                  bind="start"))
+          grp.addRenderable(Input("end", "End of event", bind="end"))
+          grp.addRenderable(Input("location", "Location", bind="location"))
+
+          form.view.addRenderable(grp, pos=-1)
+
+Or whatever you think should be added to the page form...
+
+
 robots.txt
 ----------
 
