@@ -17,11 +17,11 @@ class Action(object):
         self.condition = condition
         self.template = template
 
-    def render(self, request, context):
+    def render(self, request, context, view=None):
 
         return render(self.template,
                       {'action': self, 'context': context,
-                       'request': request}, request=request)
+                       'view': view, 'request': request}, request=request)
 
 
 class IActions(Interface):

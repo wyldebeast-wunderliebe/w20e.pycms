@@ -401,7 +401,32 @@ pycms.paste = function() {
 
 pycms.rename = function() {
     $("#rename").show();
-}
+};
+
+
+/**
+ * Add or remove nature.
+ * @param event Click event that is attached to nature checkbox.
+ */
+pycms.nature = function(event) {
+
+  var tgt = $(event.target);
+
+  if (tgt.attr("checked")) {
+    $.post("ajax_add_nature", {'nature_id': tgt.attr("name")},
+           function(data) {
+             tgt.attr("checked", "yes")
+             pycms.alert("Added nature " + tgt.attr("name"), "success");
+           });
+  } else {
+    $.post("ajax_remove_nature", {'nature_id': tgt.attr("name")},
+           function(data) {
+             pycms.alert("Removed nature " + tgt.attr("name"), "success");
+             tgt.removeAttr("checked")
+           });
+  }
+};
+
 
 /* Initialization sequence started... */
 $(document).ready(function() {
@@ -519,4 +544,6 @@ $(document).ready(function() {
           var order = $(this).sortable('toArray').toString();
           $.get('ajax_order', {order: order});
         }});
+
+    $(".control.datetime input").datetimepicker();
 });

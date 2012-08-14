@@ -3,6 +3,8 @@ import sys
 from zope.component import getSiteManager
 from pyramid.config import Configurator
 from pyramid_zodbconn import get_connection
+from pyramid.session import UnencryptedCookieSessionFactoryConfig \
+     as SessionFactory
 import pyramid_zcml
 from events import AppRootReady
 from w20e.forms.registry import Registry
@@ -82,7 +84,7 @@ def appmaker(config):
         root_clazz_name = config.registry.settings.get("pycms.rootclass",
                                            "w20e.pycms.models.site.Site")
         root_title = config.registry.settings.get("pycms.roottitle",
-                                           "Yet another PyCMS app!")
+                                           "Yet another w20e.pycms app!")
 
 
         root_clazz = class_from_string(root_clazz_name)
@@ -130,9 +132,10 @@ def make_pycms_app(app, **settings):
     
     """ Create a w20e.pycms application and return it. The app is a
     router instance as created by Configurator.make_wsgi_app."""
-    
+
     config = Configurator(package=app,
                           root_factory=root_factory,
+                          session_factory=SessionFactory('w20e_pycms_secret'),
                           settings=settings)
 
     def get_registry():

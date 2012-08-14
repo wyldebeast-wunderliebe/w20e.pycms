@@ -19,6 +19,8 @@ from ..actions import IActions
 from ..ctypes import ICTypes
 from ..macros import IMacros
 
+from w20e.pycms.nature import INatures
+
 
 def add_macros(data, view):
 
@@ -167,6 +169,16 @@ class ViewMixin:
 
         return "".join(view(self.context, self.request).app_iter)
 
+    def has_nature(self, nature_id):
+
+        natures = self.request.registry.getUtility(INatures)
+
+        nature = natures.get_nature(nature_id)
+
+        if nature:
+            return self.context.has_nature(nature['interface'])
+        else:
+            return False
 
 class BaseView(BaseBase, ViewMixin):
 
@@ -397,3 +409,14 @@ class AdminView(Base, ViewMixin):
             pass
         else:
             return super(AdminView, self).list_content(**kwargs)
+
+    def has_nature(self, nature_id):
+
+        natures = self.request.registry.getUtility(INatures)
+
+        nature = natures.get_nature(nature_id)
+
+        if nature:
+            return self.context.has_nature(nature['interface'])
+        else:
+            return False

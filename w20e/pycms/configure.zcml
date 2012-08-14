@@ -143,6 +143,17 @@
      category="site"
      />
 
+  <pycms:action
+     name="nature"
+     label="Nature"
+     icon="icon-leaf"
+     target="#"
+     category="content"
+     permission="admin"
+     template="w20e.pycms:templates/action_nature.pt"
+     ctype="page"
+     />
+
   <!-- main for public -->
   <pycms:macro
      name="main"
@@ -164,5 +175,11 @@
      name="body"
      ptfile="w20e.pycms:templates/body.pt"
      />
+
+  <subscriber
+      for="pyramid.events.BeforeRender"
+      handler=".nature.add_natures"
+    />
+
 
 </configure>

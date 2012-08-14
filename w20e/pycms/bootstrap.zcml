@@ -18,6 +18,11 @@
      />
 
   <utility
+     provides=".nature.INatures"
+     factory=".nature.Natures"
+     />
+
+  <utility
      provides=".ctypes.ICTypes"
      factory=".ctypes.CTypes"
      />

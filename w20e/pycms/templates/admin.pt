@@ -6,7 +6,7 @@
       xmlns:tal="http://xml.zope.org/namespaces/tal">
 
   <head>
-    <title>PyCMS</title>
+    <title>w20e.pycms</title>
     <base href="#" tal:attributes="href view.url"/>
 
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
@@ -45,7 +45,7 @@
 
     <div id="about" class="alert alert-info hide">
       <a class="close" href="#" onclick="$('#about').hide(); return false">×</a>
-      PyCMS &copy; Copyright 2011, <a href="http://www.w20e.com/">wyldebeast &amp; wunderliebe</a>.
+      w20e.pycms &copy; Copyright 2011, <a href="http://www.w20e.com/">wyldebeast &amp; wunderliebe</a>.
       <div tal:content="view.context.root.cms_version">
       </div>
     </div>
@@ -76,7 +76,7 @@
         <div class="navbar-inner">
           <div class="container">
             <a class="brand" href="/admin">
-              PyCMS
+              w20e.pycms 
             </a>
             <ul class="nav pull-right">
               <tal:repeat repeat="action view.siteactions">
@@ -127,7 +127,7 @@
       <div class="btn-toolbar well">
         <metal:define define-slot="toolbar">
           <tal:repeat repeat="action view.contentactions">
-            <tal:replace replace="structure action.render(request, context)"/>
+            <tal:replace replace="structure action.render(request, context, view=view)"/>
           </tal:repeat>
         </metal:define>
       </div>

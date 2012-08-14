@@ -1,4 +1,4 @@
-from zope.interface import Interface
+from zope.interface import Interface, Attribute
 
 
 class ICSSRegistry(Interface):
@@ -32,4 +32,8 @@ class ICatalog(Interface):
 class IMailer(Interface):
 
     """ Marker class """
+
+class INature(Interface):
+
+    """ Any content may have a 'nature', like 'news' or 'event'."""
 

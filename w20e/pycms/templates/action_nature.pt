@@ -1,0 +1,28 @@
+<div class="btn-group" tal:condition="natures" id="nature_action">
+  <a class="btn dropdown-toggle" data-dropdown="#natures" href="#">
+    <i tal:condition="action.icon" class="${action.icon}"></i>
+    Natures
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" id="natures">
+    <tal:repeat repeat="nature natures">
+      <li>
+        <label>
+          <tal:condition condition="view.has_nature(nature['name'])">
+            <input type="checkbox" class="jsaction" data-jscall="pycms.nature" 
+                   name="check" checked="yes"
+                   tal:attributes="name nature['name']"
+                   />
+          </tal:condition>
+          <tal:condition condition="not view.has_nature(nature['name'])">
+            <input type="checkbox" class="jsaction" data-jscall="pycms.nature" 
+                   name="check"
+                   tal:attributes="name nature['name']"
+                   />
+          </tal:condition>
+          <tal:replace replace="nature['name']" />
+        </label>
+      </li>
+    </tal:repeat>
+  </ul>
+</div>

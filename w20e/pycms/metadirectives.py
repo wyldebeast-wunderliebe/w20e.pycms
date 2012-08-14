@@ -6,6 +6,7 @@ from actions import IActions
 from ctypes import ICTypes
 from macros import IMacros
 from index import IIndexes
+from nature import INatures
 
 
 def find_file(filename, context):
@@ -171,6 +172,34 @@ def ctype(_context, name, **kwargs):
     ctype_registry = reg.getUtility(ICTypes)
 
     ctype_registry.register_ctype(name, **kwargs)
+
+
+class INatureDirective(Interface):
+
+    """ Register Content type info """
+
+    name = TextLine(
+        title=u"Type",
+        description=u"Unique name",
+        required=True)
+
+    i18n_msgid = TextLine(
+        title=u"i18n_msgid",
+        description=u"i18n translation id",
+        required=False)
+
+    interface = TextLine(
+        title=u"Interface",
+        description=u"Marker interface for this nature",
+        required=True)
+
+
+def nature(_context, name, **kwargs):
+
+    reg = _context.context.registry
+    nature_registry = reg.getUtility(INatures)
+
+    nature_registry.register_nature(name, **kwargs)
 
 
 class IMacroDirective(Interface):

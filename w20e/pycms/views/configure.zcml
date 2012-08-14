@@ -268,30 +268,6 @@
      permission="admin"
      />
 
-  <!-- eye integration -->
-  <view
-     context="w20e.pycms.interfaces.ISite"
-     view=".zodb.ZODBView"
-     renderer="../templates/zodb.pt"
-     name="zodb"
-     />
-
-  <view
-     context="*"
-     view=".zodb.ZODBView"
-     renderer="json"
-     name="tree"
-     attr="as_tree"
-     />
-
-  <view
-     context="w20e.hitman.models.base.IContent"
-     view=".zodb.ZODBView"
-     renderer="json"
-     name="as_json"
-     attr="as_json"
-     />
-
   <!-- Ajax manipulations -->
   <view
      context="w20e.hitman.models.base.IFolder"
@@ -335,6 +311,24 @@
      attr="order_content"
      renderer="json"
      name="ajax_order"
+     permission="edit"
+     />
+
+  <view
+     context="w20e.hitman.models.base.IContent"
+     view=".nature.NatureView"
+     renderer="json"
+     attr="add_nature"
+     name="ajax_add_nature"
+     permission="edit"
+     />
+
+  <view
+     context="w20e.hitman.models.base.IContent"
+     view=".nature.NatureView"
+     renderer="json"
+     attr="remove_nature"
+     name="ajax_remove_nature"
      permission="edit"
      />
 

@@ -28,6 +28,12 @@
 
   <meta:directive 
        namespace="http://w20e.com/pycms"
+       name="nature" 
+       schema=".metadirectives.INatureDirective"
+       handler=".metadirectives.nature" />
+
+  <meta:directive 
+       namespace="http://w20e.com/pycms"
        name="macro" 
        schema=".metadirectives.IMacroDirective"
        handler=".metadirectives.macro" />

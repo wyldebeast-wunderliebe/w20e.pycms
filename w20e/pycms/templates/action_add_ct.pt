@@ -5,9 +5,11 @@
   </a>
   <ul class="dropdown-menu">
     <tal:repeat repeat="subaction context.allowed_content_types">
-      <a href="#" tal:content="subaction"
-         tal:attributes="href 'add?ctype=%s' % subaction"
-         >Add something</a>
+      <li>
+        <a href="#" tal:content="subaction"
+           tal:attributes="href 'add?ctype=%s' % subaction"
+           >Add something</a>
+      </li>
     </tal:repeat>
   </ul>
 </div>

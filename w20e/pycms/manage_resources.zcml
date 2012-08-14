@@ -15,6 +15,9 @@
   <pycms:css cssfile="./static/css/bootstrap_custom.css" 
              csstarget="manage" />
 
+  <!--pycms:css cssfile="./static/3dparty/jquery/css/jquery.dropdown.css" 
+             csstarget="manage" /-->
+
   <pycms:css cssfile="./static/css/pycms.css" 
              csstarget="manage" />
 
@@ -24,6 +27,11 @@
 
   <pycms:js
      jsfile="./static/3dparty/jquery/js/jquery-ui-1.8.11.custom.min.js"
+     jstarget="manage"
+     />
+
+  <pycms:js
+     jsfile="./static/3dparty/jquery/js/jquery-ui-timepicker-addon.js"
      jstarget="manage"
      />
 
@@ -39,6 +47,11 @@
 
   <pycms:js
      jsfile="./static/3dparty/jquery/js/jquery.Storage.js"
+     jstarget="manage"
+     />
+
+  <pycms:js
+     jsfile="./static/3dparty/jquery/js/jquery.dropdown.js"
      jstarget="manage"
      />
 

@@ -11,7 +11,7 @@ class PackCommand(command.Command):
 
     usage = "pack <ini file>"
     summary = "Pack ZODB"
-    group_name = "PyCMS"
+    group_name = "w20e.pycms"
 
     parser = command.Command.standard_parser(verbose=True)
 

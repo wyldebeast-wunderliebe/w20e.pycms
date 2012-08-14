@@ -1,6 +1,7 @@
 import os
 import inspect
-from zope.interface import implements
+from zope.interface import implements, directlyProvides, alsoProvides, \
+     noLongerProvides, providedBy
 from zope.component import subscribers
 from pyramid.threadlocal import get_current_registry
 from w20e.hitman.models.base import BaseFolder as HitmanBaseFolder
@@ -9,6 +10,7 @@ from w20e.pycms.security import ISecure
 from w20e.pycms.ctypes import ICTypes
 from w20e.forms.interfaces import IFormFactory, IFormModifier
 from w20e.forms.xml.factory import XMLFormFactory as BaseXMLFormFactory
+from w20e.pycms.interfaces import INature
 
 
 class XMLFormFactory(object):
@@ -53,7 +55,6 @@ class PyCMSMixin:
         except:
             return []
 
-
     @property
     def __form__(self):
 
@@ -65,13 +66,39 @@ class PyCMSMixin:
         except:
             form = IFormFactory(self).createForm()
 
-            for modifier in subscribers([form], IFormModifier):
+            for modifier in subscribers([self], IFormModifier):
 
                 modifier.modify(form)
 
             self._v_form = form
             
             return self._v_form
+
+    def add_nature(self, nature):
+
+        alsoProvides(self, nature)
+
+        del self._v_form
+
+    def has_nature(self, nature):
+
+        return nature in self.list_natures()
+
+    def remove_nature(self, nature):
+
+        noLongerProvides(self, nature)
+
+        del self._v_form
+
+    def set_natures(self, *natures):
+
+        directlyProvides(self, *natures)
+
+        del self._v_form
+
+    def list_natures(self):
+
+        return [i for i in providedBy(self) if i.extends(INature)]
 
 
 class BaseContent(PyCMSMixin, HitmanBaseContent):
