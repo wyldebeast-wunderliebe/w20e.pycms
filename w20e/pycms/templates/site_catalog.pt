@@ -18,7 +18,7 @@
 
       <h2>Indexes</h2>
       
-      <table>
+      <table class="table table-striped content-listing">
         <thead>
           <tr>
             <th>id</th>
@@ -39,28 +39,27 @@
           </tal:repeat>
         </tbody>
       </table>
-        
 
       <h2>Entries</h2>
 
-      <table>
+      <table class="table table-striped contentlisting">
         <thead>
           <tr>
             <th>uuid</th>
-            <th>id</th>
             <th>path</th>
-            <th>title</th>
-            <th>ctype</th>
+            <tal:repeat repeat="idx view.catalog_indexes()">
+              <th>${idx['id']}</th>
+              </tal:repeat>
           </tr>
         </thead>
         <tbody>
           <tal:repeat repeat="entry view.catalog_entries()">
             <tr>
               <td>${entry['uuid']}</td>
-              <td>${entry['id']}</td>
               <td>${entry['path']}</td>
-              <td>${entry['title']}</td>
-              <td>${entry['ctype']}</td>
+              <tal:repeat repeat="idx view.catalog_indexes()">
+                <td tal:content="entry.get(idx['id'], '')"></td>
+              </tal:repeat>
             </tr>
           </tal:repeat>
         </tbody>

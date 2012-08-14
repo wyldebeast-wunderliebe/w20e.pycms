@@ -1,6 +1,7 @@
 from repoze.catalog.catalog import Catalog as RepozeCatalog
 from repoze.catalog.indexes.field import CatalogFieldIndex
 from repoze.catalog.indexes.text import CatalogTextIndex
+from repoze.catalog.indexes.keyword import CatalogKeywordIndex
 from logging import getLogger
 from w20e.hitman.utils import path_to_object, object_to_path
 from BTrees.OOBTree import OOBTree
@@ -33,6 +34,9 @@ def init(event):
             elif idx[1]['type'] == "text":
                 app._catalog.catalog[idx[0]] = \
                                              CatalogTextIndex(idx[1]['field'])
+            elif idx[1]['type'] == "keyword":
+                app._catalog.catalog[idx[0]] = \
+                                             CatalogKeywordIndex(idx[1]['field'])                
 
 
 # event handlers
@@ -168,7 +172,7 @@ class Catalog(object):
         for key in self.catalog.keys():
             idx = self.catalog[key]
             if hasattr(idx, "_rev_index"):
-                summ[key] = idx._rev_index[uuid]
+                summ[key] = idx._rev_index.get(uuid, '')
 
         return ObjectSummary(summ)
 

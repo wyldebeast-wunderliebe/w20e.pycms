@@ -16,14 +16,12 @@ class SiteCatalogView(AdminView):
 
         for obj_uuid, path in self.cat.list_objects():
 
-            obj = self.cat.get_object(obj_uuid)
+            props = {'uuid': obj_uuid, 'path': path}
+
             try:
-                res.append({
-                    'uuid': obj_uuid,
-                    'id': obj.id,
-                    'path': path,
-                    'title': obj.title,
-                    'ctype': obj.content_type})
+                props.update(self.cat.get_object_summary(obj_uuid).props)
+                        
+                res.append(props)
             except:
                 pass
         return res

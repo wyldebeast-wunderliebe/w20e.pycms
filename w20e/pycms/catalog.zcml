@@ -80,4 +80,10 @@
       idxtype="text"
       />
 
+  <pycms:index
+      name="nature"
+      field="natures"
+      idxtype="keyword"
+      />
+
 </configure>

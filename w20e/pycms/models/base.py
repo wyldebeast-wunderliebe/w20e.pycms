@@ -100,6 +100,15 @@ class PyCMSMixin:
 
         return [i for i in providedBy(self) if i.extends(INature)]
 
+    @property
+    def natures(self):
+
+        def to_str(iface):
+
+            return "%s.%s" % (iface.__module__, iface.__name__)
+
+        return [to_str(nature) for nature in self.list_natures()]
+
 
 class BaseContent(PyCMSMixin, HitmanBaseContent):
 
