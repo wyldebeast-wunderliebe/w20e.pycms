@@ -11,14 +11,12 @@ class BlockContainer(object):
         self.blockrefs = {}
         self.refs = refs
 
-
     def add_block(self, block):
 
         self.blocks.append(block)
 
         if self.refs:
             self._add_refs(block)
-
 
     def _add_refs(self, block):
 
@@ -27,7 +25,6 @@ class BlockContainer(object):
         for subblock in getattr(block, 'blocks', []):
 
             self._add_refs(subblock)
-
 
     def get_blocks(self):
 

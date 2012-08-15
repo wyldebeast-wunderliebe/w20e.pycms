@@ -60,7 +60,13 @@
      />
 
   <view
-     context="..models.page.Page"
+     context="w20e.pycms.models.interfaces.IPage"
+     view="w20e.pycms.views.page.PageView"
+     renderer="w20e.pycms:templates/page.pt"
+     />
+
+  <view
+     context="w20e.pycms.models.interfaces.ISite"
      view="w20e.pycms.views.page.PageView"
      renderer="w20e.pycms:templates/page.pt"
      />

@@ -1,13 +1,15 @@
 from page import Page
-from w20e.pycms.interfaces import ISite
-from zope.interface import implements
+from zope.interface import implementsOnly
+from w20e.hitman.models.base import IFolder
+from interfaces import ISite
+
 
 
 class Site(Page):
 
     """ Site object """
 
-    implements(ISite)
+    implementsOnly(ISite, IFolder)
 
     def __init__(self, content_id):
 

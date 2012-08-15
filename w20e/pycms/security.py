@@ -63,7 +63,7 @@ class Secure:
     @property
     def __acl__(self):
 
-        acl = self.viewers() + self.editors() + [DENY_ALL]
+        acl = self.admins() + self.viewers() + self.editors() + [DENY_ALL]
 
         get_current_registry().notify(ACLRequest(acl, self.context))
 
@@ -73,9 +73,13 @@ class Secure:
 
         return [(Allow, 'group:admin', ('view', 'edit', 'admin'))]
 
+    def admins(self):
+
+        return [(Allow, 'group:editors', ('view', 'edit'))]    
+
     def viewers(self):
 
-        return [(Allow, 'group:viewer', 'view')]
+        return [(Allow, 'group:viewers', 'view')]
 
 
 class User(Persistent):

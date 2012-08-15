@@ -151,7 +151,6 @@
      category="content"
      permission="admin"
      template="w20e.pycms:templates/action_nature.pt"
-     ctype="page"
      />
 
   <!-- main for public -->

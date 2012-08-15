@@ -1,4 +1,5 @@
 from zope.interface import Interface, Attribute
+from w20e.pycms.models.interfaces import ISite
 
 
 class ICSSRegistry(Interface):
@@ -14,10 +15,6 @@ class IJSRegistry(Interface):
 class IACL(Interface):
 
     """ marker for security """
-
-
-class ISite(Interface):
-    """ Marker for Site """
 
 
 class IBlobFile(Interface):

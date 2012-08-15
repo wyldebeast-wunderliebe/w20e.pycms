@@ -1,4 +1,4 @@
-from zope.interface import Interface
+from zope.interface import Interface, providedBy
 
 
 def add_natures(event):
@@ -7,7 +7,18 @@ def add_natures(event):
 
         natures = event['request'].registry.getUtility(INatures)
 
-        event['natures'] = natures.list_natures()
+        valid_natures = []
+
+        for nature in natures.list_natures():
+
+            if nature.get("for_", None):
+
+                if nature['for_'] in providedBy(event['context']):
+                    valid_natures.append(nature)
+            else:
+                valid_natures.append(nature)
+
+        event['natures'] = valid_natures
 
 
 class INatures(Interface):
@@ -34,6 +45,16 @@ class Natures(object):
 
         kwargs['interface'] = eval(clazz)
         kwargs['name'] = name
+
+        if kwargs.get("_for", None):
+
+            clazz = kwargs['_for']
+            
+            path, clazz = ".".join(clazz.split(".")[:-1]), clazz.split(".")[-1]
+
+            exec("from %s import %s" % (path, clazz))
+            
+            kwargs['_for'] = eval(clazz)
 
         self.registry[name] = kwargs
 

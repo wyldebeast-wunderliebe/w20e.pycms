@@ -1,5 +1,6 @@
 from zope.interface import Interface
 from zope.schema import TextLine
+from zope.configuration.fields import GlobalObject
 from interfaces import ICSSRegistry, IJSRegistry
 import os
 from actions import IActions
@@ -190,9 +191,13 @@ class INatureDirective(Interface):
 
     interface = TextLine(
         title=u"Interface",
-        description=u"Marker interface for this nature",
+        description=u"Marker interface for this nature. FULL path required",
         required=True)
 
+    for_ = GlobalObject(
+        title=(u"The interface or class this nature is for. Specify FULL path"),
+        required=False
+        )
 
 def nature(_context, name, **kwargs):
 
