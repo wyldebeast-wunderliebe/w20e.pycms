@@ -1,4 +1,5 @@
 import logging
+import os
 
 
 LOGGER = logging.getLogger("pycms")
@@ -19,13 +20,20 @@ def migrate(current_version, target_version):
     update_mod = "w20e.pycms.migrations.%s__%s" % \
                  (current_version, target_version)
 
-    try:
-        __import__(update_mod)
-        LOGGER.info("Found upgrade")
+    mod_path = os.path.join(os.path.dirname(__file__),
+                            "migrations",
+                            "%s__%s.py" % (current_version, target_version)
+                            )
 
-        return True
-
-    except:
-        LOGGER.warn("No upgrade found")
+    import pdb; pdb.set_trace()
+    
+    if os.path.isfile(mod_path):
         
-        return False
+        try:
+            __import__(update_mod)
+            LOGGER.info("Found upgrade")
+        except:
+            LOGGER.warn("No upgrade found")
+            return False
+        
+    return True
