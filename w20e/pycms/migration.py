@@ -25,8 +25,6 @@ def migrate(current_version, target_version):
                             "%s__%s.py" % (current_version, target_version)
                             )
 
-    import pdb; pdb.set_trace()
-    
     if os.path.isfile(mod_path):
         
         try:
