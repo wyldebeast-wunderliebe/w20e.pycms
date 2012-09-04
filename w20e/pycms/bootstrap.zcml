@@ -42,4 +42,9 @@
      factory=".index.Indexes"
      />
 
+  <utility
+     provides=".interfaces.IAdmin"
+     factory=".utilities.Admin"
+     />
+
 </configure>

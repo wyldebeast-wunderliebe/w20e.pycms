@@ -38,3 +38,17 @@ class JSRegistry(object):
     def get(self, target):
 
         return self._registry.get(target, [])
+
+
+class Admin(object):
+    """ Admin utility class """
+
+    def title(self):
+        """ title to be used in admin views """
+
+        return "w20e.pycms"
+
+    def brand_title(self):
+        """ title of the CMS brand to be used in admin views """
+
+        return "w20e.pycms"

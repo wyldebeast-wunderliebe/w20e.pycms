@@ -21,6 +21,8 @@ from ..macros import IMacros
 
 from w20e.pycms.nature import INatures
 
+from w20e.pycms.interfaces import IAdmin
+
 
 def add_macros(data, view):
 
@@ -44,6 +46,25 @@ class ViewMixin:
     def viewname(self):
 
         return self.request.path.split('/')[-1]
+
+    @property
+    def admin_title(self):
+
+        """ title to be used in admin interface """
+
+        reg = self.request.registry
+        util = reg.getUtility(IAdmin)
+        return util.title()
+
+    @property
+    def brand_title(self):
+
+        """ brand title to be used in admin interface """
+
+        reg = self.request.registry
+        util = reg.getUtility(IAdmin)
+        return util.brand_title()
+
 
     @property
     def keywords(self):
