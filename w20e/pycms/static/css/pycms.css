@@ -51,22 +51,6 @@ input.rename_in {
     -moz-border-radius: 10px;
 }
 
-/* jquery.dropdown overrides */
-
-#nature_action .dropdown-menu {
-    left: 0px !important;
-    top: 28px !important;
-}
-
-#nature_action li label {
-    margin-left: 15px;
-    margin-right: 15px;
-}
-
-#nature_action li label input {
-    display: inline;
-}
-
 /* css for timepicker */
 .ui-timepicker-div .ui-widget-header { margin-bottom: 8px; }
 .ui-timepicker-div dl { text-align: left; }

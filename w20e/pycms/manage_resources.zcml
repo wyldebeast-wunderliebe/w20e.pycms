@@ -51,11 +51,6 @@
      />
 
   <pycms:js
-     jsfile="./static/3dparty/jquery/js/jquery.dropdown.js"
-     jstarget="manage"
-     />
-
-  <pycms:js
      jsfile="./static/acl.js"
      jstarget="manage"
      />

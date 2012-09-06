@@ -446,9 +446,6 @@ $(document).ready(function() {
         return false;
       });
 
-    // Enable dropdowns
-    $('.dropdown-toggle').dropdown()
-
     $('textarea.wysiwyg').tinymce({
         script_url : '/static/tinymce/jscripts/tiny_mce/tiny_mce.js',
 

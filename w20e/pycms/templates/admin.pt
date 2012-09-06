@@ -23,9 +23,9 @@
     </metal:define-slot>
 
     <script language="JavaScript"
-            src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+      src="http://code.jquery.com/jquery-1.8.1.min.js"></script>
     <script language="JavaScript"
-            src="${request.application_url}/manage.js"></script>
+      src="${request.application_url}/manage.js"></script>
 
     <metal:define-slot define-slot="extra_js_slot">
     </metal:define-slot>
@@ -66,7 +66,7 @@
     <div class="container">
 
       <!-- BEGIN: navbar -->
-      <div class="navbar">
+      <div class="navbar navbar-inverse">
         <div class="navbar-inner">
           <div class="container">
             <a class="brand" href="/admin">${view.brand_title}</a>
