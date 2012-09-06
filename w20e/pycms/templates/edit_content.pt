@@ -9,6 +9,8 @@
 
   <body>
 
+    <div metal:fill-slot="toolbar"/>
+
     <div metal:fill-slot="content">
         <div id="title" metal:define-macro="title">
           Edit <span tal:content="view.title"></span>

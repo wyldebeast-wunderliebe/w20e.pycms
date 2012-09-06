@@ -25,6 +25,8 @@
 
   <body>
 
+    <div metal:fill-slot="toolbar"/>
+
     <div metal:fill-slot="content">
       
       <h1>Add new <span tal:replace="view.content_type">content</span></h1>

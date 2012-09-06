@@ -116,13 +116,13 @@
 
 
       <!-- === BEGIN: content_toolbar === -->
-      <div class="btn-toolbar well">
-        <metal:define define-slot="toolbar">
+      <metal:define define-slot="toolbar">
+        <div class="btn-toolbar well">
           <tal:repeat repeat="action view.contentactions">
             <tal:replace replace="structure action.render(request, context, view=view)"/>
           </tal:repeat>
-        </metal:define>
-      </div>
+        </div>
+      </metal:define>
       <!-- END content_toolbar -->
 
       <div id="main" class="container" metal:define-slot="main">
