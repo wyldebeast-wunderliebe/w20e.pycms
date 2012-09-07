@@ -1,4 +1,4 @@
-from w20e.hitman.models.base import BaseContent
+from base import BaseContent
 from ..utils import resize_image
 from ZODB.blob import Blob
 
