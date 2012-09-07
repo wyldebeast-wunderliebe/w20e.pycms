@@ -5,12 +5,14 @@
   <!-- Base implementation for forms. -->
   <adapter
       factory=".base.XMLFormFactory" 
-      for="w20e.hitman.models.base.IContent" 
+      for="w20e.hitman.models.base.IContent
+           pyramid.interfaces.IRequest"
       provides="w20e.forms.interfaces.IFormFactory" />
 
   <adapter
       factory=".base.SiteFormFactory" 
-      for="w20e.pycms.interfaces.ISite" 
+      for="w20e.pycms.interfaces.ISite
+           pyramid.interfaces.IRequest"
       provides="w20e.forms.interfaces.IFormFactory" />
 
   <pycms:ctype
@@ -24,6 +26,7 @@
      name="folder"
      factory="w20e.pycms.models.folder.Folder"
      icon="/pycms_icons/Folder16.png"
+     subtypes="page,file,form,folder"
      />
 
   <pycms:ctype

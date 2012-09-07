@@ -3,7 +3,7 @@ import inspect
 from zope.interface import implements, directlyProvides, alsoProvides, \
      noLongerProvides, providedBy
 from zope.component import subscribers
-from pyramid.threadlocal import get_current_registry
+from zope.component import getMultiAdapter
 from w20e.hitman.models.base import BaseFolder as HitmanBaseFolder
 from w20e.hitman.models.base import BaseContent as HitmanBaseContent
 from w20e.pycms.security import ISecure
@@ -22,7 +22,7 @@ class XMLFormFactory(object):
 
     implements(IFormFactory)
     
-    def __init__(self, context):
+    def __init__(self, context, request):
 
         self.context = context
 
@@ -51,12 +51,11 @@ class PyCMSMixin:
     def __acl__(self):
 
         try:
-            return get_current_registry().getAdapter(self, ISecure).__acl__
+            return ISecure(self).__acl__
         except:
             return []
 
-    @property
-    def __form__(self):
+    def __form__(self, request):
 
         """ Override for hitman form property, so as to enable
         form overrides and modifiers """
@@ -64,7 +63,8 @@ class PyCMSMixin:
         try:
             return self._v_form
         except:
-            form = IFormFactory(self).createForm()
+            factory = getMultiAdapter((self, request), IFormFactory)
+            form = factory.createForm()
 
             for modifier in subscribers([self], IFormModifier):
 
@@ -112,15 +112,15 @@ class PyCMSMixin:
 
 class BaseContent(PyCMSMixin, HitmanBaseContent):
 
-    allowed_content_types = []
+    def allowed_content_types(self, request):
+        return []
 
 
 class BaseFolder(PyCMSMixin, HitmanBaseFolder):
 
-    @property
-    def allowed_content_types(self):
+    def allowed_content_types(self, request):
 
-        ctypes = get_current_registry().getUtility(ICTypes)
+        ctypes = request.registry.getUtility(ICTypes)
 
         return ctypes.get_ctype_info(
             self.content_type).get("subtypes", "").split(",")
