@@ -1,11 +1,13 @@
 import os
 import inspect
+from uuid import uuid1
 from zope.interface import implements, directlyProvides, alsoProvides, \
      noLongerProvides, providedBy
 from zope.component import subscribers
 from zope.component import getMultiAdapter
 from w20e.hitman.models.base import BaseFolder as HitmanBaseFolder
 from w20e.hitman.models.base import BaseContent as HitmanBaseContent
+from w20e.hitman.utils import object_to_path
 from w20e.pycms.security import ISecure
 from w20e.pycms.ctypes import ICTypes
 from w20e.forms.interfaces import IFormFactory, IFormModifier
@@ -21,7 +23,7 @@ class XMLFormFactory(object):
     context object"""
 
     implements(IFormFactory)
-    
+
     def __init__(self, context, request):
 
         self.context = context
@@ -29,7 +31,7 @@ class XMLFormFactory(object):
     def createForm(self, form_name=None):
 
         form_path = os.path.join(
-            os.path.dirname(inspect.getfile(self.context.__class__)), 
+            os.path.dirname(inspect.getfile(self.context.__class__)),
             "..", "forms", "%s.xml" % (form_name or self.context.content_type))
 
         xmlff = BaseXMLFormFactory(form_path)
@@ -55,6 +57,28 @@ class PyCMSMixin:
         except:
             return []
 
+    @property
+    def uuid(self):
+        """ return a UUID, or generate it when not present yet """
+
+        if not hasattr(self, '_uuid'):
+            self._uuid = uuid1()
+            self._p_changed = 1
+
+        return self._uuid
+
+    @property
+    def path(self):
+        """ return the path of this resource """
+
+        return object_to_path(self)
+
+    @property
+    def position_in_parent(self):
+        """ return the position of this object in the parent container """
+        parent = self.__parent__
+        return parent and parent._order.index(self.id) or 0
+
     def __form__(self, request):
 
         """ Override for hitman form property, so as to enable
@@ -71,7 +95,7 @@ class PyCMSMixin:
                 modifier.modify(form)
 
             self._v_form = form
-            
+
             return self._v_form
 
     def add_nature(self, nature):

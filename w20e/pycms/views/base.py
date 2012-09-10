@@ -5,7 +5,7 @@ from w20e.hitman.views.base import AddView as AddBase
 from w20e.hitman.views.base import DelView as DelBase
 from w20e.hitman.views.base import EditView as EditBase
 from w20e.hitman.views.base import BaseView as BaseBase
-from w20e.hitman.events import ContentRemoved
+from w20e.hitman.events import ContentRemoved, ContentChanged
 from w20e.hitman.utils import path_to_object
 
 from pyramid.renderers import get_renderer, render
@@ -64,7 +64,6 @@ class ViewMixin:
         reg = self.request.registry
         util = reg.getUtility(IAdmin)
         return util.brand_title()
-
 
     @property
     def keywords(self):
@@ -184,7 +183,8 @@ class ViewMixin:
 
         provides = [IViewClassifier] + map_(providedBy,
                                             (self.request, self.context))
-        view = self.request.registry.adapters.lookup(provides, IView, name=name)
+        view = self.request.registry.adapters.lookup(
+                provides, IView, name=name)
 
         self.request.update({'kwargs': kwargs})
 
@@ -200,6 +200,7 @@ class ViewMixin:
             return self.context.has_nature(nature['interface'])
         else:
             return False
+
 
 class BaseView(BaseBase, ViewMixin):
 
@@ -333,6 +334,13 @@ class AdminView(Base, ViewMixin):
         if order:
 
             self.context.set_order(order.split(","))
+            # reindex all subobjects, since position_in_parent has changed
+            # TODO: can be done more efficient: only order has changed, so
+            # perhaps a OrderChanged event.. and on;y reindex relevant index
+            children = self.context.list_content()
+            for child in children:
+                self.request.registry.notify(ContentChanged(child))
+
             return True
         else:
             return False
@@ -374,6 +382,7 @@ class AdminView(Base, ViewMixin):
             if obj is not None:
                 content = obj.__parent__.remove_content(obj.id)
                 self.context.add_content(content)
+                self.request.registry.notify(ContentChanged(content))
                 moved.append(obj.id)
 
         return moved
@@ -398,6 +407,8 @@ class AdminView(Base, ViewMixin):
                 try:
                     self.context.rename_content(id_from, id_to)
                     ret['renamed'][id_from] = id_to
+                    content = self.context.get(id_to, None)
+                    self.request.registry.notify(ContentChanged(content))
                 except:
                     ret['status'] = -1
                     ret['errors'].append("%s already exists" % id_to)

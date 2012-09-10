@@ -86,4 +86,22 @@
       idxtype="keyword"
       />
 
+  <pycms:index
+      name="path"
+      field="path"
+      idxtype="path"
+      />
+
+  <pycms:index
+      name="uuid"
+      field="uuid"
+      idxtype="field"
+      />
+
+  <pycms:index
+      name="position_in_parent"
+      field="position_in_parent"
+      idxtype="field"
+      />
+
 </configure>
