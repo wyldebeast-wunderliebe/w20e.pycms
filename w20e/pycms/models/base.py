@@ -159,7 +159,7 @@ class BaseFolder(PyCMSMixin, HitmanBaseFolder):
         """ use base listing, but filter out temp objects """
 
         result = HitmanBaseFolder.list_content(
-                self, content_type=None, iface=None, **kwargs)
+                self, content_type, iface, **kwargs)
 
         # filter out temp objects
         result = [r for r in result if not ITemporaryObject.providedBy(r)]
