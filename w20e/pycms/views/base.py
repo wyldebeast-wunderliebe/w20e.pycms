@@ -1,27 +1,32 @@
+import uuid
 from zope.interface import providedBy
+from zope.interface import alsoProvides
+from zope.interface import noLongerProvides
 
 from w20e.hitman.views.base import ContentView as Base
-from w20e.hitman.views.base import AddView as AddBase
 from w20e.hitman.views.base import DelView as DelBase
 from w20e.hitman.views.base import EditView as EditBase
 from w20e.hitman.views.base import BaseView as BaseBase
-from w20e.hitman.events import ContentRemoved, ContentChanged
+from w20e.hitman.models import Registry
+from w20e.hitman.events import ContentAdded, ContentRemoved, ContentChanged
 from w20e.hitman.utils import path_to_object
 
 from pyramid.renderers import get_renderer, render
+from pyramid.httpexceptions import HTTPFound
 from pyramid.interfaces import IView, IViewClassifier
 from pyramid.security import authenticated_userid
 from w20e.pycms.utils import has_permission
 from pyramid.url import resource_url
 from pyramid.compat import map_
+from w20e.pycms.nature import INatures
+from w20e.pycms.interfaces import IAdmin, ITemporaryObject
+from w20e.pycms.events import TemporaryObjectCreated, TemporaryObjectFinalized
 
 from ..actions import IActions
 from ..ctypes import ICTypes
 from ..macros import IMacros
 
-from w20e.pycms.nature import INatures
-
-from w20e.pycms.interfaces import IAdmin
+from w20e.forms.pyramid.formview import formview as pyramidformview
 
 
 def add_macros(data, view):
@@ -38,7 +43,7 @@ def add_macros(data, view):
                 macros.get_macro(macro)).implementation()
 
 
-class ViewMixin:
+class ViewMixin(object):
 
     is_edit = False
 
@@ -222,14 +227,59 @@ class ContentView(Base, ViewMixin):
         return res
 
 
-class AddView(AddBase, ViewMixin):
+class AddView(BaseView):
+
+    """ create temporary content """
+
+    def __call__(self):
+
+        ctype = self.request.params.get("ctype", None)
+
+        clazz = Registry.get(ctype)
+
+        content = clazz("_TMP")
+
+        content.owner = self.user
+
+        content_id = str(uuid.uuid1())
+        content.set_id(content_id)
+
+        alsoProvides(content, ITemporaryObject)
+
+        self.context.add_content(content)
+
+        self.request.registry.notify(TemporaryObjectCreated(content))
+
+        return HTTPFound(location='%sfactory' % \
+                self.request.resource_url(content))
+
+
+class FactoryView(BaseView, pyramidformview, ViewMixin):
+    """ add form for base content """
 
     is_edit = True
+
+    def __init__(self, context, request):
+
+        BaseView.__init__(self, context, request)
+
+        self.context = context
+
+        assert ITemporaryObject.providedBy(context), \
+                "This object is not in a temporary state"
+
+        self.form = self.context.__form__(request)
+        pyramidformview.__init__(self, self.context, request, self.form)
 
     @property
     def url(self):
 
         return "%sadmin" % self.base_url
+
+    @property
+    def content_type(self):
+
+        return self.context.content_type
 
     @property
     def after_add_redirect(self):
@@ -244,7 +294,44 @@ class AddView(AddBase, ViewMixin):
 
     def __call__(self):
 
-        res = AddBase.__call__(self)
+        errors = {}
+
+        if self.request.params.get("submit", None):
+            status, errors = self.form.view.handle_form(self.form,
+                                                        self.request.params)
+        elif self.request.params.get("cancel", None):
+            status = "cancelled"
+        else:
+            status = "unknown"
+
+        if status == "valid":
+
+            # Hmm, looks like multipage. Store data and proceed...
+            #self.request.session['_TMP_OBJ_DATA'] = self.form.data.as_dict()
+            self.form.submission.submit(self.form, self.context, self.request)
+
+        if status == "completed":
+
+            self.form.submission.submit(self.form, self.context, self.request)
+
+            status = 'stored'
+
+            parent = self.context.__parent__
+
+            content_id = parent.generate_content_id(self.context.base_id)
+
+            noLongerProvides(self.context, ITemporaryObject)
+
+            self.request.registry.notify(
+                    TemporaryObjectFinalized(self.context))
+
+            parent.rename_content(self.context.id, content_id)
+
+            self.request.registry.notify(ContentAdded(self.context, parent))
+
+            return HTTPFound(location=self.after_add_redirect)
+
+        res = {'status': status, 'errors': errors}
         add_macros(res, self)
 
         return res
@@ -336,7 +423,7 @@ class AdminView(Base, ViewMixin):
             self.context.set_order(order.split(","))
             # reindex all subobjects, since position_in_parent has changed
             # TODO: can be done more efficient: only order has changed, so
-            # perhaps a OrderChanged event.. and on;y reindex relevant index
+            # perhaps a OrderChanged event.. and only reindex relevant index
             children = self.context.list_content()
             for child in children:
                 self.request.registry.notify(ContentChanged(child))

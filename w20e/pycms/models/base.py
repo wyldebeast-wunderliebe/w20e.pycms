@@ -12,7 +12,7 @@ from w20e.pycms.security import ISecure
 from w20e.pycms.ctypes import ICTypes
 from w20e.forms.interfaces import IFormFactory, IFormModifier
 from w20e.forms.xml.factory import XMLFormFactory as BaseXMLFormFactory
-from w20e.pycms.interfaces import INature
+from w20e.pycms.interfaces import INature, ITemporaryObject
 
 
 class XMLFormFactory(object):
@@ -47,7 +47,7 @@ class SiteFormFactory(XMLFormFactory):
         return super(SiteFormFactory, self).createForm(form_name="page")
 
 
-class PyCMSMixin:
+class PyCMSMixin(object):
 
     @property
     def __acl__(self):
@@ -56,6 +56,19 @@ class PyCMSMixin:
             return ISecure(self).__acl__
         except:
             return []
+
+    @property
+    def owner(self):
+        """ get the creator userid """
+
+        return getattr(self, '_owner', None)
+
+    @owner.setter
+    def owner(self, value):
+        """ set the creator userid """
+
+        self._owner = value
+        self._p_changed = 1
 
     @property
     def uuid(self):
@@ -141,6 +154,16 @@ class BaseContent(PyCMSMixin, HitmanBaseContent):
 
 
 class BaseFolder(PyCMSMixin, HitmanBaseFolder):
+
+    def list_content(self, content_type=None, iface=None, **kwargs):
+        """ use base listing, but filter out temp objects """
+
+        result = HitmanBaseFolder.list_content(
+                self, content_type=None, iface=None, **kwargs)
+
+        # filter out temp objects
+        result = [r for r in result if not ITemporaryObject.providedBy(r)]
+        return result
 
     def allowed_content_types(self, request):
 

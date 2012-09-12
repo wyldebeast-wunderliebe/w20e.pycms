@@ -1,3 +1,7 @@
+unreleased
+* initially created objects will have a temporary state, until they
+have been completed
+
 1.0.2a
 ======
 * Finally we have a serious (?) licence. Also updated some metadata.

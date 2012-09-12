@@ -8,12 +8,19 @@
      permission="view"
      />
 
-  <!-- generic add view -->
   <view
      context="w20e.hitman.models.base.IFolder"
      view=".base.AddView"
-     renderer="w20e.pycms:templates/add_content.pt"
      name="add"
+     permission="edit"
+     />
+
+  <!-- generic add view -->
+  <view
+     context="w20e.pycms.interfaces.ITemporaryObject"
+     view=".base.FactoryView"
+     renderer="w20e.pycms:templates/add_content.pt"
+     name="factory"
      permission="edit"
      />
 

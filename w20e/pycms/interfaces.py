@@ -37,3 +37,7 @@ class INature(Interface):
 class IAdmin(Interface):
 
     """ provide helper methods for admin interface """
+
+class ITemporaryObject(Interface):
+
+    """ marker interface for temporary objects """

@@ -163,6 +163,21 @@
      />
 
   <subscriber
+     for=".events.IAppRootReady"
+     handler=".tempregister.init"
+     />
+
+  <subscriber
+      for=".events.ITemporaryObjectCreated"
+      handler=".tempregister.objectAdded"
+    />
+
+  <subscriber
+      for=".events.ITemporaryObjectFinalized"
+      handler=".tempregister.objectFinalized"
+    />
+
+  <subscriber
       for="pyramid.events.BeforeRender"
       handler=".nature.add_natures"
     />
