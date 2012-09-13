@@ -29,14 +29,14 @@ pycms.cutBlock = function() {
     currBlock = false;
   }
 }
-  
-  
+
+
 pycms.pasteBlock = function() {
-    
+
   if (pasteBoard) {
     currGroup.append(pasteBoard);
     currBlock = pasteBoard;
-    
+
     pycms.addEvents();
   }
 }
@@ -83,34 +83,34 @@ pycms.saveBlock = function(data) {
 
       // Bind onload to img save iframe
       $("#img_save").load(function() {
-          
-	  var html = $("#img_save").contents().find("html").html();
+
+      var html = $("#img_save").contents().find("html").html();
 
           if (do_edit) {
               currBlock.replaceWith(html);
           } else {
               currGroup.append(html);
           }
-          
+
           pycms.addEvents();
-      }); 
-      
+      });
+
       // Let the original submit handle it from here...
       return true;
 
   } else {
 
       $.post("save_block", data, function(data) {
-          
+
           if (do_edit) {
               currBlock.replaceWith(data);
           } else {
               currGroup.append(data);
           }
-          
+
           pycms.addEvents();
       });
-      
+
       return false;
   }
 }
@@ -120,7 +120,7 @@ pycms.editBlock = function() {
 
   do_edit = true;
 
-  var data = pycms.getConfig(currBlock);  
+  var data = pycms.getConfig(currBlock);
 
   $("#form_target").load("edit_form", data, function() {
 
@@ -165,13 +165,13 @@ pycms.selectLayout = function(type) {
 pycms.createConfig = function(data) {
 
     html = '<dl class="config">'
-    
+
     for (var key in data) {
-	html += '<dt>' + key + '</dt><dd>' + data[key] + '</dd>';
+      html += '<dt>' + key + '</dt><dd>' + data[key] + '</dd>';
     }
-    
+
     html += '</dl>';
-    
+
     return html;
 }
 
@@ -179,11 +179,11 @@ pycms.createConfig = function(data) {
 pycms.getConfig = function(tgt) {
 
     var cfg = {};
-    
+
     tgt.children("dl").eq(0).children("dt").each(function() {
-	cfg[$(this).html()] = $(this).next().html();
+      cfg[$(this).html()] = $(this).next().html();
     });
-    
+
     return cfg;
 }
 
@@ -192,11 +192,11 @@ pycms.createDataArray = function(form) {
 
     var dataArray = form.serializeArray();
     var data = {};
-    
+
     for (var i = 0; i < dataArray.length; i++) {
-	data[dataArray[i]['name']] = dataArray[i]['value'];
+      data[dataArray[i]['name']] = dataArray[i]['value'];
     }
-    
+
     return data;
 }
 
@@ -223,29 +223,29 @@ pycms.initForm = function() {
   });
 
   $("#form_target input[name=cancel]").click(function(e) {
-      
+
       $("#form_target").html("");
       $("#mask").hide('slow');
       $("#form_target").hide('slow');
     });
 
   $("#form_target form").submit(function() {
-      
+
       var data = pycms.createDataArray($("#form_target form"));
       data = $.extend({}, pycms.getConfig($("#" + data['id'])), data);
 
       var bubbleUp = false;
-      
+
       try {
         bubbleUp = pycms.saveBlock(data);
       } catch (e) {
       }
-      
+
       $("#form_target").hide('slow');
       $("#mask").hide('slow');
 
       return bubbleUp;
-    });   
+    });
 }
 
 
@@ -268,7 +268,7 @@ pycms.dropped = function(event, ui) {
 
 pycms.showMessage = function(msg) {
 
-  $("#msg").html(msg);  
+  $("#msg").html(msg);
   $("#msg").dialog();
 
   setTimeout('$("#msg").parents(".ui-dialog").eq(0).fadeOut(300)', 3000);
@@ -310,20 +310,20 @@ pycms.pack = function(e) {
   if ($(e.target).hasClass("disabled")) {
     return;
   }
-  
+
   $("body").css("cursor", "progress");
   $(e.target).addClass("disabled");
 
-  $.ajax({'url': "ajax_pack",          
+  $.ajax({'url': "ajax_pack",
         'type': "POST",
         'success': function(data) {
         $("#pack_result").html(data);
-        $("body").css("cursor", "auto");           
+        $("body").css("cursor", "auto");
         $(e.target).removeClass("disabled");
       },
         'error': function(data) {
         $("#pack_result").html(data);
-        $("body").css("cursor", "auto");           
+        $("body").css("cursor", "auto");
         $(e.target).removeClass("disabled");
       }});
 }
@@ -337,17 +337,17 @@ pycms.pack = function(e) {
 pycms.cut = function(item) {
 
   var row = item.parents("tr").eq(0);
-  var content_id = row.attr("data-objectpath"); 
-  var content_title = row.attr("data-objecttitle"); 
-  
+  var content_id = row.attr("data-objectpath");
+  var content_title = row.attr("data-objecttitle");
+
   var buffer = $.Storage.get("paste_buffer") || "";
-  
-  buffer += "::" + content_title + ";;" + content_id + ";;" + "cut"; 
-  
+
+  buffer += "::" + content_title + ";;" + content_id + ";;" + "cut";
+
   $.Storage.set("paste_buffer", buffer);
-  
+
   pycms.alert("Paste buffer:<br/>" + buffer, "info");
-  
+
   row.remove();
 };
 
@@ -366,15 +366,15 @@ pycms.clearCutBuffer = function() {
 pycms.copy = function(item) {
 
   var row = item.parents("tr").eq(0);
-  var content_id = row.attr("data-objectpath"); 
-  var content_title = row.attr("data-objecttitle"); 
-  
+  var content_id = row.attr("data-objectpath");
+  var content_title = row.attr("data-objecttitle");
+
   var buffer = $.Storage.get("paste_buffer") || "";
-  
-  buffer += "::" + content_title + ";;" + content_id + ";;" + "copy"; 
-  
+
+  buffer += "::" + content_title + ";;" + content_id + ";;" + "copy";
+
   $.Storage.set("paste_buffer", buffer);
-  
+
   pycms.alert("Paste buffer:<br/>" + buffer, "info");
 }
 
@@ -388,11 +388,11 @@ pycms.paste = function() {
       return;
     }
 
-    $.ajax({"url": "ajax_paste", 
+    $.ajax({"url": "ajax_paste",
             "type": "POST",
             "data": {'buffer': $.Storage.get("paste_buffer")},
-            "success": function(data) {          
-               pycms.alert(data, "success");          
+            "success": function(data) {
+               pycms.alert(data, "success");
                $.Storage.set("paste_buffer", "");
         },
             "error": function(data) {pycms.alert(data, "error")}
@@ -452,7 +452,7 @@ $(document).ready(function() {
           // General options
           theme : "advanced",
           plugins : "autolink,lists,pagebreak,style,layer,table,save,advhr,       advimage,advlink,inlinepopups,insertdatetime,preview,media,searchreplace,print, contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,advlist",
-          
+
           // Theme options
           theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,       justifyleft,justifycenter,justifyright,justifyfull,formatselect,|,cut,copy,paste,pastetext,pasteword,bullist,numlist,|,outdent,indent,blockquote,|,nonbreaking,  pagebreak,|,undo,redo",
           theme_advanced_buttons2 : "link,unlink,anchor,image,cleanup,code,|,     preview,|,forecolor,backcolor,tablecontrols,|,hr,removeformat,|,charmap,media,|,fullscreen",
@@ -479,7 +479,7 @@ $(document).ready(function() {
     // Handle rename function
     $(".rename").click(function() {
         $(this).find(".rename_in").show();
-        $(this).find(".rename_in").focus();        
+        $(this).find(".rename_in").focus();
       });
 
     // Losing focus here...
@@ -492,7 +492,7 @@ $(document).ready(function() {
 
         $.post($(this).attr("action"), $(this).serialize(),
                function(data) {
-                 
+
                  for (id_from in data['renamed']) {
 
                    var id_to = data['renamed'][id_from];
@@ -508,31 +508,31 @@ $(document).ready(function() {
                });
 
         return false;
-      })    
-      
+      })
+
       // Remove object and row
       //
       $(".lsdelete").click(function() {
-          
+
           var row = $(this).parents("tr").eq(0);
-          
+
           $("#confirm_delete .confirm").unbind('click');
           $("#confirm_delete .confirm").click(function() {
-              $.post("ajax_rm", 
-                     {'content_id': row.attr("data-objectid")}, 
-                     function() {                         
+              $.post("ajax_rm",
+                     {'content_id': row.attr("data-objectid")},
+                     function() {
                        row.remove();
                      });
-              $("#confirm_delete").modal('hide');              
+              $("#confirm_delete").modal('hide');
               return false;
             });
-          
+
           $("#confirm_delete #object_title").html(row.attr("data-objecttitle"));
           $("#confirm_delete").modal();
 
           return false;
         });
-    
+
     // Order objects on screen and on server
     //
     $(".contentlisting tbody").sortable({
@@ -543,4 +543,21 @@ $(document).ready(function() {
         }});
 
     $(".datetime input").datetimepicker();
+
+
+    // Set focus to first active empty input field, with class autofocus
+    var done = $(":input.autofocus[value='']:visible:enabled:first").focus();
+    // if not found, try to find autofocus field which has a value
+    if (done.length == 0) {
+        done = $(":input.autofocus:visible:enabled:first").focus();
+    }
+    // if not found, try first w20e-form input which has an error
+    if (done.length == 0) {
+        done = $(".w20e-form .error :input:visible:enabled:first").focus();
+    }
+    // if not found, try first w20e-form input
+    if (done.length == 0) {
+        done = $(".w20e-form :input:visible:enabled:first").focus();
+    }
+
 });
