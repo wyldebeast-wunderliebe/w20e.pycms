@@ -273,12 +273,10 @@ class FactoryView(BaseView, pyramidformview, ViewMixin):
 
     @property
     def url(self):
-
         return "%sadmin" % self.base_url
 
     @property
     def content_type(self):
-
         return self.context.content_type
 
     @property
@@ -289,18 +287,24 @@ class FactoryView(BaseView, pyramidformview, ViewMixin):
 
     @property
     def cancel_add_redirect(self):
-        return "%s%s" % (self.base_url, self.request.registry.settings.get(
+        parent_url = resource_url(self.context.__parent__, self.request)
+        return "%s%s" % (parent_url, self.request.registry.settings.get(
             'pycms.cancel_add_redirect', 'admin'))
 
     def __call__(self):
 
         errors = {}
 
-        if self.request.params.get("submit", None):
+        params = self.request.params
+
+        submissions = set(["submit", "save", "w20e.forms.next"])
+
+        if submissions.intersection(params.keys()):
             status, errors = self.form.view.handle_form(self.form,
                                                         self.request.params)
-        elif self.request.params.get("cancel", None):
-            status = "cancelled"
+
+        elif "cancel" in params:
+            return HTTPFound(location=self.cancel_add_redirect)
         else:
             status = "unknown"
 

@@ -26,6 +26,7 @@
   <body>
 
     <div metal:fill-slot="toolbar"/>
+    <div metal:fill-slot="perspectives"/>
 
     <div metal:fill-slot="content">
       

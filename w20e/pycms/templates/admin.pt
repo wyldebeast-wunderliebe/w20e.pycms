@@ -98,6 +98,7 @@
       <!-- END: breadcrumb -->
 
       <!-- === BEGIN: perspectives === -->
+      <metal:define define-slot="perspectives">
       <ul class="nav nav-tabs" id="page-perspectives"
           metal:define-macro="perspectives">
         <tal:repeat repeat="perspective view.perspectives">
@@ -112,6 +113,7 @@
         </tal:repeat>
 
       </ul>
+      </metal:define>
       <!-- === END: perspectives === -->
 
 
