@@ -54,13 +54,13 @@ class TempRegister(object):
 
     def unindex_object(self, object):
 
-        if object.uuid in self._register:
-            del self._register[object.uuid]
+        if hash(object.uuid) in self._register:
+            del self._register[hash(object.uuid)]
             self._p_changed = 1
 
     def index_object(self, object):
 
-        self._register[object.uuid] = object_to_path(object)
+        self._register[hash(object.uuid)] = object_to_path(object)
         self._p_changed = 1
 
 
