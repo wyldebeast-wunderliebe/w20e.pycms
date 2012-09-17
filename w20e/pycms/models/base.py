@@ -78,7 +78,7 @@ class PyCMSMixin(object):
             self._uuid = uuid1()
             self._p_changed = 1
 
-        return self._uuid
+        return str(self._uuid)
 
     @property
     def path(self):
