@@ -308,15 +308,12 @@ class FactoryView(BaseView, pyramidformview, ViewMixin):
         else:
             status = "unknown"
 
-        if status == "valid":
-
-            # Hmm, looks like multipage. Store data and proceed...
-            #self.request.session['_TMP_OBJ_DATA'] = self.form.data.as_dict()
-            self.form.submission.submit(self.form, self.context, self.request)
+        # Hmm, looks like multipage. Store data and proceed...
+        # even if there was a validation error, we still save the data
+        # this will assure we store file inputs.
+        self.form.submission.submit(self.form, self.context, self.request)
 
         if status == "completed":
-
-            self.form.submission.submit(self.form, self.context, self.request)
 
             status = 'stored'
 
