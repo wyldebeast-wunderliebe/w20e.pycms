@@ -1,7 +1,7 @@
 from logging import getLogger
 import datetime
 from interfaces import ITemporaryObject
-from BTrees.OOBTree import OOBTree
+from persistent.mapping import PersistentMapping
 from w20e.hitman.utils import path_to_object, object_to_path
 
 LOGGER = getLogger("w20e.pycms")
@@ -26,6 +26,7 @@ def init(event):
         app._tempregister._timeout = timeout
         app._p_changed = 1
 
+
 # event handlers
 #
 def objectFinalized(event):
@@ -45,39 +46,36 @@ def objectAdded(event):
     tempregister.index_object(event.object)
 
 
-class TempRegister(object):
+class TempRegister(PersistentMapping):
 
     def __init__(self, timeout):
 
-        self._register = OOBTree()
+        super(TempRegister, self).__init__()
+
         self._timeout = timeout
 
     def unindex_object(self, object):
 
-        if hash(object.uuid) in self._register:
-            del self._register[hash(object.uuid)]
-            self._p_changed = 1
+        if object.uuid in self:
+            del self[object.uuid]
 
     def index_object(self, object):
 
-        self._register[hash(object.uuid)] = object_to_path(object)
-        self._p_changed = 1
-
+        self[object.uuid] = object_to_path(object)
 
     def cleanup(self):
 
         now = datetime.datetime.now()
 
-        uuids = [k for k in self._register.keys()]
+        uuids = [k for k in self.keys()]
 
         for uuid in uuids:
 
-            path = self._register[uuid]
+            path = self[uuid]
             object = path_to_object(path, self.__parent__)
 
             if object == None:
-                del self._register[uuid]
-                self._p_changed = 1
+                del self[uuid]
 
             elif ITemporaryObject.providedBy(object):
 
