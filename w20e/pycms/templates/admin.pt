@@ -6,7 +6,7 @@
       xmlns:tal="http://xml.zope.org/namespaces/tal">
 
   <head>
-    <title>w20e.pycms</title>
+    <title>${view.admin_title}</title>
     <base href="#" tal:attributes="href view.url"/>
 
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
@@ -23,21 +23,15 @@
     </metal:define-slot>
 
     <script language="JavaScript"
-            src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+      src="http://code.jquery.com/jquery-1.8.1.min.js"></script>
     <script language="JavaScript"
-            src="${request.application_url}/manage.js"></script>
+      src="${request.application_url}/manage.js"></script>
 
     <metal:define-slot define-slot="extra_js_slot">
     </metal:define-slot>
 
-    <tal:comment replace="nothing">
-      <link rel="apple-touch-icon"
-            href="${request.application_url}/static/apple-touch-icon.png">
-      <link rel="apple-touch-icon" sizes="72x72"
-            href="${request.application_url}/static/apple-touch-icon-72x72.png" />
-      <link rel="apple-touch-icon" sizes="114x114"
-            href="${request.application_url}/static/apple-touch-icon-114x114.png" />
-    </tal:comment>
+    <link rel="shortcut icon"
+          href="${request.application_url}/static/favicon.ico" />
 
   </head>
 
@@ -72,12 +66,10 @@
     <div class="container">
 
       <!-- BEGIN: navbar -->
-      <div class="navbar">
+      <div class="navbar navbar-inverse">
         <div class="navbar-inner">
           <div class="container">
-            <a class="brand" href="/admin">
-              w20e.pycms 
-            </a>
+            <a class="brand" href="/admin">${view.brand_title}</a>
             <ul class="nav pull-right">
               <tal:repeat repeat="action view.siteactions">
                 <li>
@@ -106,6 +98,7 @@
       <!-- END: breadcrumb -->
 
       <!-- === BEGIN: perspectives === -->
+      <metal:define define-slot="perspectives">
       <ul class="nav nav-tabs" id="page-perspectives"
           metal:define-macro="perspectives">
         <tal:repeat repeat="perspective view.perspectives">
@@ -120,17 +113,18 @@
         </tal:repeat>
 
       </ul>
+      </metal:define>
       <!-- === END: perspectives === -->
 
 
       <!-- === BEGIN: content_toolbar === -->
-      <div class="btn-toolbar well">
-        <metal:define define-slot="toolbar">
+      <metal:define define-slot="toolbar">
+        <div class="btn-toolbar well">
           <tal:repeat repeat="action view.contentactions">
             <tal:replace replace="structure action.render(request, context, view=view)"/>
           </tal:repeat>
-        </metal:define>
-      </div>
+        </div>
+      </metal:define>
       <!-- END content_toolbar -->
 
       <div id="main" class="container" metal:define-slot="main">

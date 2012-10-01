@@ -19,10 +19,10 @@ def has_permission(permission, context, request):
 
     key = 'permission_%s_%s' % (permission, context.dottedpath)
 
-    if not key in request:
-        request[key] = base_has_permission(permission, context, request)
+    if not key in request.environ:
+        request.environ[key] = base_has_permission(permission, context, request)
         
-    return request[key]
+    return request.environ[key]
 
 
 def resize_image(data, size=THUMBNAIL_SIZE):

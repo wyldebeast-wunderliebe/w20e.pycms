@@ -14,13 +14,13 @@ class SiteCatalogView(AdminView):
 
         res = []
 
-        for obj_uuid, path in self.cat.list_objects():
+        for docid, location in self.cat.list_objects():
 
-            props = {'uuid': obj_uuid, 'path': path}
+            props = {'docid': docid, 'location': location}
 
             try:
-                props.update(self.cat.get_object_summary(obj_uuid).props)
-                        
+                props.update(self.cat.get_object_summary(docid).props)
+
                 res.append(props)
             except:
                 pass

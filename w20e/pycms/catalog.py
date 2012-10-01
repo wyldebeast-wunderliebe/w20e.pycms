@@ -2,9 +2,10 @@ from repoze.catalog.catalog import Catalog as RepozeCatalog
 from repoze.catalog.indexes.field import CatalogFieldIndex
 from repoze.catalog.indexes.text import CatalogTextIndex
 from repoze.catalog.indexes.keyword import CatalogKeywordIndex
+from repoze.catalog.indexes.path import CatalogPathIndex
+from repoze.catalog.document import DocumentMap
 from logging import getLogger
 from w20e.hitman.utils import path_to_object, object_to_path
-from BTrees.OOBTree import OOBTree
 from index import IIndexes
 
 
@@ -30,13 +31,16 @@ def init(event):
         if not idx[0] in app._catalog.catalog.keys():
             if idx[1]['type'] == "field":
                 app._catalog.catalog[idx[0]] = \
-                                             CatalogFieldIndex(idx[1]['field'])
+                        CatalogFieldIndex(idx[1]['field'])
             elif idx[1]['type'] == "text":
                 app._catalog.catalog[idx[0]] = \
-                                             CatalogTextIndex(idx[1]['field'])
+                        CatalogTextIndex(idx[1]['field'])
             elif idx[1]['type'] == "keyword":
                 app._catalog.catalog[idx[0]] = \
-                                             CatalogKeywordIndex(idx[1]['field'])                
+                        CatalogKeywordIndex(idx[1]['field'])
+            elif idx[1]['type'] == "path":
+                app._catalog.catalog[idx[0]] = \
+                        CatalogPathIndex(idx[1]['field'])
 
 
 # event handlers
@@ -80,7 +84,7 @@ class ObjectSummary(object):
     def __getattr__(self, attrname):
 
         return self.props.get(attrname, '')
-        
+
     @property
     def content_type(self):
 
@@ -92,12 +96,7 @@ class Catalog(object):
     def __init__(self):
 
         self._catalog = RepozeCatalog()
-        self.uuid_to_path = OOBTree()
-        self.path_to_uuid = OOBTree()
-
-    def gen_uuid(self):
-
-        return max(self.uuid_to_path.keys() or [0]) + 1
+        self._document_map = DocumentMap()
 
     @property
     def catalog(self):
@@ -115,54 +114,55 @@ class Catalog(object):
         if kwargs.get('as_summary', False):
             return [self.get_object_summary(uuid) for uuid in res]
         elif kwargs.get('as_object', False):
-            return [self.get_object(uuid) for uuid in res]            
+            return [self.get_object(uuid) for uuid in res]
         else:
             return res
 
     def index_object(self, object):
 
         path = object_to_path(object)
-        uuid = self.gen_uuid()
-        self.catalog.index_doc(uuid, object)
-        self.uuid_to_path[uuid] = path
-        self.path_to_uuid[path] = uuid
+        uuid = object.uuid
+
+        docid = self._document_map.add(uuid)
+        self._document_map.add_metadata(docid, {'path': path})
+
+        self.catalog.index_doc(docid, object)
         self.__parent__._p_changed = 1
 
     def reindex_object(self, object):
 
-        path = object_to_path(object)
-        uuid = self.path_to_uuid.get(path, None)
+        uuid = object.uuid
 
-        if uuid:
-            self.catalog.reindex_doc(uuid, object)
-        else:
+        docid = self._document_map.docid_for_address(uuid)
+        if not docid:
             self.index_object(object)
+
+        self.catalog.reindex_doc(docid, object)
         self.__parent__._p_changed = 1
 
     def unindex_object(self, object):
 
-        path = object_to_path(object)
-        uuid = self.path_to_uuid.get(path, None)
+        uuid = object.uuid
 
-        if uuid:
-            self.catalog.unindex_doc(uuid)
-            del self.uuid_to_path[uuid]
-            del self.path_to_uuid[path]
+        docid = self._document_map.docid_for_address(uuid)
+        if docid:
+            self.catalog.unindex_doc(docid)
+            self._document_map.remove_docid(docid)
             self.__parent__._p_changed = 1
 
     def clear(self):
 
         self._catalog.clear()
-        self.uuid_to_path.clear()
-        self.path_to_uuid.clear()
+        self._document_map = DocumentMap()
         self.__parent__._p_changed = 1
 
-    def get_object(self, uuid):
+    def get_object(self, docid):
 
-        path = self.uuid_to_path[uuid]
+        metadata = self._document_map.get_metadata(docid)
+        path = metadata['path']
         return path_to_object(path, self.__parent__)
 
-    def get_object_summary(self, uuid): 
+    def get_object_summary(self, uuid):
 
         """ Return a summary of the found object, based on the values that
         the indexes hold on the given uuid"""
@@ -178,8 +178,11 @@ class Catalog(object):
 
     def list_objects(self):
 
-        return self.uuid_to_path.items()
+        docids = self.list_object_ids()
+        for docid in docids:
+            metadata = self._document_map.get_metadata(docid)
+            yield (docid, metadata['path'])
 
     def list_object_ids(self):
 
-        return self.uuid_to_path.keys()
+        return self._document_map.docid_to_address.keys()

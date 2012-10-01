@@ -47,14 +47,14 @@ class ACLRequest(object):
 
         self.acl = acl
         self.context = context
-        
+
 
 class ISecure(Interface):
 
     """ Marker """
 
 
-class Secure:
+class Secure(object):
 
     def __init__(self, context):
 
@@ -71,15 +71,33 @@ class Secure:
 
     def editors(self):
 
-        return [(Allow, 'group:admin', ('view', 'edit', 'admin'))]
+        return [(Allow, 'group:editors', ('view', 'edit'))]
 
     def admins(self):
 
-        return [(Allow, 'group:editors', ('view', 'edit'))]    
+        return [(Allow, 'group:admin', ('view', 'edit', 'admin'))]
 
     def viewers(self):
 
         return [(Allow, 'group:viewers', 'view')]
+
+
+class SecureTemporaryObject(Secure):
+
+    @property
+    def __acl__(self):
+        """
+        special ACL for temporary objects. Only owner and manager
+        should have Access
+        """
+
+        owner = self.context.owner
+
+        owner_acl = [(Allow, owner, ('view', 'edit'))]
+
+        acl = self.admins() + owner_acl + [DENY_ALL]
+
+        return acl
 
 
 class User(Persistent):

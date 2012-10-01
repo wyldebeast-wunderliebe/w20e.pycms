@@ -411,3 +411,5 @@ pycms.cancel_add_redirect
         Where to go after cancelled add
 pycms.after_del_redirect
         Where to go after delete
+pycms.tempregister.timout = <int>
+        minimal amount of seconds before a temporary object might be removed

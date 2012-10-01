@@ -1,20 +1,20 @@
-<html xmlns="http://www.w3.org/1999/xhtml" 
-      xml:lang="en" 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       metal:use-macro="admin.macros['master']">
 
   <head/>
-  
+
   <body>
 
     <div metal:fill-slot="toolbar">
-      <a class="btn btn-danger jsaction" href="#" 
+      <a class="btn btn-danger jsaction" href="#"
          data-jscall="pycms.pack">Pack DB</a>
     </div>
 
     <div metal:fill-slot="content">
-    
+
       <h1 class="edit_header">Pack DB</h1>
 
         <div id="pack_result" class="alert alert-info"></div>

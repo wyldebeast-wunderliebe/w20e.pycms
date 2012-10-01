@@ -40,6 +40,12 @@
      />
 
   <adapter
+    for="w20e.pycms.interfaces.ITemporaryObject"
+    provides="w20e.pycms.security.ISecure"
+    factory=".security.SecureTemporaryObject"
+    />
+
+  <adapter
     for="w20e.hitman.models.base.IContent"
     provides="w20e.pycms.security.ISecure"
     factory=".security.Secure"

@@ -45,8 +45,8 @@
       <table class="table table-striped contentlisting">
         <thead>
           <tr>
-            <th>uuid</th>
-            <th>path</th>
+            <th>docid</th>
+            <th>location</th>
             <tal:repeat repeat="idx view.catalog_indexes()">
               <th>${idx['id']}</th>
               </tal:repeat>
@@ -55,8 +55,8 @@
         <tbody>
           <tal:repeat repeat="entry view.catalog_entries()">
             <tr>
-              <td>${entry['uuid']}</td>
-              <td>${entry['path']}</td>
+              <td>${entry['docid']}</td>
+              <td>${entry['location']}</td>
               <tal:repeat repeat="idx view.catalog_indexes()">
                 <td tal:content="entry.get(idx['id'], '')"></td>
               </tal:repeat>

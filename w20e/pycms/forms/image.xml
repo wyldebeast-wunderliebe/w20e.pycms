@@ -1,8 +1,7 @@
 <?xml version="1.0"?>
 
 <form id="image"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:noNamespaceSchemaLocation="/home/dokter/Work/w20e/loonwijzer/educoeff/GIT/eggs/wageindicator.educoeff/wageindicator/educoeff/forms/gw20eforms.xsd">
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
   <data>
     <name/>

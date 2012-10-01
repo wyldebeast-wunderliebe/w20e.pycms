@@ -61,7 +61,7 @@
             data-objectpath="${item.dottedpath}"
             data-objecttitle="${item.title}">
           <td class="contenttype">
-            <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+            <!--span class="ui-icon ui-icon-arrowthick-2-n-s"></span-->
             <img src="#" tal:attributes="src view.get_icon(item.content_type);
                                          title item.content_type"
                  />

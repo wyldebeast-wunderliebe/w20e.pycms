@@ -23,11 +23,6 @@
      />
 
   <static
-     name="eye_static"
-     path="eye:/static"
-     />
-
-  <static
      name="pycms_icons"
      path="icons"
      />
@@ -72,14 +67,6 @@
      label="Contents"
      target="./admin"
      category="perspective"
-     />
-
-  <pycms:action
-     name="zodb"
-     label="ZODB"
-     target="./zodb"
-     category="perspective"
-     ctype="site"
      />
 
   <pycms:action
@@ -174,6 +161,21 @@
      name="body"
      ptfile="w20e.pycms:templates/body.pt"
      />
+
+  <subscriber
+     for=".events.IAppRootReady"
+     handler=".tempregister.init"
+     />
+
+  <subscriber
+      for=".events.ITemporaryObjectCreated"
+      handler=".tempregister.objectAdded"
+    />
+
+  <subscriber
+      for=".events.ITemporaryObjectFinalized"
+      handler=".tempregister.objectFinalized"
+    />
 
   <subscriber
       for="pyramid.events.BeforeRender"
