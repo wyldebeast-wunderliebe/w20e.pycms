@@ -11,6 +11,7 @@ from w20e.forms.registry import Registry
 from w20e.forms.pyramid.file import PyramidFile
 from models.imagefolder import ImageFolder
 from migration import migrate
+from pack import PackCommand
 
 
 Registry.register_renderable("file", PyramidFile)

@@ -48,7 +48,7 @@ setup(name='w20e.pycms',
       test_suite="w20e.pycms",
       entry_points = """\
       [paste.global_paster_command]
-      pycms_pack = w20e.pycms:pack.PackCommand
+      pycms_pack = w20e.pycms:PackCommand
       """,
       paster_plugins=['pyramid'],
       )
