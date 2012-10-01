@@ -23,7 +23,6 @@ class Action(object):
                       {'action': self, 'context': context,
                        'view': view, 'request': request}, request=request)
 
-
 class IActions(Interface):
 
     """ Marker class """

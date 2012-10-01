@@ -4,7 +4,7 @@
     Add <b class="caret"></b>
   </a>
   <ul class="dropdown-menu">
-    <tal:repeat repeat="subaction view.allowed_content_types">
+    <tal:repeat repeat="subaction context.allowed_content_types(request)">
       <li>
         <a href="#" tal:content="subaction"
            tal:attributes="href 'add?ctype=%s' % subaction"

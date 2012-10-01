@@ -11,7 +11,7 @@
     <div metal:fill-slot="content">
 
       <h2 class="edit_subheader">
-        Contents of '<tal:blok replace="view.title"/>'
+        Contents of '<tal:block replace="view.title"/>'
       </h2>
 
       <div metal:use-macro="macros.macros['listing']"/>      
