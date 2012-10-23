@@ -1,6 +1,9 @@
-unreleased
+1.1.1a
+------
 * initially created objects will have a temporary state, until they
 have been completed
+* add_macros now within base view class, so it's easier to override
+* validation.js fixed for bootstrap class names
 
 1.0.2a
 ======

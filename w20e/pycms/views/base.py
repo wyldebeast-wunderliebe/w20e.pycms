@@ -29,23 +29,22 @@ from ..macros import IMacros
 from w20e.forms.pyramid.formview import formview as pyramidformview
 
 
-def add_macros(data, view):
-
-    """ Add macros to rendering """
-
-    if type(data) == type({}):
-
-        macros = view.request.registry.getUtility(IMacros)
-
-        for macro in macros.list_macros():
-
-            data[macro] = get_renderer(
-                macros.get_macro(macro)).implementation()
-
-
 class ViewMixin(object):
 
     is_edit = False
+
+    def add_macros(self, data):
+
+        """ Add macros to rendering """
+
+        if isinstance(data, dict):
+
+            macros = self.request.registry.getUtility(IMacros)
+
+            for macro in macros.list_macros():
+
+                data[macro] = get_renderer(
+                    macros.get_macro(macro)).implementation()
 
     @property
     def viewname(self):
@@ -212,7 +211,7 @@ class BaseView(BaseBase, ViewMixin):
     def __call__(self):
 
         res = BaseBase.__call__(self)
-        add_macros(res, self)
+        self.add_macros(res)
 
         return res
 
@@ -222,7 +221,7 @@ class ContentView(Base, ViewMixin):
     def __call__(self):
 
         res = Base.__call__(self)
-        add_macros(res, self)
+        self.add_macros(res)
 
         return res
 
@@ -250,7 +249,7 @@ class AddView(BaseView):
 
         self.request.registry.notify(TemporaryObjectCreated(content))
 
-        return HTTPFound(location='%sfactory' % \
+        return HTTPFound(location='%sfactory' %
                 self.request.resource_url(content))
 
 
@@ -333,7 +332,7 @@ class FactoryView(BaseView, pyramidformview, ViewMixin):
             return HTTPFound(location=self.after_add_redirect)
 
         res = {'status': status, 'errors': errors}
-        add_macros(res, self)
+        self.add_macros(res)
 
         return res
 
@@ -357,7 +356,7 @@ class EditView(EditBase, ViewMixin):
     def __call__(self):
 
         res = EditBase.__call__(self)
-        add_macros(res, self)
+        self.add_macros(res)
 
         return res
 
@@ -383,7 +382,7 @@ class DelView(DelBase, ViewMixin):
     def __call__(self):
 
         res = DelBase.__call__(self)
-        add_macros(res, self)
+        self.add_macros(res)
 
         return res
 
@@ -395,7 +394,7 @@ class AdminView(Base, ViewMixin):
     def __call__(self):
 
         res = Base.__call__(self)
-        add_macros(res, self)
+        self.add_macros(res)
 
         return res
 

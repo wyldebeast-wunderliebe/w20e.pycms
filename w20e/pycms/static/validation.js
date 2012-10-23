@@ -33,37 +33,37 @@ w20e.pycms.Validation.prototype.init = function(form) {
   that.form = form;
   that.lock = false;
 
-  form.find('.control :text').change(
+  form.find('.control-group :text').change(
                                      function() {
                                        that.validate($(this).serialize(), 
                                                      $(this));
                                      });
   
-  form.find('.control select').change(
+  form.find('.control-group select').change(
                                       function() {
                                         that.validate($(this).serialize(),
                                                       $(this));
                                       });
   
-  form.find('.control textarea').change(
+  form.find('.control-group textarea').change(
                                         function() {
                                           that.validate($(this).serialize(),
                                                         $(this));
                                         });
   
-  form.find('.control :radio').click(
+  form.find('.control-group :radio').click(
                                      function() {
                                        that.validate($(this).serialize(),
                                                      $(this));
                                      });
   
-  form.find('.control :checkbox').click(
+  form.find('.control-group :checkbox').click(
                                         function() {
                                           var name = $(this).attr("name");
                                           var data = {};
                                           data[name] = "";
                                           
-                                          $(this).parents(".control").eq(0).find(":checkbox[name=" + name + "]:checked").each(function() {
+                                          $(this).parents(".control-group").eq(0).find(":checkbox[name=" + name + "]:checked").each(function() {
                                               data[name] = data[name] + $(this).val() + ",";
                                             });
                                           
