@@ -268,7 +268,8 @@ class FactoryView(BaseView, pyramidformview, ViewMixin):
                 "This object is not in a temporary state"
 
         self.form = self.context.__form__(request)
-        pyramidformview.__init__(self, self.context, request, self.form)
+        pyramidformview.__init__(self, self.context, request, self.form,
+                retrieve_data=False)
 
     @property
     def url(self):
