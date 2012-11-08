@@ -281,6 +281,15 @@
   <view
      context="w20e.pycms.interfaces.ISite"
      view=".site.SiteView"
+     attr="pack_database"
+     renderer="string"
+     name="script_pack"
+     permission="admin"
+     />
+
+  <view
+     context="w20e.pycms.interfaces.ISite"
+     view=".site.SiteView"
      renderer="../templates/site_pack.pt"
      name="pack"
      permission="admin"

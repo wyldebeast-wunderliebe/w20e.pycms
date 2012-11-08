@@ -6,10 +6,10 @@ import cookielib, urllib2
 
 class PackCommand(command.Command):
 
-    max_args = 1
+    max_args = 2
     min_args = 1
 
-    usage = "pack <ini file>"
+    usage = "pack <ini file> [login_url]"
     summary = "Pack ZODB"
     group_name = "w20e.pycms"
 
@@ -26,8 +26,15 @@ class PackCommand(command.Command):
             print "Please provide an ini file as argument"
             sys.exit(-1)
     
-        host = config.get('server:main', 'host')
-        port = config.get('server:main', 'port')
+        url = None
+        if len(self.args) >= 1:
+            url = self.args[1]
+
+        if not url:
+            host = config.get('server:main', 'host')
+            port = config.get('server:main', 'port')
+            url = "http://%s:%s/login" % (host, port)
+
         usr, pwd = config.get('app:main', "pycms.admin_user").split(":")
 
         cj = cookielib.CookieJar()
@@ -35,9 +42,8 @@ class PackCommand(command.Command):
         opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
         urllib2.install_opener(opener)
 
-        url = "http://%s:%s/login" % (host, port)
         req = urllib2.Request(url,
-                              "login=%s&password=%s&form.submitted=1&came_from=/ajax_pack" % \
+                              "login=%s&password=%s&form.submitted=1&came_from=/script_pack" % \
                               (usr, pwd))
 
         handle = urllib2.urlopen(req)
