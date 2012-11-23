@@ -9,3 +9,8 @@ class IPage(Interface):
 class ISite(Interface):
 
     """ Marker for site"""
+
+
+class IPyCMSMixin(Interface):
+
+    """ Marker for Pycms Content Type """

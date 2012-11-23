@@ -10,7 +10,7 @@ from events import AppRootReady
 from w20e.forms.registry import Registry
 from w20e.forms.pyramid.file import PyramidFile
 from models.imagefolder import ImageFolder
-from migration import migrate
+from json_adapters import register_json_adapters
 from pack import PackCommand
 
 
@@ -138,6 +138,8 @@ def make_pycms_app(app, **settings):
                           root_factory=root_factory,
                           session_factory=SessionFactory('w20e_pycms_secret'),
                           settings=settings)
+
+    register_json_adapters(config)
 
     def get_registry():
 

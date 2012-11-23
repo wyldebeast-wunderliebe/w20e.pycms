@@ -13,20 +13,20 @@
     <metal:define-slot define-slot="title">
       <title tal:content="view.context.title">PyCMS rules</title>
     </metal:define-slot>
-    
+
     <base href="#" tal:attributes="href view.url"/>
-    
+
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
-    <meta name="keywords" content="" 
+    <meta name="keywords" content=""
              tal:attributes="content view.keywords" />
-    <meta name="description" content="" 
+    <meta name="description" content=""
           tal:attributes="content view.description" />
 
     <!-- Mobile Specific Metas
          ================================================== -->
     <metal:define-slot define-slot="viewport">
-      <meta name="viewport" 
-            content="width=device-width, initial-scale=1, maximum-scale=1" /> 
+      <meta name="viewport"
+            content="width=device-width, initial-scale=1, maximum-scale=1" />
     </metal:define-slot>
 
     <!-- Javascripts
@@ -35,8 +35,8 @@
     <!--[if lt IE 9]>
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    
-    <!-- JS 
+
+    <!-- JS
          ================================================== -->
     <metal:define-slot define-slot="js_slot">
       <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
@@ -45,7 +45,7 @@
 
     <metal:define-slot define-slot="extra_js_slot"/>
 
-    <!-- CSS 
+    <!-- CSS
          ================================================== -->
     <metal:define-slot define-slot="css_slot">
       <link rel="stylesheet" href="${request.application_url}/public.css"
@@ -54,9 +54,9 @@
 
     <metal:define-slot define-slot="extra_css_slot"/>
 
-    <!-- Favicons 
+    <!-- Favicons
          ================================================== -->
-    
+
     <metal:define-slot define-slot="favicon">
       <link rel="shortcut icon"
             href="${request.application_url}/static/favicon.ico" />
@@ -72,27 +72,36 @@
 
   </head>
 
-  <body metal:define-slot="body">
 
-    <!-- Primary Page Layout
-    ================================================== -->
+  <body-slot metal:define-slot="body" tal:omit-tag="">
 
-    <div id="main" class="container" metal:define-slot="main">
+    <metal:body define-macro="body"
+      tal:define="body_class body_class | string:pycms-body;">
 
-      <div id="header" metal:define-slot="header">
-        <a href="${request.application_url}" class="logo">
-          <img src="${request.application_url}/static/logo.png"/>
-        </a>
-      </div>
-      
-      <div id="content" metal:define-slot="content"/>
-      
-      <div id="footer" metal:define-slot="footer">
-        <tal:footer replace="structure view.footer"/>
-      </div>
-    </div>
+      <body tal:attributes="class body_class">
 
-  </body>
+        <!-- Primary Page Layout
+        ================================================== -->
+
+        <div id="main" class="container" metal:define-slot="main">
+
+          <div id="header" metal:define-slot="header">
+            <a href="${request.application_url}" class="logo">
+              <img src="${request.application_url}/static/logo.png"/>
+            </a>
+          </div>
+
+          <div id="content" metal:define-slot="content"/>
+
+          <div id="footer" metal:define-slot="footer">
+            <tal:footer replace="structure view.footer"/>
+          </div>
+        </div>
+
+      </body>
+    </metal:body>
+  </body-slot>
+
 </html>
 
 </metal:define-macro>

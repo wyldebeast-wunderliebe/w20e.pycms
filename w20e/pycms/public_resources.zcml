@@ -8,11 +8,11 @@
   <pycms:css cssfile="./static/css/public_base.css" csstarget="public" />
   <pycms:css cssfile="./static/3dparty/bootstrap/css/bootstrap.css" 
              csstarget="public" />
-  <pycms:css cssfile="./static/3dparty/jquery/css/jquery-ui-1.8.22.custom.css"
+  <pycms:css cssfile="./static/3dparty/jquery/css/jquery-ui-1.9.1.custom.css"
              csstarget="public"
      />
 
-  <pycms:js jsfile="./static/3dparty/jquery/js/jquery-ui-1.8.22.custom.min.js"
+  <pycms:js jsfile="./static/3dparty/jquery/js/jquery-ui-1.9.1.custom.min.js"
             jstarget="public"
      />
   <pycms:js jsfile="./static/validation.js" jstarget="public" />

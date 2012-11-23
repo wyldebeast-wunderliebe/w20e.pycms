@@ -225,6 +225,10 @@ class ContentView(Base, ViewMixin):
 
         return res
 
+    def json(self):
+        """ return a json encoded version of the context """
+
+        return self.context
 
 class AddView(BaseView):
 

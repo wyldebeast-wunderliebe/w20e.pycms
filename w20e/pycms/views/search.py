@@ -1,4 +1,4 @@
-from base import BaseView, add_macros
+from base import BaseView
 from repoze.catalog.query import Contains
 from pyramid.url import resource_url
 
@@ -19,7 +19,7 @@ class SearchView(BaseView):
 
         if not qry:
             res = {'found': 0, 'results': []}
-            add_macros(res, self)
+            self.add_macros(res, self)
             return res
 
         cat = self.context.root._catalog
@@ -34,5 +34,5 @@ class SearchView(BaseView):
                 obj, self.request)})
 
         res = {'found': res[0], 'results': objs}
-        add_macros(res, self)
+        self.add_macros(res, self)
         return res

@@ -1,3 +1,9 @@
+1.1.2a
+------
+* json representation of pycms content types
+* upgrade jquery + jqueryui
+* small fixes
+
 1.1.1a
 ------
 * initially created objects will have a temporary state, until they

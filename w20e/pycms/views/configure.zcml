@@ -5,7 +5,21 @@
      context="w20e.hitman.models.base.IContent"
      view=".base.ContentView"
      renderer="w20e.pycms:templates/view_content.pt"
+     request_method="GET"
      permission="view"
+     />
+
+  <!--someday this 'header' regexp should be converted to the 'accept'
+      parameter which doesn't seem to work at this moment -->
+  <view
+     context="w20e.pycms.models.interfaces.IPyCMSMixin"
+     view=".base.ContentView"
+     attr="json"
+     renderer="json"
+     request_method="GET"
+     header="Accept:application\/json"
+     permission="view"
+     xhr="True"
      />
 
   <view

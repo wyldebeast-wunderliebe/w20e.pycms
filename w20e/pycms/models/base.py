@@ -5,6 +5,7 @@ from zope.interface import implements, directlyProvides, alsoProvides, \
      noLongerProvides, providedBy
 from zope.component import subscribers
 from zope.component import getMultiAdapter
+from pyramid.url import resource_url
 from w20e.hitman.models.base import BaseFolder as HitmanBaseFolder
 from w20e.hitman.models.base import BaseContent as HitmanBaseContent
 from w20e.hitman.utils import object_to_path
@@ -13,6 +14,8 @@ from w20e.pycms.ctypes import ICTypes
 from w20e.forms.interfaces import IFormFactory, IFormModifier
 from w20e.forms.xml.factory import XMLFormFactory as BaseXMLFormFactory
 from w20e.pycms.interfaces import INature, ITemporaryObject
+from w20e.pycms.models.interfaces import IPyCMSMixin
+from w20e.pycms.catalog import ObjectSummary
 
 
 class XMLFormFactory(object):
@@ -48,6 +51,8 @@ class SiteFormFactory(XMLFormFactory):
 
 
 class PyCMSMixin(object):
+
+    implements(IPyCMSMixin)
 
     @property
     def __acl__(self):
@@ -147,6 +152,26 @@ class PyCMSMixin(object):
         return [to_str(nature) for nature in self.list_natures()]
 
 
+    def __json__(self, request):
+        """ return a json encoded version of this model """
+
+        # use the form data as default
+        data = self.__data__.as_dict()
+
+        # add content item's properties that are not part of the form..
+        data['id'] = self.id
+        data['uid'] = self.uuid
+        data['content_type'] = self.content_type
+        data['changed'] = self.changed.isoformat()
+        data['created'] = self.created.isoformat()
+        data['owner'] = self.owner
+        data['path'] = self.path
+        data['position_in_parent'] = self.position_in_parent
+        data['url'] = resource_url(self, request)
+
+        return data
+
+
 class BaseContent(PyCMSMixin, HitmanBaseContent):
 
     def allowed_content_types(self, request):
@@ -154,6 +179,27 @@ class BaseContent(PyCMSMixin, HitmanBaseContent):
 
 
 class BaseFolder(PyCMSMixin, HitmanBaseFolder):
+
+    def __json__(self, request):
+        """ return a json encoded version of this model 
+            including contained items
+        """
+        data = PyCMSMixin.__json__(self, request)
+        items = self.list_content()
+        contained_items = []
+
+        for item in items:
+
+            # candidate for refactoring.. some kind of generic 'brain' needed
+            attributes = ['uuid', 'id', 'title', 'content_type']
+            props = {'ctype': item.content_type}
+            for a in attributes:
+                props[a] = getattr(item, a, None)
+            brain = ObjectSummary(props)
+            contained_items.append(brain)
+
+        data['contained_items'] = contained_items
+        return data
 
     def list_content(self, content_type=None, iface=None, **kwargs):
         """ use base listing, but filter out temp objects """

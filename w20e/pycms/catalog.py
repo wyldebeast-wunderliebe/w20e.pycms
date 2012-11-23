@@ -90,6 +90,10 @@ class ObjectSummary(object):
 
         return self.ctype
 
+    def __json__(self, request):
+        """ return the properties for json rendering """
+        return self.props
+
 
 class Catalog(object):
 

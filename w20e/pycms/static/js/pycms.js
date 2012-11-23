@@ -266,12 +266,17 @@ pycms.dropped = function(event, ui) {
 };
 
 
-pycms.showMessage = function(msg) {
+pycms.showMessage = function(msg, title) {
 
-  $("#msg").html(msg);
-  $("#msg").dialog();
+  var $dialog = $('<div></div>').html(msg);
 
-  setTimeout('$("#msg").parents(".ui-dialog").eq(0).fadeOut(300)', 3000);
+  if (typeof title == "undefined") {
+    title = "Incoming message";
+  }
+
+  var messageBox = $dialog.dialog({'title': title});
+
+  setTimeout(function(){messageBox.dialog("close")}, 3000);
 };
 
 
