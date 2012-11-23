@@ -21,13 +21,13 @@ class PackCommand(command.Command):
             ini_file = self.args[0]
 
             config = ConfigParser.ConfigParser()
-            config.readfp(open(ini_file))        
+            config.readfp(open(ini_file))
         except:
             print "Please provide an ini file as argument"
             sys.exit(-1)
-    
+
         url = None
-        if len(self.args) >= 1:
+        if len(self.args) > 1:
             url = self.args[1]
 
         if not url:
@@ -38,7 +38,7 @@ class PackCommand(command.Command):
         usr, pwd = config.get('app:main', "pycms.admin_user").split(":")
 
         cj = cookielib.CookieJar()
-        
+
         opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
         urllib2.install_opener(opener)
 
@@ -49,9 +49,9 @@ class PackCommand(command.Command):
         handle = urllib2.urlopen(req)
 
         print handle.info()
-        
+
         result = handle.read()
 
         print result
 
-        
+
