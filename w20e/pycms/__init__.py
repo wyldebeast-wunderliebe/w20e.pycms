@@ -12,6 +12,7 @@ from w20e.forms.pyramid.file import PyramidFile
 from models.imagefolder import ImageFolder
 from json_adapters import register_json_adapters
 from migration import migrate
+import pkg_resources
 
 
 Registry.register_renderable("file", PyramidFile)
@@ -130,7 +131,7 @@ def root_factory(request):
 
 
 def make_pycms_app(app, **settings):
-    
+
     """ Create a w20e.pycms application and return it. The app is a
     router instance as created by Configurator.make_wsgi_app."""
 
@@ -146,20 +147,27 @@ def make_pycms_app(app, **settings):
         return config.registry
 
     # hook up registry
-    getSiteManager.sethook(get_registry)    
+    #getSiteManager.sethook(get_registry)
+    config.hook_zca()
 
     config.include(pyramid_zcml)
     config.include('pyramid_mailer')
 
     config.load_zcml('w20e.pycms:bootstrap.zcml')
+
+    # load plugin entry points
+    for ep in pkg_resources.iter_entry_points(group='pycms_plugin'):
+        fun = ep.load()
+        fun(config)
     config.commit()
-    
+
     config.load_zcml("configure.zcml")
-    config.commit()
+
+    config.scan()
 
     appmaker(config)
 
-    getSiteManager.reset()
-    config.hook_zca()
+    #getSiteManager.reset()
+    #config.hook_zca()
 
     return config.make_wsgi_app()

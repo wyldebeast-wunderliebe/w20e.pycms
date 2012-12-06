@@ -268,15 +268,16 @@ pycms.dropped = function(event, ui) {
 
 pycms.showMessage = function(msg, title) {
 
-  var $dialog = $('<div></div>').html(msg);
-
   if (typeof title == "undefined") {
     title = "Incoming message";
   }
 
-  var messageBox = $dialog.dialog({'title': title});
+  $('#pycms-modal-label').text(title);
+  $('#pycms-modal .modal-body p').text(msg);
 
-  setTimeout(function(){messageBox.dialog("close")}, 3000);
+  $('#pycms-modal').modal('show');
+
+  setTimeout(function(){$('#pycms-modal').modal('hide')}, 2000);
 };
 
 
