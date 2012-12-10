@@ -3,7 +3,9 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml"
       xml:lang="en"
-      xmlns:tal="http://xml.zope.org/namespaces/tal">
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      tal:define="body_class string:admin"
+      >
 
   <head>
     <title>${view.admin_title}</title>
@@ -35,7 +37,7 @@
 
   </head>
 
-  <body metal:define-slot="body">
+  <body class="" tal:attributes="class '%s %s' % (body_class, getattr(view, 'body_class', ''))" metal:define-slot="body">
 
     <div id="about" class="alert alert-info hide">
       <a class="close" href="#" onclick="$('#about').hide(); return false">×</a>
@@ -69,7 +71,9 @@
       <div class="navbar navbar-inverse">
         <div class="navbar-inner">
           <div class="container">
-            <a class="brand" href="/admin">${view.brand_title}</a>
+            <metal:define-slot define-slot="brand">
+              <a class="brand" href="/admin">${view.brand_title}</a>
+              </metal:define-slot>
             <ul class="nav pull-right">
               <tal:repeat repeat="action view.siteactions">
                 <li>
@@ -101,10 +105,11 @@
       <metal:define define-slot="perspectives">
       <ul class="nav nav-tabs" id="page-perspectives"
           metal:define-macro="perspectives">
+
         <tal:repeat repeat="perspective view.perspectives">
 
           <li
-             tal:attributes="class '%s' % (view.viewname == perspective.name and 'active' or '')"
+             tal:attributes="class '%s' % (request.path.endswith(perspective.target.split('/')[-1]) and 'active' or '')"
              >
             <a href="#" tal:attributes="href perspective.target"
                tal:content="perspective.label"
