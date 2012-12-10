@@ -1,6 +1,7 @@
 import os
 import sys
 from zope.component import getSiteManager
+import transaction
 from pyramid.config import Configurator
 from pyramid_zodbconn import get_connection
 from pyramid.session import UnencryptedCookieSessionFactoryConfig \
@@ -99,7 +100,6 @@ def appmaker(config):
 
         zodb_root['app_root'] = app_root
 
-        import transaction
         transaction.commit()
 
     # create a globale images folder
@@ -109,7 +109,6 @@ def appmaker(config):
         images = ImageFolder(IMAGES_ID)
         images.__data__['name'] = 'Images'
         app_root.add_content(images)
-        import transaction
         transaction.commit()
 
     # Do necessary updates
@@ -117,7 +116,6 @@ def appmaker(config):
 
     initreq.registry.notify(AppRootReady(app_root, config.registry))
 
-    import transaction
     transaction.commit()
 
     return zodb_root['app_root']
@@ -161,9 +159,9 @@ def make_pycms_app(app, **settings):
         fun(config)
     config.commit()
 
+    config.scan('w20e.pycms')
     config.load_zcml("configure.zcml")
-
-    config.scan()
+    config.commit()
 
     appmaker(config)
 
