@@ -144,6 +144,9 @@
 
       </div>
     </div>
+
+    <div metal:use-macro="macros.macros['pycms-modal']"/>
+
   </body>
 </html>
 
