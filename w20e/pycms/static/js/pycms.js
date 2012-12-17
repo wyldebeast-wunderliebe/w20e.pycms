@@ -548,8 +548,17 @@ $(document).ready(function() {
           $.get('ajax_order', {order: order});
         }});
 
-    $(".datetime input").datetimepicker();
-
+    $(".datetime").each(function(){
+        var extra_options =  $(this).data('extra-options');
+        // do boolean conversion.. probably not the best place to do it
+        if (extra_options.showTimepicker == 'false') {
+            extra_options.showTimepicker = false;
+        }
+        if (!extra_options.dateFormat) {
+            extra_options.dateFormat = 'yy-mm-dd';
+        }
+        $(this).find('input').datetimepicker(extra_options);
+    });
 
     // Set focus to first active empty input field, with class autofocus
     var done = $(":input.autofocus[value='']:visible:enabled:first").focus();
