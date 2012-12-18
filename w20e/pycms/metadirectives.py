@@ -1,3 +1,4 @@
+import pkg_resources
 from zope.interface import Interface
 from zope.schema import TextLine
 from zope.configuration.fields import GlobalObject
@@ -14,11 +15,18 @@ def find_file(filename, context):
 
     """ If file is relative, unrelate... """
 
-    if filename[0] == "/":
+    if filename[0] != "/":
 
-        return filename
-
-    return os.path.join(context.package.__path__[0], filename)
+        if ":" in filename:
+            module, resource = filename.split(":")
+        
+            provider = pkg_resources.get_provider(module)
+        
+            filename = provider.get_resource_filename(module, resource)
+        else:
+            filename = os.path.join(context.package.__path__[0], filename)
+                    
+    return filename
 
 
 class ICSSDirective(Interface):

@@ -12,6 +12,8 @@ pycms.alert = function(msg, type) {
   $("#alert").attr("class", "alert alert-" + type);
   $("#alert_msg").html(msg);
   $("#alert").show();
+
+  setTimeout("$('#alert').hide()", 3000);
 }
 
 
