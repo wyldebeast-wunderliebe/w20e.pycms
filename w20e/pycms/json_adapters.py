@@ -1,5 +1,6 @@
 from pyramid.renderers import JSON
 from ZODB.blob import Blob
+from datetime import datetime
 
 def register_json_adapters(config):
     """ register custom JSON serializers """
@@ -9,7 +10,11 @@ def register_json_adapters(config):
     def blob_adapter(obj, request):
         return obj.open('r').read()
 
+    def date_adapter(obj, request):
+        return obj.isoformat() if hasattr(obj, 'isoformat') else obj
+
     json_renderer.add_adapter(Blob, blob_adapter)
+    json_renderer.add_adapter(datetime, date_adapter)
 
     config.add_renderer('json', json_renderer)
 
