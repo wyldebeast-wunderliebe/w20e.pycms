@@ -240,7 +240,10 @@ class AddView(BaseView):
 
         clazz = Registry.get(ctype)
 
-        content = clazz("_TMP")
+        initial_data = self.request.params.copy()
+        del initial_data['ctype']
+
+        content = clazz("_TMP", data=initial_data)
 
         content.owner = self.user
 
@@ -250,7 +253,7 @@ class AddView(BaseView):
         alsoProvides(content, ITemporaryObject)
 
         self.context.add_content(content)
-
+              
         self.request.registry.notify(TemporaryObjectCreated(content))
 
         return HTTPFound(location='%sfactory' %
@@ -273,7 +276,7 @@ class FactoryView(BaseView, pyramidformview, ViewMixin):
 
         self.form = self.context.__form__(request)
         pyramidformview.__init__(self, self.context, request, self.form,
-                retrieve_data=False)
+                retrieve_data=True)
 
     @property
     def url(self):
