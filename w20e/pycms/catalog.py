@@ -108,17 +108,17 @@ class Catalog(object):
 
         return self._catalog
 
-    def query(self, *args, **kwargs):
+    def query(self, qry, as_summary=False, as_object=False, **kwargs):
 
         """ Query the catalog. If as_summary is set, return object summaries,
         as fetched from info from the indexes"""
 
-        res = self._catalog.query(*args, **kwargs)
+        res = self._catalog.query(qry, **kwargs)
 
-        if kwargs.get('as_summary', False):
-            return [self.get_object_summary(uuid) for uuid in res]
-        elif kwargs.get('as_object', False):
-            return [self.get_object(uuid) for uuid in res]
+        if as_summary:
+            return [self.get_object_summary(uuid) for uuid in res[1]]
+        elif as_object:
+            return [self.get_object(uuid) for uuid in res[1]]
         else:
             return res
 
@@ -177,6 +177,8 @@ class Catalog(object):
             idx = self.catalog[key]
             if hasattr(idx, "_rev_index"):
                 summ[key] = idx._rev_index.get(uuid, '')
+
+        summ['key'] = uuid
 
         return ObjectSummary(summ)
 
