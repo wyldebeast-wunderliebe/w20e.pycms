@@ -288,9 +288,14 @@ class FactoryView(BaseView, pyramidformview, ViewMixin):
 
     @property
     def after_add_redirect(self):
-        return "%s%s" % (self.base_url,
-                self.request.registry.settings.get('pycms.after_add_redirect',
-                    'admin'))
+
+        url = self.request.registry.settings.get(
+            'pycms.after_add_redirect', 'admin')
+
+        if url[0] != "/":
+            url = self.base_url + url
+
+        return url
 
     @property
     def cancel_add_redirect(self):
@@ -331,6 +336,7 @@ class FactoryView(BaseView, pyramidformview, ViewMixin):
             noLongerProvides(self.context, ITemporaryObject)
 
             self.request.registry.notify(
+
                     TemporaryObjectFinalized(self.context))
 
             parent.rename_content(self.context.id, content_id)
@@ -358,8 +364,13 @@ class EditView(EditBase, ViewMixin):
 
         """ Where to go after successfull edit?"""
 
-        return "%s%s" % (self.base_url, self.request.registry.settings.get(
-            'pycms.after_edit_redirect', 'edit'))
+        url = self.request.registry.settings.get(
+            'pycms.after_edit_redirect', 'edit')
+
+        if url[0] != "/":
+            url = self.base_url + url
+
+        return url
 
     def __call__(self):
 
@@ -378,10 +389,13 @@ class DelView(DelBase, ViewMixin):
     @property
     def after_del_redirect(self):
 
-        """ Where to go after successfull edit?"""
+        url = self.request.registry.settings.get(
+            'pycms.after_del_redirect', 'admin')
 
-        return "%s%s" % (self.base_url, self.request.registry.settings.get(
-            'pycms.after_del_redirect', 'admin'))
+        if url[0] != "/":
+            url = self.base_url + url
+
+        return url
 
     @property
     def parent_url(self):
