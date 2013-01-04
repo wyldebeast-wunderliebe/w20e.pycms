@@ -551,7 +551,7 @@ $(document).ready(function() {
         }});
 
     $(".datetime").each(function(){
-        var extra_options =  $(this).data('extra-options');
+        var extra_options =  $(this).data('extra-options') || {};
         // do boolean conversion.. probably not the best place to do it
         if (extra_options.showTimepicker == 'false') {
             extra_options.showTimepicker = false;
