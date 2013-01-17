@@ -58,7 +58,7 @@ def objectAdded(event):
     LOGGER.debug("Adding object %s" % event.object.id)
 
     cat = event.object.root._catalog
-    cat.index_object(event.object)
+    cat.reindex_object(event.object) # reindex is safer
 
 
 def objectChanged(event):
@@ -140,6 +140,7 @@ class Catalog(object):
         docid = self._document_map.docid_for_address(uuid)
         if not docid:
             self.index_object(object)
+            docid = self._document_map.docid_for_address(uuid)
 
         self.catalog.reindex_doc(docid, object)
         self.__parent__._p_changed = 1
