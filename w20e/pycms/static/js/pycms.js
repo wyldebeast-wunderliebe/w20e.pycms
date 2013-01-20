@@ -435,6 +435,40 @@ pycms.nature = function(event) {
   }
 };
 
+/**
+ * read the variables from the 'extra-options' data attribute
+ * and initialize the jquery datetimepicker
+ */
+pycms.enableDateTimePicker = function($element) {
+    var extra_options =  $element.data('extra-options') || {};
+    // do boolean conversion.. probably not the best place to do it
+    if (extra_options.showTimepicker == 'false') {
+        extra_options.showTimepicker = false;
+    }
+    if (!extra_options.dateFormat) {
+        extra_options.dateFormat = 'yy-mm-dd';
+    }
+    $element.find('input').datetimepicker(extra_options);
+}
+
+/**
+ * Set the focus to first active empty input field, with class autofocus
+ */
+pycms.setAutofocus = function() {
+    var done = $(":input.autofocus[value='']:visible:enabled:first").focus();
+    // if not found, try to find autofocus field which has a value
+    if (done.length == 0) {
+        done = $(":input.autofocus:visible:enabled:first").focus();
+    }
+    // if not found, try first w20e-form input which has an error
+    if (done.length == 0) {
+        done = $(".w20e-form .error :input:visible:enabled:first").focus();
+    }
+    // if not found, try first w20e-form input
+    if (done.length == 0) {
+        done = $(".w20e-form :input:visible:enabled:first").focus();
+    }
+}
 
 /* Initialization sequence started... */
 $(document).ready(function() {
@@ -551,30 +585,7 @@ $(document).ready(function() {
         }});
 
     $(".datetime").each(function(){
-        var extra_options =  $(this).data('extra-options') || {};
-        // do boolean conversion.. probably not the best place to do it
-        if (extra_options.showTimepicker == 'false') {
-            extra_options.showTimepicker = false;
-        }
-        if (!extra_options.dateFormat) {
-            extra_options.dateFormat = 'yy-mm-dd';
-        }
-        $(this).find('input').datetimepicker(extra_options);
+      pycms.enableDateTimePicker($this);
     });
-
-    // Set focus to first active empty input field, with class autofocus
-    var done = $(":input.autofocus[value='']:visible:enabled:first").focus();
-    // if not found, try to find autofocus field which has a value
-    if (done.length == 0) {
-        done = $(":input.autofocus:visible:enabled:first").focus();
-    }
-    // if not found, try first w20e-form input which has an error
-    if (done.length == 0) {
-        done = $(".w20e-form .error :input:visible:enabled:first").focus();
-    }
-    // if not found, try first w20e-form input
-    if (done.length == 0) {
-        done = $(".w20e-form :input:visible:enabled:first").focus();
-    }
-
+    pycms.setAutofocus();
 });
