@@ -585,7 +585,7 @@ $(document).ready(function() {
         }});
 
     $(".datetime").each(function(){
-      pycms.enableDateTimePicker($this);
+      pycms.enableDateTimePicker($(this));
     });
     pycms.setAutofocus();
 });
