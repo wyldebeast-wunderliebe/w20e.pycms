@@ -1,4 +1,5 @@
-from base import BaseView
+from pyramid.response import FileResponse, Response
+from base import BaseView, AdminView
 from w20e.forms.pyramid.formview import xmlformview as pyramidformview
 
 
@@ -28,3 +29,18 @@ class FormView(BaseView, pyramidformview):
     @property
     def footer(self):
         return self.context.__data__['footer_text']    
+
+
+class FormAdminView(AdminView):
+
+    def download_xml(self):
+
+        value = self.context.__data__['form']
+
+        response = Response(body=value['data'], 
+                            content_type="text/xml")
+
+        # set response caching headers..
+        response.cache_expires = (3600 * 24 * 7)
+
+        return response

@@ -148,6 +148,20 @@
      renderer="w20e.pycms:templates/form.pt"
      />
 
+  <view
+     context="..models.form.Form"
+     view=".form.FormAdminView"
+     renderer="../templates/form_admin.pt"
+     name="admin"
+     />
+
+  <view
+     context="..models.form.Form"
+     view=".form.FormAdminView"
+     name="download_xml"
+     attr="download_xml"
+     />
+
   <!-- Show block's add form-->
   <view
      context="..models.page.Page"

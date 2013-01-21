@@ -299,9 +299,15 @@ class FactoryView(BaseView, pyramidformview, ViewMixin):
 
     @property
     def cancel_add_redirect(self):
-        parent_url = resource_url(self.context.__parent__, self.request)
-        return "%s%s" % (parent_url, self.request.registry.settings.get(
-            'pycms.cancel_add_redirect', 'admin'))
+
+        url = self.request.registry.settings.get(
+            'pycms.cancel_add_redirect', 'admin')
+
+        if url[0] != "/":
+            parent_url = resource_url(self.context.__parent__, self.request)
+            url = parent_url + url
+
+        return url
 
     def __call__(self):
 
