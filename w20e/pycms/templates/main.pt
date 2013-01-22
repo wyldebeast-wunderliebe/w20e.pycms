@@ -39,8 +39,10 @@
     <!-- JS
          ================================================== -->
     <metal:define-slot define-slot="js_slot">
-      <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-      <script src="${request.application_url}/public.js"></script>
+      <script defer="defer" 
+              src="http://code.jquery.com/jquery-1.9.0.min.js"></script>
+      <script defer="defer"
+              src="${request.application_url}/public.js"></script>
     </metal:define-slot>
 
     <metal:define-slot define-slot="extra_js_slot"/>

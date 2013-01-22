@@ -1,0 +1,21 @@
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xml:lang="en" 
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      metal:use-macro="admin.macros['master']"
+      >
+
+  <head/>
+
+  <body>
+
+    <div metal:fill-slot="content">
+
+      <h1 class="edit_subheader">
+        Manage <tal:blok replace="view.title"/>
+      </h1>
+
+      <a href="./download_xml">Download XML</a>
+      
+    </div>
+  </body>
+</html>
