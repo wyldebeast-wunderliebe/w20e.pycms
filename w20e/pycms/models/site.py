@@ -11,9 +11,9 @@ class Site(Page):
 
     implementsOnly(ISite, IFolder)
 
-    def __init__(self, content_id):
+    def __init__(self, content_id, data=None):
 
-        Page.__init__(self, content_id)
+        Page.__init__(self, content_id, data)
 
     @property
     def cms_version(self):

@@ -5,9 +5,9 @@ class Form(BaseContent):
 
     """ Generic Form """
 
-    def __init__(self, content_id):
+    def __init__(self, content_id, data=None):
 
-        BaseContent.__init__(self, content_id)
+        BaseContent.__init__(self, content_id, data)
 
     @property
     def base_id(self):
