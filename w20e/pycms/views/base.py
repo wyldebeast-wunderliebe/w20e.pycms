@@ -253,7 +253,7 @@ class AddView(BaseView):
         alsoProvides(content, ITemporaryObject)
 
         self.context.add_content(content)
-              
+
         self.request.registry.notify(TemporaryObjectCreated(content))
 
         return HTTPFound(location='%sfactory' %

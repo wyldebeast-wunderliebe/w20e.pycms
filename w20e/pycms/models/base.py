@@ -63,19 +63,6 @@ class PyCMSMixin(object):
             return []
 
     @property
-    def owner(self):
-        """ get the creator userid """
-
-        return getattr(self, '_owner', None)
-
-    @owner.setter
-    def owner(self, value):
-        """ set the creator userid """
-
-        self._owner = value
-        self._p_changed = 1
-
-    @property
     def uuid(self):
         """ return a UUID, or generate it when not present yet """
 
