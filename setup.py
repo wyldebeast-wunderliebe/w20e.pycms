@@ -9,6 +9,7 @@ version = open(os.path.join("w20e", "pycms", "version.txt")
                ).readlines()[0].strip()
 
 requires = [
+    'distribute',
     'pyramid>=1.4a',
     'pyramid_zodbconn',
     'pyramid_tm',
@@ -41,6 +42,7 @@ setup(name='w20e.pycms',
       url='https://github.com/wyldebeast-wunderliebe/w20e.pycms/',
       keywords='cms pyramid',
       packages=find_packages(),
+      namespace_packages=['w20e'],
       include_package_data=True,
       zip_safe=False,
       install_requires = requires,

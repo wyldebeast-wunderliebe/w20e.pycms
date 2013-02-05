@@ -1,5 +1,6 @@
 from pyramid.renderers import JSON
 from ZODB.blob import Blob
+from w20e.forms.submisson.blob import TheBlob
 from datetime import datetime
 from BTrees.OOBTree import OOBTree
 
@@ -11,6 +12,9 @@ def register_json_adapters(config):
     def blob_adapter(obj, request):
         return obj.open('r').read()
 
+    def theblob_adapter(obj, request):
+        return obj.get()
+
     def date_adapter(obj, request):
         return obj.isoformat() if hasattr(obj, 'isoformat') else obj
 
@@ -18,6 +22,7 @@ def register_json_adapters(config):
         return dict([(k,v) for k,v in obj.items()])
 
     json_renderer.add_adapter(Blob, blob_adapter)
+    json_renderer.add_adapter(TheBlob, theblob_adapter)
     json_renderer.add_adapter(datetime, date_adapter)
     json_renderer.add_adapter(OOBTree, oobtree_adapter)
 
