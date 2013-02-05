@@ -1,6 +1,6 @@
 from pyramid.renderers import JSON
 from ZODB.blob import Blob
-from w20e.forms.submisson.blob import TheBlob
+from w20e.forms.submission.blob import TheBlob
 from datetime import datetime
 from BTrees.OOBTree import OOBTree
 
