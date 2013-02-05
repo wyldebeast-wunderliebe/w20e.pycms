@@ -9,3 +9,4 @@
 * move out sharing to separate module
 * move out catalog/search to separate module
 * enable add for subtypes instead of overwrite
+* fix perspectives: view is always selected as active tab
