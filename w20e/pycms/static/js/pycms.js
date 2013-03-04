@@ -587,5 +587,12 @@ $(document).ready(function() {
     $(".datetime").each(function(){
       pycms.enableDateTimePicker($(this));
     });
+
+    // enable bootstrap navigation (tabs). not sure if this should be done here
+    $(".nav.nav-tabs.cards a").click(function (e) {
+      e.preventDefault();
+      $(this).tab('show');
+    });
+
     pycms.setAutofocus();
 });
