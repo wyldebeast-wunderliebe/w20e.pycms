@@ -32,9 +32,9 @@ class ImageView(object):
 
             # get file path.. don't know the proper way to do this..
             # but open() sort of works..
-            opened_file = blob.open('r')
+            opened_file = blob.open_blob('r')
 
-            etag = blob._p_mtime
+            etag = blob._blob._p_mtime
 
             response = FileResponse(opened_file.name, self.request,
                     content_type=mimeType)
