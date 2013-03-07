@@ -1,6 +1,8 @@
 from base import AdminView
 from pyramid.response import FileResponse, Response
 import mimetypes
+from w20e.forms.submission.blob import TheBlob
+from ZODB.blob import Blob
 
 
 class ImageView(object):
@@ -23,12 +25,12 @@ class ImageView(object):
         except:
             pass
 
-        if isinstance(value['data'], str):
+        if isinstance(blob, str):
             # hmm. no blob image.. (should probably never happen)
-            response = Response(value['data'], content_type=mimeType)
-            etag = len(value['data'])
+            response = Response(blob, content_type=mimeType)
+            etag = len(blob)
 
-        else:
+        elif isinstance(blob, TheBlob):
 
             # get file path.. don't know the proper way to do this..
             # but open() sort of works..
@@ -38,6 +40,20 @@ class ImageView(object):
 
             response = FileResponse(opened_file.name, self.request,
                     content_type=mimeType)
+
+        elif isinstance(blob, Blob):
+
+            # get file path.. don't know the proper way to do this..
+            # but open() sort of works..
+            opened_file = blob.open('r')
+
+            etag = blob._p_mtime
+
+            response = FileResponse(opened_file.name, self.request,
+                    content_type=mimeType)
+
+        else:
+            raise "Not a valid image type"
 
         # set response caching headers..
 

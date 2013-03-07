@@ -23,12 +23,12 @@ class FileView(object):
         except:
             pass
 
-        if isinstance(value['data'], str):
+        if isinstance(blob, str):
             # hmm. no blob image.. (should probably never happen)
-            response = Response(value['data'], content_type=mimeType)
-            etag = len(value['data'])
+            response = Response(blob, content_type=mimeType)
+            etag = len(blob)
 
-        else:
+        elif isinstance(blob, TheBlob):
 
             # get file path.. don't know the proper way to do this..
             # but open() sort of works..
@@ -38,6 +38,20 @@ class FileView(object):
 
             response = FileResponse(opened_file.name, self.request,
                     content_type=mimeType)
+
+        elif isinstance(blob, Blob):
+
+            # get file path.. don't know the proper way to do this..
+            # but open() sort of works..
+            opened_file = blob.open('r')
+
+            etag = blob._p_mtime
+
+            response = FileResponse(opened_file.name, self.request,
+                    content_type=mimeType)
+
+        else:
+            raise "Not a valid file type"
 
         # set response caching headers..
 
