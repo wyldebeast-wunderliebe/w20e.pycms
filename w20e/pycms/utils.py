@@ -7,6 +7,7 @@ import time
 import random
 import hashlib
 from pyramid.security import has_permission as base_has_permission
+from w20e.forms.submission.blob import TheBlob
 
 
 THUMBNAIL_SIZE = 128, 128
@@ -32,6 +33,9 @@ def resize_image(data, size=THUMBNAIL_SIZE):
     # TODO: blob handling needs some streamlining..
     if isinstance(data['data'], Blob):
         pil_img = PILImage.open(data['data'].open())
+    elif isinstance(data['data'], TheBlob):
+        image_data = StringIO(data['data'].get())
+        pil_img = PILImage.open(image_data)
     else:
         image_data = StringIO(data['data'])
         pil_img = PILImage.open(image_data)
