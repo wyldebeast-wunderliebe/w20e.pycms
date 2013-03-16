@@ -1,5 +1,6 @@
 from base import AdminView
 from pyramid.response import FileResponse, Response
+from w20e.forms.submission.blob import TheBlob
 import mimetypes
 
 
