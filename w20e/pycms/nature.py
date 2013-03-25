@@ -49,11 +49,11 @@ class Natures(object):
         if kwargs.get("_for", None):
 
             clazz = kwargs['_for']
-            
+
             path, clazz = ".".join(clazz.split(".")[:-1]), clazz.split(".")[-1]
 
             exec("from %s import %s" % (path, clazz))
-            
+
             kwargs['_for'] = eval(clazz)
 
         self.registry[name] = kwargs

@@ -302,8 +302,9 @@ event-ish. That is it's nature. You can register natures like so:
       interface="w20e.pycms_events.interfaces.IEvent"
       />
 
-This will make the nature show up in the 'natures' dropdown menu. Now
-either you leave it like this, or you also modify the form for the
+This will make the nature show up in the 'natures' dropdown menu.
+(Note that the interface should inherit from INature)
+Now either you leave it like this, or you also modify the form for the
 page with an w20e.forms.interfaces.IFormModifier implementation:
 
   <subscriber
