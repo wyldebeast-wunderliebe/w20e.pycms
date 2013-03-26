@@ -107,7 +107,8 @@ class PyCMSMixin(object):
 
         alsoProvides(self, nature)
 
-        del self._v_form
+        if hasattr(self, '_v_form'):
+            del self._v_form
 
     def has_nature(self, nature):
 
@@ -117,13 +118,15 @@ class PyCMSMixin(object):
 
         noLongerProvides(self, nature)
 
-        del self._v_form
+        if hasattr(self, '_v_form'):
+            del self._v_form
 
     def set_natures(self, *natures):
 
         directlyProvides(self, *natures)
 
-        del self._v_form
+        if hasattr(self, '_v_form'):
+            del self._v_form
 
     def list_natures(self):
 

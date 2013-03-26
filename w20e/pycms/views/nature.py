@@ -1,4 +1,5 @@
 from w20e.pycms.nature import INatures
+from w20e.hitman.events import ContentChanged
 
 
 class NatureView(object):
@@ -18,6 +19,7 @@ class NatureView(object):
 
         if nature:
             self.context.add_nature(nature['interface'])
+            self.request.registry.notify(ContentChanged(self.context))
 
         return True
 
@@ -31,5 +33,6 @@ class NatureView(object):
 
         if nature:
             self.context.remove_nature(nature['interface'])
+            self.request.registry.notify(ContentChanged(self.context))
 
         return True
