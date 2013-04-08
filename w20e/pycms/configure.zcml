@@ -14,9 +14,6 @@
   <include package=".views" />
   <include package=".models" />
 
-  <!-- management UI resources -->
-  <include package="w20e.pycms" file="manage_resources.zcml"/>
-
   <static
      name="static"
      path="static"

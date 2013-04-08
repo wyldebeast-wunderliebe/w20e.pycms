@@ -5,7 +5,7 @@ import transaction
 from pyramid.config import Configurator
 from pyramid_zodbconn import get_connection
 from pyramid.session import UnencryptedCookieSessionFactoryConfig \
-     as SessionFactory
+    as SessionFactory
 import pyramid_zcml
 from events import AppRootReady
 from w20e.forms.registry import Registry
@@ -84,11 +84,12 @@ def appmaker(config):
 
     if not 'app_root' in zodb_root:
 
-        root_clazz_name = config.registry.settings.get("pycms.rootclass",
-                                           "w20e.pycms.models.site.Site")
-        root_title = config.registry.settings.get("pycms.roottitle",
-                                           "Yet another w20e.pycms app!")
-
+        root_clazz_name = config.registry.settings.get(
+            "pycms.rootclass",
+            "w20e.pycms.models.site.Site")
+        root_title = config.registry.settings.get(
+            "pycms.roottitle",
+            "Yet another w20e.pycms app!")
 
         root_clazz = class_from_string(root_clazz_name)
 
@@ -161,6 +162,7 @@ def make_pycms_app(app, **settings):
 
     config.scan('w20e.pycms')
     config.load_zcml("configure.zcml")
+    config.load_zcml("manage_resources.zcml")  # load management UI resources
     config.commit()
 
     appmaker(config)
