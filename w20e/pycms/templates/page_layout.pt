@@ -4,61 +4,57 @@
       metal:use-macro="admin.macros['master']"
       >
 
-  <head/>
+  <head>
+    <metal:fill-slot fill-slot="extra_css_slot">
+      <tal:condition condition="view.haz_layout">
+        <tal:repeat repeat="block view.get_layout().blocks">
+          <link href="{{ STATIC_URL }}html/${block.name}_view.html" 
+                data-model="${block.name}" rel="template" data-mode="view"/>
+          <link href="{{ STATIC_URL }}html/${block.name}_edit.html" 
+                data-model="${block.name}" rel="template" data-mode="edit"/>
+          <link href="{{ STATIC_URL }}html/${block.name}_add.html" 
+                data-model="${block.name}" rel="template" data-mode="add"/>
+        </tal:repeat>
+      </tal:condition>
+    </metal:fill-slot>
+  </head>
 
   <body>
     
-    <!-- BEGIN page_toolbar -->
-    <div metal:fill-slot="toolbar">
-      <div id="page-toolbar" metal:define-macro="page_toolbar">
-        <tal:repeat repeat="action view.page_actions()">
-          <tal:condition condition="not action.get('subs', [])">
-            <div class="action" id="id" title="title"
-                 tal:attributes="id action['id']; title action['title']"
-                 tal:condition="view.user_has_permission(action.get('permission', 'view'))"
-                 >
-              <a href="#" tal:content="action['title']"
-                 tal:attributes="href action['action']"
-                 >Do something!</a>
-            </div>
-          </tal:condition>
-          
-          <tal:condition condition="action.get('subs', [])">
-            <div class="action" id="id" title="title"
-                 tal:attributes="id action['id']; title action['title']"
-                 tal:condition="view.user_has_permission(action.get('permission', 'view'))"
-                 >
-              <a href="#" tal:content="action['title']"
-                 tal:attributes="href 'javascript: pycms.showSubmenu(\'sub_%s\')' % action['id']"
-                 >Do something!</a>
-              <div id="" class="actionsubs" tal:attributes="id 'sub_%s' % action['id']">
-                <tal:repeat repeat="subaction action['subs']">
-                  <div class="subaction" id="id" title="title"
-                       tal:attributes="id subaction['id']; title subaction['title']"
-                       tal:condition="view.user_has_permission(subaction.get('permission', 'view'))"
-                       >
-                    <a href="#" tal:content="subaction['title']"
-                       tal:attributes="href subaction['action']"
-                       >Do something!</a>
-                  </div>
-                </tal:repeat>
-              </div>
-            </div>
-          </tal:condition>
-        </tal:repeat>
-      </div>
-    </div>
-    <!-- END page_toolbar -->
-
     <div metal:fill-slot="content">
     
-      <h1 class="edit_header">Edit page layout</h1>
+      <h1 class="edit_header">Edit page</h1>
       
-      <div id="content" tal:content="structure view.layout">
+      <div class="alert alert-error" tal:condition="not view.haz_layout">
+        Please choose a layout first! This can be done from the actions menu.
       </div>
       
-      <div id="form_target"></div>
-      
+      <div condition="view.haz_layout">
+        <h2>${view.get_layout().name}</h2>
+
+        <div class="slot" tal:repeat="slot view.get_layout().slots">
+          <h3>Slot: ${slot.name}</h3>
+          
+          <div class="btn-group" tal:condition="slot.blocks">
+            <a class="btn dropdown-toggle" href="#" data-toggle="dropdown">
+              <i class="icon-plus"></i>
+              Add <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <tal:repeat repeat="subaction slot.blocks">
+                <li>
+                  <a href="#" tal:content="subaction"
+                     class="jsaction"
+                     tal:attributes="href 'add?block=%s' % subaction"
+                     >Add something</a>
+                </li>
+              </tal:repeat>
+            </ul>
+          </div>
+        </div>
+        
+      </div>
+
     </div>
   </body>
 </html>

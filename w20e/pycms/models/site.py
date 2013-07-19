@@ -4,7 +4,6 @@ from w20e.hitman.models.base import IFolder
 from interfaces import ISite
 
 
-
 class Site(Page):
 
     """ Site object """

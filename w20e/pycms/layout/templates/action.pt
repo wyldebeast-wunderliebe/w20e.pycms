@@ -1,0 +1,23 @@
+<div class="btn-group" id="layout_action">
+  <a class="btn btn-warning dropdown-toggle" data-toggle="dropdown" href="#">
+    <i tal:condition="action.icon" class="${action.icon}"></i>
+    Layout
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu icons-ul">
+    <tal:repeat repeat="layout layouts">
+      <li>
+        <tal:condition condition="not context.has_layout(layout)">
+          <i class="icon-li"></i><a href="set_layout" class="jsaction"
+             data-params="layout=${layout.name}"
+            i18n:translate="">
+            ${layout.name}
+          </a>
+        </tal:condition>
+        <tal:condition condition="context.has_layout(layout)">          
+          <i class="icon-li icon-ok"></i>${layout.name}
+        </tal:condition>
+      </li>
+    </tal:repeat>
+  </ul>
+</div>

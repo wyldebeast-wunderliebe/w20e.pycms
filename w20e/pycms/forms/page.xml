@@ -7,7 +7,6 @@
     <name/>
     <description/>
     <keywords/>
-    <text/>
   </data>
 
   <model>
@@ -21,12 +20,12 @@
   <view>
 
     <input id="name" bind="name">
-      <label>Name</label>
+      <label>Title</label>
       <property name="cols">40</property>
     </input>
 
     <input id="description" bind="description">
-      <property name="rows">5</property>
+      <property name="rows">3</property>
       <property name="cols">80</property>
       <label>Short description</label>
       <hint>Description/subject to be used as meta data</hint>
@@ -35,16 +34,9 @@
     <input id="keywords" bind="keywords">
       <label>Keywords</label>
       <hint>Keywords to be used as meta data, one per line or comma-separated</hint>
-      <property name="rows">5</property>
-      <property name="cols">40</property>
+      <property name="rows">3</property>
+      <property name="cols">80</property>
     </input>
-
-    <richtext id="text" bind="text">
-      <label>Page text (including images)</label>
-      <hint>You may also use the 'layout' tab for more complex layout options</hint>
-      <property name="rows">20</property>
-      <property name="cols">80</property>      
-    </richtext>
 
     <group id="submission" layout="flow">
       <property name="orientation">h</property>

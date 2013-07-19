@@ -53,4 +53,7 @@ setup(name='w20e.pycms',
       pycms_pack = w20e.pycms.pack:PackCommand
       """,
       paster_plugins=['pyramid'],
+      message_extractors = { '.': [
+          ('**.pt',   'lingua_xml', None ),
+          ]},
       )

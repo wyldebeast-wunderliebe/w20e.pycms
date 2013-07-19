@@ -1,10 +1,10 @@
-from zope.interface import implements
+from zope.interface import implements, providedBy, alsoProvides, \
+    noLongerProvides
 from folder import Folder
-from ..blocks.base import BlockContainer
 from interfaces import IPage
 
 
-class Page(Folder, BlockContainer):
+class Page(Folder):
 
     """ Basic Page """
 
@@ -13,9 +13,6 @@ class Page(Folder, BlockContainer):
     def __init__(self, content_id, data=None):
 
         Folder.__init__(self, content_id, data)
-        BlockContainer.__init__(self, refs=True)
-
-        self._content = ""
 
     @property
     def full_text(self):
@@ -28,3 +25,17 @@ class Page(Folder, BlockContainer):
     def title(self):
 
         return self.__data__['name']
+
+    def has_layout(self, layout):
+        
+        return layout.interface in providedBy(self)
+
+    def set_layout(self, layout):
+
+        """ Remove existing layout interfaces, and set to current. """
+
+        for i in [i for i in providedBy(self) if i.extends(ILayout)]:
+
+            noLongerProvides(self, i)
+
+        alsoProvides(self, layout)

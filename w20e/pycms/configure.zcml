@@ -5,14 +5,13 @@
   <!-- this must be included for the view declarations to work -->
   <include package="pyramid_zcml" />
 
-  <!-- add security -->
-  <include file="security.zcml" />
-
   <include file="meta.zcml" />
 
+  <include file="security.zcml" />
   <include package=".blocks" />
   <include package=".views" />
   <include package=".models" />
+  <include package=".layout" />
 
   <!-- management UI resources -->
   <include package="w20e.pycms" file="manage_resources.zcml"/>
@@ -76,6 +75,14 @@
      category="perspective"
      ctype="site"
      permission="admin"
+     />
+
+  <pycms:action
+     name="settings"
+     label="Settings"
+     target="./settings"
+     category="perspective"
+     permission="edit"
      />
 
   <pycms:action
@@ -181,6 +188,5 @@
       for="pyramid.events.BeforeRender"
       handler=".nature.add_natures"
     />
-
 
 </configure>

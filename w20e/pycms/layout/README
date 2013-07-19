@@ -1,0 +1,6 @@
+The PyCMS layout system works with predefined layouts, that are a combination
+of slots and a template where these slots are shown. Slots can be filled with
+blocks, i.e. text blocks, images, etc.
+A layout can be set from the action bar. Only one layout can be set. Picking a
+new layout will discard the existing one. Data however will persist, so you
+can share slots between layouts.

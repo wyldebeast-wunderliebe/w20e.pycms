@@ -1,47 +1,44 @@
 <configure 
     xmlns:meta="http://namespaces.zope.org/meta"
     xmlns="http://namespaces.zope.org/zope">
-  
-  <meta:directive 
-       namespace="http://w20e.com/pycms"
-       name="css" 
-       schema=".metadirectives.ICSSDirective"
-       handler=".metadirectives.css" />
 
-  <meta:directive 
-       namespace="http://w20e.com/pycms"
-       name="js" 
-       schema=".metadirectives.IJSDirective"
-       handler=".metadirectives.js" />
+  <meta:directives namespace="http://w20e.com/pycms">
 
-  <meta:directive 
-       namespace="http://w20e.com/pycms"
-       name="action" 
-       schema=".metadirectives.IActionDirective"
-       handler=".metadirectives.action" />
+    <meta:directive 
+        name="css" 
+        schema=".metadirectives.ICSSDirective"
+        handler=".metadirectives.css" />
+    
+    <meta:directive 
+        name="js" 
+        schema=".metadirectives.IJSDirective"
+        handler=".metadirectives.js" />
 
-  <meta:directive 
-       namespace="http://w20e.com/pycms"
-       name="ctype" 
-       schema=".metadirectives.ICTypeDirective"
-       handler=".metadirectives.ctype" />
+    <meta:directive 
+        name="action" 
+        schema=".metadirectives.IActionDirective"
+        handler=".metadirectives.action" />
 
-  <meta:directive 
-       namespace="http://w20e.com/pycms"
-       name="nature" 
-       schema=".metadirectives.INatureDirective"
-       handler=".metadirectives.nature" />
+    <meta:directive 
+        name="ctype" 
+        schema=".metadirectives.ICTypeDirective"
+        handler=".metadirectives.ctype" />
 
-  <meta:directive 
-       namespace="http://w20e.com/pycms"
-       name="macro" 
-       schema=".metadirectives.IMacroDirective"
-       handler=".metadirectives.macro" />
+    <meta:directive 
+        name="nature" 
+        schema=".metadirectives.INatureDirective"
+        handler=".metadirectives.nature" />
 
-  <meta:directive 
-       namespace="http://w20e.com/pycms"
-       name="index" 
-       schema=".metadirectives.IIndexDirective"
-       handler=".metadirectives.index" />
+    <meta:directive 
+        name="macro" 
+        schema=".metadirectives.IMacroDirective"
+        handler=".metadirectives.macro" />
+
+    <meta:directive 
+        name="index" 
+        schema=".metadirectives.IIndexDirective"
+        handler=".metadirectives.index" />
+
+  </meta:directives>
 
 </configure>

@@ -1,9 +1,9 @@
+import os
 import pkg_resources
 from zope.interface import Interface
 from zope.schema import TextLine
 from zope.configuration.fields import GlobalObject
-from interfaces import ICSSRegistry, IJSRegistry
-import os
+from w20e.pycms.interfaces import ICSSRegistry, IJSRegistry
 from actions import IActions
 from ctypes import ICTypes
 from macros import IMacros

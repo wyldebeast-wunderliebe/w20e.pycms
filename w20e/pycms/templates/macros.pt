@@ -3,7 +3,7 @@
 <div metal:define-macro="title" class="title">
   <div id="title" tal:content="view.title">Title</div>
   <div class="title-byline">
-    created on <span tal:replace="view.created"/>
+    <span i18n:translate="">created on</span> <span tal:replace="view.created"/>
     by <span tal:replace="view.creator"/>
   </div>
 </div>

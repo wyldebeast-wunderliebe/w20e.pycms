@@ -1,0 +1,51 @@
+<configure xmlns="http://pylonshq.com/pyramid"
+           xmlns:pycms="http://w20e.com/pycms">
+
+  <include file="meta.zcml" />
+
+  <pycms:layout
+      name="base_layout"
+      template="w20e.pycms:templates/base_layout.html"
+      interface="w20e.pycms.layout.interfaces.IBaseLayout"
+      >
+
+    <pycms:slot
+        name="main"
+        blocks="text"
+        />
+
+  </pycms:layout>
+
+  <pycms:block
+      name="text"
+      add_form=""
+      edit_form=""
+      />
+
+  <pycms:action
+     name="layout"
+     label="Layout"
+     icon="icon-reorder"
+     target="#"
+     category="content"
+     permission="admin"
+     template="w20e.pycms:layout/templates/action.pt"
+     />
+
+  <!-- Layout editing through Ajax -->
+  <view
+     context="w20e.hitman.models.base.IContent"
+     view=".views.LayoutView"
+     renderer="json"
+     xhr="True"
+     attr="set_layout"
+     name="set_layout"
+     permission="edit"
+     />
+
+  <subscriber
+      for="pyramid.events.BeforeRender"
+      handler=".registry.add_layouts"
+    />
+  
+</configure>

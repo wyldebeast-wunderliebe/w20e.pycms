@@ -24,172 +24,6 @@ pycms.showSubmenu = function(subId) {
 }
 
 
-pycms.cutBlock = function() {
-
-  if (currBlock && !currGroup.hasClass("fixed")) {
-    pasteBoard = currBlock.remove();
-    currBlock = false;
-  }
-}
-
-
-pycms.pasteBlock = function() {
-
-  if (pasteBoard) {
-    currGroup.append(pasteBoard);
-    currBlock = pasteBoard;
-
-    pycms.addEvents();
-  }
-}
-
-
-/**
- * Delete the current block, unless it's fixed.
- */
-pycms.deleteBlock = function() {
-
-  if (currBlock && !currBlock.hasClass("fixed")) {
-    currBlock.remove();
-    currBlock = false;
-  } else {
-    pycms.showMessage("You can't delete the main container");
-  }
-}
-
-
-/**
- * Save the entire content block.
- */
-pycms.savePage = function() {
-
-  var content = $("#content").html();
-
-  $.post("save_page", {'content': content}, function(data, status) {
-      if (status == 'error') {
-        pycms.showMessage("Tough luck");
-      } else {
-        pycms.showMessage("Saved");
-      }
-    });
-}
-
-
-/**
- * Save the created block. This involves creating the html snippet on the
- * server, and adding it to the current document.
- */
-pycms.saveBlock = function(data) {
-
-  if (data['type'] == 'image') {
-
-      // Bind onload to img save iframe
-      $("#img_save").load(function() {
-
-      var html = $("#img_save").contents().find("html").html();
-
-          if (do_edit) {
-              currBlock.replaceWith(html);
-          } else {
-              currGroup.append(html);
-          }
-
-          pycms.addEvents();
-      });
-
-      // Let the original submit handle it from here...
-      return true;
-
-  } else {
-
-      $.post("save_block", data, function(data) {
-
-          if (do_edit) {
-              currBlock.replaceWith(data);
-          } else {
-              currGroup.append(data);
-          }
-
-          pycms.addEvents();
-      });
-
-      return false;
-  }
-}
-
-
-pycms.editBlock = function() {
-
-  do_edit = true;
-
-  var data = pycms.getConfig(currBlock);
-
-  $("#form_target").load("edit_form", data, function() {
-
-      if (status == 'error') {
-        pycms.showMessage("Error in loading add form");
-        return;
-      }
-
-      pycms.initForm();
-      $("#mask").show('slow');
-      $("#form_target").show('slow');
-    });
-}
-
-
-pycms.addBlock = function(type) {
-
-  do_edit = false;
-
-  $("#form_target").load("add_form", {'type': type}, function(txt, status) {
-
-      if (status == 'error') {
-        pycms.showMessage("Error in loading add form");
-        return;
-      }
-
-      pycms.initForm();
-      $("#mask").show('slow');
-      $("#form_target").show('slow');
-    });
-}
-
-
-pycms.addGroup = pycms.addBlock;
-
-
-pycms.selectLayout = function(type) {
-
-}
-
-
-pycms.createConfig = function(data) {
-
-    html = '<dl class="config">'
-
-    for (var key in data) {
-      html += '<dt>' + key + '</dt><dd>' + data[key] + '</dd>';
-    }
-
-    html += '</dl>';
-
-    return html;
-}
-
-
-pycms.getConfig = function(tgt) {
-
-    var cfg = {};
-
-    tgt.children("dl").eq(0).children("dt").each(function() {
-      cfg[$(this).html()] = $(this).next().html();
-    });
-
-    return cfg;
-}
-
-
 pycms.createDataArray = function(form) {
 
     var dataArray = form.serializeArray();
@@ -249,23 +83,6 @@ pycms.initForm = function() {
       return bubbleUp;
     });
 }
-
-
-/**
- * After-resize call that takes care of setting the size in the config.
- */
-pycms.resized = function(event, ui) {
-
-  $(this).find("dt:contains('width')").eq(0).next().html(ui.size.width + "px");
-  $(this).find("dt:contains('height')").eq(0).next().html(ui.size.height + "px");
-}
-
-
-pycms.dropped = function(event, ui) {
-
-  $(this).find("dt:contains('top')").eq(0).next().html(ui.position.top + "px");
-  $(this).find("dt:contains('left')").eq(0).next().html(ui.position.left + "px");
-};
 
 
 pycms.showMessage = function(msg, title) {
@@ -435,6 +252,7 @@ pycms.nature = function(event) {
   }
 };
 
+
 /**
  * read the variables from the 'extra-options' data attribute
  * and initialize the jquery datetimepicker
@@ -477,15 +295,16 @@ $(document).ready(function() {
 
     pycms.addEvents();
 
-    $(".jsaction").click(function(e) {
-        try {
-          var f = eval($(this).attr("data-jscall"));
-          f.call(e, e);
-        } catch(e) {
-          console.log(e);
-        }
+    $(document).on("click", ".jsaction", function(e) {
 
-        return false;
+        var link = $(e.currentTarget);
+
+        $.post(link.attr("href"), link.data("params"), function(data) {
+            
+            pycms.alert(data['msg'], data['status']);
+          }); 
+
+        e.preventDefault();
       });
 
     $('textarea.wysiwyg').tinymce({

@@ -23,6 +23,11 @@
      />
 
   <utility
+     provides=".layout.interfaces.ILayouts"
+     factory=".layout.registry.Layouts"
+     />
+
+  <utility
      provides=".ctypes.ICTypes"
      factory=".ctypes.CTypes"
      />

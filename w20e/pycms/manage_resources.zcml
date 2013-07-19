@@ -41,6 +41,16 @@
      />
 
   <pycms:js
+     jsfile="./static/3dparty/underscore/underscore.js" 
+     jstarget="manage"
+     />
+
+  <pycms:js
+     jsfile="./static/js/layout.js" 
+     jstarget="manage"
+     />
+
+  <pycms:js
      jsfile="./static/js/pycms.js" 
      jstarget="manage"
      />

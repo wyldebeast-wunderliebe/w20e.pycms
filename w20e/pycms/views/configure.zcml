@@ -22,12 +22,12 @@
      xhr="True"
      />
 
-  <view
+  <!--view
      context="w20e.hitman.models.base.IFolder"
      view=".base.AddView"
      name="add"
      permission="edit"
-     />
+     /-->
 
   <!-- generic add view -->
   <view
@@ -43,7 +43,7 @@
      context="w20e.hitman.models.base.IContent"
      view=".base.EditView"
      renderer="w20e.pycms:templates/edit_content.pt"
-     name="edit"
+     name="settings"
      permission="edit"
      />
 
@@ -97,17 +97,9 @@
      context="..models.page.Page"
      view=".page.PageLayout"
      renderer="../templates/page_layout.pt"
-     name="layout"
-     permission="edit"
-     />
-
-  <!--view
-     context="..models.page.Page"
-     view=".page.PageEdit"
-     renderer="../templates/page_edit.pt"
      name="edit"
      permission="edit"
-     /-->
+     />
 
   <view
      context="..models.image.Image"
@@ -193,22 +185,6 @@
      attr="save"
      renderer="../templates/save_page.pt"
      name="save_page"
-     />
-
-  <!-- show block layout -->
-  <view
-     context="..models.page.Page"
-     view=".page.PageBlocks"
-     renderer="../templates/page_blocks.pt"
-     name="blocks"
-     />
-
-  <view
-     context="..models.page.Page"
-     view=".page.PageLayout"
-     attr="save_block"
-     renderer="html"
-     name="save_block"
      />
 
   <!-- list users -->
@@ -374,6 +350,7 @@
      permission="edit"
      />
 
+  <!-- Nature editing through Ajax -->
   <view
      context="w20e.hitman.models.base.IContent"
      view=".nature.NatureView"
