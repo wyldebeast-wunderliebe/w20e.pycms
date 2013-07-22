@@ -17,7 +17,6 @@ from w20e.pycms.utils import has_permission
 from pyramid.url import resource_url
 from pyramid.compat import map_
 from w20e.pycms.nature import INatures
-from w20e.pycms.layout.interfaces import ILayout, ILayouts
 from w20e.pycms.interfaces import IAdmin, ITemporaryObject
 from w20e.pycms.events import TemporaryObjectCreated, TemporaryObjectFinalized
 from w20e.pycms.actions import IActions
@@ -201,25 +200,6 @@ class ViewMixin(object):
             return self.context.has_nature(nature['interface'])
         else:
             return False
-
-    @property
-    def haz_layout(self):
-
-        return self.get_layout() is not None
-
-    def get_layout(self):
-
-        """ A page can have one and only one layout. """
-        
-        try:
-            layout = [i for i in providedBy(self.context) \
-                          if i.extends(ILayout)][0]
-
-            layouts = self.request.registry.getUtility(ILayouts)
-
-            return layouts.get_layout_by_if(layout)
-        except:
-            return None
 
 
 class BaseView(BaseBase, ViewMixin):

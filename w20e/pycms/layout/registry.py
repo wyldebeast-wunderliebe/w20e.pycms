@@ -30,6 +30,10 @@ class Layouts(object):
 
         self.blocks[name] = block
 
+    def get_block(self, name):
+
+        return self.blocks[name]
+
     def register_layout(self, name, layout):
 
         self.registry[name] = layout

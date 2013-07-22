@@ -1,0 +1,34 @@
+<configure xmlns="http://pylonshq.com/pyramid"
+  xmlns:pycms="http://w20e.com/pycms">
+
+  <include file="meta.zcml" />
+
+  <!-- Base implementation for forms. -->
+  <adapter
+      factory=".base.XMLFormFactory" 
+      for="w20e.pycms.layout.blocks.interfaces.IBlock
+           pyramid.interfaces.IRequest"
+      provides="w20e.forms.interfaces.IFormFactory" />
+
+  <view
+      context="w20e.pycms.models.interfaces.IPage"
+      view=".base.BlockAdd"
+      renderer="templates/add_block.pt"
+      name="add_block"
+      xhr="True"
+    />
+
+  <view
+      context="w20e.pycms.models.interfaces.IPage"
+      view=".base.BlockEdit"
+      renderer="templates/edit_block.pt"
+      name="edit_block"
+      xhr="True"
+    />
+
+  <pycms:block
+      name="text"
+      factory="w20e.pycms.layout.blocks.text.Text"
+      />
+
+</configure>

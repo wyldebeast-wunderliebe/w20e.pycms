@@ -14,11 +14,6 @@
     
     </meta:complexDirective>
 
-    <meta:directive
-        name="block"
-        schema=".metadirectives.IBlockDirective"
-        handler=".metadirectives.block"/>
-
   </meta:directives>
 
 </configure>

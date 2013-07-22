@@ -8,7 +8,6 @@
   <include file="meta.zcml" />
 
   <include file="security.zcml" />
-  <include package=".blocks" />
   <include package=".views" />
   <include package=".models" />
   <include package=".layout" />

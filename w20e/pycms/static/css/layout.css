@@ -1,0 +1,18 @@
+.slot {
+    border: 1px solid #c0c0c0;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.slot .controls {
+    float: right;
+}
+
+.slot .block {
+    width: 80%;
+    border: 1px solid #c0c0c0;
+    background-color: #f0f0f0;
+    padding-left: 40px;
+    padding: 5px;
+    border-radius: 3px;
+}

@@ -113,11 +113,9 @@
 
 <!-- BEGIN modal -->
 <div id="pycms-modal" metal:define-macro="pycms-modal"
-  class="modal hide fade" tabindex="-1" role="dialog"
-  aria-labelledby="pycms-modal-label" aria-hidden="true">
+  class="modal hide fade" tabindex="-1" role="dialog">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-  <h3 id="pycms-modal-label">Incoming message</h3>
   </div>
   <div class="modal-body">
   <p>message…</p>

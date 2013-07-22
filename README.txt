@@ -36,6 +36,15 @@ use it!
 
 Anyway, read on if you like...
 
+
+Why not?
+--------
+
+If you don't want to use the ZODB as a DB or ZCML as a configuration
+language, you may stop reading now and do something more useful. PyCMS
+uses __lots__ of ZCML...
+
+
 For whom..?
 -----------
 
@@ -48,6 +57,7 @@ fuckit.js among the best JS libraries ever, enjoy Terry Pratchett,
 love buildout en ZCML and think that beer is so much more that just a
 breakfast drink.
 
+
 Features
 --------
 
@@ -59,12 +69,13 @@ PyCMS gives you:
 
  * ZODB for storing data
  * blobstorage
- * user & group management
+ * minimal user & group management
  * search, using repoze.catalog (optional)
  * creating and maintaining pages
  * an easily extendable framework for new content types
  * a lot of ZCML configuration
  * CMS design based on (Twitter) Bootstrap
+ * Some features like sharing, events and news, separately packaged
 
 
 Getting started
@@ -414,3 +425,7 @@ pycms.after_del_redirect
         Where to go after delete
 pycms.tempregister.timout = <int>
         minimal amount of seconds before a temporary object might be removed
+pycms.force_migrate = True|False
+        Force migration to version currently used. Mainly handy for development
+pycms.default_layout = <full dotted classname>
+        Default layout interface class

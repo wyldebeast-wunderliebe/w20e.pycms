@@ -1,3 +1,5 @@
+from persistent.mapping import PersistentMapping
+from collections import OrderedDict
 from zope.interface import implements, providedBy, alsoProvides, \
     noLongerProvides
 from folder import Folder
@@ -13,6 +15,7 @@ class Page(Folder):
     def __init__(self, content_id, data=None):
 
         Folder.__init__(self, content_id, data)
+        self._blocks = PersistentMapping()
 
     @property
     def full_text(self):
@@ -39,3 +42,14 @@ class Page(Folder):
             noLongerProvides(self, i)
 
         alsoProvides(self, layout)
+
+    def save_block(self, slot, block_id, block):
+
+        if not slot in self._blocks.keys():
+            self._blocks[slot] = OrderedDict()
+        self._blocks[slot][block_id] = block
+        self._p_changed = True
+
+    def get_block(self, slot_id, block_id):
+
+        return self._blocks[slot_id][block_id]

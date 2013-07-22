@@ -55,16 +55,20 @@ class InitRequest(object):
         self.cb = cb
 
 
-def update(app):
+def update(app, config):
 
-    """ Any updates can go here... """
+    """ Any updates should be written as Python methods in a file
+    called <some version>__<some other version>.py. Method should be
+    named 'migrate' and return the success of the migration (True or
+    False)"""
 
     curr_version = getattr(app, "pycms_version", "unknown")
     tgt_version = version
 
-    if curr_version != tgt_version:
+    if curr_version != tgt_version or \
+            config.registry.settings.get("pycms.force_migrate", False):
 
-        migrated = migrate(curr_version, tgt_version)
+        migrated = migrate(app, curr_version, tgt_version)
 
         if migrated:
             setattr(app, "pycms_version", tgt_version)
@@ -103,6 +107,7 @@ def appmaker(config):
         transaction.commit()
 
     # create a globale images folder
+    #
     app_root = zodb_root['app_root']
     IMAGES_ID = 'images'
     if not IMAGES_ID in app_root:
@@ -111,10 +116,13 @@ def appmaker(config):
         app_root.add_content(images)
         transaction.commit()
 
-    # Do necessary updates
-    update(zodb_root['app_root'])
-
     initreq.registry.notify(AppRootReady(app_root, config.registry))
+
+    transaction.commit()
+
+    # Do necessary updates/migrations
+    #
+    update(zodb_root['app_root'], config)
 
     transaction.commit()
 

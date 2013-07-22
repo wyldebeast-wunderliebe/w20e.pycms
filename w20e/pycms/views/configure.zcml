@@ -83,22 +83,21 @@
 
   <view
      context="w20e.pycms.models.interfaces.IPage"
+     view=".page.PageLayout"
+     renderer="../templates/page_layout.pt"
+     name="edit"
+     permission="edit"
+     />
+
+  <view
+     context="w20e.pycms.models.interfaces.IPage"
      view="w20e.pycms.views.page.PageView"
-     renderer="w20e.pycms:templates/page.pt"
      />
 
   <view
      context="w20e.pycms.models.interfaces.ISite"
      view="w20e.pycms.views.page.PageView"
      renderer="w20e.pycms:templates/page.pt"
-     />
-
-  <view
-     context="..models.page.Page"
-     view=".page.PageLayout"
-     renderer="../templates/page_layout.pt"
-     name="edit"
-     permission="edit"
      />
 
   <view

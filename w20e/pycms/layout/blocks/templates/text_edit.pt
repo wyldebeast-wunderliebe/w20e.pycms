@@ -1,0 +1,3 @@
+<div class="block" 
+     tal:content="structure python:view.renderform(errors=errors, status=status)">
+</div>

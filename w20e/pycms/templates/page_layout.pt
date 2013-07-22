@@ -4,55 +4,60 @@
       metal:use-macro="admin.macros['master']"
       >
 
-  <head>
-    <metal:fill-slot fill-slot="extra_css_slot">
-      <tal:condition condition="view.haz_layout">
-        <tal:repeat repeat="block view.get_layout().blocks">
-          <link href="{{ STATIC_URL }}html/${block.name}_view.html" 
-                data-model="${block.name}" rel="template" data-mode="view"/>
-          <link href="{{ STATIC_URL }}html/${block.name}_edit.html" 
-                data-model="${block.name}" rel="template" data-mode="edit"/>
-          <link href="{{ STATIC_URL }}html/${block.name}_add.html" 
-                data-model="${block.name}" rel="template" data-mode="add"/>
-        </tal:repeat>
-      </tal:condition>
-    </metal:fill-slot>
-  </head>
+  <head/>
 
   <body>
     
     <div metal:fill-slot="content">
     
-      <h1 class="edit_header">Edit page</h1>
+      <h1 class="edit_header">Edit page (using ${view.get_layout().name})</h1>
       
-      <div class="alert alert-error" tal:condition="not view.haz_layout">
+      <div class="alert alert-error" tal:condition="not view.has_layout">
         Please choose a layout first! This can be done from the actions menu.
       </div>
       
-      <div condition="view.haz_layout">
-        <h2>${view.get_layout().name}</h2>
+      <div condition="view.has_layout">
 
         <div class="slot" tal:repeat="slot view.get_layout().slots">
-          <h3>Slot: ${slot.name}</h3>
+          <h3>Slot: ${slot.name}
           
-          <div class="btn-group" tal:condition="slot.blocks">
-            <a class="btn dropdown-toggle" href="#" data-toggle="dropdown">
-              <i class="icon-plus"></i>
-              Add <b class="caret"></b>
-            </a>
-            <ul class="dropdown-menu">
-              <tal:repeat repeat="subaction slot.blocks">
-                <li>
-                  <a href="#" tal:content="subaction"
-                     class="jsaction"
-                     tal:attributes="href 'add?block=%s' % subaction"
-                     >Add something</a>
-                </li>
-              </tal:repeat>
-            </ul>
-          </div>
-        </div>
-        
+            <div class="btn-group controls" tal:condition="slot.blocks">
+              <a class="btn dropdown-toggle" href="#" data-toggle="dropdown">
+                <i class="icon-plus"></i>
+                Add <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                <tal:repeat repeat="block slot.blocks">
+                  <li>
+                    <a href="add_block?type=text&slot=${slot.name}"
+                       tal:content="block"
+                       data-target="#pycms-modal"
+                       data-toggle="modal"
+                       >Add something</a>
+                  </li>
+                </tal:repeat>
+              </ul>
+            </div>
+          </h3>
+
+          <tal:repeat repeat="block view.get_blocks(slot.name)">
+            <div class="block ${block.type}">
+              ${block.id}
+              <span class="controls">
+                <a href="edit_block?block=${block.id}&slot=${slot.name}"
+                   data-toggle="modal"
+                   data-target="#pycms-modal"
+                   class="btn btn-mini"
+                   ><i class="icon-edit"></i></a>
+                <a href="edit_block?block=${block.id}&slot=${slot.name}"
+                   data-toggle="modal"
+                   data-target="#pycms-modal"
+                   class="btn btn-mini btn-danger"
+                   ><i class="icon-trash"></i></a>
+              </span>
+            </div>            
+          </tal:repeat>
+        </div>      
       </div>
 
     </div>

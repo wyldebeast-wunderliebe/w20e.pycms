@@ -10,7 +10,7 @@ def normalize_version(version):
     return version.replace(".", "_").replace("-", "_")
 
 
-def migrate(current_version, target_version):
+def migrate(app, current_version, target_version):
 
     LOGGER.info("Upgrade from %s to %s" % (current_version, target_version))
 
@@ -20,18 +20,26 @@ def migrate(current_version, target_version):
     update_mod = "w20e.pycms.migrations.%s__%s" % \
                  (current_version, target_version)
 
-    mod_path = os.path.join(os.path.dirname(__file__),
-                            "migrations",
-                            "%s__%s.py" % (current_version, target_version)
-                            )
+    updated = False
 
-    if os.path.isfile(mod_path):
-        
+    try:
+        mod = __import__(update_mod, globals(), locals(), ['migrate'], -1)
+        LOGGER.info("Found upgrade")
+        updated = mod.migrate(app)
+    except:
+        pass
+
+    if not updated:
+
+        # Maybe no from version?
+        #
+        update_mod = "w20e.pycms.migrations.any__%s" % target_version
+
         try:
-            __import__(update_mod)
+            mod = __import__(update_mod, globals(), locals(), ['migrate'], -1)
             LOGGER.info("Found upgrade")
+            updated = mod.migrate(app)
         except:
-            LOGGER.warn("No upgrade found")
-            return False
-        
-    return True
+            LOGGER.exception("Couldn't upgrade")
+
+    return updated

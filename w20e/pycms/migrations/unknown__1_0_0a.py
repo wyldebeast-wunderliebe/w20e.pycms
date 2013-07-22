@@ -1,1 +1,2 @@
-""" Migrate from unknown to 1.0.0a """
+""" Migrate to 2.0.0 """
+

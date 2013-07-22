@@ -1,0 +1,14 @@
+<configure 
+    xmlns:meta="http://namespaces.zope.org/meta"
+    xmlns="http://namespaces.zope.org/zope">
+  
+  <meta:directives namespace="http://w20e.com/pycms">
+
+    <meta:directive
+        name="block"
+        schema="w20e.pycms.layout.blocks.metadirectives.IBlockDirective"
+        handler="w20e.pycms.layout.blocks.metadirectives.block"/>
+
+  </meta:directives>
+
+</configure>

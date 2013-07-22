@@ -59,6 +59,7 @@ def generate_id(prefix="", length=KEY_LENGTH):
 
     return prefix + base.hexdigest()[:length]
 
+
 def package_home(globals_dict):
     __name__=globals_dict['__name__']
     m=sys.modules[__name__]

@@ -21,6 +21,9 @@
   <pycms:css cssfile="./static/css/pycms.css" 
              csstarget="manage" />
 
+  <pycms:css cssfile="./static/css/layout.css" 
+             csstarget="manage" />
+
   <!-- All JS needed for admin interface -->
   <pycms:js jsfile="./static/3dparty/bootstrap/js/bootstrap.js" 
             jstarget="manage"/>

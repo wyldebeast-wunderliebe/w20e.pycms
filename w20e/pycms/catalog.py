@@ -17,6 +17,8 @@ def init(event):
     """ Set up catalog for site. """
 
     app = event.app_root
+    something_has_changed = False
+
 
     if event.registry.settings.get("pycms.catalog.force_new", False) \
            or not hasattr(app, "_catalog"):
@@ -24,6 +26,7 @@ def init(event):
         app._catalog.__parent__ = app
         app._catalog.__name__ = "catalog"
         app._p_changed
+        something_has_changed = True
 
     indexes = event.registry.getUtility(IIndexes)
 
@@ -41,6 +44,18 @@ def init(event):
             elif idx[1]['type'] == "path":
                 app._catalog.catalog[idx[0]] = \
                         CatalogPathIndex(idx[1]['field'])
+
+            something_has_changed = True
+
+    if something_has_changed:
+        app._catalog.index_object(app)
+
+        for obj in app.find_content():
+            
+            try:
+                app._catalog.index_object(obj)
+            except:
+                LOGGER.error("Couldn't index object %s" % obj)
 
 
 # event handlers

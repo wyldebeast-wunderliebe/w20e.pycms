@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+     
+<form id="page" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <data>
+    <name/>
+    <text/>
+  </data>
+
+  <model>
+    <properties id="required">
+      <bind>name</bind>
+      <bind>text</bind>
+      <required>True</required>
+    </properties>
+
+  </model>
+
+  <view>
+
+    <input id="name" bind="name">
+      <label>Name</label>
+      <property name="cols">40</property>
+    </input>
+
+    <richtext id="text" bind="text">
+      <label>Text (including images)</label>
+      <property name="rows">12</property>
+      <property name="cols">80</property>      
+    </richtext>
+
+    <group id="submission" layout="flow">
+      <property name="orientation">h</property>
+
+      <submit id="save">
+        <label>Save</label>
+      </submit>
+      
+      <cancel id="cancel">
+        <label>Cancel</label>
+      </cancel>
+    </group>
+
+  </view>
+
+  <submission type="none" />
+
+</form>

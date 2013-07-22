@@ -2,10 +2,11 @@
            xmlns:pycms="http://w20e.com/pycms">
 
   <include file="meta.zcml" />
+  <include package=".blocks" />
 
   <pycms:layout
       name="base_layout"
-      template="w20e.pycms:templates/base_layout.html"
+      template="w20e.pycms:templates/base_layout.pt"
       interface="w20e.pycms.layout.interfaces.IBaseLayout"
       >
 
@@ -15,12 +16,6 @@
         />
 
   </pycms:layout>
-
-  <pycms:block
-      name="text"
-      add_form=""
-      edit_form=""
-      />
 
   <pycms:action
      name="layout"
