@@ -1,5 +1,6 @@
 import inspect
 import os
+from persistent.mapping import PersistentMapping
 from zope.component import getMultiAdapter
 from zope.interface import implements
 from pyramid.view import render_view
@@ -24,22 +25,25 @@ class XMLFormFactory(object):
 
     def createForm(self, action, form_name=None):
 
-        import pdb; pdb.set_trace()
-
         form_path = os.path.join(
             os.path.dirname(inspect.getfile(self.context.__class__)),
             "%s.xml" % (form_name or self.context.type))
 
         xmlff = BaseXMLFormFactory(form_path)
-        return xmlff.create_form(action=action)
+        form = xmlff.create_form(action=action)
+
+        form.data.from_dict(self.context)
+
+        return form
 
 
-class Block(dict):
+class Block(PersistentMapping):
 
     implements(IBlock)
 
     def __init__(self, block_id, **props):
 
+        super(Block, self).__init__()
         self.id = block_id
         self.update(props)
 
