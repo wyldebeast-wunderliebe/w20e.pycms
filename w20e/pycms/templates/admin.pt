@@ -29,6 +29,8 @@
     <script language="JavaScript"
             defer="defer"
             src="${request.application_url}/manage.js"></script>
+    <script language="JavaScript"
+            src="${request.application_url}/static/inline_editing.js"></script>
 
     <metal:define-slot define-slot="extra_js_slot">
     </metal:define-slot>
@@ -40,18 +42,20 @@
 
   <body class="" tal:attributes="class '%s %s' % (body_class, getattr(view, 'body_class', ''))" metal:define-slot="body">
 
+    <!-- About popup -->
     <div id="about" class="alert alert-info hide">
       <a class="close" href="#" onclick="$('#about').hide(); return false">×</a>
       w20e.pycms &copy; Copyright 2011, <a href="http://www.w20e.com/">wyldebeast &amp; wunderliebe</a>.
-      <div tal:content="view.context.root.cms_version">
-      </div>
+      <div tal:content="view.context.root.cms_version">version</div>
     </div>
 
+    <!-- general alert box -->
     <div id="alert" class="alert hide">
       <a class="close" href="#" onclick="$('#alert').hide(); return false">×</a>
       <div id="alert_msg"></div>
     </div>
 
+    <!-- Modal box for delete warning TODO: move this to JS -->
     <div class="modal hide" id="confirm_delete">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">×</button>
@@ -112,7 +116,7 @@
           <li
              tal:attributes="class '%s' % (request.path.endswith(perspective.target.split('/')[-1]) and 'active' or '')"
              >
-            <a href="#" tal:attributes="href perspective.target"
+            <a href="${perspective.target}"
                tal:content="perspective.label"
                >Content</a>
           </li>

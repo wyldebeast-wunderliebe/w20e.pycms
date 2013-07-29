@@ -1,11 +1,13 @@
 .slot {
-    border: 1px solid #c0c0c0;
-    border-radius: 5px;
     padding: 10px;
 }
 
 .slot .controls {
     float: right;
+}
+
+.slot header {
+    margin-bottom: 10px;
 }
 
 .slot .block {

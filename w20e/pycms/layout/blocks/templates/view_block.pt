@@ -1,0 +1,15 @@
+<div class="block ${block.type} ie-object">
+  ${block.id}
+  <span class="controls">
+    <a href="edit_block?block=${block.id}&slot=${slot}"
+       data-toggle="modal"
+       data-target="#pycms-modal"
+       data-objid="${block.id}"
+       class="btn btn-mini edit-inline"
+       ><i class="icon-edit"></i></a>
+    <a href="rm_block?block=${block.id}&slot=${slot}"       
+       class="btn btn-mini btn-danger rm-inline"
+       data-objid="${block.id}"
+       ><i class="icon-trash"></i></a>
+  </span>
+</div>            

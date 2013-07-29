@@ -45,7 +45,7 @@ class LayoutView(object):
 
     def get_blocks(self, slot_id):
 
-        return self.context._blocks.get(slot_id, {}).values()
+        return self.context.get_blocks(slot_id)
 
 
 class PageView(ContentView, LayoutView):

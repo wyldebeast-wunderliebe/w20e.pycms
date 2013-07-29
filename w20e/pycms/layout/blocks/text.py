@@ -1,4 +1,4 @@
-from base import Block, BlockView, BlockEdit
+from base import Block
 
 
 class Text(Block):

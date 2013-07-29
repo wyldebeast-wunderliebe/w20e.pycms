@@ -69,9 +69,13 @@ input.rename_in {
 .w20e-form .help-inline {
   display: none;
 }
+
 .w20e-form .error .help-inline {
   display: block;
   margin-bottom: 0px;
 }
 
+h1 {
+    font-size: 1.3em;
+}
 

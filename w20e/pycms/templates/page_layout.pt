@@ -10,54 +10,72 @@
     
     <div metal:fill-slot="content">
     
-      <h1 class="edit_header">Edit page (using ${view.get_layout().name})</h1>
-      
+      <header>
+        <h1>Edit page (using ${view.get_layout().name})</h1>
+      </header>
+
       <div class="alert alert-error" tal:condition="not view.has_layout">
         Please choose a layout first! This can be done from the actions menu.
       </div>
       
-      <div condition="view.has_layout">
+      <div class="tabbable tabs-left" condition="view.has_layout">
 
-        <div class="slot" tal:repeat="slot view.get_layout().slots">
-          <h3>Slot: ${slot.name}
-          
-            <div class="btn-group controls" tal:condition="slot.blocks">
-              <a class="btn dropdown-toggle" href="#" data-toggle="dropdown">
-                <i class="icon-plus"></i>
-                Add <b class="caret"></b>
-              </a>
-              <ul class="dropdown-menu">
-                <tal:repeat repeat="block slot.blocks">
-                  <li>
-                    <a href="add_block?type=text&slot=${slot.name}"
-                       tal:content="block"
-                       data-target="#pycms-modal"
-                       data-toggle="modal"
-                       >Add something</a>
-                  </li>
-                </tal:repeat>
-              </ul>
-            </div>
-          </h3>
-
-          <tal:repeat repeat="block view.get_blocks(slot.name)">
-            <div class="block ${block.type}">
-              ${block.id}
-              <span class="controls">
-                <a href="edit_block?block=${block.id}&slot=${slot.name}"
-                   data-toggle="modal"
-                   data-target="#pycms-modal"
-                   class="btn btn-mini"
-                   ><i class="icon-edit"></i></a>
-                <a href="edit_block?block=${block.id}&slot=${slot.name}"
-                   data-toggle="modal"
-                   data-target="#pycms-modal"
-                   class="btn btn-mini btn-danger"
-                   ><i class="icon-trash"></i></a>
-              </span>
-            </div>            
+        <ul class="nav nav-tabs" tal:condition="len(view.get_layout().slots) > 1">
+          <tal:repeat repeat="slot view.get_layout().slots">
+            <li
+               tal:attributes="class '%s' % (repeat.slot.start and 'active' or '')">
+              <a href="#${slot.name}"
+                 data-toggle="tab"
+                 >${slot.name}</a>
+            </li>
           </tal:repeat>
-        </div>      
+        </ul>
+
+        <tal:repeat repeat="slot view.get_layout().slots">        
+          <div class="slot tab-content">
+            <header>
+              <div class="btn-group" tal:condition="slot.blocks">
+                <a class="btn dropdown-toggle" href="#" data-toggle="dropdown">
+                  <i class="icon-plus"></i>
+                  Add <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                  <tal:repeat repeat="block slot.blocks">
+                    <li>
+                      <a href="add_block?type=text&slot=${slot.name}"
+                         tal:content="block"
+                         class="add-inline"
+                         data-model="block"
+                         data-target="#pycms-modal"
+                         data-toggle="modal"
+                         >Add something</a>
+                    </li>
+                  </tal:repeat>
+                </ul>
+              </div>
+            </header>
+
+            <div class="ie-container" data-model="block">
+              <tal:repeat repeat="block view.get_blocks(slot.name)">
+                <div class="block ${block.type} ie-object">
+                  ${block.id}
+                  <span class="controls">
+                    <a href="edit_block?block=${block.id}&slot=${slot.name}"
+                       data-toggle="modal"
+                       data-objid="${block.id}"
+                       data-target="#pycms-modal"
+                       class="edit-inline btn btn-mini"
+                       ><i class="icon-edit"></i></a>
+                    <a href="rm_block?block=${block.id}&slot=${slot.name}"
+                       data-objid="${block.id}"
+                       class="rm-inline btn btn-mini btn-danger"
+                       ><i class="icon-trash"></i></a>
+                  </span>
+                </div>            
+              </tal:repeat>
+            </div>
+          </div>      
+        </tal:repeat>
       </div>
 
     </div>

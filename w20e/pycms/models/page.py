@@ -4,6 +4,7 @@ from zope.interface import implements, providedBy, alsoProvides, \
     noLongerProvides
 from folder import Folder
 from interfaces import IPage
+from w20e.pycms.layout.interfaces import ILayout
 
 
 class Page(Folder):
@@ -48,8 +49,17 @@ class Page(Folder):
         if not slot in self._blocks.keys():
             self._blocks[slot] = OrderedDict()
         self._blocks[slot][block_id] = block
-        self._p_changed = True
+        self._blocks._p_changed
+        self._p_changed
 
     def get_block(self, slot_id, block_id):
 
         return self._blocks[slot_id][block_id]
+
+    def rm_block(self, slot_id, block_id):
+        
+        del self._blocks[slot_id][block_id]
+
+    def get_blocks(self, slot_id):
+
+        return self._blocks[slot_id].values()

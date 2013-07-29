@@ -5,14 +5,14 @@
 
   <!-- Base implementation for forms. -->
   <adapter
-      factory=".base.XMLFormFactory" 
+      factory=".views.XMLFormFactory" 
       for="w20e.pycms.layout.blocks.interfaces.IBlock
            pyramid.interfaces.IRequest"
       provides="w20e.forms.interfaces.IFormFactory" />
 
   <view
       context="w20e.pycms.models.interfaces.IPage"
-      view=".base.BlockAdd"
+      view=".views.BlockAdd"
       renderer="templates/add_block.pt"
       name="add_block"
       xhr="True"
@@ -20,9 +20,25 @@
 
   <view
       context="w20e.pycms.models.interfaces.IPage"
-      view=".base.BlockEdit"
+      view=".views.BlockEdit"
       renderer="templates/edit_block.pt"
       name="edit_block"
+      xhr="True"
+    />
+
+  <view
+      context="w20e.pycms.models.interfaces.IPage"
+      view=".views.BlockRemove"
+      renderer="json"
+      name="rm_block"
+      xhr="True"
+    />
+
+  <view
+      context="w20e.pycms.models.interfaces.IPage"
+      view=".views.BlockView"
+      renderer="templates/view_block.pt"
+      name="block"
       xhr="True"
     />
 

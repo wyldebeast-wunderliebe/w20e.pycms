@@ -7,6 +7,26 @@ var pasteBoard;
 var do_edit = false;
 
 
+pycms.TINYCONFIG = {
+  script_url : '/static/3dparty/tinymce-4.0.2/js/tinymce/tinymce.min.js',
+
+  // General options
+  theme : "modern",
+  plugins : "autolink,lists,pagebreak,layer,table,save,hr,image,link,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,template,advlist",
+
+  // Theme options
+  theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,       justifyleft,justifycenter,justifyright,justifyfull,headerselect,|,cut,copy,paste,pastetext,pasteword,bullist,numlist,|,outdent,indent,blockquote,|,nonbreaking,  pagebreak,|,undo,redo",
+  theme_advanced_buttons2 : "link,unlink,anchor,image,cleanup,code,|,     preview,|,forecolor,backcolor,tablecontrols,|,hr,removeformat,|,charmap,media,|,fullscreen",
+  theme_advanced_buttons3 : "",
+  theme_advanced_toolbar_location : "top",
+  theme_advanced_toolbar_align : "left",
+  theme_advanced_statusbar_location : "bottom",
+  theme_advanced_resizing : true,
+  relative_urls : false,
+  file_browser_callback:tinyupload
+};
+
+
 pycms.alert = function(msg, type) {
 
   $("#alert").attr("class", "alert alert-" + type);
@@ -37,51 +57,16 @@ pycms.createDataArray = function(form) {
 }
 
 
-pycms.initForm = function() {
+/**
+ * Initialize widgets, i.e. TinyMCE and the likes
+ */
+pycms.init_widgets = function(tgt) {
 
-  $('#form_target textarea.wysiwyg').tinymce({
-        script_url : '/static/js/tiny_mce/tiny_mce.js',
-
-        // General options
-        theme : "advanced",
-        plugins : "autolink,lists,pagebreak,layer,table,save,advhr,       advimage,advlink,inlinepopups,insertdatetime,preview,media,searchreplace,print, contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,advlist",
-
-        // Theme options
-        theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,       justifyleft,justifycenter,justifyright,justifyfull,headerselect,|,cut,copy,paste,pastetext,pasteword,bullist,numlist,|,outdent,indent,blockquote,|,nonbreaking,  pagebreak,|,undo,redo",
-        theme_advanced_buttons2 : "link,unlink,anchor,image,cleanup,code,|,     preview,|,forecolor,backcolor,tablecontrols,|,hr,removeformat,|,charmap,media,|,fullscreen",
-        theme_advanced_buttons3 : "",
-        theme_advanced_toolbar_location : "top",
-        theme_advanced_toolbar_align : "left",
-        theme_advanced_statusbar_location : "bottom",
-        theme_advanced_resizing : true,
-        relative_urls : false,
-        file_browser_callback:tinyupload
-  });
-
-  $("#form_target input[name=cancel]").click(function(e) {
-
-      $("#form_target").html("");
-      $("#mask").hide('slow');
-      $("#form_target").hide('slow');
-    });
-
-  $("#form_target form").submit(function() {
-
-      var data = pycms.createDataArray($("#form_target form"));
-      data = $.extend({}, pycms.getConfig($("#" + data['id'])), data);
-
-      var bubbleUp = false;
-
-      try {
-        bubbleUp = pycms.saveBlock(data);
-      } catch (e) {
-      }
-
-      $("#form_target").hide('slow');
-      $("#mask").hide('slow');
-
-      return bubbleUp;
-    });
+  if (tgt) {
+    tgt.find('textarea.wysiwyg').tinymce(pycms.TINYCONFIG);
+  } else {
+    $('textarea.wysiwyg').tinymce(pycms.TINYCONFIG);
+  }
 }
 
 
@@ -100,30 +85,12 @@ pycms.showMessage = function(msg, title) {
 };
 
 
+/**
+ * Show 'about' popup
+ */
 pycms.about = function() {
   $("#about").show();
 };
-
-/**
- * Bind event handlers to events.
- */
-pycms.addEvents = function() {
-
-  $(".block").click(function(e) {
-
-      $(".selected").toggleClass("selected");
-      $(this).toggleClass("selected");
-
-      if ($(this).hasClass("selected")) {
-          currBlock = $(this);
-        }
-      //e.stopPropagation();
-    });
-
-  // resize and drag 'n drop...
-  //$(".block").resizable({grid: [5, 5], stop: pycms.resized}).draggable({
-  //    'grid': [10, 10], 'stop': pycms.dropped});
-}
 
 
 /**
@@ -185,6 +152,7 @@ pycms.clearCutBuffer = function() {
   pycms.alert("Paste buffer cleared", "info");
 }
 
+
 /**
  * Copy item.
  */
@@ -223,6 +191,7 @@ pycms.paste = function() {
             "error": function(data) {pycms.alert(data, "error")}
       });
 };
+
 
 pycms.rename = function() {
     $("#rename").show();
@@ -269,6 +238,7 @@ pycms.enableDateTimePicker = function($element) {
     $element.find('input').datetimepicker(extra_options);
 }
 
+
 /**
  * Set the focus to first active empty input field, with class autofocus
  */
@@ -293,8 +263,6 @@ $(document).ready(function() {
 
     currGroup = $("#content");
 
-    pycms.addEvents();
-
     $(document).on("click", ".jsaction", function(e) {
 
         var link = $(e.currentTarget);
@@ -307,23 +275,7 @@ $(document).ready(function() {
         e.preventDefault();
       });
 
-    $('textarea.wysiwyg').tinymce({
-        script_url : '/static/tinymce/jscripts/tiny_mce/tiny_mce.js',
-
-          // General options
-          theme : "advanced",
-          plugins : "autolink,lists,pagebreak,style,layer,table,save,advhr,       advimage,advlink,inlinepopups,insertdatetime,preview,media,searchreplace,print, contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,advlist",
-
-          // Theme options
-          theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,       justifyleft,justifycenter,justifyright,justifyfull,formatselect,|,cut,copy,paste,pastetext,pasteword,bullist,numlist,|,outdent,indent,blockquote,|,nonbreaking,  pagebreak,|,undo,redo",
-          theme_advanced_buttons2 : "link,unlink,anchor,image,cleanup,code,|,     preview,|,forecolor,backcolor,tablecontrols,|,hr,removeformat,|,charmap,media,|,fullscreen",
-          theme_advanced_buttons3 : "",
-          theme_advanced_toolbar_location : "top",
-          theme_advanced_toolbar_align : "left",
-          theme_advanced_statusbar_location : "bottom",
-          relative_urls : false,
-          file_browser_callback:tinyupload
-          });
+    $('textarea.wysiwyg').tinymce(pycms.TINYCONFIG);
 
     $(".lscut").click(function() {
 
@@ -407,11 +359,15 @@ $(document).ready(function() {
       pycms.enableDateTimePicker($(this));
     });
 
-    // enable bootstrap navigation (tabs). not sure if this should be done here
-    $(".nav.nav-tabs.cards a").click(function (e) {
-      e.preventDefault();
-      $(this).tab('show');
-    });
-
     pycms.setAutofocus();
+
+    $("#pycms-modal").on("shown", function() {
+        pycms.init_widgets($("#pycms-modal"));
+      });
+
+    $("#pycms-modal").on("hide", function() {
+        $(this).removeData('modal');
+        $(this).find(".modal-body").html("");
+      });
+
 });
