@@ -1,0 +1,33 @@
+i18n
+====
+
+Internationalisation is not trivial when using Pyramid. Well, it is,
+but it finding out what to do isn't. Here it is then: you'll need to
+install setuptools extras for doing gettext thingies:
+
+  easy_install Babel lingua
+
+Now you should have some extra commands when running
+  
+  python setup.py --help-commands
+
+Create a base pot file in <egg>/locale/<app name>.pot
+
+<app name> should be the name of your egg.
+
+Extract messages from your files (based on settings in setup.py):
+
+  python setup.py extract_messages
+
+Settings can be done through an entry like:
+
+  message_extractors = { '.': [
+    ('**.pt', 'lingua_xml', None),
+    ]},
+
+Ok, create a locale, based on your pot file:
+
+  python setup.py init_catalog --locale nl
+
+Use in templates as per directions on the Chameleon site. Make sure
+your domain is correct, e.g. the name of your egg.
