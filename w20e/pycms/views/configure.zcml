@@ -34,8 +34,19 @@
      context="w20e.pycms.interfaces.ITemporaryObject"
      view=".base.FactoryView"
      renderer="w20e.pycms:templates/add_content.pt"
-     name="factory"
+     name="edit"
      permission="edit"
+     xhr="False"
+     />
+
+  <view
+     context="w20e.pycms.interfaces.ITemporaryObject"
+     view=".base.FactoryView"
+     name="edit"
+     attr="ajax_submit_and_validate"
+     renderer="xml"
+     permission="edit"
+     xhr="True"
      />
 
   <!-- generic page properties view -->
@@ -75,10 +86,11 @@
  <view
      context="w20e.hitman.models.base.IContent"
      view=".base.EditView"
-     name="validate"
+     name="edit"
      xhr="True"
-     attr="ajax_validate"
-     renderer="ajax"
+     attr="ajax_submit_and_validate"
+     renderer="xml"
+     permission="edit"
      />
 
   <view
@@ -139,6 +151,14 @@
   <view
      context="..models.file.File"
      view=".file.FileView"
+     />
+
+  <route
+     name="download_file"
+     pattern="{form_id}/{file_id}/download_file"
+     view=".file.FileView"
+     view_attr="download_file"
+     permission="edit"
      />
 
   <!-- forms -->
@@ -286,7 +306,7 @@
      xhr="True"
      />
 
-  <view 
+  <view
     context="w20e.pycms.interfaces.ISite"
     view=".site.SiteView"
     attr="user_groups"

@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xml:lang="en"
       xmlns:tal="http://xml.zope.org/namespaces/tal"
-      tal:define="body_class string:admin"
+      tal:define="body_class body_class | string:admin"
       >
 
   <head>
@@ -66,7 +66,7 @@
       </div>
     </div>
 
-    <div class="container">
+    <div class="container-fluid">
 
       <!-- BEGIN: navbar -->
       <div class="navbar navbar-inverse">
@@ -92,7 +92,7 @@
       <!-- END: navbar -->
 
       <!-- BEGIN: breadcrumb -->
-      <ul class="breadcrumb">
+      <ul metal:define-slot="trail" class="breadcrumb">
         <tal:repeat repeat="crumb view.breadcrumbs">
           <li>
             <a href="${view.object_url(crumb)}admin">${crumb.title}</a>
@@ -133,9 +133,9 @@
       </metal:define>
       <!-- END content_toolbar -->
 
-      <div id="main" class="container" metal:define-slot="main">
+      <div id="main" class="row-fluid" metal:define-slot="main">
 
-        <div id="wrapper" class="sixteen columns">
+        <div id="wrapper" class="span12">
 
           <div id="content" metal:define-slot="content"/>
 

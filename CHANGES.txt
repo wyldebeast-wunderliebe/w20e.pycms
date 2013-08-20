@@ -1,3 +1,10 @@
+1.1.3a
+------
+* json representation of datetime.date
+* use ajax validation for forms with class "ajax-validate"
+* fixup bootstrap markup
+* file widget now has a download link
+
 1.1.2a
 ------
 * json representation of pycms content types

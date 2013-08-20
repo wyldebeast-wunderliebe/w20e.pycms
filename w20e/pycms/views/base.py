@@ -14,6 +14,7 @@ from w20e.hitman.utils import path_to_object
 from pyramid.renderers import get_renderer, render
 from pyramid.httpexceptions import HTTPFound
 from pyramid.interfaces import IView, IViewClassifier
+from pyramid.response import Response
 from pyramid.security import authenticated_userid
 from w20e.pycms.utils import has_permission
 from pyramid.url import resource_url
@@ -27,6 +28,7 @@ from ..ctypes import ICTypes
 from ..macros import IMacros
 
 from w20e.forms.pyramid.formview import formview as pyramidformview
+from xml.dom.minidom import Document
 
 
 class ViewMixin(object):
@@ -108,8 +110,8 @@ class ViewMixin(object):
         actions = reg.getUtility(IActions)
 
         return [action for action in actions.get_actions("perspective",
-            ctype=self.context.content_type) if (not action.permission) or
-            has_permission(action.permission, self.context, self.request)]
+                ctype=self.context.content_type) if (not action.permission) or
+                has_permission(action.permission, self.context, self.request)]
 
     @property
     def siteactions(self):
@@ -133,8 +135,8 @@ class ViewMixin(object):
         actions = reg.getUtility(IActions)
 
         return [action for action in actions.get_actions("content",
-            ctype=self.context.content_type) if (not action.permission) or
-            has_permission(action.permission, self.context, self.request)]
+                ctype=self.context.content_type) if (not action.permission) or
+                has_permission(action.permission, self.context, self.request)]
 
     @property
     def icon(self):
@@ -188,7 +190,7 @@ class ViewMixin(object):
         provides = [IViewClassifier] + map_(providedBy,
                                             (self.request, self.context))
         view = self.request.registry.adapters.lookup(
-                provides, IView, name=name)
+            provides, IView, name=name)
 
         self.request.update({'kwargs': kwargs})
 
@@ -230,6 +232,7 @@ class ContentView(Base, ViewMixin):
 
         return self.context
 
+
 class AddView(BaseView):
 
     """ create temporary content """
@@ -256,8 +259,8 @@ class AddView(BaseView):
 
         self.request.registry.notify(TemporaryObjectCreated(content))
 
-        return HTTPFound(location='%sfactory' %
-                self.request.resource_url(content))
+        return HTTPFound(location='%sedit' %
+                         self.request.resource_url(content))
 
 
 class FactoryView(BaseView, pyramidformview, ViewMixin):
@@ -272,15 +275,15 @@ class FactoryView(BaseView, pyramidformview, ViewMixin):
         self.context = context
 
         assert ITemporaryObject.providedBy(context), \
-                "This object is not in a temporary state"
+            "This object is not in a temporary state"
 
         self.form = self.context.__form__(request)
         pyramidformview.__init__(self, self.context, request, self.form,
-                retrieve_data=True)
+                                 retrieve_data=True)
 
-    @property
-    def url(self):
-        return "%sadmin" % self.base_url
+    #@property
+    #def url(self):
+    #    return "%s" % self.base_url
 
     @property
     def content_type(self):
@@ -315,7 +318,8 @@ class FactoryView(BaseView, pyramidformview, ViewMixin):
 
         params = self.request.params
 
-        submissions = set(["submit", "save", "w20e.forms.next"])
+        submissions = set(["submit", "save", "w20e.forms.next",
+                           "w20e.forms.process"])
 
         if submissions.intersection(params.keys()):
             status, errors = self.form.view.handle_form(self.form,
@@ -332,38 +336,80 @@ class FactoryView(BaseView, pyramidformview, ViewMixin):
         self.form.submission.submit(self.form, self.context, self.request)
 
         if status == "completed":
-
             status = 'stored'
-
             parent = self.context.__parent__
-
             content_id = parent.generate_content_id(self.context.base_id)
-
             noLongerProvides(self.context, ITemporaryObject)
-
             self.request.registry.notify(
-
-                    TemporaryObjectFinalized(self.context))
-
+                TemporaryObjectFinalized(self.context))
             parent.rename_content(self.context.id, content_id)
-
             self.request.registry.notify(ContentAdded(self.context, parent))
-
             return HTTPFound(location=self.after_add_redirect)
 
-        res = {'status': status, 'errors': errors}
+        render_kwargs = {}
+
+        render_args = {
+            "form_class": "inline",
+            "action": "{0}edit".format(self.base_url), }
+        render_kwargs.update(render_args)
+
+        rendered = self.form.view.render(
+            self.form, errors=errors,
+            status=status, data=self.request.params, context=self.context,
+            **render_kwargs)
+        rendered = rendered.decode('utf-8')
+        res = {'status': status, 'errors': errors, 'rendered': rendered}
+
         self.add_macros(res)
 
         return res
+
+    def ajax_submit_and_validate(self):
+
+        redirect = None
+
+        if "cancel" in self.request.params:
+            redirect = self.cancel_add_redirect
+        else:
+            status, errors = self.form.view.handle_form(
+                self.form, self.request.params)
+            self.form.submission.submit(self.form, self.context, self.request)
+
+            if status == "completed":
+                # finalize the temporary object
+                parent = self.context.__parent__
+                content_id = parent.generate_content_id(self.context.base_id)
+                noLongerProvides(self.context, ITemporaryObject)
+                self.request.registry.notify(
+                    TemporaryObjectFinalized(self.context))
+                parent.rename_content(self.context.id, content_id)
+                self.request.registry.notify(
+                    ContentAdded(self.context, parent))
+                redirect = self.after_add_redirect
+
+        if redirect:
+            doc = Document()
+            root = doc.createElement("validation")
+            doc.appendChild(root)
+            command = doc.createElement("command")
+            command.setAttribute("selector", "")
+            command.setAttribute("name", 'redirect')
+            command.setAttribute("value", "%s" % redirect)
+            root.appendChild(command)
+            results = doc.toprettyxml(indent="  ").encode('utf-8')
+        else:
+            results = pyramidformview.ajax_validate(self, "xml")
+
+        return results
 
 
 class EditView(EditBase, ViewMixin):
 
     is_edit = True
 
-    @property
-    def url(self):
-        return "%sedit" % super(EditBase, self).url
+    #@property
+    #def url(self):
+    #    return "%sedit" % super(EditBase, self).url
 
     @property
     def after_edit_redirect(self):
@@ -384,6 +430,15 @@ class EditView(EditBase, ViewMixin):
         self.add_macros(res)
 
         return res
+
+    def ajax_submit_and_validate(self):
+
+        status, errors = self.form.view.handle_form(
+            self.form, self.request.params)
+
+        self.form.submission.submit(self.form, self.context, self.request)
+        results = pyramidformview.ajax_validate(self, "xml")
+        return results
 
 
 class DelView(DelBase, ViewMixin):

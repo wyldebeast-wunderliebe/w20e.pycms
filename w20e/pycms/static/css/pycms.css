@@ -74,4 +74,8 @@ input.rename_in {
   margin-bottom: 0px;
 }
 
+.w20e-form .nav-tabs a.error {
+  color: red;
+}
+
 

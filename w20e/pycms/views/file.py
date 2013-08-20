@@ -2,6 +2,7 @@ from base import AdminView
 from pyramid.response import FileResponse, Response
 from w20e.forms.submission.blob import TheBlob
 import mimetypes
+from ZODB.blob import Blob as Blob
 
 
 class FileView(object):
@@ -38,7 +39,7 @@ class FileView(object):
             etag = blob._blob._p_mtime
 
             response = FileResponse(opened_file.name, self.request,
-                    content_type=mimeType)
+                                    content_type=mimeType)
 
         elif isinstance(blob, Blob):
 
@@ -49,7 +50,7 @@ class FileView(object):
             etag = blob._p_mtime
 
             response = FileResponse(opened_file.name, self.request,
-                    content_type=mimeType)
+                                    content_type=mimeType)
 
         else:
             raise "Not a valid file type"
@@ -60,7 +61,7 @@ class FileView(object):
         response.cache_expires = (3600 * 24 * 7)
 
         response.content_disposition = \
-                'attachment; filename="{0}"'.format(value['name'])
+            'attachment; filename="{0}"'.format(value['name'])
 
         return response
 
@@ -69,6 +70,20 @@ class FileView(object):
         # caching headers should not be set here hardcoded,
         # but it'll have to do for now..
         return self._return_file_response(self.context.__data__['data'])
+
+    def download_file(self):
+        """ This assumes the file is stored as an attribute on the context """
+
+        assert 'file_id' in self.request.matchdict, "something's rotten"
+        assert 'form_id' in self.request.matchdict, "something's rotten"
+        file_id = self.request.matchdict['file_id']
+        form_id = self.request.matchdict['form_id']
+        # check of the default form is what we expect it to be..
+        # TODO: have some sort of default loading other forms on a context
+        if self.context.__form__(self.request).id != form_id:
+            raise Exception("Only downloads from default form is supported "
+                            "at this moment.")
+        return self._return_file_response(self.context.__data__[file_id])
 
 
 class FileAdminView(AdminView):
