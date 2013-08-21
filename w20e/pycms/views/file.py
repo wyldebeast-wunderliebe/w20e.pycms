@@ -74,16 +74,16 @@ class FileView(object):
     def download_file(self):
         """ This assumes the file is stored as an attribute on the context """
 
-        assert 'file_id' in self.request.matchdict, "something's rotten"
-        assert 'form_id' in self.request.matchdict, "something's rotten"
-        file_id = self.request.matchdict['file_id']
-        form_id = self.request.matchdict['form_id']
+        assert 'file_field' in self.request.params, "something's rotten"
+        assert 'form_id' in self.request.params, "something's rotten"
+        file_field = self.request.params['file_field']
+        form_id = self.request.params['form_id']
         # check of the default form is what we expect it to be..
         # TODO: have some sort of default loading other forms on a context
         if self.context.__form__(self.request).id != form_id:
             raise Exception("Only downloads from default form is supported "
                             "at this moment.")
-        return self._return_file_response(self.context.__data__[file_id])
+        return self._return_file_response(self.context.__data__[file_field])
 
 
 class FileAdminView(AdminView):

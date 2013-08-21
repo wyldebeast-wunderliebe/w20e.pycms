@@ -3,7 +3,7 @@
   <metal:fill-slot fill-slot="input">
 
     <tal:condition condition="fmtmap['value']">
-    <a href="${form_id or '_'}/${control.id}/download_file">${fmtmap['value']}</a>
+    <a href="download_file?form_id=${form_id or '_'}&file_field=${control.id}">${fmtmap['value']}</a>
     <br/>
       <input name="${control.id}" type="hidden" value="1"/>
       <input id="file-${control.id}" type="file" name="${control.id}-new"/>

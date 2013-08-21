@@ -153,11 +153,11 @@
      view=".file.FileView"
      />
 
-  <route
+  <view
      name="download_file"
-     pattern="{form_id}/{file_id}/download_file"
+     request_param="file_field"
      view=".file.FileView"
-     view_attr="download_file"
+     attr="download_file"
      permission="edit"
      />
 
