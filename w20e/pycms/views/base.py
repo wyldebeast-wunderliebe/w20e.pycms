@@ -16,7 +16,7 @@ from pyramid.security import authenticated_userid
 from w20e.pycms.utils import has_permission
 from pyramid.url import resource_url
 from pyramid.compat import map_
-from w20e.pycms.nature import INatures
+from w20e.pycms.nature.interfaces import INatures
 from w20e.pycms.interfaces import IAdmin, ITemporaryObject
 from w20e.pycms.events import TemporaryObjectCreated, TemporaryObjectFinalized
 from w20e.pycms.actions import IActions

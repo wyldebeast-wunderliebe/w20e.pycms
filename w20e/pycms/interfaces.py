@@ -30,10 +30,6 @@ class IMailer(Interface):
 
     """ Marker class """
 
-class INature(Interface):
-
-    """ Any content may have a 'nature', like 'news' or 'event'."""
-
 class IAdmin(Interface):
 
     """ provide helper methods for admin interface """

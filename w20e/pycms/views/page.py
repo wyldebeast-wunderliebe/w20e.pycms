@@ -14,12 +14,9 @@ class LayoutView(object):
     """ Provide layout methods """
 
     @property
-    def has_layout(self, layout=None):
+    def has_layout(self):
 
-        if not layout:
-            return self.get_layout() is not None
-        else:
-            return self.get_layout() == layout
+        return self.get_layout() is not None
 
     @property
     def _default_layout(self):

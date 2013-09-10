@@ -13,7 +13,8 @@ from w20e.pycms.security import ISecure
 from w20e.pycms.ctypes import ICTypes
 from w20e.forms.interfaces import IFormFactory, IFormModifier
 from w20e.forms.xml.factory import XMLFormFactory as BaseXMLFormFactory
-from w20e.pycms.interfaces import INature, ITemporaryObject
+from w20e.pycms.interfaces import ITemporaryObject
+from w20e.pycms.nature.interfaces import INature
 from w20e.pycms.models.interfaces import IPyCMSMixin
 from w20e.pycms.catalog import ObjectSummary
 

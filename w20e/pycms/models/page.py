@@ -32,8 +32,6 @@ class Page(Folder):
 
     def has_layout(self, layout):
 
-        import pdb; pdb.set_trace()
-        
         return layout.interface in providedBy(self)
 
     def set_layout(self, layout):
@@ -44,7 +42,7 @@ class Page(Folder):
 
             noLongerProvides(self, i)
 
-        alsoProvides(self, layout)
+        alsoProvides(self, layout.interface)
 
     def save_block(self, slot, block_id, block):
 

@@ -25,11 +25,6 @@
         handler=".metadirectives.ctype" />
 
     <meta:directive 
-        name="nature" 
-        schema=".metadirectives.INatureDirective"
-        handler=".metadirectives.nature" />
-
-    <meta:directive 
         name="macro" 
         schema=".metadirectives.IMacroDirective"
         handler=".metadirectives.macro" />

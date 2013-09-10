@@ -11,12 +11,33 @@
      target="#"
      category="content"
      permission="admin"
-     template="w20e.pycms:templates/action_nature.pt"
+     template="w20e.pycms:nature/templates/action.pt"
      />
 
   <subscriber
       for="pyramid.events.BeforeRender"
-      handler=".nature.add_natures"
+      handler=".registry.add_natures"
     />
+
+  <!-- Nature editing through Ajax -->
+  <view
+     context="w20e.hitman.models.base.IContent"
+     view=".views.NatureView"
+     renderer="json"
+     xhr="True"
+     attr="add_nature"
+     name="ajax_add_nature"
+     permission="edit"
+     />
+
+  <view
+     context="w20e.hitman.models.base.IContent"
+     view=".views.NatureView"
+     renderer="json"
+     xhr="True"
+     attr="remove_nature"
+     name="ajax_remove_nature"
+     permission="edit"
+     />
 
 </configure>

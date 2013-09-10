@@ -349,27 +349,6 @@
      permission="edit"
      />
 
-  <!-- Nature editing through Ajax -->
-  <view
-     context="w20e.hitman.models.base.IContent"
-     view=".nature.NatureView"
-     renderer="json"
-     xhr="True"
-     attr="add_nature"
-     name="ajax_add_nature"
-     permission="edit"
-     />
-
-  <view
-     context="w20e.hitman.models.base.IContent"
-     view=".nature.NatureView"
-     renderer="json"
-     xhr="True"
-     attr="remove_nature"
-     name="ajax_remove_nature"
-     permission="edit"
-     />
-
   <!-- CSS and JS resources -->
   <route
      name="css"

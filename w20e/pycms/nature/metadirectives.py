@@ -13,12 +13,7 @@ class INatureDirective(Interface):
         description=u"Unique name",
         required=True)
 
-    i18n_msgid = TextLine(
-        title=u"i18n_msgid",
-        description=u"i18n translation id",
-        required=False)
-
-    interface = TextLine(
+    interface = GlobalObject(
         title=u"Interface",
         description=u"Marker interface for this nature. FULL path required",
         required=True)
@@ -28,10 +23,16 @@ class INatureDirective(Interface):
         required=False
         )
 
-def nature(_context, name, **kwargs):
 
-    reg = _context.context.registry
-    nature_registry = reg.getUtility(INatures)
+class nature(object):
 
-    nature_registry.register_nature(name, **kwargs)
+    def __init__(self, context, name, interface, for_):
 
+        self.name = name
+        self.interface = interface
+        self.for_ = for_
+
+        reg = context.context.registry
+        nature_registry = reg.getUtility(INatures)
+
+        nature_registry.register_nature(name, self)

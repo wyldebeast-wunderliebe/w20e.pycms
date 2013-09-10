@@ -1,4 +1,5 @@
 from zope.interface import Interface, providedBy
+from interfaces import INatures
 
 
 def add_natures(event):
@@ -29,29 +30,9 @@ class Natures(object):
 
         self.registry = {}
 
-    def register_nature(self, name, **kwargs):
+    def register_nature(self, name, nature):
 
-        """ TODO: add i18n_msgid """
-
-        clazz = kwargs['interface']
-        path, clazz = ".".join(clazz.split(".")[:-1]), clazz.split(".")[-1]
-
-        exec("from %s import %s" % (path, clazz))
-
-        kwargs['interface'] = eval(clazz)
-        kwargs['name'] = name
-
-        if kwargs.get("_for", None):
-
-            clazz = kwargs['_for']
-
-            path, clazz = ".".join(clazz.split(".")[:-1]), clazz.split(".")[-1]
-
-            exec("from %s import %s" % (path, clazz))
-
-            kwargs['_for'] = eval(clazz)
-
-        self.registry[name] = kwargs
+        self.registry[name] = nature
 
     def get_nature(self, nature_name):
 

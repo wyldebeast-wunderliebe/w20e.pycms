@@ -20,7 +20,7 @@ class LayoutView(object):
         layout = layouts.get_layout(layout_id)
 
         if layout:
-            self.context.set_layout(layout.interface)
+            self.context.set_layout(layout)
             self.request.registry.notify(ContentChanged(self.context))
 
         return {"msg": "Layout has been set to %s" % layout_id, 
