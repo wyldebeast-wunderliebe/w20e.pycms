@@ -30,9 +30,9 @@ class Natures(object):
 
         self.registry = {}
 
-    def register_nature(self, name, nature):
+    def register_nature(self, **kwargs):
 
-        self.registry[name] = nature
+        self.registry[kwargs['name']] = kwargs
 
     def get_nature(self, nature_name):
 

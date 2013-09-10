@@ -7,7 +7,7 @@
     <meta:directive 
         name="nature" 
         schema=".metadirectives.INatureDirective"
-        handler=".metadirectives.nature" />
+        handler=".metadirectives.handle_nature" />
 
   </meta:directives>
 

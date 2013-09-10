@@ -24,15 +24,11 @@ class INatureDirective(Interface):
         )
 
 
-class nature(object):
+def handle_nature(context, **kwargs):
 
-    def __init__(self, context, name, interface, for_):
+    reg = context.context.registry
+    nature_registry = reg.getUtility(INatures)
 
-        self.name = name
-        self.interface = interface
-        self.for_ = for_
+    nature_registry.register_nature(**kwargs)
+    
 
-        reg = context.context.registry
-        nature_registry = reg.getUtility(INatures)
-
-        nature_registry.register_nature(name, self)

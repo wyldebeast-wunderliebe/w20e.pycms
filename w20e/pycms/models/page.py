@@ -43,14 +43,15 @@ class Page(Folder):
             noLongerProvides(self, i)
 
         alsoProvides(self, layout.interface)
+        self._p_changed = 1
 
     def save_block(self, slot, block_id, block):
 
         if not slot in self._blocks.keys():
             self._blocks[slot] = OrderedDict()
         self._blocks[slot][block_id] = block
-        self._blocks._p_changed
-        self._p_changed
+
+        self._p_changed = 1
 
     def get_block(self, slot_id, block_id):
 
