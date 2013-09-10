@@ -31,6 +31,8 @@ class Page(Folder):
         return self.__data__['name']
 
     def has_layout(self, layout):
+
+        import pdb; pdb.set_trace()
         
         return layout.interface in providedBy(self)
 

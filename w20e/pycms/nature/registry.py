@@ -3,7 +3,7 @@ from zope.interface import Interface, providedBy
 
 def add_natures(event):
 
-    if event['renderer_name'].endswith("action_nature.pt"):
+    if event['renderer_name'].endswith("nature/templates/action.pt"):
 
         natures = event['request'].registry.getUtility(INatures)
 
@@ -19,11 +19,6 @@ def add_natures(event):
                 valid_natures.append(nature)
 
         event['natures'] = valid_natures
-
-
-class INatures(Interface):
-
-    """ Marker class """
 
 
 class Natures(object):

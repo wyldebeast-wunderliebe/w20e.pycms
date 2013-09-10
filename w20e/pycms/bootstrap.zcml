@@ -18,8 +18,8 @@
      />
 
   <utility
-     provides=".nature.INatures"
-     factory=".nature.Natures"
+     provides=".nature.interfaces.INatures"
+     factory=".nature.registry.Natures"
      />
 
   <utility

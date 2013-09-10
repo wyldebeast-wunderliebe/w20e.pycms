@@ -4,6 +4,8 @@ from w20e.hitman.events import ContentChanged
 
 class LayoutView(object):
 
+    """ View that provides the layout change/set action"""
+
     def __init__(self, context, request):
 
         self.context = context

@@ -1,0 +1,14 @@
+<configure 
+    xmlns:meta="http://namespaces.zope.org/meta"
+    xmlns="http://namespaces.zope.org/zope">
+
+  <meta:directives namespace="http://w20e.com/pycms">
+
+    <meta:directive 
+        name="nature" 
+        schema=".metadirectives.INatureDirective"
+        handler=".metadirectives.nature" />
+
+  </meta:directives>
+
+</configure>

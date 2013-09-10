@@ -1,6 +1,36 @@
-The PyCMS layout system works with predefined layouts, that are a combination
-of slots and a template where these slots are shown. Slots can be filled with
-blocks, i.e. text blocks, images, etc.
-A layout can be set from the action bar. Only one layout can be set. Picking a
-new layout will discard the existing one. Data however will persist, so you
-can share slots between layouts.
+PyCMS layout
+============
+
+PyCMS page rendering (or: what you get to see when you visit a page)
+is base on predefined page layouts. A layout defines one or more
+(well, actually zero or more...) slots, that are used to render pieces
+of content, like images, text, etc. Those pieces are called
+'blocks'. What you do is:
+
+ * define a page layout using ZCML (what else..?) by a unique name,
+   a template and an interface, and the slots:
+
+    <pycms:layout
+        name="base_layout"
+        template="w20e.pycms:templates/base_layout.pt"
+        interface="w20e.pycms.layout.interfaces.IBaseLayout"
+        >
+
+      <pycms:slot
+          name="main"
+          blocks="text"
+          />
+
+    </pycms:layout>
+
+ * Create the template for this layout. This template should call the slots
+   for this page like so:
+  
+     <tal:repeat repeat="block view.get_blocks('main')">
+       <tal:replace replace="structure block.render()" />
+      </tal:repeat>
+
+In edit mode, a layout can be set using the 'layout' action. Only one
+layout can be set. Picking a new layout will discard the existing
+one. Data however will persist, so you can share slots between
+layouts, or go back to the previous layout.
