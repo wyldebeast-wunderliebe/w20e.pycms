@@ -407,9 +407,9 @@ class EditView(EditBase, ViewMixin):
 
     is_edit = True
 
-    #@property
-    #def url(self):
-    #    return "%sedit" % super(EditBase, self).url
+    @property
+    def url(self):
+        return "%sedit" % super(EditBase, self).url
 
     @property
     def after_edit_redirect(self):
