@@ -1,15 +1,29 @@
-How to add new blocks
-=====================
+Blocks
+======
 
-* create block class, extending Block
-* create block view, exending BlockView
-* create template
-* create add_form/edit_form in block py
-  - make sure to add hidden field that holds type id
-* add to configure.zcml in .blocks
-* add to parser registry
-* add it to the page actions
-  (this should really get the data from the registry)
+The layout system of w20e.pycms uses blocks to fill slots on a
+page. The blocks comprise the actual content. A slot is filled simply
+from the blocks defined for in on the edit page, in the order in which
+they were added. The blocks system is supposed to be extendable, like
+anything in w20e.pycms. 
 
-Yeahyeah, that's a lot of steps... but it really takes only minutes,
-once you know the drill.
+
+How to add new block types
+--------------------------
+
+* create a block class, extending w20e.pycms.layout.blocks.base.Block
+  or at least implementing w20e.pycms.layout.blocks.interfaces.IBlock.
+  The render method should be implemented and return the rendered
+  html representation of the block.
+* Add the configuration to your zcml, like so:
+  
+  <pycms:block
+      name="text"
+      factory="w20e.pycms.layout.blocks.text.Text"
+      />
+
+  where the 'name' attribute is a unique name for your type, and the factory
+  is the producer of your block class.
+
+* Create an XML form according to w20e.forms, that holds the edit/add form
+  for your block. This should be named like <block type id>.xml

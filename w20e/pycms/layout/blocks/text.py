@@ -5,6 +5,6 @@ class Text(Block):
 
     """ Text block """
 
-    def render(self):
+    def render(self, request):
 
         return self['text']

@@ -31,13 +31,16 @@
           </tal:repeat>
         </ul>
 
+        <div class="tab-content">
         <tal:repeat repeat="slot view.get_layout().slots">        
-          <div class="slot tab-content">
+          <div
+               tal:attributes="class 'slot tab-pane %s' % (repeat.slot.start and 'active' or '')"
+               id="${slot.name}">
             <header>
               <div class="btn-group" tal:condition="slot.blocks">
                 <a class="btn dropdown-toggle" href="#" data-toggle="dropdown">
                   <i class="icon-plus"></i>
-                  Add <b class="caret"></b>
+                  Add block <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
                   <tal:repeat repeat="block slot.blocks">
@@ -76,6 +79,7 @@
             </div>
           </div>      
         </tal:repeat>
+        </div>
       </div>
 
     </div>

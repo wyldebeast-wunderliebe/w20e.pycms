@@ -6,9 +6,7 @@
       <metal:content fill-slot="content">
       
         <div id="content">
-          <tal:repeat repeat="block view.get_blocks('main')">
-            <tal:replace replace="structure block.render()" />
-          </tal:repeat>
+          <tal:replace replace="structure view.render_slot('main')">
         </div>
       
       </metal:content>

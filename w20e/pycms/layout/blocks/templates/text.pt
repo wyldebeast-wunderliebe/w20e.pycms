@@ -1,7 +1,0 @@
-<div class="block text"
-     id=
-     
-  <span tal:replace="structure view.text"/>
-  <dl tal:condition="view.request.is_edit" 
-      tal:replace="structure view.config"></dl>
-</div>

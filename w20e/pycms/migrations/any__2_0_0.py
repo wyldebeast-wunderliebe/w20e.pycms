@@ -1,5 +1,5 @@
 from persistent.mapping import PersistentMapping
-from repoze.catalog.query import Eq
+from repoze.catalog.query import Eq, Or
 from w20e.pycms.layout.blocks.text import Text
 
 
@@ -9,7 +9,7 @@ def migrate(app):
 
     cat = app._catalog
     
-    res = cat.query(Eq('ctype', "page"))
+    res = cat.query(Or(Eq('ctype', "page"), Eq('ctype', "site")))
 
     for result in res[1]:
         obj = cat.get_object(result)

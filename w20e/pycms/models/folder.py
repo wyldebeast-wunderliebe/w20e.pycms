@@ -1,7 +1,11 @@
+from zope.interface import implements
 from base import BaseFolder
+from w20e.hitman.models.base import IFolder
 
 
 class Folder(BaseFolder):
+
+    implements(IFolder)
 
     """ simple folder """
 

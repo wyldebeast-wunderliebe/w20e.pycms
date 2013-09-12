@@ -11,7 +11,7 @@
       provides="w20e.forms.interfaces.IFormFactory" />
 
   <view
-      context="w20e.pycms.models.interfaces.IPage"
+      context="..interfaces.ILayoutMixin"
       view=".views.BlockAdd"
       renderer="templates/add_block.pt"
       name="add_block"
@@ -19,7 +19,7 @@
     />
 
   <view
-      context="w20e.pycms.models.interfaces.IPage"
+      context="..interfaces.ILayoutMixin"
       view=".views.BlockEdit"
       renderer="templates/edit_block.pt"
       name="edit_block"
@@ -27,7 +27,7 @@
     />
 
   <view
-      context="w20e.pycms.models.interfaces.IPage"
+      context="..interfaces.ILayoutMixin"
       view=".views.BlockRemove"
       renderer="json"
       name="rm_block"
@@ -35,7 +35,7 @@
     />
 
   <view
-      context="w20e.pycms.models.interfaces.IPage"
+      context="..interfaces.ILayoutMixin"
       view=".views.BlockView"
       renderer="templates/view_block.pt"
       name="block"

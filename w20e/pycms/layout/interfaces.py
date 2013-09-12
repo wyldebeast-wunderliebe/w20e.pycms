@@ -5,6 +5,7 @@ class ILayout(Interface):
 
     """ Any content has a layout."""
 
+
 class ILayouts(Interface):
 
     """ Marker class for layouts registry """
@@ -13,3 +14,8 @@ class ILayouts(Interface):
 class IBaseLayout(ILayout):
 
     """ Base implementation """
+
+
+class ILayoutMixin(Interface):
+
+    """ Marker interface for content types that have a layout """

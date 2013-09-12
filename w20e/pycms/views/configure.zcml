@@ -188,6 +188,14 @@
 
   <!-- list users -->
   <view
+     context="w20e.pycms.models.interfaces.ISite"
+     view=".page.PageLayout"
+     renderer="../templates/page_layout.pt"
+     name="edit"
+     permission="edit"
+     />
+
+  <view
      context="w20e.pycms.interfaces.ISite"
      view=".site.SiteView"
      renderer="../templates/site_users.pt"

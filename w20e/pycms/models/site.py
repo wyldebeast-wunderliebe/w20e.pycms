@@ -1,6 +1,5 @@
+from zope.interface import implements
 from page import Page
-from zope.interface import implementsOnly
-from w20e.hitman.models.base import IFolder
 from interfaces import ISite
 
 
@@ -8,7 +7,7 @@ class Site(Page):
 
     """ Site object """
 
-    implementsOnly(ISite, IFolder)
+    implements(ISite)
 
     def __init__(self, content_id, data=None):
 

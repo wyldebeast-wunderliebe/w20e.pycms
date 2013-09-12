@@ -45,7 +45,21 @@ class LayoutView(object):
 
     def get_blocks(self, slot_id):
 
+        """ Return the blocks for the page """
+
         return self.context.get_blocks(slot_id)
+
+    def render_slot(self, slot_id):
+
+        """ Render the slot given by it's id """
+
+        html = []
+
+        for block in self.get_blocks(slot_id):
+
+            html.append(block.render(self.request))
+
+        return "\n".join(html)
 
 
 class PageView(ContentView, LayoutView):
