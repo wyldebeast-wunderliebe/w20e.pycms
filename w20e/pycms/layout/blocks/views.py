@@ -1,5 +1,6 @@
 import inspect
 import os
+import uuid
 from zope.component import getMultiAdapter
 from zope.interface import implements
 from pyramid.httpexceptions import HTTPFound
@@ -104,6 +105,10 @@ class BlockEdit(pyramidformview, BlockView):
 
             return self._v_form
 
+    def _gen_block_id(self):
+
+        return str(uuid.uuid1())[:8]
+
     def __call__(self):
         
         result = super(BlockEdit, self).__call__()
@@ -112,16 +117,13 @@ class BlockEdit(pyramidformview, BlockView):
             if result['errors']:
                 self.request.response.status = 202
             else:
-                
-                # TODO: store temporary block. Only on page save is this
-                # info actually stored
                 layouts = self.request.registry.getUtility(ILayouts)
                 
-                factory = layouts.get_block(self.request.params["type"])
+                block = self._get_block()
                 
                 data = self.form.data.as_dict()
                 
-                block = factory(self.form.data['name'], tmp=True, **data)
+                block.update(data)
                 
                 self.context.save_block(self.request.params["slot"], 
                                         block.id, block)

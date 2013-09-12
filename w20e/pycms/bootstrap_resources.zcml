@@ -3,7 +3,7 @@
            >
 
   <!-- All admin CSS -->
-  <pycms:css cssfile="./static/3dparty/bootstrap/css/bootstrap.css" 
+  <pycms:css cssfile="./static/3dparty/bootstrap-2.3.2/css/bootstrap.css" 
              csstarget="public" />
 
 </configure>
