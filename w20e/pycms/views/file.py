@@ -32,14 +32,16 @@ class FileView(object):
 
         elif isinstance(blob, TheBlob):
 
+            # Can't use FileResponse like this because file might be zipped
+
             # get file path.. don't know the proper way to do this..
             # but open() sort of works..
-            opened_file = blob.open_blob('r')
-
+            #opened_file = blob.open_blob('r')
             etag = blob._blob._p_mtime
+            #response = FileResponse(opened_file.name, self.request,
+            #                        content_type=mimeType)
 
-            response = FileResponse(opened_file.name, self.request,
-                                    content_type=mimeType)
+            response = Response(blob.get(), content_type=mimeType)
 
         elif isinstance(blob, Blob):
 
