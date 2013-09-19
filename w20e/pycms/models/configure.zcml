@@ -11,7 +11,7 @@
 
   <adapter
       factory=".base.SiteFormFactory" 
-      for="w20e.pycms.interfaces.ISite
+      for="w20e.pycms.models.interfaces.ISite
            pyramid.interfaces.IRequest"
       provides="w20e.forms.interfaces.IFormFactory" />
 

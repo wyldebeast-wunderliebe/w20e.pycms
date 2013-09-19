@@ -1,6 +1,6 @@
 from zope.interface import Interface
 from zope.schema import TextLine
-from zope.configuration.fields import Tokens, GlobalObject
+from zope.configuration.fields import GlobalObject
 from w20e.pycms.layout.interfaces import ILayouts
 
 

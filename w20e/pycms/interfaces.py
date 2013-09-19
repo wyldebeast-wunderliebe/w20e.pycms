@@ -1,5 +1,4 @@
-from zope.interface import Interface, Attribute
-from w20e.pycms.models.interfaces import ISite
+from zope.interface import Interface
 
 
 class ICSSRegistry(Interface):

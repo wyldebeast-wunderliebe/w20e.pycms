@@ -21,7 +21,7 @@
       />
 
   <view
-     context=".interfaces.ISite"
+     context="w20e.pycms.models.interfaces.ISite"
      view=".views.catalog.SiteCatalogView"
      renderer="templates/site_catalog.pt"
      permission="admin"
@@ -29,7 +29,7 @@
      />
 
   <view
-     context=".interfaces.ISite"
+     context="w20e.pycms.models.interfaces.ISite"
      view=".views.catalog.SiteCatalogView"
      attr="reindex_catalog"
      renderer="templates/site_catalog.pt"

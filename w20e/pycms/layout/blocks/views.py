@@ -110,28 +110,26 @@ class BlockEdit(pyramidformview, BlockView):
         return str(uuid.uuid1())[:8]
 
     def __call__(self):
-        
+
         result = super(BlockEdit, self).__call__()
 
         if self.request.method == "POST":
             if result['errors']:
                 self.request.response.status = 202
             else:
-                layouts = self.request.registry.getUtility(ILayouts)
-                
                 block = self._get_block()
-                
+
                 data = self.form.data.as_dict()
-                
+
                 block.update(data)
-                
-                self.context.save_block(self.request.params["slot"], 
+
+                self.context.save_block(self.request.params["slot"],
                                         block.id, block)
-                
+
                 result = HTTPFound(location='block?block=%s&slot=%s' % \
                                        (block.id, self.request.params["slot"]))
- 
-        return result       
+
+        return result
 
 BlockAdd = BlockEdit
 
@@ -145,7 +143,7 @@ class BlockRemove(object):
 
     def __call__(self):
 
-        self.context.rm_block(self.request.params['slot'], 
+        self.context.rm_block(self.request.params['slot'],
                               self.request.params['block'])
 
         return {"status": 0, "msg": "Block removed"}
@@ -160,7 +158,7 @@ class BlockView(object):
 
     def __call__(self):
 
-        block = self.context.get_block(self.request.params['slot'], 
+        block = self.context.get_block(self.request.params['slot'],
                                        self.request.params['block'])
 
         return {"block": block, "slot": self.request.params['slot']}

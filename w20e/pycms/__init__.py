@@ -1,6 +1,5 @@
 import os
 import sys
-from zope.component import getSiteManager
 import transaction
 from pyramid.config import Configurator
 from pyramid_zodbconn import get_connection
