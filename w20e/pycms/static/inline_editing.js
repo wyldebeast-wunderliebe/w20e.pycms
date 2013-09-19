@@ -1,1 +1,0 @@
-/home/dokter/w20e/inline_editing.js/static/js/inline_editing.js

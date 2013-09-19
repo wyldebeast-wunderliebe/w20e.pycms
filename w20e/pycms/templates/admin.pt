@@ -30,7 +30,7 @@
             defer="defer"
             src="${request.application_url}/manage.js"></script>
     <script language="JavaScript"
-            src="${request.application_url}/static/inline_editing.js"></script>
+            src="${request.application_url}/static/js/inline_editing.js"></script>
 
     <metal:define-slot define-slot="extra_js_slot">
     </metal:define-slot>
