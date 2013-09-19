@@ -1,4 +1,15 @@
 from zope.interface import Interface
+from pyramid.renderers import get_renderer
+
+
+def add_macros(event):
+
+    macros = event['request'].registry.getUtility(IMacros)
+
+    for macro in macros.list_macros():
+        
+        event[macro] = get_renderer(
+            macros.get_macro(macro)).implementation()
 
 
 class IMacros(Interface):

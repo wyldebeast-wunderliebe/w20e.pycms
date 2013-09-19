@@ -1,11 +1,8 @@
 import uuid
+from datetime import datetime
 from zope.interface import providedBy
 from zope.interface import alsoProvides
 from zope.interface import noLongerProvides
-from w20e.hitman.views.base import ContentView as Base
-from w20e.hitman.views.base import DelView as DelBase
-from w20e.hitman.views.base import EditView as EditBase
-from w20e.hitman.views.base import BaseView as BaseBase
 from w20e.hitman.models import Registry
 from w20e.hitman.events import ContentAdded, ContentRemoved, ContentChanged
 from w20e.hitman.utils import path_to_object
@@ -25,27 +22,16 @@ from w20e.pycms.macros import IMacros
 from w20e.forms.pyramid.formview import formview as pyramidformview
 
 
-class ViewMixin(object):
+class BaseView(object):
+
+    """ The very base of things. """
 
     is_edit = False
 
-    def add_macros(self, data):
+    def __init__(self, context, request):
 
-        """ Add macros to rendering """
-
-        if isinstance(data, dict):
-
-            macros = self.request.registry.getUtility(IMacros)
-
-            for macro in macros.list_macros():
-
-                data[macro] = get_renderer(
-                    macros.get_macro(macro)).implementation()
-
-    @property
-    def viewname(self):
-
-        return self.request.path.split('/')[-1]
+        self.context = context
+        self.request = request
 
     @property
     def admin_title(self):
@@ -64,23 +50,6 @@ class ViewMixin(object):
         reg = self.request.registry
         util = reg.getUtility(IAdmin)
         return util.brand_title()
-
-    @property
-    def keywords(self):
-
-        try:
-            return ",".join(
-                (self.context.__data__['keywords'] or "").splitlines())
-        except:
-            return ""
-
-    @property
-    def description(self):
-
-        try:
-            return self.context.__data__['description'] or ''
-        except:
-            return ""
 
     @property
     def breadcrumbs(self):
@@ -133,22 +102,14 @@ class ViewMixin(object):
             has_permission(action.permission, self.context, self.request)]
 
     @property
-    def icon(self):
-        ctypes = self.request.registry.getUtility(ICTypes)
-
-        return ctypes.get_ctype_info(self.content_type).get("icon", "")
-
-    def get_icon(self, ctype):
-        ctypes = self.request.registry.getUtility(ICTypes)
-
-        return ctypes.get_ctype_info(ctype).get("icon", "")
-
-    @property
     def footer(self):
         return render('../templates/footer.pt', {})
 
     @property
     def base_url(self):
+
+        """ Do not override this method. Ever. Override the url
+        property instead """
 
         return resource_url(self.context, self.request)
 
@@ -159,9 +120,14 @@ class ViewMixin(object):
         return resource_url(obj, self.request)
 
     @property
-    def can_edit(self):
+    def parent_url(self):
 
-        return has_permission("edit", self.context, self.request)
+        return resource_url(self.context.__parent__, self.request)
+
+    @property
+    def url(self):
+
+        return resource_url(self.context, self.request)
 
     def user_has_permission(self, permission):
 
@@ -201,30 +167,109 @@ class ViewMixin(object):
         else:
             return False
 
+    @property
+    def has_parent(self):
 
-class BaseView(BaseBase, ViewMixin):
+        return self.context.has_parent
 
-    def __call__(self):
+    def list_content(self, **kwargs):
 
-        res = BaseBase.__call__(self)
-        self.add_macros(res)
+        try:
+            return self.context.list_content(**kwargs)
+        except:
+            return []
 
-        return res
 
+class ContentView(BaseView, pyramidformview):
 
-class ContentView(Base, ViewMixin):
+    def __init__(self, context, request, form=None):
 
-    def __call__(self):
-
-        res = Base.__call__(self)
-        self.add_macros(res)
-
-        return res
+        BaseView.__init__(self, context, request)
+        pyramidformview.__init__(self, context, request,
+                context.__form__(request))
 
     def json(self):
         """ return a json encoded version of the context """
 
         return self.context
+
+    @property
+    def content_type(self):
+
+        return self.context.content_type
+
+    @property
+    def title(self):
+
+        return self.context.title
+
+    @property
+    def can_edit(self):
+
+        return has_permission("edit", self.context, self.request)
+
+    @property
+    def created(self):
+
+        return self.context.created.strftime("%d-%m-%Y %H:%M")
+
+    @property
+    def changed(self):
+
+        return self.context.changed.strftime("%d-%m-%Y %H:%M")
+
+    def list_fields(self):
+
+        """ Return fields as dict {name, lexical value} """
+
+        fields = []
+
+        for field in self.form.data.getFields():
+
+            val = self.form.getFieldValue(field, lexical=True)
+            raw = self.form.getFieldValue(field, lexical=False)
+            label = None
+            renderable = self.form.view.getRenderableByBind(field)
+
+            if renderable:
+                label = renderable.label
+
+            if label:
+                fields.append({'label': label,
+                               'value': val,
+                               'type': renderable.type,
+                               'raw': raw})
+
+        return fields
+
+    @property
+    def icon(self):
+        ctypes = self.request.registry.getUtility(ICTypes)
+
+        return ctypes.get_ctype_info(self.content_type).get("icon", "")
+
+    def get_icon(self, ctype):
+        ctypes = self.request.registry.getUtility(ICTypes)
+
+        return ctypes.get_ctype_info(ctype).get("icon", "")
+
+    @property
+    def keywords(self):
+
+        try:
+            return ",".join(
+                (self.context.__data__['keywords'] or "").splitlines())
+        except:
+            return ""
+
+    @property
+    def description(self):
+
+        try:
+            return self.context.__data__['description'] or ''
+        except:
+            return ""
+
 
 class AddView(BaseView):
 
@@ -256,7 +301,7 @@ class AddView(BaseView):
                 self.request.resource_url(content))
 
 
-class FactoryView(BaseView, pyramidformview, ViewMixin):
+class FactoryView(BaseView, pyramidformview):
     """ add form for base content """
 
     is_edit = True
@@ -348,18 +393,31 @@ class FactoryView(BaseView, pyramidformview, ViewMixin):
             return HTTPFound(location=self.after_add_redirect)
 
         res = {'status': status, 'errors': errors}
-        self.add_macros(res)
 
         return res
 
 
-class EditView(EditBase, ViewMixin):
+class EditView(ContentView):
 
     is_edit = True
 
+    def __init__(self, context, request):
+
+        ContentView.__init__(self, context, request)
+
+        # Clone the data, in case of a multi-page form. Only submit the
+        # data when the form is completed
+        if self.request.method == 'GET':
+            _cloned_data = context._cloned_data = self.form.data.as_dict()
+        elif self.request.method == 'POST':
+            _cloned_data = getattr(context, '_cloned_data', None)
+        if not _cloned_data:
+            _cloned_data = context._cloned_data = self.form.data.as_dict()
+        self.form.data.from_dict(_cloned_data)
+
     @property
     def url(self):
-        return "%sedit" % super(EditBase, self).url
+        return "%sedit" % super(EditView, self).url
 
     @property
     def after_edit_redirect(self):
@@ -376,17 +434,43 @@ class EditView(EditBase, ViewMixin):
 
     def __call__(self):
 
-        res = EditBase.__call__(self)
-        self.add_macros(res)
+        res = pyramidformview.__call__(self)
+
+        if res.get('status', None) == "cancelled":
+            if hasattr(self.context, '_cloned_data'):
+                del self.context._cloned_data
+                self.context._p_changed = 1
+            return HTTPFound(location=self.url)
+
+        elif res.get('status', None) == "valid":
+            # a page in the multipage form has been submitted. save the data
+            # in the temporary data container
+            self.context._cloned_data = self.form.data.as_dict()
+            self.context._p_changed = 1
+
+        elif res.get('status', None) == "completed":
+
+            if hasattr(self.context, '_cloned_data'):
+                del self.context._cloned_data
+
+            self.context._changed = datetime.now()
+            try:
+                delattr(self.context, "_v_data")
+            except:
+                pass
+            self.request.registry.notify(ContentChanged(self.context))
+            self.context._p_changed = 1
+
+            return HTTPFound(location=self.after_edit_redirect)
 
         return res
 
 
-class DelView(DelBase, ViewMixin):
+class DelView(BaseView):
 
     @property
     def url(self):
-        return "%sadmin" % super(DelBase, self).url
+        return "%sadmin" % super(DelView, self).url
 
     @property
     def after_del_redirect(self):
@@ -401,26 +485,28 @@ class DelView(DelBase, ViewMixin):
 
     @property
     def parent_url(self):
-        return "%sadmin" % super(DelBase, self).parent_url
+        return "%sadmin" % super(DelView, self).parent_url
 
     def __call__(self):
 
-        res = DelBase.__call__(self)
-        self.add_macros(res)
+        if self.request.params.get("submit", None):
 
-        return res
+            content = self.context
+            parent = self.context.__parent__
+
+            parent.remove_content(self.context.id)
+
+            self.request.registry.notify(ContentRemoved(content, parent))
+            return HTTPFound(location=self.after_del_redirect)
+        elif self.request.params.get("cancel", None):
+            return HTTPFound(location=self.url)
+
+        return {}
 
 
-class AdminView(Base, ViewMixin):
+class AdminView(ContentView):
 
     is_edit = True
-
-    def __call__(self):
-
-        res = Base.__call__(self)
-        self.add_macros(res)
-
-        return res
 
     def remove_content(self, content_id=None):
 

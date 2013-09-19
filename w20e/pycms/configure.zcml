@@ -160,6 +160,11 @@
      />
 
   <subscriber
+      for="pyramid.events.BeforeRender"
+      handler=".macros.add_macros"
+    />
+
+  <subscriber
      for=".events.IAppRootReady"
      handler=".tempregister.init"
      />
