@@ -6,17 +6,17 @@
   <include package="pyramid_zcml" />
 
   <subscriber
-      for="w20e.hitman.events.IObjectAddedEvent"
+      for="w20e.pycms.events.IObjectAddedEvent"
       handler=".catalog.objectAdded"
       />
   
   <subscriber
-      for="w20e.hitman.events.IObjectRemovedEvent"
+      for="w20e.pycms.events.IObjectRemovedEvent"
       handler=".catalog.objectRemoved"
       />
 
   <subscriber
-      for="w20e.hitman.events.IObjectChangedEvent"
+      for="w20e.pycms.events.IObjectChangedEvent"
       handler=".catalog.objectChanged"
       />
 

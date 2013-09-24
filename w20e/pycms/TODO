@@ -1,11 +1,5 @@
-* Maybe use w20e.forms for add_* forms?
-* on post, only dl.config and surrounding div's need to be sent
-* Make specific layout configurable (use .fixed class)
 * refresh user screen when user added
 * Add admin view without being a formview? Really?
-* enable reset id
-* move local actions to CMS (from hitman)
-* remove layout stuff; move to different package and refactor
 * move out sharing to separate module
 * move out catalog/search to separate module
 * enable add for subtypes instead of overwrite

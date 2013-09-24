@@ -19,7 +19,7 @@ requires = [
     'ZODB3',
     'repoze.catalog',
     'cssmin',
-    'w20e.hitman',
+    'w20e.forms',
     'PasteScript>=1.3',
     ]
 

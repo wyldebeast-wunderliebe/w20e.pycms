@@ -1,6 +1,6 @@
 from zope.interface import implements
 from base import BaseFolder
-from w20e.hitman.models.base import IFolder
+from interfaces import IFolder
 
 
 class Folder(BaseFolder):

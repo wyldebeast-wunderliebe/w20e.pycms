@@ -8,14 +8,14 @@
   <include file="catalog.zcml"/>
 
   <view
-     context="w20e.hitman.models.base.IContent"
+     context="w20e.pycms.models.interfaces.IContent"
      view=".views.search.SearchView"
      renderer="templates/search.pt"
      name="search"
      />
 
   <view
-     context="w20e.hitman.models.base.IContent"
+     context="w20e.pycms.models.interfaces.IContent"
      view=".views.search.SearchView"
      renderer="templates/search_results.pt"
      name="search_results"

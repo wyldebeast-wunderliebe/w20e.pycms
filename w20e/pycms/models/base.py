@@ -1,22 +1,26 @@
 import os
 import inspect
+import re
+from datetime import datetime
 from uuid import uuid1
+from persistent.mapping import PersistentMapping
+from persistent import Persistent
+from BTrees.OOBTree import OOBTree
 from zope.interface import implements, directlyProvides, alsoProvides, \
      noLongerProvides, providedBy
 from zope.component import subscribers
 from zope.component import getMultiAdapter
 from pyramid.url import resource_url
-from w20e.hitman.models.base import BaseFolder as HitmanBaseFolder
-from w20e.hitman.models.base import BaseContent as HitmanBaseContent
-from w20e.hitman.utils import object_to_path
+from w20e.forms.formdata import FormData
+from w20e.pycms.utils import object_to_path
 from w20e.pycms.security import ISecure
-from w20e.pycms.ctypes import ICTypes
 from w20e.forms.interfaces import IFormFactory, IFormModifier
 from w20e.forms.xml.factory import XMLFormFactory as BaseXMLFormFactory
 from w20e.pycms.interfaces import ITemporaryObject
 from w20e.pycms.nature.interfaces import INature
-from w20e.pycms.models.interfaces import IPyCMSMixin
 from w20e.pycms.catalog import ObjectSummary
+from interfaces import IContent, IFolder
+from exceptions import UniqueConstraint
 
 
 class XMLFormFactory(object):
@@ -51,9 +55,131 @@ class SiteFormFactory(XMLFormFactory):
         return super(SiteFormFactory, self).createForm(form_name="page")
 
 
-class PyCMSMixin(object):
+class Base(object):
 
-    implements(IPyCMSMixin)
+    """ Base content, should be extended for real content """
+
+    def __init__(self, content_id, data_attr_name="_DATA", data=None):
+
+        if not data:
+            data = {}
+
+        # sanity check.. ID cannot be empty
+        if not content_id:
+            raise Exception("ID should not be empty")
+
+        self._id = content_id
+        self.data_attr_name = data_attr_name
+        setattr(self, data_attr_name, OOBTree(data))
+        self._created = datetime.now()
+        self._changed = datetime.now()
+
+    @property
+    def id(self):
+
+        return self._id
+
+    def set_id(self, id):
+
+        self._id = id
+
+    @property
+    def owner(self):
+        """ get the creator userid """
+
+        return getattr(self, '_owner', '')
+
+    @owner.setter
+    def owner(self, value):
+        """ set the creator userid """
+
+        self._owner = value
+        self._p_changed = 1
+
+    @property
+    def content_type(self):
+
+        return self.__class__.__name__.lower()
+
+    @property
+    def base_id(self):
+
+        return self.content_type
+
+    @property
+    def has_parent(self):
+
+        return getattr(self, "__parent__", None)
+
+    @property
+    def __data__(self):
+
+        """ Wrap data in formdata container. Keep it volatile though,
+        so as not to pollute the DB. """
+
+        try:
+            return self._v_data
+        except:
+
+            data = getattr(self, self.data_attr_name)
+
+            # migrate old hashmaps to OOBTree if necessary
+            if not isinstance(data, OOBTree):
+                data = OOBTree(data)
+                setattr(self, self.data_attr_name, data)
+
+            self._v_data = FormData(data=data)
+            return self._v_data
+
+    def set_attribute(self, name, value):
+        """ store an attribut in a low level manner """
+
+        data = getattr(self, self.data_attr_name)
+        data[name] = value
+        self._changed = datetime.now()
+        self._p_changed = 1
+        # remove volatile cached data
+        try:
+            del(self._v_data)
+        except:
+            pass  # no worries.we didn't have the cached value
+
+    @property
+    def title(self):
+
+        return self.id
+
+    @property
+    def created(self):
+
+        return self._created
+
+    @property
+    def changed(self):
+
+        return self._changed
+
+    @property
+    def root(self):
+
+        _root = self
+
+        while getattr(_root, "__parent__", None) is not None:
+            _root = _root.__parent__
+
+        return _root
+
+    @classmethod
+    def defaults(self):
+
+        return {}
+
+    @property
+    def dottedpath(self):
+
+        """ Return path as dot separated string """
+
+        return object_to_path(self, path_sep=".", as_list=False)
 
     @property
     def __acl__(self):
@@ -87,8 +213,7 @@ class PyCMSMixin(object):
 
     def __form__(self, request):
 
-        """ Override for hitman form property, so as to enable
-        form overrides and modifiers """
+        """ form property that handles extra subscribers to the ctype """
 
         try:
             return self._v_form
@@ -142,7 +267,6 @@ class PyCMSMixin(object):
 
         return [to_str(nature) for nature in self.list_natures()]
 
-
     def __json__(self, request):
         """ return a json encoded version of this model """
 
@@ -163,19 +287,46 @@ class PyCMSMixin(object):
         return data
 
 
-class BaseContent(PyCMSMixin, HitmanBaseContent):
+class BaseContent(Persistent, Base):
 
-    def allowed_content_types(self, request):
-        return []
+    """ Base content, should be extended for real content """
+
+    implements(IContent)
+
+    def __init__(self, content_id, data=None):
+
+        if not data:
+            data = {}
+
+        Persistent.__init__(self)
+        Base.__init__(self, content_id, data=data)
+
+    def __repr__(self):
+        """ return the ID as base representation """
+
+        return self.id
 
 
-class BaseFolder(PyCMSMixin, HitmanBaseFolder):
+class BaseFolder(PersistentMapping, Base):
+
+    """ Base folder """
+
+    implements(IFolder)
+
+    def __init__(self, content_id, data=None):
+
+        if not data:
+            data = {}
+
+        PersistentMapping.__init__(self)
+        Base.__init__(self, content_id, data=data)
+        self._order = []
 
     def __json__(self, request):
         """ return a json encoded version of this model 
             including contained items
         """
-        data = PyCMSMixin.__json__(self, request)
+        data = Base.__json__(self, request)
         items = self.list_content()
         contained_items = []
 
@@ -192,19 +343,192 @@ class BaseFolder(PyCMSMixin, HitmanBaseFolder):
         data['contained_items'] = contained_items
         return data
 
-    def list_content(self, content_type=None, iface=None, **kwargs):
-        """ use base listing, but filter out temp objects """
+    def add_content(self, content):
 
-        result = HitmanBaseFolder.list_content(
-                self, content_type, iface, **kwargs)
+        # don't replace the content
+        if content.id in self:
+            raise UniqueConstraint("an item with this ID already exists at \
+                    this level")
+
+        content.__parent__ = self
+        content.__name__ = content.id
+        self[content.id] = content
+        self._order.append(content.id)
+
+    def rename_content(self, id_from, id_to):
+
+        """ Move object at id_from to id_to key"""
+
+        if id_to in self:
+            raise UniqueConstraint("an item with this ID already exists at \
+                    this level")
+
+        content = self.get(id_from, None)
+
+        if content is None:
+            return False
+
+        del self[id_from]
+
+        content._id = id_to
+        content.__name__ = id_to
+
+        # retain order
+        if id_from in self._order:
+            self._order[self._order.index(id_from)] = id_to
+
+        self[content.id] = content
+
+    def remove_content(self, content_id):
+
+        try:
+            content = self.get(content_id, None)
+            del self[content_id]
+            self._order.remove(content_id)
+            return content
+        except:
+            return None
+
+    def get_content(self, content_id, content_type=None):
+
+        obj = self.get(content_id, None)
+
+        if content_type:
+
+            if getattr(obj, "content_type", None) == content_type:
+
+                return obj
+
+            else:
+
+                return None
+
+        return obj
+
+    def _list_content_ids(self, **kwargs):
+        """
+        return all content IDs.
+        NOTE: also returns temporary object IDs
+        """
+
+        all_ids = self.keys()
+
+        def _order_cmp(a, b):
+
+            max_order = len(self._order) + 1
+
+            return cmp(self._order.index(a) if a in self._order \
+                       else max_order,
+                       self._order.index(b) if b in self._order \
+                                               else max_order,
+                       )
+
+        all_ids.sort(_order_cmp)
+
+        return all_ids
+
+    def list_content(self, content_type=None, iface=None, **kwargs):
+
+        """ List content of this folder. If content_type is given,
+        list only these things.
+        """
+
+        all_content = []
+
+        if content_type:
+            if isinstance(content_type, str):
+                content_type = [content_type]
+
+            all_content = [obj for obj in self.values() \
+                    if getattr(obj, 'content_type', None) in content_type]
+        if iface:
+            all_content = [obj for obj in self.values() \
+                    if iface.providedBy(obj)]
+
+        if not (content_type or iface):
+            all_content = self.values()
+
+        if kwargs.get('order_by', None):
+            all_content.sort(lambda a, b: \
+                             cmp(getattr(a, kwargs['order_by'], 1),
+                                 getattr(b, kwargs['order_by'], 1)))
+        else:
+            def _order_cmp(a, b):
+
+                max_order = len(self._order) + 1
+
+                return cmp(self._order.index(a.id) if a.id in self._order \
+                           else max_order,
+                            self._order.index(b.id) if b.id in self._order \
+                                                    else max_order,
+                           )
+
+            all_content.sort(_order_cmp)
 
         # filter out temp objects
-        result = [r for r in result if not ITemporaryObject.providedBy(r)]
-        return result
+        return filter(lambda x: not ITemporaryObject.providedBy(x), all_content)
 
-    def allowed_content_types(self, request):
+    def find_content(self, content_type=None):
 
-        ctypes = request.registry.getUtility(ICTypes)
+        """ Find content recursively from the given folder. Use it
+        wisely... """
 
-        return ctypes.get_ctype_info(
-            self.content_type).get("subtypes", "").split(",")
+        found = self.list_content(content_type=content_type)
+
+        # recurse through folderish types.
+        folders = self.list_content(iface=IFolder)
+
+        for sub in folders:
+
+            try:
+                found += sub.find_content(content_type=content_type)
+            except:
+                # looks like it's not a folder...
+                pass
+
+        return found
+
+    def _normalize_id(self, id):
+        """ change all non-letters and non-numbers to dash """
+
+        if isinstance(id, unicode):
+            id = id.encode('utf-8')
+        id = id.lower()
+        id = re.sub('[^-a-z0-9_]+', '-', id)
+        return id
+
+    def generate_content_id(self, base_id):
+
+        base_id = self._normalize_id(base_id)
+
+        if not base_id in self:
+            return base_id
+
+        cnt = 1
+
+        while "%s_%s" % (base_id, cnt) in self:
+            cnt += 1
+
+        return "%s_%s" % (base_id, cnt)
+
+    def move_content(self, content_id, delta):
+
+        """ Move the content in the order by delta, where delta may be
+        negative """
+
+        curr_idx = self._order.index(content_id)
+
+        try:
+            self._order.remove(content_id)
+            self._order.insert(curr_idx + delta, content_id)
+        except:
+            pass
+
+    def set_order(self, order=[]):
+
+        self._order = order
+
+    def __repr__(self):
+        """ return the ID as base representation """
+
+        return self.id

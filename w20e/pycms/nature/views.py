@@ -1,5 +1,5 @@
 from interfaces import INatures
-from w20e.hitman.events import ContentChanged
+from w20e.pycms.events import ContentChanged
 
 
 class NatureView(object):

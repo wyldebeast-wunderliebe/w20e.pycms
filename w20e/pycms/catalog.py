@@ -5,7 +5,7 @@ from repoze.catalog.indexes.keyword import CatalogKeywordIndex
 from repoze.catalog.indexes.path import CatalogPathIndex
 from repoze.catalog.document import DocumentMap
 from logging import getLogger
-from w20e.hitman.utils import path_to_object, object_to_path
+from utils import path_to_object, object_to_path
 from index import IIndexes
 
 

@@ -2,7 +2,8 @@ from logging import getLogger
 import datetime
 from interfaces import ITemporaryObject
 from persistent.mapping import PersistentMapping
-from w20e.hitman.utils import path_to_object, object_to_path
+from utils import path_to_object, object_to_path
+
 
 LOGGER = getLogger("w20e.pycms")
 

@@ -1,6 +1,6 @@
 from pyramid.url import resource_url
-from ..models.image import Image
-from w20e.hitman.models.exceptions import UniqueConstraint
+from w20e.pycms.models.image import Image
+from w20e.pycms.models.exceptions import UniqueConstraint
 
 
 def _remove_prefix(string, prefix):

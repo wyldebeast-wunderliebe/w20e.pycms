@@ -1,16 +1,21 @@
 from zope.interface import Interface
 
 
-class IPage(Interface):
+class IContent(Interface):
+
+    """ Very base content """
+
+
+class IFolder(IContent):
+
+    """ Folderish """
+
+
+class IPage(IFolder):
 
     """ Marker for page """
 
 
-class ISite(Interface):
+class ISite(IPage):
 
     """ Marker for site"""
-
-
-class IPyCMSMixin(Interface):
-
-    """ Marker for Pycms Content Type """

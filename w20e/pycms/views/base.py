@@ -3,23 +3,22 @@ from datetime import datetime
 from zope.interface import providedBy
 from zope.interface import alsoProvides
 from zope.interface import noLongerProvides
-from w20e.hitman.models import Registry
-from w20e.hitman.events import ContentAdded, ContentRemoved, ContentChanged
-from w20e.hitman.utils import path_to_object
 from pyramid.renderers import get_renderer, render
 from pyramid.httpexceptions import HTTPFound
 from pyramid.interfaces import IView, IViewClassifier
 from pyramid.security import authenticated_userid
-from w20e.pycms.utils import has_permission
 from pyramid.url import resource_url
 from pyramid.compat import map_
+from w20e.pycms.events import ContentAdded, ContentRemoved, ContentChanged
+from w20e.forms.pyramid.formview import formview as pyramidformview
+from w20e.pycms.utils import has_permission
+from w20e.pycms.utils import path_to_object
 from w20e.pycms.nature.interfaces import INatures
 from w20e.pycms.interfaces import IAdmin, ITemporaryObject
 from w20e.pycms.events import TemporaryObjectCreated, TemporaryObjectFinalized
 from w20e.pycms.actions import IActions
 from w20e.pycms.ctypes import ICTypes
 from w20e.pycms.macros import IMacros
-from w20e.forms.pyramid.formview import formview as pyramidformview
 
 
 class BaseView(object):
@@ -32,6 +31,10 @@ class BaseView(object):
 
         self.context = context
         self.request = request
+
+    def __call__(self):
+
+        return {}
 
     @property
     def admin_title(self):
@@ -270,6 +273,14 @@ class ContentView(BaseView, pyramidformview):
         except:
             return ""
 
+    def allowed_content_types(self):
+
+        ctypes = self.request.registry.getUtility(ICTypes)
+
+        return ctypes.get_ctype_info(
+            self.content_type).get("subtypes", "").split(",")
+
+
 
 class AddView(BaseView):
 
@@ -278,8 +289,9 @@ class AddView(BaseView):
     def __call__(self):
 
         ctype = self.request.params.get("ctype", None)
+        registry = self.request.registry.getUtility(ICTypes)
 
-        clazz = Registry.get(ctype)
+        clazz = registry.get_factory(ctype)
 
         initial_data = self.request.params.copy()
         del initial_data['ctype']

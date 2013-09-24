@@ -2,6 +2,7 @@ import os
 import pkg_resources
 from zope.interface import Interface
 from zope.schema import TextLine
+from zope.configuration.fields import GlobalObject
 from w20e.pycms.interfaces import ICSSRegistry, IJSRegistry
 from actions import IActions
 from ctypes import ICTypes
@@ -157,7 +158,7 @@ class ICTypeDirective(Interface):
         description=u"Unique type name, lowercase",
         required=True)
 
-    factory = TextLine(
+    factory = GlobalObject(
         title=u"Factory",
         description=u"Factory that creates this type",
         required=False)

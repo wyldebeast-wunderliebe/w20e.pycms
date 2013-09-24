@@ -19,14 +19,14 @@
   />
 
   <view
-    context="w20e.hitman.models.base.IContent"
+    context="w20e.pycms.models.interfaces.IContent"
     view=".views.login.loginview"
     renderer="templates/login.pt"
     name="login"
     />
 
   <view
-    context="w20e.hitman.models.base.IContent"
+    context="w20e.pycms.models.interfaces.IContent"
     view=".views.login.logoutview"
     name="logout"
     />
@@ -46,7 +46,7 @@
     />
 
   <adapter
-    for="w20e.hitman.models.base.IContent"
+    for="w20e.pycms.models.interfaces.IContent"
     provides="w20e.pycms.security.ISecure"
     factory=".security.Secure"
     />

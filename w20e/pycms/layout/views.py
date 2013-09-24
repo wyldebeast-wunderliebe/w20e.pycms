@@ -1,5 +1,5 @@
 from registry import ILayouts
-from w20e.hitman.events import ContentChanged
+from w20e.pycms.events import ContentChanged
 
 
 class LayoutView(object):

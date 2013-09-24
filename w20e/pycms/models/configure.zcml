@@ -5,7 +5,7 @@
   <!-- Base implementation for forms. -->
   <adapter
       factory=".base.XMLFormFactory" 
-      for="w20e.hitman.models.base.IContent
+      for="w20e.pycms.models.interfaces.IContent
            pyramid.interfaces.IRequest"
       provides="w20e.forms.interfaces.IFormFactory" />
 
