@@ -19,7 +19,6 @@
      request_method="GET"
      header="Accept:application\/json"
      permission="view"
-     xhr="True"
      />
 
   <view
@@ -76,7 +75,6 @@
      context="w20e.pycms.models.interfaces.IContent"
      view=".base.EditView"
      name="validate"
-     xhr="True"
      attr="ajax_validate"
      renderer="ajax"
      />
@@ -207,7 +205,6 @@
      context="w20e.pycms.models.interfaces.ISite"
      view=".users.UserAdminView"
      renderer="json"
-     xhr="True"
      attr="add_user"
      name="add_user"
      permission="admin"
@@ -254,7 +251,6 @@
      view=".users.UserAdminView"
      attr="change_password"
      renderer="json"
-     xhr="True"
      name="set_password"
      permission="admin"
      />
@@ -266,7 +262,6 @@
      name="delete_key"
      permission="admin"
      renderer="json"
-     xhr="True"
      />
 
   <view 
@@ -284,7 +279,6 @@
      view=".site.SiteView"
      attr="pack_database"
      renderer="string"
-     xhr="True"
      name="ajax_pack"
      permission="admin"
      />
@@ -312,7 +306,6 @@
      view=".base.AdminView"
      attr="remove_content"
      renderer="json"
-     xhr="True"
      name="ajax_rm"
      permission="edit"
      />
@@ -322,7 +315,6 @@
      view=".base.AdminView"
      attr="move_content"
      renderer="json"
-     xhr="True"
      name="ajax_move"
      permission="edit"
      />
@@ -332,7 +324,6 @@
      view=".base.AdminView"
      attr="paste_content"
      renderer="json"
-     xhr="True"
      name="ajax_paste"
      permission="edit"
      />
@@ -342,7 +333,6 @@
      view=".base.AdminView"
      attr="rename_content"
      renderer="json"
-     xhr="True"
      name="ajax_rename"
      permission="edit"
      />
@@ -352,7 +342,6 @@
      view=".base.AdminView"
      attr="order_content"
      renderer="json"
-     xhr="True"
      name="ajax_order"
      permission="edit"
      />
@@ -377,7 +366,6 @@
      name="tiny_browse_images"
      view=".tinybrowser.TinyBrowser"
      renderer="json"
-     xhr="True"
      attr="browse_images"
      />
 

@@ -380,7 +380,7 @@ Add this to your configure.zcml:
 
 Sharing anyone?
 ---------------
-Would you like search enabled for your site?
+Would you like sharing enabled for your site?
 
 Add this to your configure.zcml:
 

@@ -32,7 +32,6 @@
      context=".interfaces.ILayoutMixin"
      view=".views.LayoutView"
      renderer="json"
-     xhr="True"
      attr="set_layout"
      name="set_layout"
      permission="edit"
