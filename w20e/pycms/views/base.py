@@ -281,7 +281,6 @@ class ContentView(BaseView, pyramidformview):
             self.content_type).get("subtypes", "").split(",")
 
 
-
 class AddView(BaseView):
 
     """ create temporary content """
