@@ -54,7 +54,7 @@
      />
 
   <pycms:js
-     jsfile="./static/acl.js"
+     jsfile="./static/js/acl.js"
      jstarget="manage"
      />
 
