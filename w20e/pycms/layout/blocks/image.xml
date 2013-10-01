@@ -1,17 +1,22 @@
 <?xml version="1.0"?>
      
-<form id="edit_text"> 
+<form id="edit_image_block"> 
 
   <data>
     <name/>
-    <text/>
+    <img/>
   </data>
 
   <model>
     <properties id="required">
       <bind>name</bind>
-      <bind>text</bind>
+      <bind>img</bind>
       <required>True</required>
+    </properties>
+
+    <properties id="file_types">
+      <bind>img</bind>
+      <datatype>file</datatype>
     </properties>
 
   </model>
@@ -23,11 +28,9 @@
       <property name="cols">40</property>
     </input>
 
-    <richtext id="text" bind="text">
-      <label>Text (including images)</label>
-      <property name="rows">12</property>
-      <property name="cols">80</property>      
-    </richtext>
+    <file id="data" bind="img">
+      <label>Image file</label>
+    </file>
 
     <group id="submission" layout="flow">
       <property name="orientation">h</property>

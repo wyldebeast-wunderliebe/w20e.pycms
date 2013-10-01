@@ -45,7 +45,7 @@
                 <ul class="dropdown-menu">
                   <tal:repeat repeat="block slot.blocks">
                     <li>
-                      <a href="add_block?type=text&slot=${slot.name}"
+                      <a href="add_block?type=${block}&slot=${slot.name}"
                          tal:content="block"
                          class="add-inline"
                          data-model="block"

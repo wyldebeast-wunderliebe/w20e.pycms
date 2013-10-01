@@ -112,3 +112,27 @@ class PageEdit(EditView):
 class PageLayout(EditView, LayoutView):
 
     pass
+
+
+class ImageUpload(object):
+
+    def __init__(self, context, request):
+
+        self.context = context
+        self.request = request
+
+    def __call__(self):
+
+        for key in self.request.params.keys():
+
+            if getattr(self.request.params[key], "file", None):
+
+                image_id = self.context._normalize_id(
+                    self.request.params[key].filename)
+                image_data = self.request.params[key].value
+
+                image = Image(image_id, 
+                      {'name': image_id,
+                       'data': {'name': image_id, 'data': image_data}, })
+
+                self.context.add_content(image)

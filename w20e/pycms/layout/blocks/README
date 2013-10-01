@@ -3,9 +3,9 @@ Blocks
 
 The layout system of w20e.pycms uses blocks to fill slots on a
 page. The blocks comprise the actual content. A slot is filled simply
-from the blocks defined for in on the edit page, in the order in which
-they were added. The blocks system is supposed to be extendable, like
-anything in w20e.pycms. 
+from the blocks defined for it on the edit page, in the order in which
+they were added. The blocks system is extendable, like almost anything
+in w20e.pycms.
 
 
 How to add new block types

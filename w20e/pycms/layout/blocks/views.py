@@ -7,6 +7,7 @@ from pyramid.httpexceptions import HTTPFound
 from w20e.forms.pyramid.formview import formview as pyramidformview
 from w20e.forms.xml.factory import XMLFormFactory as BaseXMLFormFactory
 from w20e.forms.interfaces import IFormFactory
+from w20e.forms.form import FormValidationError
 from w20e.pycms.layout.interfaces import ILayouts
 
 
@@ -111,17 +112,18 @@ class BlockEdit(pyramidformview, BlockView):
 
     def __call__(self):
 
-        result = super(BlockEdit, self).__call__()
+        result = {'status': "", 'errors': ""}
 
         if self.request.method == "POST":
+
+            (result['status'], result['errors']) = self.handle_form()
+
             if result['errors']:
                 self.request.response.status = 202
             else:
                 block = self._get_block()
 
-                data = self.form.data.as_dict()
-
-                block.update(data)
+                self.form.submission.submit(self.form, block, self.request)
 
                 self.context.save_block(self.request.params["slot"],
                                         block.id, block)
@@ -130,6 +132,26 @@ class BlockEdit(pyramidformview, BlockView):
                                        (block.id, self.request.params["slot"]))
 
         return result
+
+    def handle_form(self):
+
+        """ Handle the form. Override this method if you wish... """
+
+        form = self.form
+        self._process_data(form, form.view, self.request.params)
+        status = 'processed'
+        errors = {}
+
+        try:
+            form.validate()
+            status = 'stored'
+
+        except FormValidationError, fve:
+            errors = fve.errors
+            status = 'error'
+
+        return (status, errors)
+
 
 BlockAdd = BlockEdit
 

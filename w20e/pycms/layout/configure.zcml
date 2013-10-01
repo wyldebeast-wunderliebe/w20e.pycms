@@ -12,7 +12,7 @@
 
     <pycms:slot
         name="main"
-        blocks="text"
+        blocks="text image"
         />
 
   </pycms:layout>

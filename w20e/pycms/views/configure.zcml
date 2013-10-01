@@ -89,6 +89,14 @@
 
   <view
      context="w20e.pycms.models.interfaces.IPage"
+     view=".page.ImageUpload"
+     renderer="json"
+     name="upload_image"
+     permission="edit"
+     />
+
+  <view
+     context="w20e.pycms.models.interfaces.IPage"
      view="w20e.pycms.views.page.PageEdit"
      renderer="w20e.pycms:templates/page_preview.pt"
      name="preview"

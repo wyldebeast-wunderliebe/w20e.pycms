@@ -43,4 +43,9 @@
       factory="w20e.pycms.layout.blocks.text.Text"
       />
 
+  <pycms:block
+      name="image"
+      factory="w20e.pycms.layout.blocks.image.Image"
+      />
+
 </configure>

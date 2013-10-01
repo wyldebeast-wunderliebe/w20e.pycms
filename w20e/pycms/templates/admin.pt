@@ -83,8 +83,7 @@
                 <tal:repeat repeat="action view.siteactions">
                   <li>
                     <a href="#" tal:attributes="href action.target"
-                       tal:content="action.label"
-                       condition="action.condition">
+                       tal:content="action.label">
                       Title
                     </a>
                   </li>
@@ -92,9 +91,9 @@
                 <li>
 
                   <div class="btn-group" id="manage_action">
-                    <a class="btn btn-warning dropdown-toggle" 
+                    <a class="btn dropdown-toggle" 
                        data-toggle="dropdown" href="#">
-                      <i class="icon-cog"></i>
+                      <i class="icon-wrench"></i>
                       Configuration
                       <span class="caret"></span>
                     </a>

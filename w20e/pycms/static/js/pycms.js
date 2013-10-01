@@ -256,7 +256,32 @@ pycms.setAutofocus = function() {
     if (done.length == 0) {
         done = $(".w20e-form :input:visible:enabled:first").focus();
     }
-}
+};
+
+
+/**
+ * Initialize file uploading
+ */
+pycms.init_fileupload = function() {
+
+  var defaults = {
+    url: './upload_image',
+    dataType: 'json',
+    done: function (e, data) {
+      
+    },
+    progress: function (e, data) {
+      var progress = parseInt(data.loaded / data.total * 100, 10);
+      $($(e.target).data("progress") + " .bar").css("width", progress + "%");
+    }
+  };
+  
+  $("#fileupload").each(function() {
+
+      $(this).fileupload(defaults);
+    });
+};
+
 
 /* Initialization sequence started... */
 $(document).ready(function() {
@@ -370,4 +395,5 @@ $(document).ready(function() {
         $(this).find(".modal-body").html("");
       });
 
+    pycms.init_fileupload();
 });

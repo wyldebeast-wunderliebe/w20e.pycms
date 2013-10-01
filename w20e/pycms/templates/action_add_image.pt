@@ -1,0 +1,10 @@
+<span class="btn fileinput-button">
+  <i class="icon-plus"></i>
+  <span>Add image(s)</span>
+  <input
+     type="file" href="#" 
+     multiple="true"
+     id="fileupload"
+     value="Add file(s)"
+     />
+</span>
