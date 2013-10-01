@@ -1,158 +1,183 @@
 <metal:define-macro define-macro="master">
   <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xml:lang="en"
-      xmlns:tal="http://xml.zope.org/namespaces/tal"
-      tal:define="body_class string:admin"
-      >
+  <html xmlns="http://www.w3.org/1999/xhtml"
+        xml:lang="en"
+        xmlns:tal="http://xml.zope.org/namespaces/tal"
+        tal:define="body_class string:admin"
+        >
 
-  <head>
-    <title>${view.admin_title}</title>
-    <base href="#" tal:attributes="href view.url"/>
+    <head>
+      <title>${view.admin_title}</title>
+      <base href="#" tal:attributes="href view.url"/>
 
-    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+      <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
 
-    <!-- Mobile Specific Metas
-         ================================================== -->
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1, maximum-scale=1" />
+      <!-- Mobile Specific Metas
+           ================================================== -->
+      <meta name="viewport"
+            content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-    <link rel="stylesheet" href="${request.application_url}/manage.css"
-          type="text/css" media="screen" charset="utf-8" />
+      <link rel="stylesheet" href="${request.application_url}/manage.css"
+            type="text/css" media="screen" charset="utf-8" />
 
-    <metal:define-slot define-slot="extra_css_slot">
-    </metal:define-slot>
+      <metal:define-slot define-slot="extra_css_slot">
+      </metal:define-slot>
 
-    <script language="JavaScript"
-            src="http://code.jquery.com/jquery-1.9.0.min.js"></script>
-    <script language="JavaScript"
-            defer="defer"
-            src="${request.application_url}/manage.js"></script>
-    <script language="JavaScript"
-            src="${request.application_url}/static/js/inline_editing.js"></script>
+      <script language="JavaScript"
+              src="http://code.jquery.com/jquery-1.9.0.min.js"></script>
+      <script language="JavaScript"
+              defer="defer"
+              src="${request.application_url}/manage.js"></script>
+      <script language="JavaScript"
+              src="${request.application_url}/static/js/inline_editing.js"></script>
 
-    <metal:define-slot define-slot="extra_js_slot">
-    </metal:define-slot>
+      <metal:define-slot define-slot="extra_js_slot">
+      </metal:define-slot>
 
-    <link rel="shortcut icon"
-          href="${request.application_url}/static/favicon.ico" />
+      <link rel="shortcut icon"
+            href="${request.application_url}/static/favicon.ico" />
 
-  </head>
+    </head>
 
-  <body class="" tal:attributes="class '%s %s' % (body_class, getattr(view, 'body_class', ''))" metal:define-slot="body">
+    <body class="" tal:attributes="class '%s %s' % (body_class, getattr(view, 'body_class', ''))" metal:define-slot="body">
 
-    <!-- About popup -->
-    <div id="about" class="alert alert-info hide">
-      <a class="close" href="#" onclick="$('#about').hide(); return false">×</a>
-      w20e.pycms &copy; Copyright 2011, <a href="http://www.w20e.com/">wyldebeast &amp; wunderliebe</a>.
-      <div tal:content="view.context.root.cms_version">version</div>
-    </div>
-
-    <!-- general alert box -->
-    <div id="alert" class="alert hide">
-      <a class="close" href="#" onclick="$('#alert').hide(); return false">×</a>
-      <div id="alert_msg"></div>
-    </div>
-
-    <!-- Modal box for delete warning TODO: move this to JS -->
-    <div class="modal hide" id="confirm_delete">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">×</button>
-        <h3>Delete</h3>
+      <!-- About popup -->
+      <div id="about" class="alert alert-info hide">
+        <a class="close" href="#" onclick="$('#about').hide(); return false">×</a>
+        w20e.pycms &copy; Copyright 2011, <a href="http://www.w20e.com/">wyldebeast &amp; wunderliebe</a>.
+        <div tal:content="view.context.root.cms_version">version</div>
       </div>
-      <div class="modal-body">
-        <p>Do you really want to delete '<span id="object_title"></span>'?</p>
-      </div>
-      <div class="modal-footer">
-        <a href="#" class="btn" data-dismiss="modal">Close</a>
-        <a href="#" class="confirm btn btn-primary">Confirm</a>
-      </div>
-    </div>
 
-    <div class="container">
+      <!-- general alert box -->
+      <div id="alert" class="alert hide">
+        <a class="close" href="#" onclick="$('#alert').hide(); return false">×</a>
+        <div id="alert_msg"></div>
+      </div>
 
-      <!-- BEGIN: navbar -->
-      <div class="navbar navbar-inverse">
-        <div class="navbar-inner">
-          <div class="container">
-            <metal:define-slot define-slot="brand">
-              <a class="brand" href="/admin">${view.brand_title}</a>
+      <!-- Modal box for delete warning TODO: move this to JS -->
+      <div class="modal hide" id="confirm_delete">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <h3>Delete</h3>
+        </div>
+        <div class="modal-body">
+          <p>Do you really want to delete '<span id="object_title"></span>'?</p>
+        </div>
+        <div class="modal-footer">
+          <a href="#" class="btn" data-dismiss="modal">Close</a>
+          <a href="#" class="confirm btn btn-primary">Confirm</a>
+        </div>
+      </div>
+
+      <div class="container">
+
+        <!-- BEGIN: navbar -->
+        <div class="navbar navbar-inverse">
+          <div class="navbar-inner">
+            <div class="container">
+              <metal:define-slot define-slot="brand">
+                <a class="brand" href="/admin">${view.brand_title}</a>
               </metal:define-slot>
-            <ul class="nav pull-right">
-              <tal:repeat repeat="action view.siteactions">
+              <ul class="nav pull-right">
+                <tal:repeat repeat="action view.siteactions">
+                  <li>
+                    <a href="#" tal:attributes="href action.target"
+                       tal:content="action.label"
+                       condition="action.condition">
+                      Title
+                    </a>
+                  </li>
+                </tal:repeat>
                 <li>
-                  <a href="#" tal:attributes="href action.target"
-                     tal:content="action.label"
-                     condition="action.condition">
-                    Title
-                  </a>
+
+                  <div class="btn-group" id="manage_action">
+                    <a class="btn btn-warning dropdown-toggle" 
+                       data-toggle="dropdown" href="#">
+                      <i class="icon-cog"></i>
+                      Configuration
+                      <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <tal:repeat repeat="action view.manageactions">
+                        <li>
+                          <a href="#" tal:attributes="href action.target"
+                             condition="action.condition">
+                            <tal:condition condition="action.icon">
+                              <i class="${action.icon}"></i>
+                            </tal:condition>
+                            ${action.label}
+                          </a>
+                        </li>
+                      </tal:repeat>
+                    </ul>
+                  </div>
+
                 </li>
-              </tal:repeat>
-            </ul>
+              </ul>
+            </div>
           </div>
         </div>
-      </div>
-      <!-- END: navbar -->
+        <!-- END: navbar -->
 
-      <!-- BEGIN: breadcrumb -->
-      <ul class="breadcrumb">
-        <tal:repeat repeat="crumb view.breadcrumbs">
-          <li>
-            <a href="${view.object_url(crumb)}admin">${crumb.title}</a>
-            <span tal:condition="not: repeat.crumb.end" class="divider">/</span>
-          </li>
-        </tal:repeat>
-      </ul>
-      <!-- END: breadcrumb -->
-
-      <!-- === BEGIN: perspectives === -->
-      <metal:define define-slot="perspectives">
-      <ul class="nav nav-tabs" id="page-perspectives"
-          metal:define-macro="perspectives">
-
-        <tal:repeat repeat="perspective view.perspectives">
-
-          <li
-             tal:attributes="class '%s' % (request.path.endswith(perspective.target.split('/')[-1]) and 'active' or '')"
-             >
-            <a href="${perspective.target}"
-               tal:content="perspective.label"
-               >Content</a>
-          </li>
-        </tal:repeat>
-
-      </ul>
-      </metal:define>
-      <!-- === END: perspectives === -->
-
-
-      <!-- === BEGIN: content_toolbar === -->
-      <metal:define define-slot="toolbar">
-        <div class="btn-toolbar well">
-          <tal:repeat repeat="action view.contentactions">
-            <tal:replace replace="structure action.render(request, context, view=view)"/>
+        <!-- BEGIN: breadcrumb -->
+        <ul class="breadcrumb">
+          <tal:repeat repeat="crumb view.breadcrumbs">
+            <li>
+              <a href="${view.object_url(crumb)}admin">${crumb.title}</a>
+              <span tal:condition="not: repeat.crumb.end" class="divider">/</span>
+            </li>
           </tal:repeat>
-        </div>
-      </metal:define>
-      <!-- END content_toolbar -->
+        </ul>
+        <!-- END: breadcrumb -->
 
-      <div id="main" class="container" metal:define-slot="main">
+        <!-- === BEGIN: perspectives === -->
+        <metal:define define-slot="perspectives">
+          <ul class="nav nav-tabs" id="page-perspectives"
+              metal:define-macro="perspectives">
 
-        <div id="wrapper" class="sixteen columns">
+            <tal:repeat repeat="perspective view.perspectives">
 
-          <div id="content" metal:define-slot="content"/>
+              <li
+                 tal:attributes="class '%s' % (request.path.endswith(perspective.target.split('/')[-1]) and 'active' or '')"
+                 >
+                <a href="${perspective.target}"
+                   tal:content="perspective.label"
+                   >Content</a>
+              </li>
+            </tal:repeat>
 
-          <div id="footer" metal:define-slot="footer">
+          </ul>
+        </metal:define>
+        <!-- === END: perspectives === -->
+
+
+        <!-- === BEGIN: content_toolbar === -->
+        <metal:define define-slot="toolbar">
+          <div class="btn-toolbar well">
+            <tal:repeat repeat="action view.contentactions">
+              <tal:replace replace="structure action.render(request, context, view=view)"/>
+            </tal:repeat>
           </div>
+        </metal:define>
+        <!-- END content_toolbar -->
+
+        <div id="main" class="container" metal:define-slot="main">
+
+          <div id="wrapper" class="sixteen columns">
+
+            <div id="content" metal:define-slot="content"/>
+
+            <div id="footer" metal:define-slot="footer">
+            </div>
+          </div>
+
         </div>
-
       </div>
-    </div>
 
-    <div metal:use-macro="macros.macros['pycms-modal']"/>
+      <div metal:use-macro="macros.macros['pycms-modal']"/>
 
-  </body>
-</html>
+    </body>
+  </html>
 
 </metal:define-macro>

@@ -94,6 +94,20 @@ class BaseView(object):
                                                              self.request)]
 
     @property
+    def manageactions(self):
+
+        reg = self.request.registry
+
+        util = reg.getUtility(IActions)
+
+        actions = util.get_actions("manage")
+
+        return [action for action in actions
+                if (not action.permission) or has_permission(action.permission,
+                                                             self.context,
+                                                             self.request)]
+
+    @property
     def contentactions(self):
 
         reg = self.request.registry
@@ -157,7 +171,8 @@ class BaseView(object):
 
         self.request.update({'kwargs': kwargs})
 
-        return "".join(view(self.context, self.request).app_iter)
+        if view:
+            return "".join(view(self.context, self.request).app_iter)
 
     def has_nature(self, nature_id):
 

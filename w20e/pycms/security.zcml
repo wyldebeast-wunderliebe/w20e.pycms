@@ -32,6 +32,16 @@
     />
 
   <pycms:action
+     name="users"
+     label="Users &amp; Groups"
+     target="/users"
+     category="manage"
+     ctype="site"
+     icon="icon-user"
+     permission="admin"
+     />
+
+  <pycms:action
      name="logout"
      target="./logout"
      category="site"

@@ -69,15 +69,6 @@
      />
 
   <pycms:action
-     name="users"
-     label="Users &amp; Groups"
-     target="./users"
-     category="perspective"
-     ctype="site"
-     permission="admin"
-     />
-
-  <pycms:action
      name="settings"
      label="Settings"
      target="./settings"
@@ -94,10 +85,19 @@
      />
 
   <pycms:action
+     name="preview"
+     label="Preview"
+     target="./preview"
+     category="perspective"
+     permission="edit"
+     />
+
+  <pycms:action
      name="pack"
      label="Pack DB"
-     target="./pack"
-     category="perspective"
+     target="/pack"
+     category="manage"
+     icon="icon-resize-small"
      ctype="site"
      permission="admin"
      />

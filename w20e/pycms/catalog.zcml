@@ -39,9 +39,10 @@
 
   <pycms:action
      name="catalog"
-     target="./catalog"
-     category="perspective"
+     target="/catalog"
+     category="manage"
      ctype="site"
+     icon="icon-book"
      permission="admin"
      />
 
