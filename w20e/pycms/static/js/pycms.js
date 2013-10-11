@@ -398,7 +398,7 @@ $(document).ready(function() {
     pycms.init_fileupload();
 
     // Handle explorer
-    $("#xplorer a").on("click", function(e) {
+    $(document).on("click", "#xplorer a", function(e) {
 
         $.get($(e.currentTarget).attr("href"),
               $(e.currentTarget).data("args"),
@@ -406,6 +406,7 @@ $(document).ready(function() {
                 $("#xplorer").replaceWith(data);
               });
 
+        e.stopPropagation();
         e.preventDefault();
       });
 });
