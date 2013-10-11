@@ -9,6 +9,7 @@ import pyramid_zcml
 from events import AppRootReady
 from w20e.forms.registry import Registry
 from w20e.forms.pyramid.file import PyramidFile
+from widgets.reference import Reference, ReferenceRenderer
 from models.imagefolder import ImageFolder
 from json_adapters import register_json_adapters
 from migration import migrate
@@ -17,6 +18,9 @@ import pkg_resources
 
 Registry.register_renderable("file", PyramidFile)
 Registry.set_html_template_path("./bootstrap")
+Registry.register_renderer("reference", "html", ReferenceRenderer)
+Registry.register_renderable("reference", Reference)
+
 
 here = os.path.abspath(os.path.dirname(__file__))
 version = open(os.path.join(here, "version.txt")

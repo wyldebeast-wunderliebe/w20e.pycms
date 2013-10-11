@@ -48,4 +48,12 @@
       factory="w20e.pycms.layout.blocks.image.Image"
       />
 
+  <view
+      request_param="type=image"
+      context="..interfaces.ILayoutMixin"
+      view="w20e.pycms.views.xplorer.XPlorerView"
+      renderer="w20e.pycms:templates/xplore.pt"
+      name="add_block"
+    />
+
 </configure>

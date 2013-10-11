@@ -1,0 +1,23 @@
+  <div id="${control.id}"
+    class="control ${control.type} ${fmtmap['extra_classes']}"
+    data-extra-options="${control.data_options}">
+
+    <div class="control-info">
+      <label class="control-label" for="input-${control.id}"
+             tal:content="structure fmtmap['label']">Label</label>
+      <div class="alert">${control.alert}</div>
+      <div tal:condition="control.hint" class="hint">${fmtmap['hint']}</div>
+      <div tal:condition="control.help" class="help">${fmtmap['help']}</div>
+    </div>
+
+    <div class="control-widget">
+      <a href="">Select content</a>
+      <input type="hidden" name="${control.id}" />
+
+      <tal:condition condition="value">
+        ${value}
+      </tal:condition>
+                                          
+    </div>
+
+  </div>

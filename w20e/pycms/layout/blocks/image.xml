@@ -13,12 +13,6 @@
       <bind>img</bind>
       <required>True</required>
     </properties>
-
-    <properties id="file_types">
-      <bind>img</bind>
-      <datatype>file</datatype>
-    </properties>
-
   </model>
 
   <view>
@@ -28,9 +22,9 @@
       <property name="cols">40</property>
     </input>
 
-    <file id="data" bind="img">
-      <label>Image file</label>
-    </file>
+    <reference id="data" bind="img">
+      <label>Image</label>
+    </reference>
 
     <group id="submission" layout="flow">
       <property name="orientation">h</property>

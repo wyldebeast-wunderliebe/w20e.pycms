@@ -361,6 +361,14 @@
      permission="edit"
      />
 
+  <view
+     context="w20e.pycms.models.interfaces.IFolder"
+     view=".xplorer.XPlorerView"
+     renderer="w20e.pycms:templates/xplore.pt"
+     name="xplore"
+     permission="view"
+     />
+
   <!-- CSS and JS resources -->
   <route
      name="css"

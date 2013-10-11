@@ -1,0 +1,28 @@
+<div id="xplorer">
+
+  <tal:condition condition="view.has_parent">
+    <a href="${view.xplore_parent_url}">..</a>
+  </tal:condition>
+
+  <table>
+    <thead>
+      <tr><th/><th>title</th><th>type</th></tr>
+    </thead>
+    <tal:repeat repeat="child view.list_content()">
+      <tr>
+        <td>
+          <img src="#" tal:attributes="src view.get_icon(child.content_type);
+                                       title child.content_type"
+               />
+        </td>
+        <td>
+          <a href="${view.xplore_url(child)}">${child.title}</a>
+        </td>
+        <td>
+          ${child.content_type}
+        </td>
+      </tr>
+    </tal:repeat>
+  </table>
+
+</div>

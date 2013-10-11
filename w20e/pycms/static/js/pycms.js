@@ -396,4 +396,16 @@ $(document).ready(function() {
       });
 
     pycms.init_fileupload();
+
+    // Handle explorer
+    $("#xplorer a").on("click", function(e) {
+
+        $.get($(e.currentTarget).attr("href"),
+              $(e.currentTarget).data("args"),
+              function(data) {
+                $("#xplorer").replaceWith(data);
+              });
+
+        e.preventDefault();
+      });
 });

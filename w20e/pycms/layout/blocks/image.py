@@ -8,3 +8,7 @@ class Image(Block):
     def render(self, request):
 
         return """<img src=""/>"""
+
+    def add_url(self, slot):
+
+        return "/xplore"
