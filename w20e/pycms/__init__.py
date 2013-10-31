@@ -161,6 +161,11 @@ def make_pycms_app(app, **settings):
 
     config.include(pyramid_zcml)
     config.include('pyramid_mailer')
+    config.include('pyramid_fanstatic')
+    config.include('pyramid_chameleon')
+
+    config.add_tween('w20e.pycms.tweens.pycms_fanstatic_factory',
+                 under='pyramid_fanstatic.tween_factory')
 
     config.load_zcml('w20e.pycms:bootstrap.zcml')
 

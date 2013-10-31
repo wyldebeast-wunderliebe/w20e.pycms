@@ -189,4 +189,8 @@
       handler=".tempregister.objectFinalized"
     />
 
+  <!--subscriber
+      for="pyramid.events.INewResponse"
+      handler=".fanstatichandler.newResponse"
+    /-->
 </configure>

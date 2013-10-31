@@ -14,12 +14,10 @@ from w20e.forms.pyramid.formview import formview as pyramidformview
 from w20e.pycms.utils import has_permission
 from w20e.pycms.utils import path_to_object
 from w20e.pycms.nature.interfaces import INatures
-from w20e.pycms.interfaces import IAdmin, ITemporaryObject
+from w20e.pycms.interfaces import IAdmin, ITemporaryObject, ICSSRegistry, ICSSInjector
 from w20e.pycms.events import TemporaryObjectCreated, TemporaryObjectFinalized
 from w20e.pycms.actions import IActions
 from w20e.pycms.ctypes import ICTypes
-from w20e.pycms.macros import IMacros
-
 
 class BaseView(object):
 
@@ -33,6 +31,10 @@ class BaseView(object):
         self.request = request
 
     def __call__(self):
+
+        #reg = self.request.registry
+        #util = reg.getUtility(ICSSInjector)
+        #util.inject('public')
 
         return {}
 

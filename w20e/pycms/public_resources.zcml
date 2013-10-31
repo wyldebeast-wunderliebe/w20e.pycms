@@ -2,6 +2,9 @@
            xmlns:pycms="http://w20e.com/pycms"
            >
 
-  <pycms:css cssfile="./static/css/public_base.css" csstarget="public" />
+  <pycms:css name="css"
+             rootpath="static/css/"
+             relpath="public_base.css"
+             target="public" />
 
 </configure>

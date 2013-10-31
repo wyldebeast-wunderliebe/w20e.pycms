@@ -1,6 +1,11 @@
 from zope.interface import Interface
 
 
+class ICSSInjector(Interface):
+
+    """ Marker for CSSInjector """
+
+
 class ICSSRegistry(Interface):
 
     """ Marker for CSSRegistry """

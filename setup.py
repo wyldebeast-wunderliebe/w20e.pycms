@@ -16,6 +16,8 @@ requires = [
     'pyramid_zcml',
     'pyramid_debugtoolbar',
     'pyramid_mailer',
+    'pyramid_fanstatic',
+    'pyramid_chameleon',
     'ZODB3',
     'repoze.catalog',
     'cssmin',
@@ -48,10 +50,15 @@ setup(name='w20e.pycms',
       install_requires = requires,
       tests_require= requires,
       test_suite="w20e.pycms",
-      entry_points = """\
-      [paste.global_paster_command]
-      pycms_pack = w20e.pycms.pack:PackCommand
-      """,
+      entry_points = {
+          'fanstatic.minifiers': [
+              'jsmin = fanstatic.compiler:JSMIN_MINIFIER',
+              'cssmin = fanstatic.compiler:CSSMIN_MINIFIER',
+          ],
+          'paste.global_paster_command': [
+              'pycms_pack = w20e.pycms.pack:PackCommand'
+          ],
+      },
       paster_plugins=['pyramid'],
       message_extractors = { '.': [
           ('**.pt',   'lingua_xml', None ),

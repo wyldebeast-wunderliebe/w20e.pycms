@@ -9,7 +9,6 @@ from ctypes import ICTypes
 from macros import IMacros
 from index import IIndexes
 
-
 def find_file(filename, context):
 
     """ If file is relative, unrelate... """
@@ -32,12 +31,27 @@ class ICSSDirective(Interface):
 
     """ Collect css files into one """
 
-    cssfile = TextLine(
-        title=u"CSS File",
-        description=u"Relative path to CSS file.",
+    name = TextLine(
+        title=u"Library name",
+        description=u"Unique name of library",
         required=True)
 
-    csstarget = TextLine(
+    rootpath = TextLine(
+        title=u"Library Path",
+        description=u"Relative path to CSS files",
+        required=True)
+
+    relpath = TextLine(
+        title=u"CSS File",
+        description=u"Relative path to CSS file",
+        required=True)
+
+    minifier = TextLine(
+        title=u"CSS Minifier",
+        description=u"Type of CSS minifier used",
+        required=False)
+
+    target = TextLine(
         title=u"CSS target(s)",
         description=u"Target css name as called from client.",
         required=True)
@@ -48,14 +62,12 @@ class ICSSDirective(Interface):
         required=False)
 
 
-def css(_context, cssfile, csstarget, media="screen"):
+def css(_context, name, rootpath, relpath, target, minifier='cssmin', media="screen"):
 
     reg = _context.context.registry
     cssregistry = reg.getUtility(ICSSRegistry)
 
-    filename = find_file(cssfile, _context)
-
-    cssregistry.add(filename, csstarget, media)
+    cssregistry.add(name, rootpath, relpath, minifier, target, media)
 
 
 class IJSDirective(Interface):

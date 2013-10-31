@@ -44,16 +44,18 @@
               src="${request.application_url}/public.js"></script>
     </metal:define-slot>
 
+    ${request.environ.update({'pycms_fanstatic_target':'public'})}
+
     <metal:define-slot define-slot="extra_js_slot"/>
 
     <!-- CSS
          ================================================== -->
-    <metal:define-slot define-slot="css_slot">
+    <!--metal:define-slot define-slot="css_slot">
       <link rel="stylesheet" href="${request.application_url}/public.css"
             type="text/css" media="screen" />
     </metal:define-slot>
 
-    <metal:define-slot define-slot="extra_css_slot"/>
+    <metal:define-slot define-slot="extra_css_slot"/-->
 
     <!-- Favicons
          ================================================== -->

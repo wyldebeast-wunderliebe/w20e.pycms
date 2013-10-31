@@ -1,22 +1,33 @@
+from fanstatic import Group, Library, Resource
+from fanstatic import get_library_registry
+
 class CSSRegistry(object):
 
     def __init__(self):
 
         self._registry = {}
 
-    def add(self, cssfile, csstarget, media):
+    def add(self, name, rootpath, relpath, minifier, target, media):
 
-        for tgt in csstarget.split(","):
+        # fanstatic library registry
+        libreg = get_library_registry()
+
+        for tgt in target.split(","):
             tgt = tgt.strip()
 
             if not tgt in self._registry:
-                self._registry[tgt] = []
+                self._registry[tgt] = Group([])
 
-            self._registry[tgt].append((cssfile, media))
+            library = Library(name, rootpath)
+            libreg.add(library)
+
+            css_resource = Resource(library, relpath, minifier=minifier)
+
+            self._registry[tgt].resources.add(css_resource)
 
     def get(self, target):
 
-        return self._registry.get(target, [])
+        return self._registry.get(target, None)
 
 
 class JSRegistry(object):

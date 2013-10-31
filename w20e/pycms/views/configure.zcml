@@ -370,12 +370,12 @@
      />
 
   <!-- CSS and JS resources -->
-  <route
+  <!--route
      name="css"
      pattern="{whatever}.css"
      view=".css.CSSView"
      renderer="css"
-     />
+     /-->
 
   <route
      name="js"

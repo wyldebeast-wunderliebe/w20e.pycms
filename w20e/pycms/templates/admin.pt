@@ -18,11 +18,13 @@
       <meta name="viewport"
             content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-      <link rel="stylesheet" href="${request.application_url}/manage.css"
-            type="text/css" media="screen" charset="utf-8" />
+      <!--link rel="stylesheet" href="${request.application_url}/manage.css"
+            type="text/css" media="screen" charset="utf-8" /-->
 
       <metal:define-slot define-slot="extra_css_slot">
       </metal:define-slot>
+
+      ${request.environ.update({'pycms_fanstatic_target':'manage'})}
 
       <script language="JavaScript"
               src="http://code.jquery.com/jquery-1.9.0.min.js"></script>
@@ -91,7 +93,7 @@
                 <li>
 
                   <div class="btn-group" id="manage_action">
-                    <a class="btn dropdown-toggle" 
+                    <a class="btn dropdown-toggle"
                        data-toggle="dropdown" href="#">
                       <i class="icon-wrench"></i>
                       Configuration
