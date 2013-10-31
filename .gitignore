@@ -1,3 +1,4 @@
 .gitignore
 *.pyc
 *.egg-info
+*.min.css
