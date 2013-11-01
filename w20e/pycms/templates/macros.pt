@@ -115,10 +115,10 @@
 <div id="pycms-modal" metal:define-macro="pycms-modal"
   class="modal hide fade" tabindex="-1" role="dialog">
   <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
   </div>
   <div class="modal-body">
-  <p>message…</p>
+  <p>message</p>
   </div>
   <div class="modal-footer">
   <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>

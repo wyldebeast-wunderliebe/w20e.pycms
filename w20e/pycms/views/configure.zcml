@@ -369,21 +369,6 @@
      permission="view"
      />
 
-  <!-- CSS and JS resources -->
-  <!--route
-     name="css"
-     pattern="{whatever}.css"
-     view=".css.CSSView"
-     renderer="css"
-     /-->
-
-  <route
-     name="js"
-     pattern="{whatever}.js"
-     view=".js.JSView"
-     renderer="js"
-     />
-
   <!-- tinyMCE views -->
   <view
      name="tiny_browse_images"

@@ -1,55 +1,34 @@
 <configure xmlns="http://pylonshq.com/pyramid">
 
-  <include package="pyramid_zcml" />
+    <include package="pyramid_zcml"/>
 
-  <utility
-     provides=".interfaces.ICSSRegistry"
-     factory=".utilities.CSSRegistry"
-     />
+    <utility provides=".interfaces.ICSSRegistry"
+             factory=".utilities.CSSRegistry" />
 
-  <utility
-     provides=".interfaces.IJSRegistry"
-     factory=".utilities.JSRegistry"
-     />
+    <utility provides=".interfaces.IJSRegistry"
+             factory=".utilities.JSRegistry" />
 
-  <utility
-     provides=".actions.IActions"
-     factory=".actions.Actions"
-     />
+    <utility provides=".actions.IActions"
+             factory=".actions.Actions" />
 
-  <utility
-     provides=".nature.interfaces.INatures"
-     factory=".nature.registry.Natures"
-     />
+    <utility provides=".nature.interfaces.INatures"
+             factory=".nature.registry.Natures" />
 
-  <utility
-     provides=".layout.interfaces.ILayouts"
-     factory=".layout.registry.Layouts"
-     />
+    <utility provides=".layout.interfaces.ILayouts"
+             factory=".layout.registry.Layouts" />
 
-  <utility
-     provides=".ctypes.ICTypes"
-     factory=".ctypes.CTypes"
-     />
+    <utility provides=".ctypes.ICTypes"
+             factory=".ctypes.CTypes" />
 
-  <utility
-     provides=".macros.IMacros"
-     factory=".macros.Macros"
-     />
+    <utility provides=".macros.IMacros"
+             factory=".macros.Macros" />
 
-  <utility
-     provides=".interfaces.IMailer"
-     factory=".mailer.Mailer"
-     />
+    <utility provides=".interfaces.IMailer"
+             factory=".mailer.Mailer" />
 
-  <utility
-     provides=".index.IIndexes"
-     factory=".index.Indexes"
-     />
+    <utility provides=".index.IIndexes"
+             factory=".index.Indexes" />
 
-  <utility
-     provides=".interfaces.IAdmin"
-     factory=".utilities.Admin"
-     />
-
+    <utility provides=".interfaces.IAdmin"
+             factory=".utilities.Admin" />
 </configure>

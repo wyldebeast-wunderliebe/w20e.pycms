@@ -1,10 +1,9 @@
 <configure xmlns="http://pylonshq.com/pyramid"
-           xmlns:pycms="http://w20e.com/pycms"
-           >
+           xmlns:pycms="http://w20e.com/pycms">
 
-  <pycms:css name="css"
-             rootpath="static/css/"
-             relpath="public_base.css"
-             target="public" />
+    <pycms:css name="css"
+               rootpath="static/css/"
+               relpath="public_base.css"
+               target="public"/>
 
 </configure>

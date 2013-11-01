@@ -57,7 +57,7 @@ setup(name='w20e.pycms',
           ],
           'paste.global_paster_command': [
               'pycms_pack = w20e.pycms.pack:PackCommand'
-          ],
+          ]
       },
       paster_plugins=['pyramid'],
       message_extractors = { '.': [

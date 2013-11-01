@@ -18,24 +18,11 @@
       <meta name="viewport"
             content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-      <!--link rel="stylesheet" href="${request.application_url}/manage.css"
-            type="text/css" media="screen" charset="utf-8" /-->
-
-      <metal:define-slot define-slot="extra_css_slot">
-      </metal:define-slot>
-
+      <!-- fetch fanstatic 'manage' resources -->
       ${request.environ.update({'pycms_fanstatic_target':'manage'})}
 
       <script language="JavaScript"
               src="http://code.jquery.com/jquery-1.9.0.min.js"></script>
-      <script language="JavaScript"
-              defer="defer"
-              src="${request.application_url}/manage.js"></script>
-      <script language="JavaScript"
-              src="${request.application_url}/static/js/inline_editing.js"></script>
-
-      <metal:define-slot define-slot="extra_js_slot">
-      </metal:define-slot>
 
       <link rel="shortcut icon"
             href="${request.application_url}/static/favicon.ico" />
@@ -46,21 +33,21 @@
 
       <!-- About popup -->
       <div id="about" class="alert alert-info hide">
-        <a class="close" href="#" onclick="$('#about').hide(); return false">×</a>
+        <a class="close" href="#" onclick="$('#about').hide(); return false">x</a>
         w20e.pycms &copy; Copyright 2011, <a href="http://www.w20e.com/">wyldebeast &amp; wunderliebe</a>.
         <div tal:content="view.context.root.cms_version">version</div>
       </div>
 
       <!-- general alert box -->
       <div id="alert" class="alert hide">
-        <a class="close" href="#" onclick="$('#alert').hide(); return false">×</a>
+        <a class="close" href="#" onclick="$('#alert').hide(); return false">x</a>
         <div id="alert_msg"></div>
       </div>
 
       <!-- Modal box for delete warning TODO: move this to JS -->
       <div class="modal hide" id="confirm_delete">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">×</button>
+          <button type="button" class="close" data-dismiss="modal">x</button>
           <h3>Delete</h3>
         </div>
         <div class="modal-body">

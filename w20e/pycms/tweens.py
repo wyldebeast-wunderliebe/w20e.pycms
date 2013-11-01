@@ -1,7 +1,9 @@
-from w20e.pycms.interfaces import ICSSRegistry
+from w20e.pycms.interfaces import ICSSRegistry, IJSRegistry
+from logging import getLogger
+
+LOGGER = getLogger('w20e.pycms')
 
 def pycms_fanstatic_factory(handler, registry):
-
     def pycms_fanstatic_injector(request):
 
         response = handler(request)
@@ -13,9 +15,15 @@ def pycms_fanstatic_factory(handler, registry):
 
         if target:
             cssregistry = request.registry.getUtility(ICSSRegistry)
-            resource = cssregistry.get(target)
-            if resource:
-                resource.need()
+            jsregistry = request.registry.getUtility(IJSRegistry)
+
+            cssresource = cssregistry.get(target)
+            if cssresource:
+                cssresource.need()
+
+            jsresource = jsregistry.get(target)
+            if jsresource:
+                jsresource.need()
 
         return response
 

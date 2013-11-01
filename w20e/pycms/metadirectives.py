@@ -1,5 +1,3 @@
-import os
-import pkg_resources
 from zope.interface import Interface
 from zope.schema import TextLine
 from zope.configuration.fields import GlobalObject
@@ -9,26 +7,8 @@ from ctypes import ICTypes
 from macros import IMacros
 from index import IIndexes
 
-def find_file(filename, context):
-
-    """ If file is relative, unrelate... """
-
-    if filename[0] != "/":
-
-        if ":" in filename:
-            module, resource = filename.split(":")
-        
-            provider = pkg_resources.get_provider(module)
-        
-            filename = provider.get_resource_filename(module, resource)
-        else:
-            filename = os.path.join(context.package.__path__[0], filename)
-                    
-    return filename
-
 
 class ICSSDirective(Interface):
-
     """ Collect css files into one """
 
     name = TextLine(
@@ -63,7 +43,6 @@ class ICSSDirective(Interface):
 
 
 def css(_context, name, rootpath, relpath, target, minifier='cssmin', media="screen"):
-
     reg = _context.context.registry
     cssregistry = reg.getUtility(ICSSRegistry)
 
@@ -71,32 +50,42 @@ def css(_context, name, rootpath, relpath, target, minifier='cssmin', media="scr
 
 
 class IJSDirective(Interface):
-
     """ Collect js files into one """
 
-    jsfile = TextLine(
+    name = TextLine(
+        title=u"Library name",
+        description=u"Unique name of library",
+        required=True)
+
+    rootpath = TextLine(
         title=u"JS File",
         description=u"Relative path to JS file.",
         required=True)
 
-    jstarget = TextLine(
+    relpath = TextLine(
         title=u"JS target",
         description=u"Target js name as called from client.",
         required=True)
 
+    minifier = TextLine(
+        title=u"JS Minifier",
+        description=u"Type of JS minifier used",
+        required=False)
 
-def js(_context, jsfile, jstarget):
+    target = TextLine(
+        title=u"JS target(s)",
+        description=u"Target js name as called from client.",
+        required=True)
 
+
+def js(_context, name, rootpath, relpath, target, minifier='jsmin'):
     reg = _context.context.registry
-    cssregistry = reg.getUtility(IJSRegistry)
+    jsregistry = reg.getUtility(IJSRegistry)
 
-    filename = find_file(jsfile, _context)
-
-    cssregistry.add(filename, jstarget)
+    jsregistry.add(name, rootpath, relpath, minifier, target)
 
 
 class IActionDirective(Interface):
-
     """ Actions """
 
     name = TextLine(
@@ -112,7 +101,7 @@ class IActionDirective(Interface):
     icon = TextLine(
         title=u"Icon class as used by Awesome Fonts",
         description=u"Icon class",
-        required=False)    
+        required=False)
 
     target = TextLine(
         title=u"Target",
@@ -142,13 +131,12 @@ class IActionDirective(Interface):
     template = TextLine(
         title=u"Template",
         description=u"Template to use for rendering",
-        required=False)    
+        required=False)
 
 
 def action(_context, name, target, category, label=None, icon=None, ctype=[],
            permission="", condition=None,
            template="w20e.pycms:templates/action.pt"):
-
     reg = _context.context.registry
     action_registry = reg.getUtility(IActions)
 
@@ -162,7 +150,6 @@ def action(_context, name, target, category, label=None, icon=None, ctype=[],
 
 
 class ICTypeDirective(Interface):
-
     """ Register Content type info """
 
     name = TextLine(
@@ -187,7 +174,6 @@ class ICTypeDirective(Interface):
 
 
 def ctype(_context, name, **kwargs):
-
     reg = _context.context.registry
     ctype_registry = reg.getUtility(ICTypes)
 
@@ -195,7 +181,6 @@ def ctype(_context, name, **kwargs):
 
 
 class IMacroDirective(Interface):
-
     """ Register Content type info """
 
     name = TextLine(
@@ -210,7 +195,6 @@ class IMacroDirective(Interface):
 
 
 def macro(_context, name, **kwargs):
-
     reg = _context.context.registry
     macro_registry = reg.getUtility(IMacros)
 
@@ -218,7 +202,6 @@ def macro(_context, name, **kwargs):
 
 
 class IIndexDirective(Interface):
-
     """ Register index """
 
     name = TextLine(
@@ -238,7 +221,6 @@ class IIndexDirective(Interface):
 
 
 def index(_context, name, field, idxtype, **kwargs):
-
     reg = _context.context.registry
     indexes = reg.getUtility(IIndexes)
 

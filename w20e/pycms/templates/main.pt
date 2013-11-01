@@ -38,24 +38,10 @@
 
     <!-- JS
          ================================================== -->
-    <metal:define-slot define-slot="js_slot">
-      <script src="http://code.jquery.com/jquery-1.9.0.min.js"></script>
-      <script defer="defer"
-              src="${request.application_url}/public.js"></script>
-    </metal:define-slot>
+    <script src="http://code.jquery.com/jquery-1.9.0.min.js"></script>
 
+    <!-- fetch fanstatic public resources -->
     ${request.environ.update({'pycms_fanstatic_target':'public'})}
-
-    <metal:define-slot define-slot="extra_js_slot"/>
-
-    <!-- CSS
-         ================================================== -->
-    <!--metal:define-slot define-slot="css_slot">
-      <link rel="stylesheet" href="${request.application_url}/public.css"
-            type="text/css" media="screen" />
-    </metal:define-slot>
-
-    <metal:define-slot define-slot="extra_css_slot"/-->
 
     <!-- Favicons
          ================================================== -->

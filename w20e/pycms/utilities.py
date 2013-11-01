@@ -1,8 +1,10 @@
 from fanstatic import Group, Library, Resource
 from fanstatic import get_library_registry
+from logging import getLogger
+
+LOGGER = getLogger('w20e.pycms')
 
 class CSSRegistry(object):
-
     def __init__(self):
 
         self._registry = {}
@@ -31,24 +33,31 @@ class CSSRegistry(object):
 
 
 class JSRegistry(object):
-
     def __init__(self):
 
         self._registry = {}
 
-    def add(self, jsfile, jstarget):
+    def add(self, name, rootpath, relpath, minifier, target):
 
-        for tgt in jstarget.split(","):
+        # fanstatic library registry
+        libreg = get_library_registry()
+
+        for tgt in target.split(","):
             tgt = tgt.strip()
 
             if not tgt in self._registry:
-                self._registry[tgt] = []
+                self._registry[tgt] = Group([])
 
-            self._registry[tgt].append(jsfile)
+            library = Library(name, rootpath)
+            libreg.add(library)
+
+            js_resource = Resource(library, relpath, minifier=minifier)
+
+            self._registry[tgt].resources.add(js_resource)
 
     def get(self, target):
 
-        return self._registry.get(target, [])
+        return self._registry.get(target, None)
 
 
 class Admin(object):
