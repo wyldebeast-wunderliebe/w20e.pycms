@@ -36,10 +36,6 @@
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-    <!-- JS
-         ================================================== -->
-    <script src="http://code.jquery.com/jquery-1.9.0.min.js"></script>
-
     <!-- fetch fanstatic public resources -->
     ${request.environ.update({'pycms_fanstatic_target':'public'})}
 

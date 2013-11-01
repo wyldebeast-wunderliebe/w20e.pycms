@@ -21,9 +21,6 @@
       <!-- fetch fanstatic 'manage' resources -->
       ${request.environ.update({'pycms_fanstatic_target':'manage'})}
 
-      <script language="JavaScript"
-              src="http://code.jquery.com/jquery-1.9.0.min.js"></script>
-
       <link rel="shortcut icon"
             href="${request.application_url}/static/favicon.ico" />
 

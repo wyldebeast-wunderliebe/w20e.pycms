@@ -1,5 +1,6 @@
 from w20e.pycms.interfaces import ICSSRegistry, IJSRegistry
 from logging import getLogger
+from js.jquery import jquery
 
 LOGGER = getLogger('w20e.pycms')
 
@@ -8,9 +9,11 @@ def pycms_fanstatic_factory(handler, registry):
 
         response = handler(request)
 
+        # fetch jquery through fanstatic
+        jquery.need()
+
         # this needs to be defined in the template, e.g. ${request.environ.update({'pycms_fanstatic_target':'public'})}
         # optional targets are 'public' and 'manage'
-
         target = request.environ.get('pycms_fanstatic_target')
 
         if target:
