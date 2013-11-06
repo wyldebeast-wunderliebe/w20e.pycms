@@ -105,6 +105,12 @@
       />
 
   <pycms:index
+      name="changed"
+      field="changed"
+      idxtype="date"
+      />
+
+  <pycms:index
       name="position_in_parent"
       field="position_in_parent"
       idxtype="field"

@@ -29,6 +29,7 @@ from ..macros import IMacros
 
 from w20e.forms.pyramid.formview import formview as pyramidformview
 from xml.dom.minidom import Document
+from datetime import datetime
 
 
 class ViewMixin(object):
@@ -436,7 +437,11 @@ class EditView(EditBase, ViewMixin):
         status, errors = self.form.view.handle_form(
             self.form, self.request.params)
 
+        self.context._changed = datetime.now()
+        self.request.registry.notify(ContentChanged(self.context))
+
         self.form.submission.submit(self.form, self.context, self.request)
+
         results = pyramidformview.ajax_validate(self, "xml")
         return results
 

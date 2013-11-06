@@ -480,6 +480,10 @@ pycms.bind_form_changes = function() {
         $(e.target).closest("form.w20e-form").submit();
       });
 
+    $(document).on("focusout", '.w20e-form.ajax-validate input[type="month"]', function(e) {
+        $(e.target).closest("form.w20e-form").submit();
+      });
+
     $(document).on("change", '.w20e-form.ajax-validate input[type="hidden"]', function(e) {
         $(e.target).closest("form.w20e-form").submit();
       });
