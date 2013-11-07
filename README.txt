@@ -76,6 +76,7 @@ PyCMS gives you:
  * a lot of ZCML configuration
  * CMS design based on (Twitter) Bootstrap
  * Some features like sharing, events and news, separately packaged
+ * Fanstatic static resource management
 
 
 Getting started
@@ -157,14 +158,18 @@ read on...
 - Include any other CSS and JS you like, using the pycms zcml directives:
 
   <pycms:css
-    cssfile="your.css"
-    csstarget="public"
+    libname=“my_csslib”
+    rootpath="your.rootpath”
+    relpath=“your.css”
+    target=“public”
     media="screen"
     />
 
   <pycms:js
-    jsfile="your.js"
-    jstarget="public"
+    libname=“my_jslib”
+    rootpath=“your.rootpath”
+    relpath="your.js"
+    target="public"
     />
 
 - Override assets like favicon and robots.txt:

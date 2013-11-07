@@ -5,108 +5,108 @@
     <include package="pyramid_zcml"/>
 
     <!-- All CSS needed for manage interface -->
-    <pycms:css name="extcss"
+    <pycms:css libname="extcss"
                rootpath="static/3dparty"
                relpath="bootstrap-2.3.2/css/bootstrap.css"
                target="manage"/>
 
-    <pycms:css name="extcss"
+    <pycms:css libname="extcss"
                rootpath="static/3dparty"
                relpath="font-awesome/css/font-awesome.css"
                target="manage"/>
 
-    <pycms:css name="extcss"
+    <pycms:css libname="extcss"
                rootpath="static/3dparty"
                relpath="jquery/css/jquery-ui-1.10.0.custom.css"
                target="manage"/>
 
-    <pycms:css name="css"
+    <pycms:css libname="css"
                rootpath="static/css"
                relpath="bootstrap_custom.css"
                target="manage"/>
 
-    <pycms:css name="css"
+    <pycms:css libname="css"
                rootpath="static/css"
                relpath="pycms.css"
                target="manage"/>
 
-    <pycms:css name="css"
+    <pycms:css libname="css"
                rootpath="static/css"
                relpath="layout.css"
                target="manage"/>
 
-    <pycms:css name="extcss"
+    <pycms:css libname="extcss"
                rootpath="static/3dparty"
                relpath="jqueryfileupload/jquery.fileupload-ui.css"
                target="manage"/>
 
     <!-- All JS needed for manage interface -->
-    <pycms:js name="pycms_js"
+    <pycms:js libname="pycms_js"
               rootpath="static"
               relpath="3dparty/bootstrap-2.3.2/js/bootstrap.js"
               target="manage"/>
 
-    <pycms:js name="pycms_js"
+    <pycms:js libname="pycms_js"
               rootpath="static"
               relpath="3dparty/jquery/js/jquery-ui-1.10.0.custom.js"
               target="manage"/>
 
-    <pycms:js name="pycms_js"
+    <pycms:js libname="pycms_js"
               rootpath="static"
               relpath="3dparty/jquery/js/jquery-ui-timepicker-addon.js"
               target="manage"/>
 
-    <pycms:js name="pycms_js"
+    <pycms:js libname="pycms_js"
               rootpath="static"
               relpath="3dparty/jquery/js/jquery.Storage.js"
               target="manage"/>
 
-    <pycms:js name="pycms_js"
+    <pycms:js libname="pycms_js"
               rootpath="static"
               relpath="3dparty/tinymce-4.0.2/js/tinymce/jquery.tinymce.min.js"
               target="manage"/>
 
-    <pycms:js name="pycms_js"
+    <pycms:js libname="pycms_js"
               rootpath="static"
               relpath="js/validation.js"
               target="manage"/>
 
-    <pycms:js name="pycms_js"
+    <pycms:js libname="pycms_js"
               rootpath="static"
               relpath="js/acl.js"
               target="manage"/>
 
-    <pycms:js name="pycms_js"
+    <pycms:js libname="pycms_js"
               rootpath="static"
               relpath="js/tinyupload.js"
               target="manage"/>
 
-    <pycms:js name="pycms_js"
+    <pycms:js libname="pycms_js"
               rootpath="static"
               relpath="js/layout.js"
               target="manage"/>
 
-    <pycms:js name="pycms_js"
+    <pycms:js libname="pycms_js"
               rootpath="static"
               relpath="js/inline_editing.js"
               target="manage"/>
 
-    <pycms:js name="pycms_js"
+    <pycms:js libname="pycms_js"
               rootpath="static"
               relpath="3dparty/jqueryfileupload/jquery.fileupload.js"
               target="manage"/>
 
-    <pycms:js name="pycms_js"
+    <pycms:js libname="pycms_js"
               rootpath="static"
               relpath="3dparty/jqueryfileupload/jquery.ui.widget.js"
               target="manage"/>
 
-    <pycms:js name="pycms_js"
+    <pycms:js libname="pycms_js"
               rootpath="static"
               relpath="3dparty/jqueryfileupload/jquery.iframe-transport.js"
               target="manage"/>
 
-    <pycms:js name="pycms_js"
+    <pycms:js libname="pycms_js"
               rootpath="static"
               relpath="js/pycms.js"
               target="manage"

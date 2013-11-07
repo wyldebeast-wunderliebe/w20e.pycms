@@ -11,7 +11,7 @@ class CSSRegistry(object):
 
         self._registry = {}
 
-    def add(self, name, rootpath, relpath, minifier, target, depends, media):
+    def add(self, libname, rootpath, relpath, minifier, target, depends, media):
 
         # global fanstatic library registry
         libreg = get_library_registry()
@@ -22,16 +22,16 @@ class CSSRegistry(object):
             if not tgt in self._registry:
                 self._registry[tgt] = Group([])
 
-            if name not in libreg.keys():
-                LOGGER.info("Create CSS library %s located at %s" % (name, rootpath))
-                libreg.add(Library(name, rootpath))
+            if libname not in libreg.keys():
+                LOGGER.info("Create CSS library %s located at %s" % (libname, rootpath))
+                libreg.add(Library(libname, rootpath))
 
             depends_list = []
             if depends:
                 for dependency in depends.split(','):
-                    depends_list.append(libreg.get(name).known_resources.get(dependency))
+                    depends_list.append(libreg.get(libname).known_resources.get(dependency))
 
-            css_resource = Resource(libreg.get(name), relpath, depends=depends_list, minifier=minifier)
+            css_resource = Resource(libreg.get(libname), relpath, depends=depends_list, minifier=minifier)
 
             self._registry[tgt].resources.add(css_resource)
 
@@ -45,7 +45,7 @@ class JSRegistry(object):
 
         self._registry = {}
 
-    def add(self, name, rootpath, relpath, minifier, target, depends):
+    def add(self, libname, rootpath, relpath, minifier, target, depends):
 
         # fanstatic library registry
         libreg = get_library_registry()
@@ -56,16 +56,16 @@ class JSRegistry(object):
             if not tgt in self._registry:
                 self._registry[tgt] = Group([])
 
-            if name not in libreg.keys():
-                LOGGER.info("Create JS library %s located at %s" % (name, rootpath))
-                libreg.add(Library(name, rootpath))
+            if libname not in libreg.keys():
+                LOGGER.info("Create JS library %s located at %s" % (libname, rootpath))
+                libreg.add(Library(libname, rootpath))
 
             depends_list = [jquery, ]
             if depends:
                 for dependency in depends.split(','):
-                    depends_list.append(libreg.get(name).known_resources.get(dependency))
+                    depends_list.append(libreg.get(libname).known_resources.get(dependency))
 
-            js_resource = Resource(libreg.get(name), relpath, depends=depends_list, minifier=minifier)
+            js_resource = Resource(libreg.get(libname), relpath, depends=depends_list, minifier=minifier)
 
             # TODO move (jquery) dependencies to config
             self._registry[tgt].resources.add(js_resource)

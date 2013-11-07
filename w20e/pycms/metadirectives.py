@@ -11,7 +11,7 @@ from index import IIndexes
 class ICSSDirective(Interface):
     """ Collect css files into one """
 
-    name = TextLine(
+    libname = TextLine(
         title=u"Library name",
         description=u"Unique name of library",
         required=True)
@@ -47,17 +47,17 @@ class ICSSDirective(Interface):
         required=False)
 
 
-def css(_context, name, rootpath, relpath, target, depends=None, minifier='cssmin', media="screen"):
+def css(_context, libname, rootpath, relpath, target, depends=None, minifier='cssmin', media="screen"):
     reg = _context.context.registry
     cssregistry = reg.getUtility(ICSSRegistry)
 
-    cssregistry.add(name, rootpath, relpath, minifier, target, depends, media)
+    cssregistry.add(libname, rootpath, relpath, minifier, target, depends, media)
 
 
 class IJSDirective(Interface):
     """ Collect js files into one """
 
-    name = TextLine(
+    libname = TextLine(
         title=u"Library name",
         description=u"Unique name of library",
         required=True)
@@ -88,11 +88,11 @@ class IJSDirective(Interface):
         required=False)
 
 
-def js(_context, name, rootpath, relpath, target, depends=None, minifier='jsmin'):
+def js(_context, libname, rootpath, relpath, target, depends=None, minifier='jsmin'):
     reg = _context.context.registry
     jsregistry = reg.getUtility(IJSRegistry)
 
-    jsregistry.add(name, rootpath, relpath, minifier, target, depends)
+    jsregistry.add(libname, rootpath, relpath, minifier, target, depends)
 
 
 class IActionDirective(Interface):
