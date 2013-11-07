@@ -1,3 +1,5 @@
+import fanstatic
+from fanstatic.inclusion import Inclusion
 from w20e.pycms.interfaces import ICSSRegistry, IJSRegistry
 from logging import getLogger
 from js.jquery import jquery
@@ -12,7 +14,8 @@ def pycms_fanstatic_factory(handler, registry):
         # fetch jquery through fanstatic
         jquery.need()
 
-        # this needs to be defined in the template, e.g. ${request.environ.update({'pycms_fanstatic_target':'public'})}
+        # this needs to be defined in the template, e.g.
+        #     ${request.environ.update({'pycms_fanstatic_target':'public'})}
         # optional targets are 'public' and 'manage'
         target = request.environ.get('pycms_fanstatic_target')
 

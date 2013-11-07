@@ -41,12 +41,17 @@ class ICSSDirective(Interface):
         description=u"For media (screen, print, ...)",
         required=False)
 
+    depends = TextLine(
+        title=u"List of dependencies",
+        description=u"Dependencies (comma separated) this CSS file depends on.",
+        required=False)
 
-def css(_context, name, rootpath, relpath, target, minifier='cssmin', media="screen"):
+
+def css(_context, name, rootpath, relpath, target, depends=None, minifier='cssmin', media="screen"):
     reg = _context.context.registry
     cssregistry = reg.getUtility(ICSSRegistry)
 
-    cssregistry.add(name, rootpath, relpath, minifier, target, media)
+    cssregistry.add(name, rootpath, relpath, minifier, target, depends, media)
 
 
 class IJSDirective(Interface):
@@ -77,12 +82,17 @@ class IJSDirective(Interface):
         description=u"Target js name as called from client.",
         required=True)
 
+    depends = TextLine(
+        title=u"List of dependencies",
+        description=u"Dependencies (comma separated) this JS file depends on.",
+        required=False)
 
-def js(_context, name, rootpath, relpath, target, minifier='jsmin'):
+
+def js(_context, name, rootpath, relpath, target, depends=None, minifier='jsmin'):
     reg = _context.context.registry
     jsregistry = reg.getUtility(IJSRegistry)
 
-    jsregistry.add(name, rootpath, relpath, minifier, target)
+    jsregistry.add(name, rootpath, relpath, minifier, target, depends)
 
 
 class IActionDirective(Interface):

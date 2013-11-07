@@ -4,7 +4,7 @@
     <!-- this must be included for the view declarations to work -->
     <include package="pyramid_zcml"/>
 
-    <!-- All admin CSS -->
+    <!-- All CSS needed for manage interface -->
     <pycms:css name="extcss"
                rootpath="static/3dparty"
                relpath="bootstrap-2.3.2/css/bootstrap.css"
@@ -40,75 +40,76 @@
                relpath="jqueryfileupload/jquery.fileupload-ui.css"
                target="manage"/>
 
-    <!-- All JS needed for admin interface -->
-    <pycms:js name="extjs"
-              rootpath="static/3dparty"
-              relpath="bootstrap-2.3.2/js/bootstrap.js"
+    <!-- All JS needed for manage interface -->
+    <pycms:js name="pycms_js"
+              rootpath="static"
+              relpath="3dparty/bootstrap-2.3.2/js/bootstrap.js"
               target="manage"/>
 
-    <pycms:js name="extjs"
-              rootpath="static/3dparty"
-              relpath="jquery/js/jquery-ui-1.10.0.custom.js"
+    <pycms:js name="pycms_js"
+              rootpath="static"
+              relpath="3dparty/jquery/js/jquery-ui-1.10.0.custom.js"
               target="manage"/>
 
-    <pycms:js name="extjs"
-              rootpath="static/3dparty"
-              relpath="jquery/js/jquery-ui-timepicker-addon.js"
+    <pycms:js name="pycms_js"
+              rootpath="static"
+              relpath="3dparty/jquery/js/jquery-ui-timepicker-addon.js"
               target="manage"/>
 
-    <pycms:js name="extjs"
-              rootpath="static/3dparty"
-              relpath="jquery/js/jquery.Storage.js"
+    <pycms:js name="pycms_js"
+              rootpath="static"
+              relpath="3dparty/jquery/js/jquery.Storage.js"
               target="manage"/>
 
-    <pycms:js name="extjs"
-              rootpath="static/3dparty"
-              relpath="tinymce-4.0.2/js/tinymce/jquery.tinymce.min.js"
+    <pycms:js name="pycms_js"
+              rootpath="static"
+              relpath="3dparty/tinymce-4.0.2/js/tinymce/jquery.tinymce.min.js"
               target="manage"/>
 
-    <pycms:js name="js"
-              rootpath="static/js"
-              relpath="validation.js"
+    <pycms:js name="pycms_js"
+              rootpath="static"
+              relpath="js/validation.js"
               target="manage"/>
 
-    <pycms:js name="js"
-              rootpath="static/js"
-              relpath="acl.js"
+    <pycms:js name="pycms_js"
+              rootpath="static"
+              relpath="js/acl.js"
               target="manage"/>
 
-    <pycms:js name="js"
-              rootpath="static/js"
-              relpath="tinyupload.js"
+    <pycms:js name="pycms_js"
+              rootpath="static"
+              relpath="js/tinyupload.js"
               target="manage"/>
 
-    <pycms:js name="js"
-              rootpath="static/js"
-              relpath="layout.js"
+    <pycms:js name="pycms_js"
+              rootpath="static"
+              relpath="js/layout.js"
               target="manage"/>
 
-    <pycms:js name="js"
-              rootpath="static/js"
-              relpath="inline_editing.js"
+    <pycms:js name="pycms_js"
+              rootpath="static"
+              relpath="js/inline_editing.js"
               target="manage"/>
 
-    <pycms:js name="extjs"
-              rootpath="static/3dparty"
-              relpath="jqueryfileupload/jquery.fileupload.js"
+    <pycms:js name="pycms_js"
+              rootpath="static"
+              relpath="3dparty/jqueryfileupload/jquery.fileupload.js"
               target="manage"/>
 
-    <pycms:js name="extjs"
-              rootpath="static/3dparty"
-              relpath="jqueryfileupload/jquery.ui.widget.js"
+    <pycms:js name="pycms_js"
+              rootpath="static"
+              relpath="3dparty/jqueryfileupload/jquery.ui.widget.js"
               target="manage"/>
 
-    <pycms:js name="extjs"
-              rootpath="static/3dparty"
-              relpath="jqueryfileupload/jquery.iframe-transport.js"
+    <pycms:js name="pycms_js"
+              rootpath="static"
+              relpath="3dparty/jqueryfileupload/jquery.iframe-transport.js"
               target="manage"/>
 
-    <pycms:js name="js"
-              rootpath="static/js"
-              relpath="pycms.js"
-              target="manage"/>
+    <pycms:js name="pycms_js"
+              rootpath="static"
+              relpath="js/pycms.js"
+              target="manage"
+              depends="js/acl.js,js/tinyupload.js,3dparty/jqueryfileupload/jquery.fileupload.js"/>
 
 </configure>
