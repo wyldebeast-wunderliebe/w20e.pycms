@@ -438,11 +438,12 @@ class EditView(EditBase, ViewMixin):
             self.form, self.request.params)
 
         self.context._changed = datetime.now()
-        self.request.registry.notify(ContentChanged(self.context))
 
         self.form.submission.submit(self.form, self.context, self.request)
 
         results = pyramidformview.ajax_validate(self, "xml")
+
+        self.request.registry.notify(ContentChanged(self.context))
         return results
 
 
