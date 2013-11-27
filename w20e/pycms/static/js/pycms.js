@@ -520,7 +520,6 @@ pycms.validate_form = function(form) {
 
         var action = form.attr("action");
         var method = form.attr("method");
-        var tgt = form;
         var data = form.serialize();
 
         var errors = false;
@@ -532,6 +531,8 @@ pycms.validate_form = function(form) {
               data: data,
               success: function(doc) {
 
+                var willRedirect = false;
+
                 //var doc = ( new DOMParser() ).parseFromString(data);
                 var commands = doc.getElementsByTagName("command");
 
@@ -542,6 +543,7 @@ pycms.validate_form = function(form) {
                     var value = commands[i].getAttribute("value");
 
                     if (command == "redirect") {
+                        willRedirect = true;
                         window.location.replace(value);
                     }
 
@@ -588,6 +590,8 @@ pycms.validate_form = function(form) {
                     }
 
                 });
+
+                form.trigger("w20e_form_validated", [willRedirect]);
 
               },
               error: function() {
