@@ -23,7 +23,8 @@ def init(event):
         app._catalog = Catalog()
         app._catalog.__parent__ = app
         app._catalog.__name__ = "catalog"
-        app._p_changed
+        app._catalog._p_changed = 1
+        app._p_changed = 1
 
     indexes = event.registry.getUtility(IIndexes)
 
@@ -32,15 +33,19 @@ def init(event):
             if idx[1]['type'] == "field":
                 app._catalog.catalog[idx[0]] = \
                         CatalogFieldIndex(idx[1]['field'])
+                app._catalog._p_changed = 1
             elif idx[1]['type'] == "text":
                 app._catalog.catalog[idx[0]] = \
                         CatalogTextIndex(idx[1]['field'])
+                app._catalog._p_changed = 1
             elif idx[1]['type'] == "keyword":
                 app._catalog.catalog[idx[0]] = \
                         CatalogKeywordIndex(idx[1]['field'])
+                app._catalog._p_changed = 1
             elif idx[1]['type'] == "path":
                 app._catalog.catalog[idx[0]] = \
                         CatalogPathIndex(idx[1]['field'])
+                app._catalog._p_changed = 1
 
 
 # event handlers
@@ -131,6 +136,8 @@ class Catalog(object):
         self._document_map.add_metadata(docid, {'path': path})
 
         self.catalog.index_doc(docid, object)
+        self._p_changed = 1
+        self.catalog._p_changed = 1
         self.__parent__._p_changed = 1
 
     def reindex_object(self, object):
@@ -143,6 +150,8 @@ class Catalog(object):
             docid = self._document_map.docid_for_address(uuid)
 
         self.catalog.reindex_doc(docid, object)
+        self._p_changed = 1
+        self.catalog._p_changed = 1
         self.__parent__._p_changed = 1
 
     def unindex_object(self, object):
@@ -153,12 +162,16 @@ class Catalog(object):
         if docid:
             self.catalog.unindex_doc(docid)
             self._document_map.remove_docid(docid)
+            self._p_changed = 1
+            self.catalog._p_changed = 1
             self.__parent__._p_changed = 1
 
     def clear(self):
 
         self._catalog.clear()
         self._document_map = DocumentMap()
+        self._p_changed = 1
+        self.catalog._p_changed = 1
         self.__parent__._p_changed = 1
 
     def get_object(self, docid):

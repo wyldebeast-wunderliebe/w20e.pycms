@@ -57,12 +57,6 @@
       />
 
   <pycms:index
-      name="path"
-      field="path"
-      idxtype="field"
-      />
-
-  <pycms:index
       name="title"
       field="title"
       idxtype="field"

@@ -25,6 +25,10 @@ input.rename_in {
     opacity: 1.0;
 }
 
+.contentlisting td.contenttype img {
+  max-width: 25px;
+}
+
 #about {
     position: absolute;
     width: 400px;
