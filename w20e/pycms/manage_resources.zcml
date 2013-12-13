@@ -73,11 +73,6 @@
 
     <pycms:js libname="pycms_js"
               rootpath="static"
-              relpath="js/acl.js"
-              target="manage"/>
-
-    <pycms:js libname="pycms_js"
-              rootpath="static"
               relpath="js/tinyupload.js"
               target="manage"/>
 
@@ -110,6 +105,11 @@
               rootpath="static"
               relpath="js/pycms.js"
               target="manage"
-              depends="js/acl.js,js/tinyupload.js,3dparty/jqueryfileupload/jquery.fileupload.js"/>
+              depends="js/tinyupload.js,3dparty/jqueryfileupload/jquery.fileupload.js"/>
 
+    <pycms:js libname="pycms_js"
+              rootpath="static"
+              relpath="js/acl.js"
+              target="manage"
+              depends="js/pycms.js"/>
 </configure>
