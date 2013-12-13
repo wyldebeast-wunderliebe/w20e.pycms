@@ -4,10 +4,10 @@
       metal:use-macro="body.macros['master']">
 
       <metal:content fill-slot="content">
-      
-      <div id="content" tal:replace="structure view.content">
-      </div>
-      
+
+          <div id="content" tal:replace="structure view.content">
+          </div>
+
       </metal:content>
 
 </html>

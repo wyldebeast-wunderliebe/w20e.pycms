@@ -80,13 +80,6 @@ class PageView(ContentView, LayoutView):
 
         return has_permission("edit", self.context, self.request)
 
-    @property
-    def content(self):
-
-        """ We may or may not use a complex layout... """
-
-        return self.context.__data__['text']
-
     def __call__(self):
 
         context = super(PageView, self).__call__()

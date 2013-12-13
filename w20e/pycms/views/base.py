@@ -224,6 +224,13 @@ class ContentView(BaseView, pyramidformview):
         return self.context.title
 
     @property
+    def content(self):
+
+        """ We may or may not use a complex layout... """
+
+        return self.context.__data__['text']
+
+    @property
     def can_edit(self):
 
         return has_permission("edit", self.context, self.request)
