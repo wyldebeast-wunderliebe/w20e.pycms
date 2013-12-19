@@ -19,7 +19,7 @@
 
       <div class="modal hide" id="set_pwd_form">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">×</button>
+          <button type="button" class="close" data-dismiss="modal">x</button>
           <h3>Set password</h3>
         </div>
         <div class="modal-body">        
@@ -50,7 +50,7 @@
     
       <div class="modal hide" id="user_add_form">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">×</button>
+          <button type="button" class="close" data-dismiss="modal">x</button>
           <h3>Add user</h3>
         </div>
         <div class="modal-body">        
