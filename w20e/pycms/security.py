@@ -1,7 +1,7 @@
 import hashlib
 from pyramid.threadlocal import get_current_registry
 from zope.interface import Interface, Attribute, implements
-from pyramid.security import Allow, DENY_ALL
+from pyramid.security import Allow, DENY_ALL, Everyone
 from persistent import Persistent
 from persistent.list import PersistentList
 from persistent.mapping import PersistentMapping
@@ -10,7 +10,7 @@ import random
 
 
 KEY_LENGTH = 24
-
+ALLOW_ALL = [(Allow, Everyone, 'view')]
 
 def init(event):
 
@@ -63,7 +63,7 @@ class Secure(object):
     @property
     def __acl__(self):
 
-        acl = self.admins() + self.viewers() + self.editors() + [DENY_ALL]
+        acl = self.admins() + self.viewers() + self.editors() + ALLOW_ALL
 
         get_current_registry().notify(ACLRequest(acl, self.context))
 
