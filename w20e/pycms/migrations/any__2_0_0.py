@@ -8,11 +8,10 @@ def migrate(app):
     """ Set page._blocks to PersistentMapping. Also move page text to block """
 
     cat = app._catalog
-    
-    res = cat.query(Or(Eq('ctype', "page"), Eq('ctype', "site")))
 
-    for result in res[1]:
-        obj = cat.get_object(result)
+    res = cat.query(Or(Eq('ctype', "page"), Eq('ctype', "site")), as_object=1)
+
+    for obj in res:
 
         block = Text("maintext", text=obj.__data__['text'])
 

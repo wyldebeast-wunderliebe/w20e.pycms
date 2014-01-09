@@ -2,6 +2,8 @@ from fanstatic import Group, Library, Resource
 from fanstatic import get_library_registry
 from logging import getLogger
 from js.jquery import jquery
+import pkg_resources
+
 
 LOGGER = getLogger('w20e.pycms')
 
@@ -24,6 +26,12 @@ class CSSRegistry(object):
 
             if libname not in libreg.keys():
                 LOGGER.info("Create CSS library %s located at %s" % (libname, rootpath))
+
+                # get package prefix from path, e.g: myegg.eggname:static
+                if ":" in rootpath:
+                    pname, path = rootpath.split(":", 1)
+                    rootpath = pkg_resources.resource_filename(pname, path)
+
                 libreg.add(Library(libname, rootpath))
 
             depends_list = []
@@ -58,6 +66,12 @@ class JSRegistry(object):
 
             if libname not in libreg.keys():
                 LOGGER.info("Create JS library %s located at %s" % (libname, rootpath))
+
+                # get package prefix from path, e.g: myegg.eggname:static
+                if ":" in rootpath:
+                    pname, path = rootpath.split(":", 1)
+                    rootpath = pkg_resources.resource_filename(pname, path)
+
                 libreg.add(Library(libname, rootpath))
 
             depends_list = [jquery, ]

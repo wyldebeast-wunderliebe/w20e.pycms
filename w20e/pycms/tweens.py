@@ -1,5 +1,3 @@
-import fanstatic
-from fanstatic.inclusion import Inclusion
 from w20e.pycms.interfaces import ICSSRegistry, IJSRegistry
 from logging import getLogger
 from js.jquery import jquery

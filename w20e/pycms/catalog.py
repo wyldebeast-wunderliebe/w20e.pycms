@@ -19,7 +19,6 @@ def init(event):
     app = event.app_root
     something_has_changed = False
 
-
     if event.registry.settings.get("pycms.catalog.force_new", False) \
            or not hasattr(app, "_catalog"):
         app._catalog = Catalog()
@@ -53,12 +52,12 @@ def init(event):
             something_has_changed = True
 
     if something_has_changed:
-        app._catalog.index_object(app)
+        app._catalog.reindex_object(app)
 
         for obj in app.find_content():
             
             try:
-                app._catalog.index_object(obj)
+                app._catalog.reindex_object(obj)
             except:
                 LOGGER.error("Couldn't index object %s" % obj)
 

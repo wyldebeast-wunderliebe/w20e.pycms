@@ -18,7 +18,7 @@ class ICSSDirective(Interface):
 
     rootpath = TextLine(
         title=u"Library Path",
-        description=u"Relative path to CSS files",
+        description=u"Library path for CSS folder",
         required=True)
 
     relpath = TextLine(

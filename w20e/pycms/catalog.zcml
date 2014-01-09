@@ -102,7 +102,7 @@
   <pycms:index
       name="changed"
       field="changed"
-      idxtype="date"
+      idxtype="field"
       />
 
   <pycms:index
