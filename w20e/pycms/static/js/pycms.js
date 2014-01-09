@@ -283,6 +283,135 @@ pycms.init_fileupload = function() {
 };
 
 
+pycms.bind_form_changes = function() {
+
+    $(document).on("change", '.w20e-form.ajax-validate input[type="text"]', function(e) {
+        $(e.target).closest("form.w20e-form").submit();
+      });
+
+    $(document).on("focusout", '.w20e-form.ajax-validate input[type="date"]', function(e) {
+        $(e.target).closest("form.w20e-form").submit();
+      });
+
+    $(document).on("focusout", '.w20e-form.ajax-validate input[type="month"]', function(e) {
+        $(e.target).closest("form.w20e-form").submit();
+      });
+
+    $(document).on("change", '.w20e-form.ajax-validate input[type="hidden"]', function(e) {
+        $(e.target).closest("form.w20e-form").submit();
+      });
+
+    $(document).on("save", '.w20e-form.ajax-validate input[type="hidden"]', function(e) {
+        $(e.target).closest("form.w20e-form").submit();
+      });
+
+    $(document).on("change", '.w20e-form.ajax-validate select', function(e) {
+        $(e.target).closest("form.w20e-form").submit();
+      });
+
+    $(document).on("change", '.w20e-form.ajax-validate textarea', function(e) {
+        $(e.target).closest("form.w20e-form").submit();
+      });
+
+    $(document).on("click", '.w20e-form.ajax-validate input[type="radio"]', function(e) {
+        $(e.target).closest("form.w20e-form").submit();
+      });
+};
+
+pycms.init_form_submission = function() {
+  $(document).on("submit", 'form.w20e-form.ajax-validate', function(e) {
+     var form = $(e.target);
+     var errors = pycms.validate_form(form);
+     return false; // prevent a non-ajax form submit
+  });
+};
+
+pycms.validate_form = function(form) {
+
+        var action = form.attr("action");
+        var method = form.attr("method");
+        var data = form.serialize();
+
+        var errors = false;
+
+        $.ajax({
+            url: action,
+              type: method,
+              cache: false,
+              data: data,
+              success: function(doc) {
+
+                var willRedirect = false;
+
+                //var doc = ( new DOMParser() ).parseFromString(data);
+                var commands = doc.getElementsByTagName("command");
+
+                for (var i = 0; i < commands.length; i++) {
+
+                    var selector = commands[i].getAttribute("selector");
+                    var command = commands[i].getAttribute("name");
+                    var value = commands[i].getAttribute("value");
+
+                    if (command == "redirect") {
+                        willRedirect = true;
+                        window.location.replace(value);
+                    }
+
+                    if (command == "alert") {
+                      $(selector).find(".alert").html(value);
+
+                      if (value != "") {
+                          $(selector).addClass("error");
+                          errors = true;
+                      } else {
+                          $(selector).removeClass("error");
+                      }
+                    }
+
+                    if (value == "True") {
+                      $(selector).addClass(command);
+
+                      if (command == "readonly") {
+                          $(selector + " :input").each(function() {
+                              $(this).attr("disabled", "disabled");
+                          });
+                      }
+                    } else {
+                      $(selector).removeClass(command);
+
+                      if (command == "readonly") {
+                          $(selector + " :input").each(function() {
+                              $(this).removeAttr("disabled");
+                          });
+                      }
+                    }
+                }
+
+
+                // Finally, handle the card groups (tabs)
+                form.find('.tab-pane').each(function() {
+                    errors_in_tab = $(this).find('.error').length > 0;
+                    var id = (this).id;
+                    var tab_link = $("a[href='#" + id + "']");
+                    if(errors_in_tab) {
+                        tab_link.addClass('error');
+                    } else {
+                        tab_link.removeClass('error');
+                    }
+
+                });
+
+                form.trigger("w20e_form_validated", [willRedirect]);
+
+              },
+              error: function() {
+                alert("The form could not be processed. Changes will be lost!");
+              }
+          });
+
+      return !errors;
+};
+
 /* Initialization sequence started... */
 $(document).ready(function() {
 
@@ -299,6 +428,7 @@ $(document).ready(function() {
 
         e.preventDefault();
       });
+
 
     $('textarea.wysiwyg').tinymce(pycms.TINYCONFIG);
 
@@ -383,6 +513,16 @@ $(document).ready(function() {
     $(".datetime").each(function(){
       pycms.enableDateTimePicker($(this));
     });
+
+
+    // enable bootstrap navigation (tabs). not sure if this should be done here
+    $(".nav.nav-tabs.cards a").click(function (e) {
+      e.preventDefault();
+      $(this).tab('show');
+    });
+
+    pycms.bind_form_changes();
+    pycms.init_form_submission();
 
     pycms.setAutofocus();
 

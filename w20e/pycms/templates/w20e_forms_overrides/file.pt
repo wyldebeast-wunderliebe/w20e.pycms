@@ -1,0 +1,18 @@
+<div metal:use-macro="load: w20e.forms:rendering/html/templates/bootstrap/control.pt">
+
+  <metal:fill-slot fill-slot="input">
+
+    <tal:condition condition="fmtmap['value']">
+    <a href="download_file?form_id=${form_id or '_'}&file_field=${control.id}">${fmtmap['value']}</a>
+    <br/>
+      <input name="${control.id}" type="hidden" value="1"/>
+      <input id="file-${control.id}" type="file" name="${control.id}-new"/>
+    </tal:condition>
+
+    <tal:condition condition="not: fmtmap['value']">
+      <input id="input-${control.id}" type="file" name="${control.id}"/>
+    </tal:condition>
+  </metal:fill-slot>
+
+</div>
+

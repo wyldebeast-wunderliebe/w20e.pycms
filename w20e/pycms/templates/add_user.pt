@@ -6,7 +6,7 @@
      tal:condition="status != 'ok'"
      action="add_user_form" method="POST">
     <div class="control relevant required">
-      <label>User name</label>
+      <label>Full name</label>
       <input type="text" name="name"/>
     </div>
     <div class="control relevant required">

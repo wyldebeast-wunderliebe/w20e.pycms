@@ -72,7 +72,7 @@
 
           <div id="header" metal:define-slot="header">
             <a href="${request.application_url}" class="logo">
-              <img src="${request.application_url}/static/logo.png"/>
+              <img class="img-responsive" src="${request.application_url}/static/logo.png"/>
             </a>
           </div>
 

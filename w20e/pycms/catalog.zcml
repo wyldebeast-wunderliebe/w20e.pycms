@@ -58,12 +58,6 @@
       />
 
   <pycms:index
-      name="path"
-      field="path"
-      idxtype="field"
-      />
-
-  <pycms:index
       name="title"
       field="title"
       idxtype="field"
@@ -103,6 +97,12 @@
       name="uuid"
       field="uuid"
       idxtype="field"
+      />
+
+  <pycms:index
+      name="changed"
+      field="changed"
+      idxtype="date"
       />
 
   <pycms:index

@@ -3,8 +3,8 @@ import sys
 import transaction
 from pyramid.config import Configurator
 from pyramid_zodbconn import get_connection
-from pyramid.session import UnencryptedCookieSessionFactoryConfig \
-     as SessionFactory
+from pyramid.session import (
+    UnencryptedCookieSessionFactoryConfig as SessionFactory)
 import pyramid_zcml
 from events import AppRootReady
 from w20e.forms.registry import Registry
@@ -17,10 +17,13 @@ import pkg_resources
 
 
 Registry.register_renderable("file", PyramidFile)
-Registry.set_html_template_path("./bootstrap")
+
+tpl_path = os.path.join(os.path.dirname(__file__),
+                        "templates/w20e_forms_overrides/")
+Registry.add_html_template_path(tpl_path)
+Registry.add_html_template_path("./bootstrap")
 Registry.register_renderer("reference", "html", ReferenceRenderer)
 Registry.register_renderable("reference", Reference)
-
 
 here = os.path.abspath(os.path.dirname(__file__))
 version = open(os.path.join(here, "version.txt")
@@ -91,11 +94,12 @@ def appmaker(config):
 
     if not 'app_root' in zodb_root:
 
-        root_clazz_name = config.registry.settings.get("pycms.rootclass",
-                                           "w20e.pycms.models.site.Site")
-        root_title = config.registry.settings.get("pycms.roottitle",
-                                           "Yet another w20e.pycms app!")
-
+        root_clazz_name = config.registry.settings.get(
+            "pycms.rootclass",
+            "w20e.pycms.models.site.Site")
+        root_title = config.registry.settings.get(
+            "pycms.roottitle",
+            "Yet another w20e.pycms app!")
 
         root_clazz = class_from_string(root_clazz_name)
 

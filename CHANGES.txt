@@ -1,8 +1,17 @@
 2.0.0
-=====
+======
  * redo of the page layout. This is now done based on configuration of
    layouts in zcml. The layout config determines what slots an editor
    can fill in the admin UI.
+
+1.1.3a
+======
+* changed index
+* tinymce update (fix bug)
+* json representation of datetime.date
+* use ajax validation for forms with class "ajax-validate"
+* fixup bootstrap markup
+* file widget now has a download link
 
 1.1.2a
 ======

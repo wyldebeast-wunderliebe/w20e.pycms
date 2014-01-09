@@ -33,8 +33,19 @@
      context="w20e.pycms.interfaces.ITemporaryObject"
      view=".base.FactoryView"
      renderer="w20e.pycms:templates/add_content.pt"
-     name="factory"
+     name="edit"
      permission="edit"
+     xhr="False"
+     />
+
+  <view
+     context="w20e.pycms.interfaces.ITemporaryObject"
+     view=".base.FactoryView"
+     name="edit"
+     attr="ajax_submit_and_validate"
+     renderer="xml"
+     permission="edit"
+     xhr="True"
      />
 
   <!-- generic page properties view -->
@@ -74,9 +85,11 @@
  <view
      context="w20e.pycms.models.interfaces.IContent"
      view=".base.EditView"
-     name="validate"
-     attr="ajax_validate"
-     renderer="ajax"
+     name="edit"
+     xhr="True"
+     attr="ajax_submit_and_validate"
+     renderer="xml"
+     permission="edit"
      />
 
   <view
@@ -143,6 +156,14 @@
   <view
      context="..models.file.File"
      view=".file.FileView"
+     />
+
+  <view
+     name="download_file"
+     request_param="file_field"
+     view=".file.FileView"
+     attr="download_file"
+     permission="edit"
      />
 
   <!-- forms -->
