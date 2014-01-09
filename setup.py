@@ -11,6 +11,7 @@ version = open(os.path.join("w20e", "pycms", "version.txt")
 requires = [
     'distribute',
     'pyramid>=1.4a',
+    'pyramid_chameleon',
     'pyramid_zodbconn',
     'pyramid_tm',
     'pyramid_zcml',

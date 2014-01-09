@@ -142,6 +142,8 @@ def make_pycms_app(app, **settings):
                           session_factory=SessionFactory('w20e_pycms_secret'),
                           settings=settings)
 
+    config.include('pyramid_chameleon')  # enable Chameleon rendering
+
     register_json_adapters(config)
 
     def get_registry():
