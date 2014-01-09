@@ -4,7 +4,7 @@
     width: 100%;
 }
 
-input.rename_in {
+.contentlisting input.rename_in {
     display: none;
     z-index: 1001;
     position: absolute;

@@ -268,14 +268,14 @@ pycms.init_fileupload = function() {
     url: './upload_image',
     dataType: 'json',
     done: function (e, data) {
-      
+
     },
     progress: function (e, data) {
       var progress = parseInt(data.loaded / data.total * 100, 10);
       $($(e.target).data("progress") + " .bar").css("width", progress + "%");
     }
   };
-  
+
   $("#fileupload").each(function() {
 
       $(this).fileupload(defaults);
@@ -422,9 +422,9 @@ $(document).ready(function() {
         var link = $(e.currentTarget);
 
         $.post(link.attr("href"), link.data("params"), function(data) {
-            
+
             pycms.alert(data['msg'], data['status']);
-          }); 
+          });
 
         e.preventDefault();
       });
@@ -456,7 +456,11 @@ $(document).ready(function() {
         $(this).hide();
       });
 
-    $("#rename").submit(function() {
+    $(document).on("change", 'input[type="text"].rename_in', function(e) {
+        $(e.target).closest("form#rename").submit();
+    });
+
+    $("form#rename").submit(function() {
 
         $.post($(this).attr("action"), $(this).serialize(),
                function(data) {

@@ -7,14 +7,14 @@
   <ul class="dropdown-menu icons-ul">
     <tal:repeat repeat="layout layouts">
       <li>
-        <tal:condition condition="not context.has_layout(layout)">
+        <tal:condition condition="hasattr(context, 'has_layout') and not context.has_layout(layout)">
           <i class="icon-li"></i><a href="set_layout" class="jsaction"
              data-params="layout=${layout.name}"
             i18n:translate="">
             ${layout.name}
           </a>
         </tal:condition>
-        <tal:condition condition="context.has_layout(layout)">          
+        <tal:condition condition="hasattr(context, 'has_layout') and context.has_layout(layout)">
           <i class="icon-li icon-ok"></i>${layout.name}
         </tal:condition>
       </li>
