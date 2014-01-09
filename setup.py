@@ -16,6 +16,8 @@ requires = [
     'pyramid_zcml',
     'pyramid_debugtoolbar',
     'pyramid_mailer',
+    'fanstatic>=1.0a4',
+    'js.jquery',
     'pyramid_fanstatic',
     'pyramid_chameleon',
     'ZODB3',
