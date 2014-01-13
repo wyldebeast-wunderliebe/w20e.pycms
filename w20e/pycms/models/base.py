@@ -61,6 +61,9 @@ class Base(object):
 
     def __init__(self, content_id, data_attr_name="_DATA", data=None):
 
+        # make sure mixin class __init__ methods get called as well
+        super(Base, self).__init__(self, content_id, data_attr_name, data)
+
         if not data:
             data = {}
 
