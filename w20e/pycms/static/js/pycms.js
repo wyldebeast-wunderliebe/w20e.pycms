@@ -271,18 +271,33 @@ pycms.dropped = function(event, ui) {
 };
 
 
-pycms.showMessage = function(msg, title) {
+pycms.showMessage = function(msg, title, as_html, timeout) {
 
   if (typeof title == "undefined") {
     title = "Incoming message";
   }
 
+  if (typeof as_html == "undefined") {
+      as_html = false;
+  }
+
+  if (typeof timeout == "undefined") {
+      timeout = 2000;
+  }
+
   $('#pycms-modal-label').text(title);
-  $('#pycms-modal .modal-body p').text(msg);
+
+  if (as_html) {
+      $('#pycms-modal .modal-body p').html(msg);
+  } else {
+      $('#pycms-modal .modal-body p').text(msg);
+  }
 
   $('#pycms-modal').modal('show');
 
-  setTimeout(function(){$('#pycms-modal').modal('hide')}, 2000);
+  if (timeout) {
+      setTimeout(function(){$('#pycms-modal').modal('hide')}, timeout);
+  }
 };
 
 
@@ -602,6 +617,10 @@ pycms.validate_form = function(form) {
       return !errors;
 };
 
+pycms.escapeHTML = function(s) {
+    return s.replace(/&(?!\w+;)/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
 /* Initialization sequence started... */
 $(document).ready(function() {
 
@@ -734,3 +753,5 @@ $(document).ready(function() {
 
     pycms.setAutofocus();
 });
+
+
