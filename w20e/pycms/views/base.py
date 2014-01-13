@@ -30,6 +30,7 @@ from ..macros import IMacros
 from w20e.forms.pyramid.formview import formview as pyramidformview
 from xml.dom.minidom import Document
 from datetime import datetime
+import copy
 
 
 class ViewMixin(object):
@@ -528,20 +529,44 @@ class AdminView(Base, ViewMixin):
         actions = self.request.params.get("buffer", "").split("::")
         result = {'status': 'ok'}
         mv = []
+        cp = []
 
-        for action in actions:
+        for action in [a for a in actions if a]:
             try:
                 title, path, action_id = action.split(";;")
                 if action_id == "copy":
-                    pass
+                    cp.append(path)
                 else:
                     mv.append(path)
             except:
                 result['status'] = "error"
 
-        self.move_content(objs=mv)
+        if mv:
+            self.move_content(objs=mv)
+        if cp:
+            self.copy_content(objs=cp)
 
         return result
+
+    def copy_content(self, objs=[]):
+        """
+        make a copy of the object and add it to current container
+        if id already exists, create a copy-of id
+        """
+        copied = []
+
+        objs = objs or self.request.params.get('objs', "").split("::")
+        for path in objs:
+            obj = path_to_object(path, self.context.root, path_sep=".")
+            if obj is not None:
+                cpy = copy.deepcopy(obj)
+                # create new content id if it already exists
+                cpy.set_id(self.context.generate_content_id(obj.id))
+                self.context.add_content(cpy)
+                self.request.registry.notify(ContentAdded(cpy, self.context))
+                copied.append(cpy.id)
+
+        return copied
 
     def move_content(self, objs=[]):
 

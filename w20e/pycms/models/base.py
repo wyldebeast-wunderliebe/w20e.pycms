@@ -16,6 +16,7 @@ from w20e.forms.xml.factory import XMLFormFactory as BaseXMLFormFactory
 from w20e.pycms.interfaces import INature, ITemporaryObject
 from w20e.pycms.models.interfaces import IPyCMSMixin
 from w20e.pycms.catalog import ObjectSummary
+from copy import deepcopy
 
 
 class XMLFormFactory(object):
@@ -61,6 +62,16 @@ class PyCMSMixin(object):
             return ISecure(self).__acl__
         except:
             return []
+
+    def __deepcopy__(self, memo):
+        cls = self.__class__
+        result = cls.__new__(cls)
+        memo[id(self)] = result
+        for k, v in self.__dict__.items():
+            setattr(result, k, deepcopy(v, memo))
+        # reset the uuid for the copied object
+        delattr(result, '_uuid')
+        return result
 
     @property
     def uuid(self):

@@ -138,6 +138,7 @@ class Catalog(object):
         self.catalog.index_doc(docid, object)
         self._p_changed = 1
         self.catalog._p_changed = 1
+        self._document_map._p_changed = 1
         self.__parent__._p_changed = 1
 
     def reindex_object(self, object):
@@ -152,6 +153,7 @@ class Catalog(object):
         self.catalog.reindex_doc(docid, object)
         self._p_changed = 1
         self.catalog._p_changed = 1
+        self._document_map._p_changed = 1
         self.__parent__._p_changed = 1
 
     def unindex_object(self, object):
@@ -164,6 +166,7 @@ class Catalog(object):
             self._document_map.remove_docid(docid)
             self._p_changed = 1
             self.catalog._p_changed = 1
+            self._document_map._p_changed = 1
             self.__parent__._p_changed = 1
 
     def clear(self):
@@ -172,6 +175,7 @@ class Catalog(object):
         self._document_map = DocumentMap()
         self._p_changed = 1
         self.catalog._p_changed = 1
+        self._document_map._p_changed = 1
         self.__parent__._p_changed = 1
 
     def get_object(self, docid):
