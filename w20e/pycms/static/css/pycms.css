@@ -55,6 +55,13 @@ input.rename_in {
     -moz-border-radius: 10px;
 }
 
+/* fix for hidden submit buttons in chrome (form won't submit on display none */
+.hide-submit {
+    position: absolute;
+    visibility: hidden;
+    top: 0;
+}
+
 /* css for timepicker */
 .ui-timepicker-div .ui-widget-header { margin-bottom: 8px; }
 .ui-timepicker-div dl { text-align: left; }

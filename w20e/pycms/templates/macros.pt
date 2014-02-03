@@ -106,7 +106,7 @@
       </tal:repeat>
       </tbody>
     </table>
-    <input type="submit" name="" value="ok" style="display: none"/>
+    <input type="submit" name="" value="ok" class="hide-submit"/>
     </form>
 </div>
 <!-- END listing -->
