@@ -400,7 +400,7 @@ class FactoryView(BaseView, pyramidformview, ViewMixin):
             root.appendChild(command)
             results = doc.toprettyxml(indent="  ").encode('utf-8')
         else:
-            results = pyramidformview.ajax_validate(self, "xml")
+            results = pyramidformview.ajax_validate(self, "xml", True)
 
         return results
 
@@ -442,7 +442,7 @@ class EditView(EditBase, ViewMixin):
 
         self.form.submission.submit(self.form, self.context, self.request)
 
-        results = pyramidformview.ajax_validate(self, "xml")
+        results = pyramidformview.ajax_validate(self, "xml", True)
 
         self.request.registry.notify(ContentChanged(self.context))
         return results

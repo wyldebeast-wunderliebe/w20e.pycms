@@ -18,7 +18,7 @@ w20e.pycms.Validation = function(validation_url, options) {
   // Set defaults
   var defaults = {
     filter: false
-  };  
+  };
 
   this.options = $.extend(defaults, options);
 };
@@ -27,7 +27,7 @@ w20e.pycms.Validation = function(validation_url, options) {
 // Create Validation bindings. These result in interactive binding
 // of validation to controls, Ajax style.
 w20e.pycms.Validation.prototype.init = function(form) {
-  
+
   var that = this;
 
   that.form = form;
@@ -35,38 +35,38 @@ w20e.pycms.Validation.prototype.init = function(form) {
 
   form.find('.control-group :text').change(
                                      function() {
-                                       that.validate($(this).serialize(), 
+                                       that.validate($(this).serialize(),
                                                      $(this));
                                      });
-  
+
   form.find('.control-group select').change(
                                       function() {
                                         that.validate($(this).serialize(),
                                                       $(this));
                                       });
-  
+
   form.find('.control-group textarea').change(
                                         function() {
                                           that.validate($(this).serialize(),
                                                         $(this));
                                         });
-  
+
   form.find('.control-group :radio').click(
                                      function() {
                                        that.validate($(this).serialize(),
                                                      $(this));
                                      });
-  
+
   form.find('.control-group :checkbox').click(
                                         function() {
                                           var name = $(this).attr("name");
                                           var data = {};
                                           data[name] = "";
-                                          
+
                                           $(this).parents(".control-group").eq(0).find(":checkbox[name=" + name + "]:checked").each(function() {
                                               data[name] = data[name] + $(this).val() + ",";
                                             });
-                                          
+
                                           that.validate(data, $(this));
                                         });
 };
@@ -101,12 +101,12 @@ w20e.pycms.Validation.prototype.validate = function(data, caller) {
   $.post(that.VALIDATION_URL,
          data,
          function(doc) {
-    
+
            //var doc = ( new DOMParser() ).parseFromString(data);
            var commands = doc.getElementsByTagName("command");
-           
+
            for (var i = 0; i < commands.length; i++) {
-             
+
              var selector = commands[i].getAttribute("selector");
              var command = commands[i].getAttribute("name");
              var value = commands[i].getAttribute("value");
@@ -118,6 +118,16 @@ w20e.pycms.Validation.prototype.validate = function(data, caller) {
                  $(selector).addClass("err");
                } else {
                  $(selector).removeClass("err");
+               }
+             }
+
+             if (command == "calculate") {
+               /* find out the type of the selected control
+                  for now only act on simple html elements, not on 
+                  other controls like selects, inputs etc
+               */
+               if ($(selector).hasClass('renderable')) {
+                 $(selector).html(value);
                }
              }
 
@@ -142,7 +152,7 @@ w20e.pycms.Validation.prototype.validate = function(data, caller) {
            }
 
            // Finally, make sure card groups tabs are also checked...
-           $(".cards li").each(function() {             
+           $(".cards li").each(function() {
 
              var tab = $("div#" + $(this).attr('id').substr(4)).eq(0);
 

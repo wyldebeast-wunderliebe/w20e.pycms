@@ -573,6 +573,16 @@ pycms.validate_form = function(form) {
                       }
                     }
 
+                    if (command == "calculate") {
+                      /* find out the type of the selected control
+                        for now only act on simple html elements, not on
+                        other controls like selects, inputs etc
+                      */
+                        if ($(selector).hasClass('renderable')) {
+                          $(selector).html(value);
+                        }
+                    }
+
                     if (value == "True") {
                       $(selector).addClass(command);
 
