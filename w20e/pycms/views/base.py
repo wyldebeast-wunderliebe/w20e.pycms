@@ -3,7 +3,7 @@ from datetime import datetime
 from zope.interface import providedBy
 from zope.interface import alsoProvides
 from zope.interface import noLongerProvides
-from pyramid.renderers import get_renderer, render
+from pyramid.renderers import render
 from pyramid.httpexceptions import HTTPFound
 from pyramid.interfaces import IView, IViewClassifier
 from pyramid.security import authenticated_userid
@@ -14,10 +14,12 @@ from w20e.forms.pyramid.formview import formview as pyramidformview
 from w20e.pycms.utils import has_permission
 from w20e.pycms.utils import path_to_object
 from w20e.pycms.nature.interfaces import INatures
-from w20e.pycms.interfaces import IAdmin, ITemporaryObject, ICSSRegistry, ICSSInjector
+from w20e.pycms.interfaces import (
+    IAdmin, ITemporaryObject, )
 from w20e.pycms.events import TemporaryObjectCreated, TemporaryObjectFinalized
 from w20e.pycms.actions import IActions
 from w20e.pycms.ctypes import ICTypes
+
 
 class BaseView(object):
 
@@ -31,10 +33,6 @@ class BaseView(object):
         self.request = request
 
     def __call__(self):
-
-        #reg = self.request.registry
-        #util = reg.getUtility(ICSSInjector)
-        #util.inject('public')
 
         return {}
 
@@ -78,8 +76,8 @@ class BaseView(object):
         actions = reg.getUtility(IActions)
 
         return [action for action in actions.get_actions("perspective",
-            ctype=self.context.content_type) if (not action.permission) or
-            has_permission(action.permission, self.context, self.request)]
+                ctype=self.context.content_type) if (not action.permission) or
+                has_permission(action.permission, self.context, self.request)]
 
     @property
     def siteactions(self):
@@ -117,8 +115,8 @@ class BaseView(object):
         actions = reg.getUtility(IActions)
 
         return [action for action in actions.get_actions("content",
-            ctype=self.context.content_type) if (not action.permission) or
-            has_permission(action.permission, self.context, self.request)]
+                ctype=self.context.content_type) if (not action.permission) or
+                has_permission(action.permission, self.context, self.request)]
 
     @property
     def footer(self):
@@ -169,7 +167,7 @@ class BaseView(object):
         provides = [IViewClassifier] + map_(providedBy,
                                             (self.request, self.context))
         view = self.request.registry.adapters.lookup(
-                provides, IView, name=name)
+            provides, IView, name=name)
 
         self.request.update({'kwargs': kwargs})
 
@@ -205,8 +203,8 @@ class ContentView(BaseView, pyramidformview):
     def __init__(self, context, request, form=None):
 
         BaseView.__init__(self, context, request)
-        pyramidformview.__init__(self, context, request,
-                context.__form__(request))
+        pyramidformview.__init__(
+            self, context, request, context.__form__(request))
 
     def json(self):
         """ return a json encoded version of the context """
@@ -332,8 +330,8 @@ class AddView(BaseView):
 
         self.request.registry.notify(TemporaryObjectCreated(content))
 
-        return HTTPFound(location='%sfactory' %
-                self.request.resource_url(content))
+        return HTTPFound(
+            location='%sedit' % self.request.resource_url(content))
 
 
 class FactoryView(BaseView, pyramidformview):
@@ -348,11 +346,11 @@ class FactoryView(BaseView, pyramidformview):
         self.context = context
 
         assert ITemporaryObject.providedBy(context), \
-                "This object is not in a temporary state"
+            "This object is not in a temporary state"
 
         self.form = self.context.__form__(request)
-        pyramidformview.__init__(self, self.context, request, self.form,
-                retrieve_data=True)
+        pyramidformview.__init__(
+            self, self.context, request, self.form, retrieve_data=True)
 
     @property
     def url(self):
@@ -408,23 +406,14 @@ class FactoryView(BaseView, pyramidformview):
         self.form.submission.submit(self.form, self.context, self.request)
 
         if status == "completed":
-
             status = 'stored'
-
             parent = self.context.__parent__
-
             content_id = parent.generate_content_id(self.context.base_id)
-
             noLongerProvides(self.context, ITemporaryObject)
-
             self.request.registry.notify(
-
-                    TemporaryObjectFinalized(self.context))
-
+                TemporaryObjectFinalized(self.context))
             parent.rename_content(self.context.id, content_id)
-
             self.request.registry.notify(ContentAdded(self.context, parent))
-
             return HTTPFound(location=self.after_add_redirect)
 
         res = {'status': status, 'errors': errors}

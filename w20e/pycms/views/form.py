@@ -1,15 +1,15 @@
 from pyramid.response import FileResponse, Response
-from base import BaseView, AdminView
+from base import BaseView, AdminView, ContentView
 from w20e.forms.pyramid.formview import xmlformview as pyramidformview
 
 
-class FormView(BaseView, pyramidformview):
+class FormView(ContentView, pyramidformview):
 
     """ Form view """
 
     def __init__(self, context, request):
 
-        BaseView.__init__(self, context, request)
+        ContentView.__init__(self, context, request)
 
         form = context.__data__['form']['data']
 
@@ -17,7 +17,7 @@ class FormView(BaseView, pyramidformview):
 
     def __call__(self):
 
-        res = BaseView.__call__(self)
+        res = ContentView.__call__(self)
         res.update(pyramidformview.__call__(self))
 
         return res
@@ -28,7 +28,7 @@ class FormView(BaseView, pyramidformview):
 
     @property
     def footer(self):
-        return self.context.__data__['footer_text']    
+        return self.context.__data__['footer_text']
 
 
 class FormAdminView(AdminView):
@@ -37,7 +37,7 @@ class FormAdminView(AdminView):
 
         value = self.context.__data__['form']
 
-        response = Response(body=value['data'], 
+        response = Response(body=value['data'],
                             content_type="text/xml")
 
         # set response caching headers..
