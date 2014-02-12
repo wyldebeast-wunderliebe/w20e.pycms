@@ -53,7 +53,7 @@
      context="w20e.pycms.models.interfaces.IContent"
      view=".base.EditView"
      renderer="w20e.pycms:templates/edit_content.pt"
-     name="settings"
+     name="edit"
      permission="edit"
      />
 
@@ -96,7 +96,7 @@
      context="w20e.pycms.models.interfaces.IPage"
      view=".page.PageLayout"
      renderer="../templates/page_layout.pt"
-     name="edit"
+     name="settings"
      permission="edit"
      />
 
@@ -220,12 +220,11 @@
      name="save_page"
      />
 
-  <!-- list users -->
   <view
      context="w20e.pycms.models.interfaces.ISite"
      view=".page.PageLayout"
      renderer="../templates/page_layout.pt"
-     name="edit"
+     name="settings"
      permission="edit"
      />
 
