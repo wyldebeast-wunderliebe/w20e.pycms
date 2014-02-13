@@ -79,9 +79,9 @@
               <a class="btn lscut" title="Cut" href="#">
                 <i class="icon-cut"></i>
               </a>
-              <!--a class="btn lscopy" title="Copy" href="#">
+              <a class="btn lscopy" title="Copy" href="#">
                 <i class="icon-copy"></i>
-              </a-->
+              </a>
             </div>
           </td>
           <td>
@@ -106,7 +106,7 @@
       </tal:repeat>
       </tbody>
     </table>
-    <input type="submit" name="" value="ok" style="display: none"/>
+    <input type="submit" name="" value="ok" class="hide-submit"/>
     </form>
 </div>
 <!-- END listing -->

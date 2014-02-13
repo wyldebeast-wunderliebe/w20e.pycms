@@ -69,19 +69,40 @@ pycms.init_widgets = function(tgt) {
   }
 }
 
+pycms.dropped = function(event, ui) {
 
-pycms.showMessage = function(msg, title) {
+  $(this).find("dt:contains('top')").eq(0).next().html(ui.position.top + "px");
+  $(this).find("dt:contains('left')").eq(0).next().html(ui.position.left + "px");
+};
+
+
+pycms.showMessage = function(msg, title, as_html, timeout) {
 
   if (typeof title == "undefined") {
     title = "Incoming message";
   }
 
+  if (typeof as_html == "undefined") {
+      as_html = false;
+  }
+
+  if (typeof timeout == "undefined") {
+      timeout = 2000;
+  }
+
   $('#pycms-modal-label').text(title);
-  $('#pycms-modal .modal-body p').text(msg);
+
+  if (as_html) {
+      $('#pycms-modal .modal-body p').html(msg);
+  } else {
+      $('#pycms-modal .modal-body p').text(msg);
+  }
 
   $('#pycms-modal').modal('show');
 
-  setTimeout(function(){$('#pycms-modal').modal('hide')}, 2000);
+  if (timeout) {
+      setTimeout(function(){$('#pycms-modal').modal('hide')}, timeout);
+  }
 };
 
 
@@ -368,6 +389,16 @@ pycms.validate_form = function(form) {
                       }
                     }
 
+                    if (command == "calculate") {
+                      /* find out the type of the selected control
+                        for now only act on simple html elements, not on
+                        other controls like selects, inputs etc
+                      */
+                        if ($(selector).hasClass('renderable')) {
+                          $(selector).html(value);
+                        }
+                    }
+
                     if (value == "True") {
                       $(selector).addClass(command);
 
@@ -411,6 +442,10 @@ pycms.validate_form = function(form) {
 
       return !errors;
 };
+
+pycms.escapeHTML = function(s) {
+    return s.replace(/&(?!\w+;)/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
 
 /* Initialization sequence started... */
 $(document).ready(function() {
@@ -554,3 +589,5 @@ $(document).ready(function() {
         e.preventDefault();
       });
 });
+
+
