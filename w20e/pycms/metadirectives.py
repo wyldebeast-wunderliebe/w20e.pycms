@@ -8,6 +8,9 @@ from macros import IMacros
 from index import IIndexes
 
 
+as_bytestring = lambda x: x.encode('utf-8')
+
+
 class ICSSDirective(Interface):
     """ Collect css files into one """
 
@@ -43,15 +46,28 @@ class ICSSDirective(Interface):
 
     depends = TextLine(
         title=u"List of dependencies",
-        description=u"Dependencies (comma separated) this CSS file depends on.",
+        description=u"Dependencies (comma separated) this CSS file depends "
+                    "on.",
         required=False)
 
 
-def css(_context, libname, rootpath, relpath, target, depends=None, minifier='cssmin', media="screen"):
+def css(_context, libname, rootpath, relpath, target, depends=None,
+        minifier='cssmin', media="screen"):
     reg = _context.context.registry
     cssregistry = reg.getUtility(ICSSRegistry)
 
-    cssregistry.add(libname, rootpath, relpath, minifier, target, depends, media)
+    # We need bytestrings for fanstatic. it can't handle unicode strings..
+    libname = as_bytestring(libname)
+    rootpath = as_bytestring(rootpath)
+    relpath = as_bytestring(relpath)
+    target = as_bytestring(target)
+    if depends:
+        depends = as_bytestring(depends)
+    minifier = as_bytestring(minifier)
+    media = as_bytestring(media)
+
+    cssregistry.add(libname, rootpath, relpath, minifier, target, depends,
+                    media)
 
 
 class IJSDirective(Interface):
@@ -88,7 +104,18 @@ class IJSDirective(Interface):
         required=False)
 
 
-def js(_context, libname, rootpath, relpath, target, depends=None, minifier='jsmin'):
+def js(_context, libname, rootpath, relpath, target, depends=None,
+       minifier='jsmin'):
+
+    # We need bytestrings for fanstatic. it can't handle unicode strings..
+    libname = as_bytestring(libname)
+    rootpath = as_bytestring(rootpath)
+    relpath = as_bytestring(relpath)
+    target = as_bytestring(target)
+    if depends:
+        depends = as_bytestring(depends)
+    minifier = as_bytestring(minifier)
+
     reg = _context.context.registry
     jsregistry = reg.getUtility(IJSRegistry)
 
