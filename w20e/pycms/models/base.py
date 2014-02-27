@@ -6,8 +6,9 @@ from uuid import uuid1
 from persistent.mapping import PersistentMapping
 from persistent import Persistent
 from BTrees.OOBTree import OOBTree
-from zope.interface import implements, directlyProvides, alsoProvides, \
-     noLongerProvides, providedBy
+from zope.interface import (
+    implements, directlyProvides, alsoProvides, noLongerProvides, providedBy
+)
 from zope.component import subscribers
 from zope.component import getMultiAdapter
 from pyramid.url import resource_url
@@ -213,6 +214,18 @@ class Base(object):
 
         return str(self._uuid)
 
+    def __hash__(self):
+        """ return a hash of the uuid """
+        return hash(self.uuid)
+
+    def __eq__(self, other):
+        """ check for equality based on the paths of the objects """
+
+        if isinstance(other, self.__class__):
+            return self.uuid == other.uuid
+        else:
+            return False
+
     @property
     def path(self):
         """ return the path of this resource """
@@ -337,7 +350,7 @@ class BaseFolder(PersistentMapping, Base):
         self._order = []
 
     def __json__(self, request):
-        """ return a json encoded version of this model 
+        """ return a json encoded version of this model
             including contained items
         """
         data = Base.__json__(self, request)
@@ -431,9 +444,9 @@ class BaseFolder(PersistentMapping, Base):
 
             max_order = len(self._order) + 1
 
-            return cmp(self._order.index(a) if a in self._order \
+            return cmp(self._order.index(a) if a in self._order
                        else max_order,
-                       self._order.index(b) if b in self._order \
+                       self._order.index(b) if b in self._order
                                                else max_order,
                        )
 
@@ -453,17 +466,19 @@ class BaseFolder(PersistentMapping, Base):
             if isinstance(content_type, str):
                 content_type = [content_type]
 
-            all_content = [obj for obj in self.values() \
-                    if getattr(obj, 'content_type', None) in content_type]
+            all_content = [
+                obj for obj in self.values()
+                if getattr(obj, 'content_type', None) in content_type]
         if iface:
-            all_content = [obj for obj in self.values() \
-                    if iface.providedBy(obj)]
+            all_content = [
+                obj for obj in self.values()
+                if iface.providedBy(obj)]
 
         if not (content_type or iface):
             all_content = self.values()
 
         if kwargs.get('order_by', None):
-            all_content.sort(lambda a, b: \
+            all_content.sort(lambda a, b:
                              cmp(getattr(a, kwargs['order_by'], 1),
                                  getattr(b, kwargs['order_by'], 1)))
         else:
@@ -471,16 +486,17 @@ class BaseFolder(PersistentMapping, Base):
 
                 max_order = len(self._order) + 1
 
-                return cmp(self._order.index(a.id) if a.id in self._order \
+                return cmp(self._order.index(a.id) if a.id in self._order
                            else max_order,
-                            self._order.index(b.id) if b.id in self._order \
-                                                    else max_order,
+                           self._order.index(b.id) if b.id in self._order
+                           else max_order,
                            )
 
             all_content.sort(_order_cmp)
 
         # filter out temp objects
-        return filter(lambda x: not ITemporaryObject.providedBy(x), all_content)
+        return filter(
+            lambda x: not ITemporaryObject.providedBy(x), all_content)
 
     def find_content(self, content_type=None):
 
