@@ -83,6 +83,18 @@ class PyCMSMixin(object):
 
         return str(self._uuid)
 
+    def __hash__(self):
+        """ return a hash of the uuid """
+        return hash(self.uuid)
+
+    def __eq__(self, other):
+        """ check for equality based on the paths of the objects """
+
+        if isinstance(other, self.__class__):
+            return self.uuid == other.uuid
+        else:
+            return False
+
     @property
     def path(self):
         """ return the path of this resource """
@@ -182,7 +194,7 @@ class BaseContent(PyCMSMixin, HitmanBaseContent):
 class BaseFolder(PyCMSMixin, HitmanBaseFolder):
 
     def __json__(self, request):
-        """ return a json encoded version of this model 
+        """ return a json encoded version of this model
             including contained items
         """
         data = PyCMSMixin.__json__(self, request)
