@@ -187,11 +187,14 @@ class PyCMSMixin(object):
 
 class BaseContent(PyCMSMixin, HitmanBaseContent):
 
-    def allowed_content_types(self, request):
-        return []
+    def __init__(self, content_id, data=None, **kwargs):
+        super(HitmanBaseContent, self).__init__(content_id, data=None, **kwargs)
 
 
 class BaseFolder(PyCMSMixin, HitmanBaseFolder):
+
+    def __init__(self, content_id, data=None, **kwargs):
+        super(HitmanBaseFolder, self).__init__(content_id, data=None, **kwargs)
 
     def __json__(self, request):
         """ return a json encoded version of this model
