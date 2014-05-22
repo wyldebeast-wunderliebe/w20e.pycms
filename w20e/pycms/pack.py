@@ -35,7 +35,6 @@ class PackCommand(command.Command):
             port = config.get('server:main', 'port')
             url = "http://%s:%s/login" % (host, port)
 
-        import pdb;pdb.set_trace()
         usr, pwd = config.get('server:main', "pycms.admin_user").split(":")
 
         cj = cookielib.CookieJar()
