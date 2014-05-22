@@ -10,9 +10,9 @@ class Page(Folder, BlockContainer):
 
     implements(IPage)
 
-    def __init__(self, content_id, data=None):
+    def __init__(self, content_id, data=None, **kwargs):
 
-        Folder.__init__(self, content_id, data)
+        Folder.__init__(self, content_id, data, **kwargs)
         BlockContainer.__init__(self, refs=True)
 
         self._content = ""
