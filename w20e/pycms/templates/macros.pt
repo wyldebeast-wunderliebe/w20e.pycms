@@ -72,7 +72,7 @@
                  href="#confirm_delete">
                 <i class="icon-trash"></i>
               </a>
-              <a class="btn" href="#" tal:attributes="href '%s/edit' % item.id"
+              <a class="btn content-edit-link" href="#" tal:attributes="href '%s/edit' % item.id"
                  title="Edit">
                 <i class="icon-edit"></i>
               </a>
@@ -93,6 +93,7 @@
           </td>
           <td>
             <a href="#" tal:attributes="href '%s/admin' % item.id" 
+               class="content-admin-link"
                tal:content="item.title">
               content id
             </a>

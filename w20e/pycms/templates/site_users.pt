@@ -1,11 +1,11 @@
-<html xmlns="http://www.w3.org/1999/xhtml" 
-      xml:lang="en" 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       metal:use-macro="admin.macros['master']">
 
   <head/>
-  
+
   <body>
 
     <div metal:fill-slot="toolbar">
@@ -22,14 +22,14 @@
           <button type="button" class="close" data-dismiss="modal">×</button>
           <h3>Set password</h3>
         </div>
-        <div class="modal-body">        
-          
+        <div class="modal-body">
+
           <div class="alert alert-error hide"></div>
 
           <form action="javascript: pycms.acl.setPwd()" method="POST">
 
-            <input name="userid" type="hidden" id="userid"/>
-            
+            <input name="userid" type="hidden"/>
+
             <label>Password</label>
             <input type="password" name="password"/>
 
@@ -39,32 +39,32 @@
             <div class="btn-group">
               <input type="submit" value="Add" class="btn btn-primary"/>
               <input type="button" class="btn" value="Cancel"
-                     data-dismiss="modal"
-                     />
+                data-dismiss="modal"
+                />
             </div>
           </form>
         </div>
         <div class="modal-footer">
         </div>
       </div>
-    
+
       <div class="modal hide" id="user_add_form">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">×</button>
           <h3>Add user</h3>
         </div>
-        <div class="modal-body">        
-          
+        <div class="modal-body">
+
           <div class="alert alert-error hide"></div>
 
           <form action="javascript: pycms.acl.addUser()" method="POST">
-            
+
             <label>Full name</label>
             <input type="text" name="name"/>
 
             <label>User email</label>
             <div class="help-text">Used as user id!</div>
-            <input type="text" name="email"/>      
+            <input type="text" name="email"/>
 
             <label>Password (optional)</label>
             <input type="password" name="pwd"/>
@@ -83,15 +83,15 @@
         <div class="modal-footer">
         </div>
       </div>
-    
+
       <h1 class="edit_header">Site users &amp; groups</h1>
-      
+
       <div id="userscontainer">
         <h2>
           <i class="icon-user"></i>
           Users
         </h2>
-                
+
 	      <table class="contentlisting table table-striped" id="userlisting">
 	        <thead>
 	          <tr>
@@ -121,34 +121,32 @@
                       <i class="icon-comment"></i>
                     </a>
                     <a href="#" tal:condition="user.id != 'admin'"
-                       href="#"
                        title="Set password"
                        class="btn setpwd"
                        >
                       <i class="icon-key"></i>
                     </a>
                     <a href="#" tal:condition="user.id != 'admin'"
-                       tal:attributes="href 'user_groups?user_id=%s' % user.id"
                        title="User groups"
-                       class="btn"
+                       class="btn set_user_groups"
                        >
                       <i class="icon-group"></i>
                     </a>
                   </div>
                 </td>
-		            <td tal:content="user.id">user</td> 
-		            <td tal:content="user.name">user</td> 
-		            <td tal:content="user.email">user</td> 
+		            <td tal:content="user.id">user</td>
+		            <td tal:content="user.name">user</td>
+		            <td tal:content="user.email">user</td>
               </tr>
 	          </tal:repeat>
 	        </tbody>
 	      </table>
-        
+
         <h2>
           <i class="icon-group"></i>
           Groups
         </h2>
-        
+
 	      <table class="contentlisting table table-striped" id="grouplisting">
 	        <thead>
 	          <tr>
@@ -171,19 +169,19 @@
                     </a>
                   </div>
                 </td>
-		            <td tal:content="group.id">user</td> 
+		            <td tal:content="group.id">user</td>
 		            <td tal:content="', '.join(group.users)"></td>
 	            </tr>
 	          </tal:repeat>
 	        </tbody>
 	      </table>
-        
+
         <h2>
           <i class="icon-comment"></i>
           Activation
         </h2>
-        
-	      <table class="contentlisting table table-striped" 
+
+	      <table class="contentlisting table table-striped"
                id="activationlisting">
 	        <thead>
 	          <tr>
@@ -197,8 +195,8 @@
 	          <tal:repeat repeat="act view.list_activation()">
 	            <tr id="" tal:attributes="id act[1]">
                 <td><img src="/pycms_icons/Chat16.png" alt="User"/></td>
-		            <td tal:content="act[0]">user</td> 
-		            <td tal:content="act[1]">key</td> 
+		            <td tal:content="act[0]">user</td>
+		            <td tal:content="act[1]">key</td>
                 <td>
                   <div class="lsaction" id="lsdeletekey">
                     <a href="#"
@@ -212,7 +210,7 @@
             </tal:repeat>
           </tbody>
         </table>
-        
+
       </div>
     </div>
   </body>

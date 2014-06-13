@@ -1,8 +1,9 @@
+from base import AdminView
 from ..interfaces import IMailer
 from pyramid.security import has_permission
 
 
-class UserAdminView(object):
+class UserAdminView(AdminView):
 
     """ User admin methods, all JSON """
 
@@ -10,6 +11,27 @@ class UserAdminView(object):
 
         self.context = context
         self.request = request
+
+    def list_users(self):
+
+        users = self.context.acl.users.values()
+        return sorted(users, key=lambda user:user.id.lower())
+
+    def list_groups(self):
+
+        groups = self.context.acl.groups.values()
+        return sorted(groups, key=lambda group:group.id.lower())
+
+    def list_activation(self):
+
+        acts = []
+
+        for key in self.context.acl.activation.keys():
+            user = self.context.acl.get_user_for_activation(key)
+
+            acts.append((user.id, key))
+
+        return acts
 
     def add_user(self):
 
@@ -65,11 +87,12 @@ class UserAdminView(object):
 
         """ admin user groups """
 
-        if self.request.params.get("group", []):
+        if self.request.method == "POST":
+            groups = self.request.params.getall('group')
             self.context.acl.set_user_groups(
                 self.request.params['user'],
-                self.request.params.getall('group'),
-                )
+                groups,
+            )
 
         return {'groups': self.context.acl.groups.values(),
                 'user': self.request.params.get('user_id', '')}
@@ -77,7 +100,7 @@ class UserAdminView(object):
     def delete_key(self):
 
         self.context.acl.unset_activation_key(
-                self.request.params.get('key', ''))
+            self.request.params.get('key', ''))
 
     def change_password(self, token=None, user_id=None):
 
@@ -114,7 +137,7 @@ class UserAdminView(object):
             message = "Cannot be empty"
             status = "error"
         elif self.request.params['password'] == \
-               self.request.params['password_confirm']:
+                self.request.params['password_confirm']:
             user.set_pwd(self.request.params['password'])
             if token:
                 self.context.acl.unset_activation_key(token)

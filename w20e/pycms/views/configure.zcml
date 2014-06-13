@@ -234,7 +234,7 @@
   <!-- list users -->
   <view
      context="w20e.pycms.interfaces.ISite"
-     view=".site.SiteView"
+     view=".users.UserAdminView"
      renderer="../templates/site_users.pt"
      name="users"
      permission="admin"
@@ -252,7 +252,7 @@
 
   <view
      context="w20e.pycms.interfaces.ISite"
-     view=".site.SiteView"
+     view=".users.UserAdminView"
      attr="delete_user"
      renderer="string"
      name="delete_user"
@@ -261,7 +261,7 @@
 
   <view
      context="w20e.pycms.interfaces.ISite"
-     view=".site.SiteView"
+     view=".users.UserAdminView"
      attr="invite_user"
      renderer="string"
      name="invite_user"
@@ -270,7 +270,7 @@
 
   <view
      context="w20e.pycms.interfaces.ISite"
-     view=".site.SiteView"
+     view=".users.UserAdminView"
      attr="change_password"
      renderer="../templates/change_password.pt"
      name="change_password"
@@ -279,7 +279,7 @@
 
   <view
      context="w20e.pycms.interfaces.ISite"
-     view=".site.SiteView"
+     view=".users.UserAdminView"
      attr="change_password"
      renderer="../templates/change_password_minimal.pt"
      name="change_password_minimal"
@@ -298,7 +298,7 @@
 
   <view
      context="w20e.pycms.interfaces.ISite"
-     view=".site.SiteView"
+     view=".users.UserAdminView"
      attr="delete_key"
      name="delete_key"
      permission="admin"
@@ -308,7 +308,7 @@
 
   <view
     context="w20e.pycms.interfaces.ISite"
-    view=".site.SiteView"
+    view=".users.UserAdminView"
     attr="user_groups"
     renderer="../templates/user_groups.pt"
     name="user_groups"

@@ -363,8 +363,8 @@ pycms.pack = function(e) {
 pycms.cut = function(item) {
 
   var row = item.parents("tr").eq(0);
-  var content_id = row.attr("data-objectpath");
-  var content_title = row.attr("data-objecttitle");
+  var content_id = row.data("objectpath");
+  var content_title = row.data("objecttitle");
 
   var buffer = $.Storage.get("paste_buffer") || "";
 
@@ -392,8 +392,8 @@ pycms.clearCutBuffer = function() {
 pycms.copy = function(item) {
 
   var row = item.parents("tr").eq(0);
-  var content_id = row.attr("data-objectpath");
-  var content_title = row.attr("data-objecttitle");
+  var content_id = row.data("objectpath");
+  var content_title = row.data("objecttitle");
 
   var buffer = $.Storage.get("paste_buffer") || "";
 
@@ -640,7 +640,7 @@ $(document).ready(function() {
 
     $(".jsaction").click(function(e) {
         try {
-          var f = eval($(this).attr("data-jscall"));
+          var f = eval($(this).data("jscall"));
           f.call(e, e);
         } catch(e) {
           console.log(e);
@@ -709,7 +709,17 @@ $(document).ready(function() {
                    input.prev().html(id_to);
                    input.hide();
 
-                   input.parents("tr").eq(0).attr("id", id_to);
+                   var tr = input.parents("tr");
+                   tr.attr("id", id_to);
+                   tr.data('objectid', id_to);
+
+                   // replace last part of the dotted objectpath with the new id
+                   var objectpath = tr.data('objectpath');
+                   var newObjectpath = objectpath.replace(/(^.*\.).*$/, '$1' + id_to);
+                   tr.data('objectpath', newObjectpath);
+
+                   tr.find(".content-edit-link").attr('href', id_to + "/edit");
+                   tr.find(".content-admin-link").attr('href', id_to + "/admin");
                  }
                });
 
@@ -725,7 +735,7 @@ $(document).ready(function() {
           $("#confirm_delete .confirm").unbind('click');
           $("#confirm_delete .confirm").click(function() {
               $.post("ajax_rm",
-                     {'content_id': row.attr("data-objectid")},
+                     {'content_id': row.data("objectid")},
                      function() {
                        row.remove();
                      });
@@ -733,7 +743,7 @@ $(document).ready(function() {
               return false;
             });
 
-          $("#confirm_delete #object_title").html(row.attr("data-objecttitle"));
+          $("#confirm_delete #object_title").html(row.data("objecttitle"));
           $("#confirm_delete").modal();
 
           return false;

@@ -6,23 +6,23 @@
   <include package="pyramid_zcml" />
 
   <!-- All admin CSS -->
-  <pycms:css cssfile="./static/3dparty/bootstrap/css/bootstrap.css" 
+  <pycms:css cssfile="./static/3dparty/bootstrap/css/bootstrap.css"
              csstarget="manage" />
 
-  <pycms:css cssfile="./static/3dparty/font-awesome/css/font-awesome.css" 
+  <pycms:css cssfile="./static/3dparty/font-awesome/css/font-awesome.css"
              csstarget="manage" />
 
-  <pycms:css cssfile="./static/css/bootstrap_custom.css" 
+  <pycms:css cssfile="./static/css/bootstrap_custom.css"
              csstarget="manage" />
 
-  <pycms:css cssfile="./static/3dparty/jquery/css/jquery-ui-1.10.0.custom.css" 
+  <pycms:css cssfile="./static/3dparty/jquery/css/jquery-ui-1.10.0.custom.css"
              csstarget="manage" />
 
-  <pycms:css cssfile="./static/css/pycms.css" 
+  <pycms:css cssfile="./static/css/pycms.css"
              csstarget="manage" />
 
   <!-- All JS needed for admin interface -->
-  <pycms:js jsfile="./static/3dparty/bootstrap/js/bootstrap.js" 
+  <pycms:js jsfile="./static/3dparty/bootstrap/js/bootstrap.js"
             jstarget="manage"/>
 
   <pycms:js
@@ -41,7 +41,7 @@
      />
 
   <pycms:js
-     jsfile="./static/js/pycms.js" 
+     jsfile="./static/js/pycms.js"
      jstarget="manage"
      />
 
