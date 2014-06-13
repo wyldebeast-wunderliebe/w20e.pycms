@@ -35,7 +35,7 @@ class PackCommand(command.Command):
             port = config.get('server:main', 'port')
             url = "http://%s:%s/login" % (host, port)
 
-        usr, pwd = config.get('app:main', "pycms.admin_user").split(":")
+        usr, pwd = config.get('server:main', "pycms.admin_user").split(":")
 
         cj = cookielib.CookieJar()
 
@@ -53,5 +53,3 @@ class PackCommand(command.Command):
         result = handle.read()
 
         print result
-
-
