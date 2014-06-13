@@ -1,8 +1,8 @@
 import os
 import inspect
 from uuid import uuid1
-from zope.interface import implements, directlyProvides, alsoProvides, \
-     noLongerProvides, providedBy
+from zope.interface import (
+    implements, directlyProvides, alsoProvides, noLongerProvides, providedBy)
 from zope.component import subscribers
 from zope.component import getMultiAdapter
 from pyramid.url import resource_url
@@ -164,7 +164,6 @@ class PyCMSMixin(object):
 
         return [to_str(nature) for nature in self.list_natures()]
 
-
     def __json__(self, request):
         """ return a json encoded version of this model """
 
@@ -188,13 +187,13 @@ class PyCMSMixin(object):
 class BaseContent(PyCMSMixin, HitmanBaseContent):
 
     def __init__(self, content_id, data=None, **kwargs):
-        super(HitmanBaseContent, self).__init__(content_id, data=None, **kwargs)
+        HitmanBaseContent.__init__(self, content_id, data, **kwargs)
 
 
 class BaseFolder(PyCMSMixin, HitmanBaseFolder):
 
     def __init__(self, content_id, data=None, **kwargs):
-        super(HitmanBaseFolder, self).__init__(content_id, data=None, **kwargs)
+        HitmanBaseFolder.__init__(self, content_id, data, **kwargs)
 
     def __json__(self, request):
         """ return a json encoded version of this model
@@ -221,7 +220,7 @@ class BaseFolder(PyCMSMixin, HitmanBaseFolder):
         """ use base listing, but filter out temp objects """
 
         result = HitmanBaseFolder.list_content(
-                self, content_type, iface, **kwargs)
+            self, content_type, iface, **kwargs)
 
         # filter out temp objects
         result = [r for r in result if not ITemporaryObject.providedBy(r)]
