@@ -24,8 +24,7 @@ Registry.add_html_template_path(tpl_path)
 Registry.add_html_template_path("./bootstrap")
 
 here = os.path.abspath(os.path.dirname(__file__))
-version = open(os.path.join(here, "version.txt")
-               ).readlines()[0].strip()
+version = pkg_resources.get_distribution("w20e.pycms").version
 
 
 def class_from_string(clazz_name):
