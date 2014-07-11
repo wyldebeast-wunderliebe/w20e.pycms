@@ -133,7 +133,7 @@ def root_factory(request):
     return conn.root()['app_root']
 
 
-def make_pycms_app(app, **settings):
+def make_pycms_app(app, *includes, **settings):
 
     """ Create a w20e.pycms application and return it. The app is a
     router instance as created by Configurator.make_wsgi_app."""
@@ -161,6 +161,11 @@ def make_pycms_app(app, **settings):
     config.include('pyramid_mailer')
 
     config.load_zcml('w20e.pycms:bootstrap.zcml')
+
+    # Other includes
+    #
+    for include in includes:
+        config.include(include)
 
     # load plugin entry points of the pycms_plugin persuasion
     #
