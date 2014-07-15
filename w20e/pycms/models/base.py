@@ -69,8 +69,11 @@ class PyCMSMixin(object):
         memo[id(self)] = result
         for k, v in self.__dict__.items():
             setattr(result, k, deepcopy(v, memo))
-        # reset the uuid for the copied object
-        delattr(result, '_uuid')
+
+        # reset the uuid for the copied object, if it's there...
+        if hasattr(result, "_uuid"):
+            delattr(result, '_uuid')
+
         return result
 
     @property
