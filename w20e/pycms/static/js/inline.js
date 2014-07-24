@@ -67,8 +67,6 @@ $(document).ready(function() {
             },
            });
 
-    console.log(tgt);
-
     if (tgt.is(".modal")) {
       tgt.modal("hide");
     } else {
