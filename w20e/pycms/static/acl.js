@@ -36,16 +36,6 @@ pycms.acl.addUser = function() {
 };
 
 /**
- * Set password for given user.
- */
-pycms.acl.setPwd = function() {
-    $.post("set_password", $("#set_pwd_form form").serialize(),
-            function(data) {
-                $("#set_pwd_form").modal('hide');
-            });
-}
-
-/**
  * Store groups for user
  */
 pycms.acl.setUserGroups = function() {
@@ -59,16 +49,6 @@ pycms.acl.showUserAddForm = function() {
   $("#user_add_form").modal();
 };
 
-/**
- * Delete user, using Ajax. If success, remove row in view too.
- * @param userId User id
- */
-pycms.acl.deleteUser = function(userId) {
-
-  $.post("delete_user", {'user_id': userId}, function() {
-      $("#" + userId).remove();
-    });
-};
 
 pycms.acl.inviteUser = function(userId) {
 
@@ -90,47 +70,6 @@ pycms.acl.deleteKey = function(keyId) {
 pycms.acl.initActions = function(row) {
 
   var elts;
-
-  /* BIND DELETE USER BUTTON */
-
-  if (row) {
-    elts = row.find(".btn.delete");
-  } else {
-    elts = $(".btn.delete");
-  }
-
-  elts.click(function() {
-
-      try {
-        var tr = $(this).parents("tr").first();
-        var userId = tr.data("userid");
-        pycms.acl.deleteUser(userId);
-        tr.remove();
-      } catch (e) {
-        console.log(e);
-      }
-
-      return false;
-    });
-
-  /* BIND SET PASSWORD BUTTON */
-
-  if (row) {
-    elts = row.find(".btn.setpwd");
-  } else {
-    elts = $(".btn.setpwd");
-  }
-
-  elts.click(function() {
-
-      var tr = $(this).parents("tr").first();
-      var userId = tr.data("userid");
-
-      $("#set_pwd_form input[name='userid']").val(userId);
-      $("#set_pwd_form").modal();
-
-      return false;
-    });
 
   /* BIND SET USER-GROUPS BUTTON */
 

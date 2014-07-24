@@ -26,7 +26,8 @@
 
           <div class="alert alert-error hide"></div>
 
-          <form action="javascript: pycms.acl.setPwd()" method="POST">
+          <form action="set_password" class="inline" method="POST"
+                target="#set_pwd_form">
 
             <input name="userid" type="hidden"/>
 
@@ -37,7 +38,7 @@
             <input type="password" name="password_confirm"/>
 
             <div class="btn-group">
-              <input type="submit" value="Add" class="btn btn-primary"/>
+              <input type="submit" value="Save" class="btn btn-primary"/>
               <input type="button" class="btn" value="Cancel"
                 data-dismiss="modal"
                 />
@@ -109,9 +110,10 @@
                 <td><i class="icon-user"></i></td>
                 <td class="actions_col">
                   <div class="btn-group">
-                    <a class="btn btn-danger delete"
+                    <a class="btn btn-danger delete inline"
 		                   tal:condition="user.id != 'admin'"
-                       href="#">
+                       href="/delete_user" data-method="POST"
+                       data-formdata='{"user_id": "${ user.id }"}'>
                       <i class="icon-trash"></i>
                     </a>
                     <a href="#" tal:condition="user.id != 'admin'"
@@ -120,9 +122,10 @@
                        >
                       <i class="icon-comment"></i>
                     </a>
-                    <a href="#" tal:condition="user.id != 'admin'"
+                    <a href="#set_pwd_form" tal:condition="user.id != 'admin'"
                        title="Set password"
-                       class="btn setpwd"
+                       class="btn inline"
+                       data-formdata='{"userid": "${user.id}"}'
                        >
                       <i class="icon-key"></i>
                     </a>
