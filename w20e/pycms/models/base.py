@@ -17,6 +17,14 @@ from w20e.pycms.interfaces import INature, ITemporaryObject
 from w20e.pycms.models.interfaces import IPyCMSMixin
 from w20e.pycms.catalog import ObjectSummary
 from copy import deepcopy
+import pkg_resources
+try:
+    pkg_resources.get_distribution('repoze.workflow')
+except pkg_resources.DistributionNotFound:
+    HAS_WORKFLOW = False
+else:
+    HAS_WORKFLOW = True
+    from repoze.workflow import get_workflow
 
 
 class XMLFormFactory(object):
@@ -166,6 +174,14 @@ class PyCMSMixin(object):
             return "%s.%s" % (iface.__module__, iface.__name__)
 
         return [to_str(nature) for nature in self.list_natures()]
+
+    @property
+    def wf_state(self):
+        """ get the workflow state via the repoze.workflow API """
+        if HAS_WORKFLOW:
+            workflow = get_workflow(self, 'security')
+            state = workflow.state_of(self)
+            return state
 
     def __json__(self, request):
         """ return a json encoded version of this model """
