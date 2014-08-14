@@ -14,7 +14,6 @@ from w20e.hitman.utils import path_to_object
 from pyramid.renderers import get_renderer, render
 from pyramid.httpexceptions import HTTPFound
 from pyramid.interfaces import IView, IViewClassifier
-from pyramid.response import Response
 from pyramid.security import authenticated_userid
 from w20e.pycms.utils import has_permission
 from pyramid.url import resource_url
@@ -283,10 +282,6 @@ class FactoryView(BaseView, pyramidformview, ViewMixin):
         pyramidformview.__init__(self, self.context, request, self.form,
                                  retrieve_data=True)
 
-    #@property
-    #def url(self):
-    #    return "%s" % self.base_url
-
     @property
     def content_type(self):
         return self.context.content_type
@@ -323,12 +318,13 @@ class FactoryView(BaseView, pyramidformview, ViewMixin):
         submissions = set(["submit", "save", "w20e.forms.next",
                            "w20e.forms.process"])
 
-        if submissions.intersection(params.keys()):
+        if "cancel" in params:
+            return HTTPFound(location=self.cancel_add_redirect)
+
+        elif submissions.intersection(params.keys()):
             status, errors = self.form.view.handle_form(self.form,
                                                         self.request.params)
 
-        elif "cancel" in params:
-            return HTTPFound(location=self.cancel_add_redirect)
         else:
             status = "unknown"
 
@@ -351,7 +347,7 @@ class FactoryView(BaseView, pyramidformview, ViewMixin):
         render_kwargs = {}
 
         render_args = {
-            "form_class": "inline",
+            "form_class": "ajax-validate",
             "action": "{0}edit".format(self.base_url), }
         render_kwargs.update(render_args)
 
