@@ -347,7 +347,6 @@ class FactoryView(BaseView, pyramidformview, ViewMixin):
         render_kwargs = {}
 
         render_args = {
-            "form_class": "ajax-validate",
             "action": "{0}edit".format(self.base_url), }
         render_kwargs.update(render_args)
 
