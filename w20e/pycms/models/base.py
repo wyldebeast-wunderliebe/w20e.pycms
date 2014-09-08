@@ -116,7 +116,10 @@ class PyCMSMixin(object):
     def position_in_parent(self):
         """ return the position of this object in the parent container """
         parent = self.__parent__
-        return parent and parent._order.index(self.id) or 0
+        position = 0
+        if parent and self.id in parent._order:
+            position = parent._order.index(self.id)
+        return position
 
     def __form__(self, request):
 
