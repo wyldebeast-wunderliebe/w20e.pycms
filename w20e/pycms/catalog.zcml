@@ -110,4 +110,10 @@
       idxtype="field"
       />
 
+  <pycms:index
+      name="wf_state"
+      field="wf_state"
+      idxtype="field"
+      />
+
 </configure>
