@@ -1,6 +1,7 @@
 import os
 import inspect
 from uuid import uuid1
+from datetime import datetime, date
 from zope.interface import (
     implements, directlyProvides, alsoProvides, noLongerProvides, providedBy)
 from zope.component import subscribers
@@ -172,6 +173,12 @@ class PyCMSMixin(object):
 
         # use the form data as default
         data = self.__data__.as_dict()
+
+        # Handle dates
+        for key, val in data.items():
+
+            if type(val) in [datetime, date]:
+                data[key] = val.isoformat()
 
         # add content item's properties that are not part of the form..
         data['id'] = self.id
