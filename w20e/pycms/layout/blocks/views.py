@@ -71,7 +71,7 @@ class BlockEdit(pyramidformview, BlockView):
         self.request = request
 
         pyramidformview.__init__(self, context, request,
-                self.__form__(request))
+                                 self.__form__(request))
 
     @property
     def action(self):
@@ -97,7 +97,7 @@ class BlockEdit(pyramidformview, BlockView):
             return self._v_form
         except:
 
-            block = self._get_block();
+            block = self._get_block()
 
             factory = getMultiAdapter((block, request), IFormFactory)
             form = factory.createForm(request.url)
@@ -128,8 +128,8 @@ class BlockEdit(pyramidformview, BlockView):
                 self.context.save_block(self.request.params["slot"],
                                         block.id, block)
 
-                result = HTTPFound(location='block?block=%s&slot=%s' % \
-                                       (block.id, self.request.params["slot"]))
+                result = HTTPFound(location='block?block=%s&slot=%s' %
+                                   (block.id, self.request.params["slot"]))
 
         return result
 

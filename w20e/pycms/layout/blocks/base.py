@@ -21,4 +21,3 @@ class Block(PersistentMapping):
     def type(self):
 
         return self.__class__.__name__.lower()
-

@@ -12,7 +12,7 @@ class BaseLayout(object):
     def __init__(self, page):
 
         """ Adapt page """
-        
+
         self.context = page
 
     @property
@@ -45,20 +45,21 @@ class LayoutMixin(object):
 
     def save_block(self, slot, block_id, block):
 
-        if not slot in self._blocks.keys():
+        if slot not in self._blocks.keys():
             self._blocks[slot] = OrderedDict()
         self._blocks[slot][block_id] = block
+        self._blocks._p_changed = 1
 
     def get_block(self, slot_id, block_id):
 
         return self._blocks[slot_id][block_id]
 
     def rm_block(self, slot_id, block_id):
-        
+
         del self._blocks[slot_id][block_id]
 
     def get_blocks(self, slot_id):
-        
+
         try:
             return self._blocks[slot_id].values()
         except:
