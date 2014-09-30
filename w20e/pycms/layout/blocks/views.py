@@ -125,8 +125,12 @@ class BlockEdit(pyramidformview, BlockView):
 
                 self.form.submission.submit(self.form, block, self.request)
 
-                self.context.save_block(self.request.params["slot"],
-                                        block.id, block)
+                if block.id == "TMP":
+                    block.id = self._gen_block_id()
+                    self.context.save_block(self.request.params["slot"],
+                                            block.id, block)
+                else:
+                    block._p_changed
 
                 result = HTTPFound(location='block?block=%s&slot=%s' %
                                    (block.id, self.request.params["slot"]))

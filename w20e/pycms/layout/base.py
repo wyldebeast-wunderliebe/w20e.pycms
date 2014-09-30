@@ -48,7 +48,6 @@ class LayoutMixin(object):
         if slot not in self._blocks.keys():
             self._blocks[slot] = OrderedDict()
         self._blocks[slot][block_id] = block
-        self._blocks._p_changed = 1
 
     def get_block(self, slot_id, block_id):
 
