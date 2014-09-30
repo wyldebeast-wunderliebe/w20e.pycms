@@ -130,7 +130,7 @@ class BlockEdit(pyramidformview, BlockView):
                     self.context.save_block(self.request.params["slot"],
                                             block.id, block)
                 else:
-                    block._p_changed
+                    block._p_changed = 1
 
                 result = HTTPFound(location='block?block=%s&slot=%s' %
                                    (block.id, self.request.params["slot"]))
