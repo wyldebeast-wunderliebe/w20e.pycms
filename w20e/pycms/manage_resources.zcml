@@ -56,6 +56,11 @@
      />
 
   <pycms:js
+     jsfile="./static/js/inline.js"
+     jstarget="manage"
+     />
+
+  <pycms:js
      jsfile="./static/tinymce/jscripts/tiny_mce/jquery.tinymce.js"
      jstarget="manage"
      />

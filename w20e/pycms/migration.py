@@ -15,8 +15,8 @@ def migrate(current_version, target_version):
     LOGGER.info("Upgrade from %s to %s" % (current_version, target_version))
 
     current_version = normalize_version(current_version)
-    target_version = normalize_version(target_version)    
-    
+    target_version = normalize_version(target_version)
+
     update_mod = "w20e.pycms.migrations.%s__%s" % \
                  (current_version, target_version)
 
@@ -26,12 +26,12 @@ def migrate(current_version, target_version):
                             )
 
     if os.path.isfile(mod_path):
-        
+
         try:
             __import__(update_mod)
             LOGGER.info("Found upgrade")
         except:
             LOGGER.warn("No upgrade found")
             return False
-        
+
     return True

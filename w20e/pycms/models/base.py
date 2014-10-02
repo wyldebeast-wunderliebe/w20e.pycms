@@ -1,6 +1,7 @@
 import os
 import inspect
 from uuid import uuid1
+from datetime import datetime, date
 from zope.interface import (
     implements, directlyProvides, alsoProvides, noLongerProvides, providedBy)
 from zope.component import subscribers
@@ -17,6 +18,14 @@ from w20e.pycms.interfaces import INature, ITemporaryObject
 from w20e.pycms.models.interfaces import IPyCMSMixin
 from w20e.pycms.catalog import ObjectSummary
 from copy import deepcopy
+import pkg_resources
+try:
+    pkg_resources.get_distribution('repoze.workflow')
+except pkg_resources.DistributionNotFound:
+    HAS_WORKFLOW = False
+else:
+    HAS_WORKFLOW = True
+    from repoze.workflow import get_workflow
 
 
 class XMLFormFactory(object):
@@ -69,8 +78,11 @@ class PyCMSMixin(object):
         memo[id(self)] = result
         for k, v in self.__dict__.items():
             setattr(result, k, deepcopy(v, memo))
-        # reset the uuid for the copied object
-        delattr(result, '_uuid')
+
+        # reset the uuid for the copied object, if it's there...
+        if hasattr(result, "_uuid"):
+            delattr(result, '_uuid')
+
         return result
 
     @property
@@ -105,7 +117,10 @@ class PyCMSMixin(object):
     def position_in_parent(self):
         """ return the position of this object in the parent container """
         parent = self.__parent__
-        return parent and parent._order.index(self.id) or 0
+        position = 0
+        if parent and self.id in parent._order:
+            position = parent._order.index(self.id)
+        return position
 
     def __form__(self, request):
 
@@ -164,11 +179,25 @@ class PyCMSMixin(object):
 
         return [to_str(nature) for nature in self.list_natures()]
 
+    @property
+    def wf_state(self):
+        """ get the workflow state via the repoze.workflow API """
+        if HAS_WORKFLOW:
+            workflow = get_workflow(self, 'security')
+            state = workflow.state_of(self)
+            return state
+
     def __json__(self, request):
         """ return a json encoded version of this model """
 
         # use the form data as default
         data = self.__data__.as_dict()
+
+        # Handle dates
+        for key, val in data.items():
+
+            if type(val) in [datetime, date]:
+                data[key] = val.isoformat()
 
         # add content item's properties that are not part of the form..
         data['id'] = self.id

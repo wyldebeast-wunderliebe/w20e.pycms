@@ -1,6 +1,7 @@
 import os
 import sys
 import transaction
+from zope.component import getSiteManager
 from pyramid.config import Configurator
 from pyramid_zodbconn import get_connection
 from pyramid.session import (
@@ -23,8 +24,7 @@ Registry.add_html_template_path(tpl_path)
 Registry.add_html_template_path("./bootstrap")
 
 here = os.path.abspath(os.path.dirname(__file__))
-version = open(os.path.join(here, "version.txt")
-               ).readlines()[0].strip()
+version = pkg_resources.get_distribution("w20e.pycms").version
 
 
 def class_from_string(clazz_name):
@@ -132,7 +132,7 @@ def root_factory(request):
     return conn.root()['app_root']
 
 
-def make_pycms_app(app, **settings):
+def make_pycms_app(app, *includes, **settings):
 
     """ Create a w20e.pycms application and return it. The app is a
     router instance as created by Configurator.make_wsgi_app."""
@@ -142,24 +142,32 @@ def make_pycms_app(app, **settings):
                           session_factory=SessionFactory('w20e_pycms_secret'),
                           settings=settings)
 
-    config.include('pyramid_chameleon')  # enable Chameleon rendering
+    # enable Chameleon rendering
+    #
+    config.include('pyramid_chameleon')
 
     register_json_adapters(config)
 
-    def get_registry():
+    def get_registry(*args):
 
         return config.registry
 
     # hook up registry
-    #getSiteManager.sethook(get_registry)
-    config.hook_zca()
+    #
+    getSiteManager.sethook(get_registry)
 
     config.include(pyramid_zcml)
     config.include('pyramid_mailer')
 
     config.load_zcml('w20e.pycms:bootstrap.zcml')
 
-    # load plugin entry points
+    # Other includes
+    #
+    for include in includes:
+        config.include(include)
+
+    # load plugin entry points of the pycms_plugin persuasion
+    #
     for ep in pkg_resources.iter_entry_points(group='pycms_plugin'):
         fun = ep.load()
         fun(config)
@@ -170,8 +178,5 @@ def make_pycms_app(app, **settings):
     config.commit()
 
     appmaker(config)
-
-    #getSiteManager.reset()
-    #config.hook_zca()
 
     return config.make_wsgi_app()

@@ -150,6 +150,11 @@ class Catalog(object):
             self.index_object(object)
             docid = self._document_map.docid_for_address(uuid)
 
+        # update the path of the object in the documentmap since the
+        # object might have been renamed / moved
+        path = object_to_path(object)
+        self._document_map.add_metadata(docid, {'path': path})
+
         self.catalog.reindex_doc(docid, object)
         self._p_changed = 1
         self.catalog._p_changed = 1

@@ -772,6 +772,7 @@ $(document).ready(function() {
     pycms.init_form_submission();
 
     pycms.setAutofocus();
+
 });
 
 
