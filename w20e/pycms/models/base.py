@@ -182,10 +182,11 @@ class PyCMSMixin(object):
     @property
     def wf_state(self):
         """ get the workflow state via the repoze.workflow API """
+        state = ''
         if HAS_WORKFLOW:
             workflow = get_workflow(self, 'security')
-            state = workflow.state_of(self)
-            return state
+            state = workflow.state_of(self) or ''
+        return state
 
     def __json__(self, request):
         """ return a json encoded version of this model """
