@@ -63,7 +63,7 @@ class FileView(object):
         response.cache_expires = (3600 * 24 * 7)
 
         response.content_disposition = \
-            'attachment; filename="{0}"'.format(value['name'])
+            u'attachment; filename="{0}"'.format(value['name'])
 
         return response
 
