@@ -205,16 +205,23 @@ pycms.createDataArray = function(form) {
 
 pycms.initForm = function() {
 
-  $('#form_target textarea.wysiwyg').tinymce({
+  var global_directionality = $('html').attr('dir') || 'ltr';
+
+  $('#form_target textarea.wysiwyg').each(function() {
+
+      var directionality = $(this).attr('dir') || global_directionality;
+
+      $(this).tinymce({
         script_url : '/static/js/tiny_mce/tiny_mce.js',
 
         // General options
+        directionality: directionality,
         theme : "advanced",
-        plugins : "autolink,lists,pagebreak,layer,table,save,advhr,       advimage,advlink,inlinepopups,insertdatetime,preview,media,searchreplace,print, contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,advlist",
+        plugins : "autolink,lists,pagebreak,layer,table,save,advhr,advimage,advlink,inlinepopups,insertdatetime,preview,media,searchreplace,print, contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,advlist",
 
         // Theme options
-        theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,       justifyleft,justifycenter,justifyright,justifyfull,headerselect,|,cut,copy,paste,pastetext,pasteword,bullist,numlist,|,outdent,indent,blockquote,|,nonbreaking,  pagebreak,|,undo,redo",
-        theme_advanced_buttons2 : "link,unlink,anchor,image,cleanup,code,|,     preview,|,forecolor,backcolor,tablecontrols,|,hr,removeformat,|,charmap,media,|,fullscreen",
+        theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,headerselect,|,cut,copy,paste,pastetext,pasteword,bullist,numlist,|,outdent,indent,blockquote,|,nonbreaking,  pagebreak,|,undo,redo",
+        theme_advanced_buttons2 : "link,unlink,anchor,image,cleanup,code,|,preview,|,forecolor,backcolor,tablecontrols,|,hr,removeformat,|,charmap,media,|,fullscreen",
         theme_advanced_buttons3 : "",
         theme_advanced_toolbar_location : "top",
         theme_advanced_toolbar_align : "left",
@@ -225,6 +232,7 @@ pycms.initForm = function() {
         onchange_callback : function(instance){
             $('#' + instance.editorId).trigger("change");
         }
+    });
   });
 
   $("#form_target input[name=cancel]").click(function(e) {
@@ -649,16 +657,24 @@ $(document).ready(function() {
         return false;
       });
 
-    $('textarea.wysiwyg').tinymce({
-        script_url : '/static/tinymce/jscripts/tiny_mce/tiny_mce.js',
+    var global_directionality = $('html').attr('dir') || 'ltr';
+
+
+    $('textarea.wysiwyg').each(function() {
+
+        var directionality = $(this).attr('dir') || global_directionality;
+
+        $(this).tinymce({
+          script_url : '/static/tinymce/jscripts/tiny_mce/tiny_mce.js',
 
           // General options
+          directionality: directionality,
           theme : "advanced",
-          plugins : "autolink,lists,pagebreak,style,layer,table,save,advhr,       advimage,advlink,inlinepopups,insertdatetime,preview,media,searchreplace,print, contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,advlist",
+          plugins : "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,inlinepopups,insertdatetime,preview,media,searchreplace,print, contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,advlist",
 
           // Theme options
-          theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,       justifyleft,justifycenter,justifyright,justifyfull,formatselect,|,cut,copy,paste,pastetext,pasteword,bullist,numlist,|,outdent,indent,blockquote,|,nonbreaking,  pagebreak,|,undo,redo",
-          theme_advanced_buttons2 : "link,unlink,anchor,image,cleanup,code,|,     preview,|,forecolor,backcolor,tablecontrols,|,hr,removeformat,|,charmap,media,|,fullscreen",
+          theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,formatselect,|,cut,copy,paste,pastetext,pasteword,bullist,numlist,|,outdent,indent,blockquote,|,nonbreaking,  pagebreak,|,undo,redo",
+          theme_advanced_buttons2 : "link,unlink,anchor,image,cleanup,code,|,preview,|,forecolor,backcolor,tablecontrols,|,hr,removeformat,|,charmap,media,|,fullscreen",
           theme_advanced_buttons3 : "",
           theme_advanced_toolbar_location : "top",
           theme_advanced_toolbar_align : "left",
@@ -668,7 +684,8 @@ $(document).ready(function() {
           onchange_callback : function(instance){
               $('#' + instance.editorId).trigger("change");
           }
-          });
+        });
+    });
 
     $(".lscut").click(function() {
 
