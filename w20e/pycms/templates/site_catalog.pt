@@ -1,11 +1,11 @@
-<html xmlns="http://www.w3.org/1999/xhtml" 
-      xml:lang="en" 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       metal:use-macro="admin.macros['master']">
 
   <head/>
-  
+
   <body>
 
     <div metal:fill-slot="toolbar">
@@ -13,11 +13,11 @@
     </div>
 
     <div metal:fill-slot="content">
-    
+
       <h1 class="edit_header">Catalog</h1>
 
       <h2>Indexes</h2>
-      
+
       <table class="table table-striped content-listing">
         <thead>
           <tr>
@@ -33,8 +33,10 @@
               <td>${idx['type']}</td>
               <td>${idx['docs']}</td>
             </tr>
-            <tr>
+            <tr tal:replace="nothing">
+              <!--
               <td colspan="3">${idx['docids']}</td>
+              -->
             </tr>
           </tal:repeat>
         </tbody>
@@ -53,7 +55,7 @@
           </tr>
         </thead>
         <tbody>
-          <tal:repeat repeat="entry view.catalog_entries()">
+          <tal:repeat repeat="entry view.entries">
             <tr>
               <td>${entry['docid']}</td>
               <td>${entry['location']}</td>
@@ -64,6 +66,7 @@
           </tal:repeat>
         </tbody>
       </table>
+      ${view.entries.pager()}
     </div>
   </body>
 </html>

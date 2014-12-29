@@ -1,4 +1,5 @@
 from base import AdminView
+from webhelpers import paginate
 
 
 class SiteCatalogView(AdminView):
@@ -9,6 +10,11 @@ class SiteCatalogView(AdminView):
 
         AdminView.__init__(self, context, request)
         self.cat = self.context.root._catalog
+
+        page_url = paginate.PageURL_WebOb(request)
+        current_page = request.params.get('page', 0)
+        self.entries = paginate.Page(
+            self.catalog_entries(), current_page, url=page_url)
 
     def catalog_entries(self):
 
@@ -32,12 +38,13 @@ class SiteCatalogView(AdminView):
 
         for item in self.cat.catalog.items():
 
-            res.append({'id': item[0],
-                        'type': item[1].__class__.__name__,
-                        'docs': (hasattr(item[1], "_num_docs") and \
-                                item[1]._num_docs() or 0),
-                        'docids': item[1].docids()
-                    })
+            res.append({
+                'id': item[0],
+                'type': item[1].__class__.__name__,
+                'docs': (hasattr(item[1], "_num_docs") and
+                         item[1]._num_docs() or 0),
+                'docids': item[1].docids()
+                })
 
         return res
 

@@ -22,6 +22,7 @@ requires = [
     'cssmin',
     'w20e.hitman',
     'PasteScript>=1.3',
+    'WebHelpers',
     ]
 
 setup(name='w20e.pycms',
