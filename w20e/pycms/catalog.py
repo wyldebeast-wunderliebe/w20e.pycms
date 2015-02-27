@@ -18,8 +18,8 @@ def init(event):
 
     app = event.app_root
 
-    if event.registry.settings.get("pycms.catalog.force_new", False) \
-           or not hasattr(app, "_catalog"):
+    if event.registry.settings.get("pycms.catalog.force_new",
+                                   False) or not hasattr(app, "_catalog"):
         app._catalog = Catalog()
         app._catalog.__parent__ = app
         app._catalog.__name__ = "catalog"
@@ -31,20 +31,20 @@ def init(event):
     for idx in indexes.get_indexes():
         if not idx[0] in app._catalog.catalog.keys():
             if idx[1]['type'] == "field":
-                app._catalog.catalog[idx[0]] = \
-                        CatalogFieldIndex(idx[1]['field'])
+                app._catalog.catalog[idx[0]] = CatalogFieldIndex(
+                    idx[1]['field'])
                 app._catalog._p_changed = 1
             elif idx[1]['type'] == "text":
-                app._catalog.catalog[idx[0]] = \
-                        CatalogTextIndex(idx[1]['field'])
+                app._catalog.catalog[idx[0]] = CatalogTextIndex(
+                    idx[1]['field'])
                 app._catalog._p_changed = 1
             elif idx[1]['type'] == "keyword":
-                app._catalog.catalog[idx[0]] = \
-                        CatalogKeywordIndex(idx[1]['field'])
+                app._catalog.catalog[idx[0]] = CatalogKeywordIndex(
+                    idx[1]['field'])
                 app._catalog._p_changed = 1
             elif idx[1]['type'] == "path":
-                app._catalog.catalog[idx[0]] = \
-                        CatalogPathIndex(idx[1]['field'])
+                app._catalog.catalog[idx[0]] = CatalogPathIndex(
+                    idx[1]['field'])
                 app._catalog._p_changed = 1
 
 
@@ -63,7 +63,7 @@ def objectAdded(event):
     LOGGER.debug("Adding object %s" % event.object.id)
 
     cat = event.object.root._catalog
-    cat.reindex_object(event.object) # reindex is safer
+    cat.reindex_object(event.object)
 
 
 def objectChanged(event):
@@ -135,11 +135,14 @@ class Catalog(object):
         docid = self._document_map.add(uuid)
         self._document_map.add_metadata(docid, {'path': path})
 
-        self.catalog.index_doc(docid, object)
-        self._p_changed = 1
-        self.catalog._p_changed = 1
-        self._document_map._p_changed = 1
-        self.__parent__._p_changed = 1
+        try:
+            self.catalog.index_doc(docid, object)
+            self._p_changed = 1
+            self.catalog._p_changed = 1
+            self._document_map._p_changed = 1
+            self.__parent__._p_changed = 1
+        except:
+            LOGGER.exception("Could not index object!")
 
     def reindex_object(self, object):
 
@@ -155,11 +158,14 @@ class Catalog(object):
         path = object_to_path(object)
         self._document_map.add_metadata(docid, {'path': path})
 
-        self.catalog.reindex_doc(docid, object)
-        self._p_changed = 1
-        self.catalog._p_changed = 1
-        self._document_map._p_changed = 1
-        self.__parent__._p_changed = 1
+        try:
+            self.catalog.reindex_doc(docid, object)
+            self._p_changed = 1
+            self.catalog._p_changed = 1
+            self._document_map._p_changed = 1
+            self.__parent__._p_changed = 1
+        except:
+            LOGGER.exception("Could not index object!")
 
     def unindex_object(self, object):
 
