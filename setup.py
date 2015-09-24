@@ -9,7 +9,7 @@ version = open(os.path.join("w20e", "pycms", "version.txt")
                ).readlines()[0].strip()
 
 requires = [
-    'distribute',
+    'setuptools',
     'pyramid>=1.4a',
     'pyramid_chameleon',
     'pyramid_zodbconn',
@@ -49,6 +49,7 @@ setup(name='w20e.pycms',
       zip_safe=False,
       install_requires = requires,
       tests_require= requires,
+      setup_requires='PasteScript',
       test_suite="w20e.pycms",
       entry_points = """\
       [paste.global_paster_command]
