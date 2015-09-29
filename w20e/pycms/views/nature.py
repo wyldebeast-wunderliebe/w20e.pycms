@@ -19,7 +19,8 @@ class NatureView(object):
 
         if nature:
             self.context.add_nature(nature['interface'])
-            self.request.registry.notify(ContentChanged(self.context))
+            self.request.registry.notify(
+                ContentChanged(self.context, self.request))
 
         return True
 
@@ -33,6 +34,7 @@ class NatureView(object):
 
         if nature:
             self.context.remove_nature(nature['interface'])
-            self.request.registry.notify(ContentChanged(self.context))
+            self.request.registry.notify(
+                ContentChanged(self.context, self.request))
 
         return True

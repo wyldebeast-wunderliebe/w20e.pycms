@@ -258,7 +258,8 @@ class AddView(BaseView):
 
         self.context.add_content(content)
 
-        self.request.registry.notify(TemporaryObjectCreated(content))
+        self.request.registry.notify(
+            TemporaryObjectCreated(content, self.request))
 
         return HTTPFound(location='%sedit' %
                          self.request.resource_url(content))
@@ -339,9 +340,10 @@ class FactoryView(BaseView, pyramidformview, ViewMixin):
             content_id = parent.generate_content_id(self.context.base_id)
             noLongerProvides(self.context, ITemporaryObject)
             self.request.registry.notify(
-                TemporaryObjectFinalized(self.context))
+                TemporaryObjectFinalized(self.context, self.request))
             parent.rename_content(self.context.id, content_id)
-            self.request.registry.notify(ContentAdded(self.context, parent))
+            self.request.registry.notify(ContentAdded(
+                self.context, parent, self.request))
             return HTTPFound(location=self.after_add_redirect)
 
         render_kwargs = {}
@@ -378,10 +380,10 @@ class FactoryView(BaseView, pyramidformview, ViewMixin):
                 content_id = parent.generate_content_id(self.context.base_id)
                 noLongerProvides(self.context, ITemporaryObject)
                 self.request.registry.notify(
-                    TemporaryObjectFinalized(self.context))
+                    TemporaryObjectFinalized(self.context, self.request))
                 parent.rename_content(self.context.id, content_id)
                 self.request.registry.notify(
-                    ContentAdded(self.context, parent))
+                    ContentAdded(self.context, parent, self.request))
                 redirect = self.after_add_redirect
 
         if redirect:
@@ -439,7 +441,8 @@ class EditView(EditBase, ViewMixin):
 
         results = pyramidformview.ajax_validate(self, "xml", True)
 
-        self.request.registry.notify(ContentChanged(self.context))
+        self.request.registry.notify(
+            ContentChanged(self.context, self.request))
         return results
 
 
@@ -492,7 +495,8 @@ class AdminView(Base, ViewMixin):
             content = self.context.get(content_id, None)
 
             self.context.remove_content(content_id)
-            self.request.registry.notify(ContentRemoved(content, self))
+            self.request.registry.notify(
+                ContentRemoved(content, self, self.request))
             return True
 
         else:
@@ -511,7 +515,8 @@ class AdminView(Base, ViewMixin):
             # perhaps a OrderChanged event.. and only reindex relevant index
             children = self.context.list_content()
             for child in children:
-                self.request.registry.notify(ContentChanged(child))
+                self.request.registry.notify(
+                    ContentChanged(child, self.request))
 
             return True
         else:
@@ -558,7 +563,8 @@ class AdminView(Base, ViewMixin):
                 # create new content id if it already exists
                 cpy.set_id(self.context.generate_content_id(obj.id))
                 self.context.add_content(cpy)
-                self.request.registry.notify(ContentAdded(cpy, self.context))
+                self.request.registry.notify(
+                    ContentAdded(cpy, self.context, self.request))
                 copied.append(cpy.id)
 
         return copied
@@ -578,7 +584,8 @@ class AdminView(Base, ViewMixin):
             if obj is not None:
                 content = obj.__parent__.remove_content(obj.id)
                 self.context.add_content(content)
-                self.request.registry.notify(ContentChanged(content))
+                self.request.registry.notify(
+                    ContentChanged(content, self.request))
                 moved.append(obj.id)
 
         return moved
@@ -604,7 +611,8 @@ class AdminView(Base, ViewMixin):
                     self.context.rename_content(id_from, id_to)
                     ret['renamed'][id_from] = id_to
                     content = self.context.get(id_to, None)
-                    self.request.registry.notify(ContentChanged(content))
+                    self.request.registry.notify(
+                        ContentChanged(content, self.request))
                 except:
                     ret['status'] = -1
                     ret['errors'].append("%s already exists" % id_to)

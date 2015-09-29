@@ -37,15 +37,17 @@ class TemporaryObjectCreated(object):
 
     implements(ITemporaryObjectCreated)
 
-    def __init__(self, object):
+    def __init__(self, object, request=None):
 
         self.object = object
+        self.request = request
 
 
 class TemporaryObjectFinalized(object):
 
     implements(ITemporaryObjectFinalized)
 
-    def __init__(self, object):
+    def __init__(self, object, request=None):
 
         self.object = object
+        self.request = request
