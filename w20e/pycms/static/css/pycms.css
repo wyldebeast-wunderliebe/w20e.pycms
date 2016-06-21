@@ -89,4 +89,6 @@ input.rename_in {
   color: red;
 }
 
-
+.w20e-form label {
+    font-weight: bold;
+}

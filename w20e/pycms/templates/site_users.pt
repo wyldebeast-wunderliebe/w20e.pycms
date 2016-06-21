@@ -85,13 +85,13 @@
         </div>
       </div>
 
-      <h1 class="edit_header">Site users &amp; groups</h1>
+      <h2 class="edit_header">Site users &amp; groups</h2>
 
       <div id="userscontainer">
-        <h2>
+        <h3>
           <i class="icon-user"></i>
           Users
-        </h2>
+        </h3>
 
 	      <table class="contentlisting table table-striped" id="userlisting">
 	        <thead>
@@ -145,10 +145,10 @@
 	        </tbody>
 	      </table>
 
-        <h2>
+        <h3>
           <i class="icon-group"></i>
           Groups
-        </h2>
+        </h3>
 
 	      <table class="contentlisting table table-striped" id="grouplisting">
 	        <thead>
@@ -179,10 +179,10 @@
 	        </tbody>
 	      </table>
 
-        <h2>
+        <h3>
           <i class="icon-comment"></i>
           Activation
-        </h2>
+        </h3>
 
 	      <table class="contentlisting table table-striped"
                id="activationlisting">

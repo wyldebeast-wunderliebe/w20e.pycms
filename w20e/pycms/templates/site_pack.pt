@@ -2,30 +2,34 @@
       xml:lang="en"
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
-      metal:use-macro="admin.macros['master']">
+    metal:use-macro="admin.macros['master']">
 
-  <head/>
+<head/>
 
   <body>
-
     <div metal:fill-slot="toolbar">
       <a class="btn btn-danger jsaction" href="#"
-         data-jscall="pycms.pack">Pack DB</a>
+         data-jscall="pycms.pack">
+        Pack DB
+      </a>
     </div>
 
     <div metal:fill-slot="content">
 
-      <h1 class="edit_header">Pack DB</h1>
+      <h2 class="edit_header">Pack DB</h2>
 
-        <div id="pack_result" class="alert alert-info"></div>
+      <div id="pack_result" class="alert alert-info"></div>
 
-        <dl>
-          <dt>File</dt><dd tal:content="view.db.getName()"></dd>
-          <dt>Size</dt><dd tal:content="view.db.getSize()"></dd>
-          <dt>Cachesize</dt><dd tal:content="view.db.cacheSize()"></dd>
-          <dt>Nr. of objects</dt><dd tal:content="view.db.objectCount()"></dd>
-        </dl>
-
+      <dl>
+        <dt>File</dt>
+        <dd tal:content="view.db.getName()"></dd>
+        <dt>Size</dt>
+        <dd tal:content="view.db.getSize()"></dd>
+        <dt>Cachesize</dt>
+        <dd tal:content="view.db.cacheSize()"></dd>
+        <dt>Nr. of objects</dt>
+        <dd tal:content="view.db.objectCount()"></dd>
+      </dl>
     </div>
   </body>
 </html>

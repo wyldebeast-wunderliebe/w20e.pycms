@@ -2,8 +2,7 @@
       xml:lang="en" 
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       xmlns:tal="http://xml.zope.org/namespaces/tal"
-      metal:use-macro="admin.macros['master']"
->
+      metal:use-macro="admin.macros['master']">
 
   <head/>
 
@@ -12,13 +11,11 @@
     <div metal:fill-slot="toolbar"/>
 
     <div metal:fill-slot="content">
-        <div id="title" metal:define-macro="title">
+        <h2 id="title" metal:define-macro="title">
           Edit <span tal:content="view.title"></span>
-        </div>
+        </h2>
         
         <p tal:content="structure python:view.renderform(errors=errors, status=status)"></p>
-        
       </div>
-        
   </body>
 </html>
