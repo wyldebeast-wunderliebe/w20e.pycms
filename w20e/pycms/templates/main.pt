@@ -34,10 +34,10 @@
 
     <metal:define-slot define-slot="js_slot">
         <!--[if lt IE 9]>
-          <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+          <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
 
-      <script src="http://code.jquery.com/jquery-1.9.0.min.js"></script>
+      <script src="//code.jquery.com/jquery-1.9.0.min.js"></script>
       <script defer="defer"
               src="${request.application_url}/public.js"></script>
     </metal:define-slot>
