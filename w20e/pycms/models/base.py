@@ -83,6 +83,12 @@ class PyCMSMixin(object):
         if hasattr(result, "_uuid"):
             delattr(result, '_uuid')
 
+        # reset the created + changed timestamps
+        if hasattr(result, "_created"):
+            result._created = datetime.now()
+        if hasattr(result, "_changed"):
+            result._changed = datetime.now()
+
         return result
 
     @property
