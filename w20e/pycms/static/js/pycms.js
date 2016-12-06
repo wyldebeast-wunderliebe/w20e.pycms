@@ -431,6 +431,8 @@ pycms.paste = function() {
         },
             "error": function(data) {pycms.alert(data, "error")}
       });
+
+    $.Storage.set("paste_buffer", buffer);
 };
 
 pycms.rename = function() {

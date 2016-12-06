@@ -73,23 +73,36 @@ class PyCMSMixin(object):
             return []
 
     def __deepcopy__(self, memo):
+
+        # note that we blacklist the parent or else the deepcopy
+        # recurively copies the parent as well, which is probably
+        # wrong and takes ages to complete. We fix the parent paths
+        # after the cloning has completed
+        blacklist_attrs = ['__parent__', ]
+
         cls = self.__class__
-        result = cls.__new__(cls)
-        memo[id(self)] = result
+        cpy = cls.__new__(cls)
+        memo[id(self)] = cpy
         for k, v in self.__dict__.items():
-            setattr(result, k, deepcopy(v, memo))
+            if (k not in blacklist_attrs):
+                setattr(cpy, k, deepcopy(v, memo))
+
+        # fix parent path
+        if hasattr(cpy, 'list_content'):
+            for cpy_child in cpy.list_content():
+                cpy_child.__parent__ = cpy
 
         # reset the uuid for the copied object, if it's there...
-        if hasattr(result, "_uuid"):
-            delattr(result, '_uuid')
+        if hasattr(cpy, "_uuid"):
+            delattr(cpy, '_uuid')
 
         # reset the created + changed timestamps
-        if hasattr(result, "_created"):
-            result._created = datetime.now()
-        if hasattr(result, "_changed"):
-            result._changed = datetime.now()
+        if hasattr(cpy, "_created"):
+            cpy._created = datetime.now()
+        if hasattr(cpy, "_changed"):
+            cpy._changed = datetime.now()
 
-        return result
+        return cpy
 
     @property
     def uuid(self):
@@ -192,6 +205,7 @@ class PyCMSMixin(object):
         if HAS_WORKFLOW:
             workflow = get_workflow(self, 'security')
             state = workflow.state_of(self) or ''
+
         return state
 
     def __json__(self, request):
