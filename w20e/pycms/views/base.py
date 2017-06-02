@@ -620,31 +620,7 @@ class AdminView(Base, ViewMixin):
 
     def list_content(self, **kwargs):
 
-        """ If we're using the calalog, use the summary, otherwise do the
-        usual"""
-
-# TODO
-# HUUB: I don't think this will work.. we need a path query, because the
-# id is not unique within the application
-#
-#        if hasattr(self.context.root, "_catalog"):
-#
-#            cat = self.context.root._catalog
-#            from repoze.catalog.query import Eq
-#
-#            summaries = []
-#
-#            for obj_id in self.context.list_content_ids():
-#                uuid = cat.query(Eq("id", obj_id))[1][0]
-#
-#                summaries.append(cat.get_object_summary(uuid))
-#
-#            return summaries
-
-        if False:
-            pass
-        else:
-            return super(AdminView, self).list_content(**kwargs)
+        return super(AdminView, self).list_content(**kwargs)
 
     def has_nature(self, nature_id):
 
