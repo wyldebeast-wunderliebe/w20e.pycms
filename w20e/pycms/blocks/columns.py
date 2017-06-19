@@ -1,4 +1,4 @@
-from base import Group, GroupView
+from .base import Group, GroupView
 
 
 ADD_FORM = """

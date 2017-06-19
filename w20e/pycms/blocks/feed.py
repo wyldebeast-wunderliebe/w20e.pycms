@@ -1,4 +1,4 @@
-from base import Block, BlockView
+from .base import Block, BlockView
 
 FORM = """
 <form>

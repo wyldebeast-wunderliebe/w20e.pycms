@@ -30,7 +30,7 @@
 # SOFTWARE.
 # */
 
-from StringIO import StringIO
+from io import StringIO
 
 def jsmin(js):
     ins = StringIO(js)

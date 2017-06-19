@@ -1,4 +1,4 @@
-from base import BaseFolder
+from .base import BaseFolder
 
 
 class Folder(BaseFolder):

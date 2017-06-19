@@ -1,5 +1,6 @@
 from zope.interface import Interface
 from pyramid.renderers import render
+from functools import cmp_to_key
 
 
 class Action(object):
@@ -67,7 +68,7 @@ class Actions(object):
 
         """ Return actions that actually have a target..."""
 
-        actions = self.registry.get(category, {}).values()
+        actions = list(self.registry.get(category, {}).values())
 
         actions = [action for action in actions if action.target]
 
@@ -76,7 +77,10 @@ class Actions(object):
 
         def sort_actions(x, y):
 
-            return cmp(self.order[category].index(x.name),
-                       self.order[category].index(y.name))
+            a = self.order[category].index(x.name)
+            b = self.order[category].index(y.name)
 
-        return sorted(actions, sort_actions)
+            return (a > b) - (a < b)
+
+
+        return sorted(actions, key=cmp_to_key(sort_actions))

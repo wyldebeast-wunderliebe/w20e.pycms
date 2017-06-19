@@ -2,7 +2,7 @@ from pyramid.httpexceptions import HTTPFound
 from pyramid.url import resource_url
 
 from pyramid.security import remember, forget
-from base import BaseView
+from .base import BaseView
 
 
 class loginview(BaseView):

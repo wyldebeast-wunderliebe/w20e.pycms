@@ -1,4 +1,4 @@
-from base import BaseContent
+from .base import BaseContent
 
 
 class File(BaseContent):

@@ -7,13 +7,14 @@ from pyramid_zodbconn import get_connection
 from pyramid.session import (
     UnencryptedCookieSessionFactoryConfig as SessionFactory)
 import pyramid_zcml
-from events import AppRootReady
+from .events import AppRootReady
 from w20e.forms.registry import Registry
 from w20e.forms.pyramid.file import PyramidFile
-from models.imagefolder import ImageFolder
-from json_adapters import register_json_adapters
-from migration import migrate
+from .models.imagefolder import ImageFolder
+from .json_adapters import register_json_adapters
+from .migration import migrate
 import pkg_resources
+from functools import reduce
 
 
 Registry.register_renderable("file", PyramidFile)

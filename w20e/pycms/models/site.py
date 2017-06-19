@@ -1,14 +1,13 @@
-from page import Page
-from zope.interface import implementsOnly
+from .page import Page
+from zope.interface import implementer_only
 from w20e.hitman.models.base import IFolder
-from interfaces import ISite
+from .interfaces import ISite
 
 
+@implementer_only(ISite, IFolder)
 class Site(Page):
 
     """ Site object """
-
-    implementsOnly(ISite, IFolder)
 
     @property
     def cms_version(self):

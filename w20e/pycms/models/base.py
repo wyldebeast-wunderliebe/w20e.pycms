@@ -3,7 +3,7 @@ import inspect
 from uuid import uuid1
 from datetime import datetime, date
 from zope.interface import (
-    implements, directlyProvides, alsoProvides, noLongerProvides, providedBy)
+    implementer, directlyProvides, alsoProvides, noLongerProvides, providedBy)
 from zope.component import subscribers
 from zope.component import getMultiAdapter
 from pyramid.url import resource_url
@@ -28,6 +28,7 @@ else:
     from repoze.workflow import get_workflow
 
 
+@implementer(IFormFactory)
 class XMLFormFactory(object):
 
     """ Base implementation of form factory. This guy tries to find
@@ -35,7 +36,6 @@ class XMLFormFactory(object):
     context lives, that are named after the content type of the given
     context object"""
 
-    implements(IFormFactory)
 
     def __init__(self, context, request):
 
@@ -60,9 +60,8 @@ class SiteFormFactory(XMLFormFactory):
         return super(SiteFormFactory, self).createForm(form_name="page")
 
 
+@implementer(IPyCMSMixin)
 class PyCMSMixin(object):
-
-    implements(IPyCMSMixin)
 
     @property
     def __acl__(self):
@@ -83,7 +82,7 @@ class PyCMSMixin(object):
         cls = self.__class__
         cpy = cls.__new__(cls)
         memo[id(self)] = cpy
-        for k, v in self.__dict__.items():
+        for k, v in list(self.__dict__.items()):
             if (k not in blacklist_attrs):
                 setattr(cpy, k, deepcopy(v, memo))
 
@@ -215,7 +214,7 @@ class PyCMSMixin(object):
         data = self.__data__.as_dict()
 
         # Handle dates
-        for key, val in data.items():
+        for key, val in list(data.items()):
 
             if type(val) in [datetime, date]:
                 data[key] = val.isoformat()

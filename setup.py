@@ -22,7 +22,7 @@ requires = [
     'cssmin',
     'w20e.hitman',
     'PasteScript>=1.3',
-    'WebHelpers',
+    'paginate',
     ]
 
 setup(name='w20e.pycms',

@@ -6,7 +6,7 @@ from repoze.catalog.indexes.path import CatalogPathIndex
 from repoze.catalog.document import DocumentMap
 from logging import getLogger
 from w20e.hitman.utils import path_to_object, object_to_path
-from index import IIndexes
+from .index import IIndexes
 
 
 LOGGER = getLogger("w20e.pycms")
@@ -29,7 +29,7 @@ def init(event):
     indexes = event.registry.getUtility(IIndexes)
 
     for idx in indexes.get_indexes():
-        if not idx[0] in app._catalog.catalog.keys():
+        if not idx[0] in list(app._catalog.catalog.keys()):
             if idx[1]['type'] == "field":
                 app._catalog.catalog[idx[0]] = CatalogFieldIndex(
                     idx[1]['field'])
@@ -202,7 +202,7 @@ class Catalog(object):
 
         summ = {}
 
-        for key in self.catalog.keys():
+        for key in list(self.catalog.keys()):
             idx = self.catalog[key]
             if hasattr(idx, "_rev_index"):
                 summ[key] = idx._rev_index.get(uuid, '')
@@ -220,4 +220,4 @@ class Catalog(object):
 
     def list_object_ids(self):
 
-        return self._document_map.docid_to_address.keys()
+        return list(self._document_map.docid_to_address.keys())

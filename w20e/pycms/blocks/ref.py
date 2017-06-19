@@ -1,4 +1,4 @@
-from base import Block, BlockView
+from .base import Block, BlockView
 from pyramid.view import render_view
 
 

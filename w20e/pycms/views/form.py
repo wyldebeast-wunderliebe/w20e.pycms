@@ -1,5 +1,5 @@
 from pyramid.response import FileResponse, Response
-from base import BaseView, AdminView
+from .base import BaseView, AdminView
 from w20e.forms.pyramid.formview import xmlformview as pyramidformview
 
 

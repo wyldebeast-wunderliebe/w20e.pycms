@@ -1,4 +1,4 @@
-from base import BaseView
+from .base import BaseView
 from repoze.catalog.query import Contains
 from pyramid.url import resource_url
 

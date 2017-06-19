@@ -1,6 +1,6 @@
 import hashlib
-from pyramid.threadlocal import get_current_registry
-from zope.interface import Interface, Attribute, implements
+from zope.component import getSiteManager
+from zope.interface import Interface, Attribute, implementer
 from pyramid.security import Allow, DENY_ALL
 from persistent import Persistent
 from persistent.list import PersistentList
@@ -39,9 +39,8 @@ class IACLRequest(Interface):
     context = Attribute("The context of which the ACL is requested")
 
 
+@implementer(IACLRequest)
 class ACLRequest(object):
-
-    implements(IACLRequest)
 
     def __init__(self, acl, context):
 
@@ -64,8 +63,8 @@ class Secure(object):
     def __acl__(self):
 
         acl = self.admins() + self.viewers() + self.editors() + [DENY_ALL]
-
-        get_current_registry().notify(ACLRequest(acl, self.context))
+        sm = getSiteManager()
+        sm.notify(ACLRequest(acl, self.context))
 
         return acl
 
@@ -111,16 +110,18 @@ class User(Persistent):
         self.id = user_id
         self.name = name
         self.email = email
-        self.pwd = pwd and hashlib.sha224(pwd).hexdigest() or ''
+        self.pwd = ''
+        if pwd:
+            self.pwd = hashlib.sha224(pwd.encode('utf-8')).hexdigest()
         self.profile = profile
 
     def set_pwd(self, pwd):
 
-        self.pwd = hashlib.sha224(pwd).hexdigest()
+        self.pwd = hashlib.sha224(pwd.encode('utf-8')).hexdigest()
 
     def challenge(self, pwd):
 
-        return self.pwd == hashlib.sha224(pwd).hexdigest()
+        return self.pwd == hashlib.sha224(pwd.encode('utf-8')).hexdigest()
 
 
 class Group(Persistent):
@@ -163,7 +164,7 @@ class ACL(Persistent):
         t1 = time.time()
         time.sleep(random.random())
         t2 = time.time()
-        base = hashlib.md5(str(t1 + t2))
+        base = hashlib.md5(str(t1 + t2).encode('utf-8'))
         key = base.hexdigest()[:KEY_LENGTH]
 
         self.activation[key] = self.users[user_id]
@@ -183,11 +184,11 @@ class ACL(Persistent):
 
         """ Return a dict of users, using the id as key """
 
-        return self.users.keys()
+        return list(self.users.keys())
 
     def list_groups(self):
 
-        return self.groups.keys()
+        return list(self.groups.keys())
 
     def update_user(self, **data):
 
@@ -199,7 +200,7 @@ class ACL(Persistent):
 
         """ Remove user from all groups, and then reset..."""
 
-        for group_id in self.groups.keys():
+        for group_id in list(self.groups.keys()):
             self.rm_user_from_group(group_id, user_id)
 
         for group_id in groups:
@@ -238,8 +239,8 @@ def groupfinder(userid, request):
 
     user_groups = []
 
-    if userid in request.root.acl.users.keys():
-        for group in request.root.acl.groups.keys():
+    if userid in list(request.root.acl.users.keys()):
+        for group in list(request.root.acl.groups.keys()):
             if userid in request.root.acl.groups[group].users:
                 user_groups.append("group:%s" % group)
 

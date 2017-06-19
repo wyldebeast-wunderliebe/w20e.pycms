@@ -1,5 +1,5 @@
-from base import Block, BlockView
-from registry import Registry
+from .base import Block, BlockView
+from .registry import Registry
 
 
 FORM = """

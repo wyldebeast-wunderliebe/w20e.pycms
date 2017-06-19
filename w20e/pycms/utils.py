@@ -2,7 +2,7 @@ import sys
 import os
 from PIL import Image as PILImage
 from ZODB.blob import Blob
-from StringIO import StringIO
+from io import BytesIO
 import time
 import random
 import hashlib
@@ -34,15 +34,15 @@ def resize_image(data, size=THUMBNAIL_SIZE):
     if isinstance(data['data'], Blob):
         pil_img = PILImage.open(data['data'].open())
     elif isinstance(data['data'], TheBlob):
-        image_data = StringIO(data['data'].get())
+        image_data = BytesIO(data['data'].get())
         pil_img = PILImage.open(image_data)
     else:
-        image_data = StringIO(data['data'])
+        image_data = BytesIO(data['data'])
         pil_img = PILImage.open(image_data)
 
     pil_img.thumbnail(size, PILImage.ANTIALIAS)
 
-    thumb_buf = StringIO()
+    thumb_buf = BytesIO()
     pil_img.save(thumb_buf, format='PNG')
 
     return {'name': data['name'], 'data': thumb_buf.getvalue()}
@@ -55,7 +55,7 @@ def generate_id(prefix="", length=KEY_LENGTH):
     t1 = time.time()
     time.sleep(random.random())
     t2 = time.time()
-    base = hashlib.md5(str(t1 + t2))
+    base = hashlib.md5(str(t1 + t2).encode('utf-8'))
 
     return prefix + base.hexdigest()[:length]
 

@@ -1,4 +1,4 @@
-from base import AdminView
+from .base import AdminView
 from ..interfaces import IMailer
 from pyramid.security import has_permission
 

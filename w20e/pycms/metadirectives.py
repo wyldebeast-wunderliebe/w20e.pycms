@@ -2,13 +2,13 @@ import pkg_resources
 from zope.interface import Interface
 from zope.schema import TextLine
 from zope.configuration.fields import GlobalObject
-from interfaces import ICSSRegistry, IJSRegistry
+from .interfaces import ICSSRegistry, IJSRegistry
 import os
-from actions import IActions
-from ctypes import ICTypes
-from macros import IMacros
-from index import IIndexes
-from nature import INatures
+from .actions import IActions
+from .ctypes import ICTypes
+from .macros import IMacros
+from .index import IIndexes
+from .nature import INatures
 
 
 def find_file(filename, context):
@@ -34,18 +34,18 @@ class ICSSDirective(Interface):
     """ Collect css files into one """
 
     cssfile = TextLine(
-        title=u"CSS File",
-        description=u"Relative path to CSS file.",
+        title="CSS File",
+        description="Relative path to CSS file.",
         required=True)
 
     csstarget = TextLine(
-        title=u"CSS target(s)",
-        description=u"Target css name as called from client.",
+        title="CSS target(s)",
+        description="Target css name as called from client.",
         required=True)
 
     media = TextLine(
-        title=u"Media",
-        description=u"For media (screen, print, ...)",
+        title="Media",
+        description="For media (screen, print, ...)",
         required=False)
 
 
@@ -64,13 +64,13 @@ class IJSDirective(Interface):
     """ Collect js files into one """
 
     jsfile = TextLine(
-        title=u"JS File",
-        description=u"Relative path to JS file.",
+        title="JS File",
+        description="Relative path to JS file.",
         required=True)
 
     jstarget = TextLine(
-        title=u"JS target",
-        description=u"Target js name as called from client.",
+        title="JS target",
+        description="Target js name as called from client.",
         required=True)
 
 
@@ -89,48 +89,48 @@ class IActionDirective(Interface):
     """ Actions """
 
     name = TextLine(
-        title=u"Name",
-        description=u"Unique action name",
+        title="Name",
+        description="Unique action name",
         required=True)
 
     label = TextLine(
-        title=u"Label",
-        description=u"Label to show",
+        title="Label",
+        description="Label to show",
         required=False)
 
     icon = TextLine(
-        title=u"Icon class as used by Awesome Fonts",
-        description=u"Icon class",
+        title="Icon class as used by Awesome Fonts",
+        description="Icon class",
         required=False)    
 
     target = TextLine(
-        title=u"Target",
-        description=u"Usually http href",
+        title="Target",
+        description="Usually http href",
         required=True)
 
     category = TextLine(
-        title=u"Category",
-        description=u"Action is of this category",
+        title="Category",
+        description="Action is of this category",
         required=True)
 
     ctype = TextLine(
-        title=u"Content type",
-        description=u"Action applies only to this (these) content type(s)",
+        title="Content type",
+        description="Action applies only to this (these) content type(s)",
         required=False)
 
     permission = TextLine(
-        title=u"Permission",
-        description=u"Permission",
+        title="Permission",
+        description="Permission",
         required=False)
 
     condition = TextLine(
-        title=u"Condition",
-        description=u"Condition",
+        title="Condition",
+        description="Condition",
         required=False)
 
     template = TextLine(
-        title=u"Template",
-        description=u"Template to use for rendering",
+        title="Template",
+        description="Template to use for rendering",
         required=False)    
 
 
@@ -155,23 +155,23 @@ class ICTypeDirective(Interface):
     """ Register Content type info """
 
     name = TextLine(
-        title=u"Type",
-        description=u"Unique type name, lowercase",
+        title="Type",
+        description="Unique type name, lowercase",
         required=True)
 
     factory = TextLine(
-        title=u"Factory",
-        description=u"Factory that creates this type",
+        title="Factory",
+        description="Factory that creates this type",
         required=False)
 
     icon = TextLine(
-        title=u"icon",
-        description=u"Path to icon",
+        title="icon",
+        description="Path to icon",
         required=False)
 
     subtypes = TextLine(
-        title=u"subtypes",
-        description=u"List of subtypes",
+        title="subtypes",
+        description="List of subtypes",
         required=False)
 
 
@@ -188,22 +188,22 @@ class INatureDirective(Interface):
     """ Register Content type info """
 
     name = TextLine(
-        title=u"Type",
-        description=u"Unique name",
+        title="Type",
+        description="Unique name",
         required=True)
 
     i18n_msgid = TextLine(
-        title=u"i18n_msgid",
-        description=u"i18n translation id",
+        title="i18n_msgid",
+        description="i18n translation id",
         required=False)
 
     interface = TextLine(
-        title=u"Interface",
-        description=u"Marker interface for this nature. FULL path required",
+        title="Interface",
+        description="Marker interface for this nature. FULL path required",
         required=True)
 
     for_ = GlobalObject(
-        title=(u"The interface or class this nature is for. Specify FULL path"),
+        title=("The interface or class this nature is for. Specify FULL path"),
         required=False
         )
 
@@ -220,13 +220,13 @@ class IMacroDirective(Interface):
     """ Register Content type info """
 
     name = TextLine(
-        title=u"name",
-        description=u"Register as...",
+        title="name",
+        description="Register as...",
         required=True)
 
     ptfile = TextLine(
-        title=u"Template",
-        description=u"PT file",
+        title="Template",
+        description="PT file",
         required=True)
 
 
@@ -243,18 +243,18 @@ class IIndexDirective(Interface):
     """ Register index """
 
     name = TextLine(
-        title=u"Index name",
-        description=u"Index id",
+        title="Index name",
+        description="Index id",
         required=True)
 
     field = TextLine(
-        title=u"Field name",
-        description=u"Index field",
+        title="Field name",
+        description="Index field",
         required=True)
 
     idxtype = TextLine(
-        title=u"Type",
-        description=u"Index type",
+        title="Type",
+        description="Index type",
         required=True)
 
 
