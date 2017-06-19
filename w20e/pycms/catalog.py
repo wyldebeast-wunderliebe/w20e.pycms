@@ -7,6 +7,8 @@ from repoze.catalog.document import DocumentMap
 from logging import getLogger
 from w20e.hitman.utils import path_to_object, object_to_path
 from index import IIndexes
+from zope.interface import implements, Attribute, Interface
+from zope.component import getSiteManager
 
 
 LOGGER = getLogger("w20e.pycms")
@@ -129,6 +131,9 @@ class Catalog(object):
 
     def index_object(self, object):
 
+        sm = getSiteManager()
+        sm.notify(ObjectStartIndex(object))
+
         path = object_to_path(object)
         uuid = object.uuid
 
@@ -145,6 +150,9 @@ class Catalog(object):
             LOGGER.exception("Could not index object!")
 
     def reindex_object(self, object):
+
+        sm = getSiteManager()
+        sm.notify(ObjectStartIndex(object))
 
         uuid = object.uuid
 
@@ -221,3 +229,19 @@ class Catalog(object):
     def list_object_ids(self):
 
         return self._document_map.docid_to_address.keys()
+
+
+class IObjectStartIndex(Interface):
+
+    """ Object is about to be indexed... """
+
+    object = Attribute("The object to be indexed")
+
+
+class ObjectStartIndex(object):
+
+    implements(IObjectStartIndex)
+
+    def __init__(self, object):
+
+        self.object = object

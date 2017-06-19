@@ -160,6 +160,11 @@ def make_pycms_app(app, *includes, **settings):
     config.include('pyramid_mailer')
 
     config.load_zcml('w20e.pycms:bootstrap.zcml')
+    config.commit()
+
+    config.scan('w20e.pycms')
+    config.load_zcml("configure.zcml")
+    config.commit()
 
     # Other includes
     #
@@ -171,10 +176,6 @@ def make_pycms_app(app, *includes, **settings):
     for ep in pkg_resources.iter_entry_points(group='pycms_plugin'):
         fun = ep.load()
         fun(config)
-    config.commit()
-
-    config.scan('w20e.pycms')
-    config.load_zcml("configure.zcml")
     config.commit()
 
     appmaker(config)
