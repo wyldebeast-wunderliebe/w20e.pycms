@@ -175,8 +175,8 @@ def make_pycms_app(app, *includes, **settings):
     #
     for ep in pkg_resources.iter_entry_points(group='pycms_plugin'):
         fun = ep.load()
-        fun(config)
-    config.commit()
+        config.include(fun)
+        config.commit()
 
     appmaker(config)
 
