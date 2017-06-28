@@ -47,7 +47,7 @@ class ViewMixin(object):
             for macro in macros.list_macros():
 
                 data[macro] = get_renderer(
-                    macros.get_macro(macro)).implementation()
+                    macros.get_macro(macro, self.context)).implementation()
 
     @property
     def viewname(self):
