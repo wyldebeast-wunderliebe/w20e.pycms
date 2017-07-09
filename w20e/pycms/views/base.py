@@ -441,8 +441,7 @@ class EditView(EditBase, ViewMixin):
 
         results = pyramidformview.ajax_validate(self, "xml", True)
 
-        self.request.registry.notify(
-            ContentChanged(self.context, self.request))
+        self.request.registry.notify(ContentChanged(self.context))
         return results
 
 
@@ -516,7 +515,7 @@ class AdminView(Base, ViewMixin):
             children = self.context.list_content()
             for child in children:
                 self.request.registry.notify(
-                    ContentChanged(child, self.request))
+                    ContentChanged(child))
 
             return True
         else:
@@ -585,7 +584,7 @@ class AdminView(Base, ViewMixin):
                 content = obj.__parent__.remove_content(obj.id)
                 self.context.add_content(content)
                 self.request.registry.notify(
-                    ContentChanged(content, self.request))
+                    ContentChanged(content))
                 moved.append(obj.id)
 
         return moved
@@ -612,7 +611,7 @@ class AdminView(Base, ViewMixin):
                     ret['renamed'][id_from] = id_to
                     content = self.context.get(id_to, None)
                     self.request.registry.notify(
-                        ContentChanged(content, self.request))
+                        ContentChanged(content))
                 except:
                     ret['status'] = -1
                     ret['errors'].append("%s already exists" % id_to)
