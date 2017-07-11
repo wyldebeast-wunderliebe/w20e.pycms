@@ -342,8 +342,7 @@ class FactoryView(BaseView, pyramidformview, ViewMixin):
             self.request.registry.notify(
                 TemporaryObjectFinalized(self.context, self.request))
             parent.rename_content(self.context.id, content_id)
-            self.request.registry.notify(ContentAdded(
-                self.context, parent, self.request))
+            self.request.registry.notify(ContentAdded(self.context, parent))
             return HTTPFound(location=self.after_add_redirect)
 
         render_kwargs = {}
@@ -382,8 +381,7 @@ class FactoryView(BaseView, pyramidformview, ViewMixin):
                 self.request.registry.notify(
                     TemporaryObjectFinalized(self.context, self.request))
                 parent.rename_content(self.context.id, content_id)
-                self.request.registry.notify(
-                    ContentAdded(self.context, parent, self.request))
+                self.request.registry.notify(ContentAdded(self.context, parent))
                 redirect = self.after_add_redirect
 
         if redirect:
@@ -494,8 +492,7 @@ class AdminView(Base, ViewMixin):
             content = self.context.get(content_id, None)
 
             self.context.remove_content(content_id)
-            self.request.registry.notify(
-                ContentRemoved(content, self, self.request))
+            self.request.registry.notify(ContentRemoved(content, self))
             return True
 
         else:
@@ -562,8 +559,7 @@ class AdminView(Base, ViewMixin):
                 # create new content id if it already exists
                 cpy.set_id(self.context.generate_content_id(obj.id))
                 self.context.add_content(cpy)
-                self.request.registry.notify(
-                    ContentAdded(cpy, self.context, self.request))
+                self.request.registry.notify(ContentAdded(cpy, self.context))
                 copied.append(cpy.id)
 
         return copied
