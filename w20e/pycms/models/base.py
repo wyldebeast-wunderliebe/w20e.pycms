@@ -221,7 +221,7 @@ class PyCMSMixin(object):
         for key in data.keys():
             try:
                 data[key] = _form.getFieldValue(
-                    key, lexical=True, only_relevant=True)
+                    key, lexical=lexical, only_relevant=True)
             except:
                 pass
 
