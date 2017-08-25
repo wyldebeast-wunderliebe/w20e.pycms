@@ -22,6 +22,6 @@ class Macros(object):
 
         return self.registry.keys()
 
-    def get_macro(self, name):
+    def get_macro(self, name, context):
 
         return self.registry[name]['ptfile']

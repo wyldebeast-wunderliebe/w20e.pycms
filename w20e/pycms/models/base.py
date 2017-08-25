@@ -214,6 +214,17 @@ class PyCMSMixin(object):
         # use the form data as default
         data = self.__data__.as_dict()
 
+        lexical = request.params.get("lexical")
+
+        _form = self.__form__(request)
+        _form.data.update(self.__data__)
+        for key in data.keys():
+            try:
+                data[key] = _form.getFieldValue(
+                    key, lexical=lexical, only_relevant=True)
+            except:
+                pass
+
         # Handle dates
         for key, val in data.items():
 

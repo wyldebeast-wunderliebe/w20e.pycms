@@ -19,13 +19,13 @@ def find_file(filename, context):
 
         if ":" in filename:
             module, resource = filename.split(":")
-        
+
             provider = pkg_resources.get_provider(module)
-        
+
             filename = provider.get_resource_filename(module, resource)
         else:
             filename = os.path.join(context.package.__path__[0], filename)
-                    
+
     return filename
 
 
@@ -101,7 +101,7 @@ class IActionDirective(Interface):
     icon = TextLine(
         title=u"Icon class as used by Awesome Fonts",
         description=u"Icon class",
-        required=False)    
+        required=False)
 
     target = TextLine(
         title=u"Target",
@@ -131,7 +131,7 @@ class IActionDirective(Interface):
     template = TextLine(
         title=u"Template",
         description=u"Template to use for rendering",
-        required=False)    
+        required=False)
 
 
 def action(_context, name, target, category, label=None, icon=None, ctype=[],
@@ -203,9 +203,11 @@ class INatureDirective(Interface):
         required=True)
 
     for_ = GlobalObject(
-        title=(u"The interface or class this nature is for. Specify FULL path"),
+        title=(
+            u"The interface or class this nature is for. Specify FULL path"),
         required=False
         )
+
 
 def nature(_context, name, **kwargs):
 

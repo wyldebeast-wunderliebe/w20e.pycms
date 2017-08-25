@@ -1,4 +1,6 @@
-var pycms = {};
+if (pycms == undefined) {
+  var pycms = {};
+}
 
 
 var currGroup;

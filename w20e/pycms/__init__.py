@@ -161,6 +161,11 @@ def make_pycms_app(app, *includes, **settings):
 
     config.load_zcml('w20e.pycms:bootstrap.zcml')
 
+    config.scan('w20e.pycms')
+    config.commit()
+    config.load_zcml("configure.zcml")
+    config.commit()
+
     # Other includes
     #
     for include in includes:
@@ -172,10 +177,6 @@ def make_pycms_app(app, *includes, **settings):
         fun = ep.load()
         config.include(fun)
         config.commit()
-    config.commit()
-
-    config.scan('w20e.pycms')
-    config.load_zcml("configure.zcml")
     config.commit()
 
     appmaker(config)
