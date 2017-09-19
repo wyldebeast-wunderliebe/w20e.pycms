@@ -41,8 +41,8 @@ class SiteCatalogView(AdminView):
             res.append({
                 'id': item[0],
                 'type': item[1].__class__.__name__,
-                'docs': (hasattr(item[1], "_num_docs") and
-                         item[1]._num_docs() or 0),
+                'docs': (hasattr(item[1], "documentCount") and
+                         item[1].documentCount() or 0),
                 'docids': item[1].docids()
                 })
 

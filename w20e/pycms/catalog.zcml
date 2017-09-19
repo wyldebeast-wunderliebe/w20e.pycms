@@ -64,7 +64,7 @@
 
   <pycms:index
       name="searchable_title"
-      field="title"
+      field="searchable_title"
       idxtype="text"
       />
 
