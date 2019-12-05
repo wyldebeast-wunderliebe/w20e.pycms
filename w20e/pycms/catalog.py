@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from repoze.catalog.catalog import Catalog as RepozeCatalog
 from repoze.catalog.indexes.field import CatalogFieldIndex
 from repoze.catalog.indexes.text import CatalogTextIndex
@@ -6,7 +7,7 @@ from repoze.catalog.indexes.path import CatalogPathIndex
 from repoze.catalog.document import DocumentMap
 from logging import getLogger
 from w20e.hitman.utils import path_to_object, object_to_path
-from index import IIndexes
+from .index import IIndexes
 from zope.interface import implements, Attribute, Interface
 from zope.component import getSiteManager
 

@@ -1,4 +1,5 @@
-from base import BaseFolder
+from __future__ import absolute_import
+from .base import BaseFolder
 
 
 class Folder(BaseFolder):

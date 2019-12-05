@@ -1,14 +1,15 @@
+from __future__ import absolute_import
 import pkg_resources
 from zope.interface import Interface
 from zope.schema import TextLine
 from zope.configuration.fields import GlobalObject
-from interfaces import ICSSRegistry, IJSRegistry
+from .interfaces import ICSSRegistry, IJSRegistry
 import os
-from actions import IActions
-from ctypes import ICTypes
-from macros import IMacros
-from index import IIndexes
-from nature import INatures
+from .actions import IActions
+from .ctypes import ICTypes
+from .macros import IMacros
+from .index import IIndexes
+from .nature import INatures
 
 
 def find_file(filename, context):

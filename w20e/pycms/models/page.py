@@ -1,7 +1,8 @@
+from __future__ import absolute_import
 from zope.interface import implements
-from folder import Folder
+from .folder import Folder
 from ..blocks.base import BlockContainer
-from interfaces import IPage
+from .interfaces import IPage
 
 
 class Page(Folder, BlockContainer):

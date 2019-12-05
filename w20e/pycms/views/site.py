@@ -1,4 +1,5 @@
-from base import AdminView
+from __future__ import absolute_import
+from .base import AdminView
 from ..interfaces import IMailer
 from pyramid.security import has_permission
 

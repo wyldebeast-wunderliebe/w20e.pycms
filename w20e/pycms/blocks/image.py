@@ -1,5 +1,6 @@
-from base import Block, BlockView
-from registry import Registry
+from __future__ import absolute_import
+from .base import Block, BlockView
+from .registry import Registry
 
 
 FORM = """

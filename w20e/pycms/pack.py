@@ -1,3 +1,4 @@
+from __future__ import print_function
 import ConfigParser
 import sys
 from paste.script import command
@@ -23,7 +24,7 @@ class PackCommand(command.Command):
             config = ConfigParser.ConfigParser()
             config.readfp(open(ini_file))
         except:
-            print "Please provide an ini file as argument"
+            print("Please provide an ini file as argument")
             sys.exit(-1)
 
         url = None
@@ -48,8 +49,8 @@ class PackCommand(command.Command):
 
         handle = urllib2.urlopen(req)
 
-        print handle.info()
+        print(handle.info())
 
         result = handle.read()
 
-        print result
+        print(result)
