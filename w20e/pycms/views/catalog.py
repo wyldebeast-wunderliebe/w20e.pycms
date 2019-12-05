@@ -1,6 +1,8 @@
 from __future__ import absolute_import
+
+import paginate
+
 from .base import AdminView
-from webhelpers import paginate
 
 
 class SiteCatalogView(AdminView):

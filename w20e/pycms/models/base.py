@@ -5,7 +5,8 @@ import inspect
 from uuid import uuid1
 from datetime import datetime, date
 from zope.interface import (
-    implements, directlyProvides, alsoProvides, noLongerProvides, providedBy)
+    directlyProvides, alsoProvides, noLongerProvides, providedBy,
+    implementer)
 from zope.component import subscribers
 from zope.component import getMultiAdapter
 from pyramid.url import resource_url
@@ -30,14 +31,13 @@ else:
     from repoze.workflow import get_workflow
 
 
+@implementer(IFormFactory)
 class XMLFormFactory(object):
 
     """ Base implementation of form factory. This guy tries to find
     xml forms in a directory called 'forms' in the app where the
     context lives, that are named after the content type of the given
     context object"""
-
-    implements(IFormFactory)
 
     def __init__(self, context, request):
 
@@ -62,9 +62,8 @@ class SiteFormFactory(XMLFormFactory):
         return super(SiteFormFactory, self).createForm(form_name="page")
 
 
+@implementer(IPyCMSMixin)
 class PyCMSMixin(object):
-
-    implements(IPyCMSMixin)
 
     @property
     def __acl__(self):

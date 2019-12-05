@@ -129,7 +129,6 @@ def appmaker(config):
 
 
 def root_factory(request):
-
     conn = get_connection(request)
 
     return conn.root()['app_root']
@@ -139,7 +138,6 @@ def make_pycms_app(app, *includes, **settings):
 
     """ Create a w20e.pycms application and return it. The app is a
     router instance as created by Configurator.make_wsgi_app."""
-
     config = Configurator(package=app,
                           root_factory=root_factory,
                           session_factory=SessionFactory('w20e_pycms_secret'),

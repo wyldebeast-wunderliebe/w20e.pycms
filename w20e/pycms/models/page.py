@@ -1,15 +1,14 @@
 from __future__ import absolute_import
-from zope.interface import implements
+from zope.interface import implementer
 from .folder import Folder
 from ..blocks.base import BlockContainer
 from .interfaces import IPage
 
 
+@implementer(IPage)
 class Page(Folder, BlockContainer):
 
     """ Basic Page """
-
-    implements(IPage)
 
     def __init__(self, content_id, data=None, **kwargs):
 

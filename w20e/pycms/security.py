@@ -2,7 +2,7 @@ from builtins import str
 from builtins import object
 import hashlib
 from pyramid.threadlocal import get_current_registry
-from zope.interface import Interface, Attribute, implements
+from zope.interface import Interface, Attribute, implementer, implementer
 from pyramid.security import Allow, DENY_ALL
 from persistent import Persistent
 from persistent.list import PersistentList
@@ -41,9 +41,8 @@ class IACLRequest(Interface):
     context = Attribute("The context of which the ACL is requested")
 
 
+@implementer(IACLRequest)
 class ACLRequest(object):
-
-    implements(IACLRequest)
 
     def __init__(self, acl, context):
 
@@ -113,7 +112,7 @@ class User(Persistent):
         self.id = user_id
         self.name = name
         self.email = email
-        self.pwd = pwd and hashlib.sha224(pwd).hexdigest() or ''
+        self.pwd = pwd and hashlib.sha224(pwd.encode('utf-8')).hexdigest() or ''
         self.profile = profile
 
     def set_pwd(self, pwd):

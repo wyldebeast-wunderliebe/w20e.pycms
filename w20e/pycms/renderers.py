@@ -15,7 +15,7 @@ class JSRenderer(object):
     def __call__(self, value, system):
 
         m = hashlib.md5()
-        m.update(value)
+        m.update(value.encode('utf-8'))
         etag = m.hexdigest()
 
         system['request'].response.content_type = 'text/javascript'
@@ -43,7 +43,7 @@ class CSSRenderer(object):
     def __call__(self, value, system):
 
         m = hashlib.md5()
-        m.update(value)
+        m.update(value.encode('utf-8'))
         etag = m.hexdigest()
 
         system['request'].response.content_type = 'text/css'

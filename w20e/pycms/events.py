@@ -1,5 +1,5 @@
 from builtins import object
-from zope.interface import implements, Attribute, Interface
+from zope.interface import Attribute, Interface, implementer
 
 
 class IAppRootReady(Interface):
@@ -24,9 +24,8 @@ class ITemporaryObjectFinalized(Interface):
     object = Attribute("The temporary object")
 
 
+@implementer(IAppRootReady)
 class AppRootReady(object):
-
-    implements(IAppRootReady)
 
     def __init__(self, app_root, registry):
 
@@ -34,9 +33,8 @@ class AppRootReady(object):
         self.registry = registry
 
 
+@implementer(ITemporaryObjectCreated)
 class TemporaryObjectCreated(object):
-
-    implements(ITemporaryObjectCreated)
 
     def __init__(self, object, request=None):
 
@@ -44,9 +42,8 @@ class TemporaryObjectCreated(object):
         self.request = request
 
 
+@implementer(ITemporaryObjectFinalized)
 class TemporaryObjectFinalized(object):
-
-    implements(ITemporaryObjectFinalized)
 
     def __init__(self, object, request=None):
 

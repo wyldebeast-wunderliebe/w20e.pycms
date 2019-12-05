@@ -1,3 +1,5 @@
+import functools
+
 from past.builtins import cmp
 from builtins import object
 from zope.interface import Interface
@@ -81,4 +83,5 @@ class Actions(object):
             return cmp(self.order[category].index(x.name),
                        self.order[category].index(y.name))
 
-        return sorted(actions, sort_actions)
+        # return sorted(actions, sort_actions)
+        return sorted(actions, key=functools.cmp_to_key(sort_actions))

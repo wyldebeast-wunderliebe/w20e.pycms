@@ -10,10 +10,10 @@ version = open(os.path.join("w20e", "pycms", "version.txt")
 
 requires = [
     'setuptools',
-    'pyramid>=1.4a',
+    'pyramid',
     'pyramid_chameleon',
     'pyramid_zodbconn',
-    'pyramid_tm<2.0',  # until pyramid 1.9 is stable (pyramid_retry)
+    'pyramid_tm',
     'pyramid_zcml',
     'pyramid_debugtoolbar',
     'pyramid_mailer',
@@ -22,7 +22,7 @@ requires = [
     'cssmin',
     'w20e.hitman',
     'PasteScript>=1.3',
-    'WebHelpers',
+    'paginate',
     ]
 
 setup(name='w20e.pycms',
