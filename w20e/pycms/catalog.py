@@ -1,4 +1,5 @@
 from __future__ import absolute_import
+from builtins import object
 from repoze.catalog.catalog import Catalog as RepozeCatalog
 from repoze.catalog.indexes.field import CatalogFieldIndex
 from repoze.catalog.indexes.text import CatalogTextIndex
@@ -32,7 +33,7 @@ def init(event):
     indexes = event.registry.getUtility(IIndexes)
 
     for idx in indexes.get_indexes():
-        if not idx[0] in app._catalog.catalog.keys():
+        if not idx[0] in list(app._catalog.catalog.keys()):
             if idx[1]['type'] == "field":
                 app._catalog.catalog[idx[0]] = CatalogFieldIndex(
                     idx[1]['field'])
@@ -211,7 +212,7 @@ class Catalog(object):
 
         summ = {}
 
-        for key in self.catalog.keys():
+        for key in list(self.catalog.keys()):
             idx = self.catalog[key]
             if hasattr(idx, "_rev_index"):
                 summ[key] = idx._rev_index.get(uuid, '')
@@ -229,7 +230,7 @@ class Catalog(object):
 
     def list_object_ids(self):
 
-        return self._document_map.docid_to_address.keys()
+        return list(self._document_map.docid_to_address.keys())
 
 
 class IObjectStartIndex(Interface):

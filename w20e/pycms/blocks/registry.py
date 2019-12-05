@@ -1,4 +1,5 @@
-class Registry:
+from builtins import object
+class Registry(object):
 
     """ Global registry for forms """
 
@@ -20,4 +21,4 @@ class Registry:
     @staticmethod
     def list_types():
 
-        return Registry.types.keys()
+        return list(Registry.types.keys())

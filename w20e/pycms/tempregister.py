@@ -68,7 +68,7 @@ class TempRegister(PersistentMapping):
 
         now = datetime.datetime.now()
 
-        uuids = [k for k in self.keys()]
+        uuids = [k for k in list(self.keys())]
 
         for uuid in uuids:
 

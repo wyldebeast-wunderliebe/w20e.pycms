@@ -1,3 +1,4 @@
+from builtins import object
 from pyramid.view import render_view
 
 
@@ -146,7 +147,7 @@ class BlockView(object):
     @property
     def config(self):
 
-        return '<dl class="config">' + "".join(["<dt>%s</dt><dd>%s</dd>" % (key, self.context[key]) for key in self.context.keys()]) + "</dl>"
+        return '<dl class="config">' + "".join(["<dt>%s</dt><dd>%s</dd>" % (key, self.context[key]) for key in list(self.context.keys())]) + "</dl>"
 
 
 

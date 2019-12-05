@@ -1,3 +1,5 @@
+from builtins import str
+from builtins import object
 import os
 import inspect
 from uuid import uuid1
@@ -83,7 +85,7 @@ class PyCMSMixin(object):
         cls = self.__class__
         cpy = cls.__new__(cls)
         memo[id(self)] = cpy
-        for k, v in self.__dict__.items():
+        for k, v in list(self.__dict__.items()):
             if (k not in blacklist_attrs):
                 setattr(cpy, k, deepcopy(v, memo))
 
@@ -218,7 +220,7 @@ class PyCMSMixin(object):
 
         _form = self.__form__(request)
         _form.data.update(self.__data__)
-        for key in data.keys():
+        for key in list(data.keys()):
             try:
                 data[key] = _form.getFieldValue(
                     key, lexical=lexical, only_relevant=True)
@@ -226,7 +228,7 @@ class PyCMSMixin(object):
                 pass
 
         # Handle dates
-        for key, val in data.items():
+        for key, val in list(data.items()):
 
             if type(val) in [datetime, date]:
                 data[key] = val.isoformat()

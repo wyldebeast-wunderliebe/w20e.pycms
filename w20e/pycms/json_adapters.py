@@ -19,7 +19,7 @@ def register_json_adapters(config):
         return obj.isoformat() if hasattr(obj, 'isoformat') else obj
 
     def oobtree_adapter(obj, request):
-        return dict([(k,v) for k,v in obj.items()])
+        return dict([(k,v) for k,v in list(obj.items())])
 
     json_renderer.add_adapter(Blob, blob_adapter)
     json_renderer.add_adapter(TheBlob, theblob_adapter)

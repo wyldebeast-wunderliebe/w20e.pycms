@@ -37,7 +37,7 @@ class SiteCatalogView(AdminView):
 
         res = []
 
-        for item in self.cat.catalog.items():
+        for item in list(self.cat.catalog.items()):
 
             res.append({
                 'id': item[0],

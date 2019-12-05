@@ -1,8 +1,11 @@
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
 import sys
 import os
 from PIL import Image as PILImage
 from ZODB.blob import Blob
-from StringIO import StringIO
+from io import StringIO
 import time
 import random
 import hashlib

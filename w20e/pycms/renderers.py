@@ -1,8 +1,10 @@
+from builtins import str
+from builtins import object
 import hashlib
 import mimetypes
 
 
-class JSRenderer:
+class JSRenderer(object):
 
     """ Render content as iCal """
 
@@ -30,7 +32,7 @@ class JSRenderer:
         return value
 
 
-class CSSRenderer:
+class CSSRenderer(object):
 
     """ Render content as iCal """
 
@@ -58,7 +60,7 @@ class CSSRenderer:
         return value
 
 
-class PNGRenderer:
+class PNGRenderer(object):
 
     """ Render content as image """
 
@@ -95,7 +97,7 @@ class PNGRenderer:
         return value['data']
 
 
-class FileRenderer:
+class FileRenderer(object):
 
     """ Render content as file (disposition attachment) """
 
@@ -114,7 +116,7 @@ class FileRenderer:
         return value['data']
 
 
-class AjaxRenderer:
+class AjaxRenderer(object):
 
     """ Return value as is """
 
@@ -135,7 +137,7 @@ class AjaxRenderer:
         return value
 
 
-class XMLRenderer:
+class XMLRenderer(object):
 
     """ Return value as is """
 
@@ -153,13 +155,13 @@ class XMLRenderer:
 
         system['request'].response.content_type = 'text/xml'
 
-        if isinstance(value, unicode):
+        if isinstance(value, str):
             value = value.encode('utf-8')
 
         return value
 
 
-class HTMLRenderer:
+class HTMLRenderer(object):
 
     """ Return value as is """
 

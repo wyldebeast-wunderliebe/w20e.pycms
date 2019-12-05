@@ -15,19 +15,19 @@ class UserAdminView(AdminView):
 
     def list_users(self):
 
-        users = self.context.acl.users.values()
+        users = list(self.context.acl.users.values())
         return sorted(users, key=lambda user:user.id.lower())
 
     def list_groups(self):
 
-        groups = self.context.acl.groups.values()
+        groups = list(self.context.acl.groups.values())
         return sorted(groups, key=lambda group:group.id.lower())
 
     def list_activation(self):
 
         acts = []
 
-        for key in self.context.acl.activation.keys():
+        for key in list(self.context.acl.activation.keys()):
             user = self.context.acl.get_user_for_activation(key)
 
             acts.append((user.id, key))
@@ -95,7 +95,7 @@ class UserAdminView(AdminView):
                 groups,
             )
 
-        return {'groups': self.context.acl.groups.values(),
+        return {'groups': list(self.context.acl.groups.values()),
                 'user': self.request.params.get('user_id', '')}
 
     def delete_key(self):

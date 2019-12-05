@@ -1,3 +1,5 @@
+from builtins import str
+from builtins import object
 import hashlib
 from pyramid.threadlocal import get_current_registry
 from zope.interface import Interface, Attribute, implements
@@ -183,11 +185,11 @@ class ACL(Persistent):
 
         """ Return a dict of users, using the id as key """
 
-        return self.users.keys()
+        return list(self.users.keys())
 
     def list_groups(self):
 
-        return self.groups.keys()
+        return list(self.groups.keys())
 
     def update_user(self, **data):
 
@@ -199,7 +201,7 @@ class ACL(Persistent):
 
         """ Remove user from all groups, and then reset..."""
 
-        for group_id in self.groups.keys():
+        for group_id in list(self.groups.keys()):
             self.rm_user_from_group(group_id, user_id)
 
         for group_id in groups:
@@ -238,8 +240,8 @@ def groupfinder(userid, request):
 
     user_groups = []
 
-    if userid in request.root.acl.users.keys():
-        for group in request.root.acl.groups.keys():
+    if userid in list(request.root.acl.users.keys()):
+        for group in list(request.root.acl.groups.keys()):
             if userid in request.root.acl.groups[group].users:
                 user_groups.append("group:%s" % group)
 

@@ -1,3 +1,4 @@
+from builtins import object
 from w20e.pycms.nature import INatures
 from w20e.hitman.events import ContentChanged
 

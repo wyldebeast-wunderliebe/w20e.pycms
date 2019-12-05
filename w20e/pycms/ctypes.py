@@ -1,3 +1,4 @@
+from builtins import object
 from zope.interface import Interface
 from w20e.hitman.models import Registry
 

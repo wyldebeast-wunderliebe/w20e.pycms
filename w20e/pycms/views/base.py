@@ -1,3 +1,5 @@
+from builtins import str
+from builtins import object
 import uuid
 from zope.interface import providedBy
 from zope.interface import alsoProvides
@@ -322,7 +324,7 @@ class FactoryView(BaseView, pyramidformview, ViewMixin):
         if "cancel" in params:
             return HTTPFound(location=self.cancel_add_redirect)
 
-        elif submissions.intersection(params.keys()):
+        elif submissions.intersection(list(params.keys())):
             status, errors = self.form.view.handle_form(self.form,
                                                         self.request.params)
 
@@ -593,7 +595,7 @@ class AdminView(Base, ViewMixin):
 
         ret = {'status': 0, 'renamed': {}, 'errors': []}
 
-        for id_from in rename.keys():
+        for id_from in list(rename.keys()):
 
             if id_from == rename[id_from]:
                 continue

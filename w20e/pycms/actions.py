@@ -1,3 +1,5 @@
+from past.builtins import cmp
+from builtins import object
 from zope.interface import Interface
 from pyramid.renderers import render
 
@@ -67,7 +69,7 @@ class Actions(object):
 
         """ Return actions that actually have a target..."""
 
-        actions = self.registry.get(category, {}).values()
+        actions = list(self.registry.get(category, {}).values())
 
         actions = [action for action in actions if action.target]
 

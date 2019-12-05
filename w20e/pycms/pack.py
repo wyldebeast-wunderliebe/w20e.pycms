@@ -1,8 +1,10 @@
 from __future__ import print_function
-import ConfigParser
+from future import standard_library
+standard_library.install_aliases()
+import configparser
 import sys
 from paste.script import command
-import cookielib, urllib2
+import http.cookiejar, urllib.request, urllib.error, urllib.parse
 
 
 class PackCommand(command.Command):
@@ -21,7 +23,7 @@ class PackCommand(command.Command):
         try:
             ini_file = self.args[0]
 
-            config = ConfigParser.ConfigParser()
+            config = configparser.ConfigParser()
             config.readfp(open(ini_file))
         except:
             print("Please provide an ini file as argument")
@@ -38,16 +40,16 @@ class PackCommand(command.Command):
 
         usr, pwd = config.get('server:main', "pycms.admin_user").split(":")
 
-        cj = cookielib.CookieJar()
+        cj = http.cookiejar.CookieJar()
 
-        opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
-        urllib2.install_opener(opener)
+        opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cj))
+        urllib.request.install_opener(opener)
 
-        req = urllib2.Request(url,
+        req = urllib.request.Request(url,
                               "login=%s&password=%s&form.submitted=1&came_from=/script_pack" % \
                               (usr, pwd))
 
-        handle = urllib2.urlopen(req)
+        handle = urllib.request.urlopen(req)
 
         print(handle.info())
 

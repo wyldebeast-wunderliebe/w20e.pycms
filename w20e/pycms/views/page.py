@@ -288,7 +288,7 @@ class PageLayout(PageView):
 
         simple = {}
 
-        for key in params.keys():
+        for key in list(params.keys()):
 
             simple[key] = params.get(key)
 
