@@ -65,8 +65,8 @@ class FileView(object):
         response.etag = str(etag)
         response.cache_expires = (3600 * 24 * 7)
 
-        cd = u'attachment; filename="{0}"'.format(value['name'])
-        response.content_disposition = cd.encode('utf-8')
+        response.content_disposition = u'attachment; filename="{0}"'.format(
+            value['name'])
 
         return response
 

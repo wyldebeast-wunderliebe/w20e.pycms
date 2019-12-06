@@ -65,6 +65,12 @@ class SiteFormFactory(XMLFormFactory):
 @implementer(IPyCMSMixin)
 class PyCMSMixin(object):
 
+    def __repr__(self):
+        try:
+            return self.id.decode('utf-8')
+        except (TypeError, AttributeError):
+            return self.id
+
     @property
     def __acl__(self):
 

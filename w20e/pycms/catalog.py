@@ -14,7 +14,7 @@ from zope.interface import implementer, Attribute, Interface
 from zope.component import getSiteManager
 
 
-LOGGER = getLogger("w20e.pycms")
+LOGGER = getLogger(__name__)
 
 
 def init(event):
@@ -244,6 +244,6 @@ class IObjectStartIndex(Interface):
 @implementer(IObjectStartIndex)
 class ObjectStartIndex(object):
 
-    def __init__(self, object):
+    def __init__(self, obj):
 
-        self.object = object
+        self.obj = obj
