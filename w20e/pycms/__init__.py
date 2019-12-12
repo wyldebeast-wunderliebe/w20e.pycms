@@ -76,17 +76,16 @@ def update(app):
             setattr(app, "pycms_version", tgt_version)
 
 
-def appmaker(config):
+def appmaker(config, zodb_root=None):
 
     """ Create the application. Call this method from your main Pyramid
     setup """
-
     initreq = InitRequest()
     initreq.registry = config.registry
 
-    conn = get_connection(initreq)
-
-    zodb_root = conn.root()
+    if not zodb_root:
+        conn = get_connection(initreq)
+        zodb_root = conn.root()
 
     if not 'app_root' in zodb_root:
 
