@@ -8,6 +8,7 @@ from repoze.catalog.indexes.path import CatalogPathIndex
 from repoze.catalog.document import DocumentMap
 from logging import getLogger
 from w20e.hitman.utils import path_to_object, object_to_path
+from w20e.pycms.interfaces import ITemporaryObject
 
 from .index import IIndexes
 from zope.interface import implementer, Attribute, Interface
@@ -153,6 +154,8 @@ class Catalog(object):
             LOGGER.exception("Could not index object!")
 
     def reindex_object(self, object):
+        if ITemporaryObject.providedBy(object):
+            return
 
         sm = getSiteManager()
         sm.notify(ObjectStartIndex(object))
