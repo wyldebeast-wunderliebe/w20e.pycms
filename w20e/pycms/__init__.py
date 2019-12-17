@@ -157,7 +157,6 @@ def make_pycms_app(app, *includes, **settings):
     getSiteManager.sethook(get_registry)
 
     config.include(pyramid_zcml)
-    config.include('pyramid_mailer')
 
     config.load_zcml('w20e.pycms:bootstrap.zcml')
 
