@@ -46,7 +46,7 @@ class loginview(BaseView):
             password = self.request.params['password']
 
             try:
-                if acl.users[login].challenge(password):
+                if acl.users[login].challenge(password.encode('utf-8')):
                     headers = remember(self.request, login)
                     return HTTPFound(location=came_from,
                                      headers=headers)
