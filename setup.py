@@ -13,7 +13,7 @@ requires = [
     'pyramid>=1.4a',
     'pyramid_chameleon',
     'pyramid_zodbconn',
-    'pyramid_tm<2.0',  # until pyramid 1.9 is stable (pyramid_retry)
+    'pyramid_tm',
     'pyramid_zcml',
     'pyramid_debugtoolbar',
     'pyramid_mailer',
