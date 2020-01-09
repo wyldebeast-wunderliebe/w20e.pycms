@@ -1,4 +1,7 @@
-from base import AdminView
+from __future__ import absolute_import
+from builtins import str
+from builtins import object
+from .base import AdminView
 from pyramid.response import FileResponse, Response
 from w20e.forms.submission.blob import TheBlob
 import mimetypes
@@ -55,15 +58,15 @@ class FileView(object):
                                     content_type=mimeType)
 
         else:
-            raise "Not a valid file type"
+            raise ValueError("Not a valid file type")
 
         # set response caching headers..
 
         response.etag = str(etag)
         response.cache_expires = (3600 * 24 * 7)
 
-        cd = u'attachment; filename="{0}"'.format(value['name'])
-        response.content_disposition = cd.encode('utf-8')
+        response.content_disposition = u'attachment; filename="{0}"'.format(
+            value['name'])
 
         return response
 

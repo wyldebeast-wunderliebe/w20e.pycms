@@ -1,4 +1,5 @@
-from base import BaseContent
+from __future__ import absolute_import
+from .base import BaseContent
 from ..utils import resize_image
 from ZODB.blob import Blob
 

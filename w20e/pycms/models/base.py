@@ -1,9 +1,12 @@
+from builtins import str
+from builtins import object
 import os
 import inspect
 from uuid import uuid1
 from datetime import datetime, date
 from zope.interface import (
-    implements, directlyProvides, alsoProvides, noLongerProvides, providedBy)
+    directlyProvides, alsoProvides, noLongerProvides, providedBy,
+    implementer)
 from zope.component import subscribers
 from zope.component import getMultiAdapter
 from pyramid.url import resource_url
@@ -28,14 +31,13 @@ else:
     from repoze.workflow import get_workflow
 
 
+@implementer(IFormFactory)
 class XMLFormFactory(object):
 
     """ Base implementation of form factory. This guy tries to find
     xml forms in a directory called 'forms' in the app where the
     context lives, that are named after the content type of the given
     context object"""
-
-    implements(IFormFactory)
 
     def __init__(self, context, request):
 
@@ -60,9 +62,14 @@ class SiteFormFactory(XMLFormFactory):
         return super(SiteFormFactory, self).createForm(form_name="page")
 
 
+@implementer(IPyCMSMixin)
 class PyCMSMixin(object):
 
-    implements(IPyCMSMixin)
+    def __repr__(self):
+        try:
+            return self.id.decode('utf-8')
+        except (TypeError, AttributeError):
+            return self.id
 
     @property
     def __acl__(self):
@@ -83,7 +90,7 @@ class PyCMSMixin(object):
         cls = self.__class__
         cpy = cls.__new__(cls)
         memo[id(self)] = cpy
-        for k, v in self.__dict__.items():
+        for k, v in list(self.__dict__.items()):
             if (k not in blacklist_attrs):
                 setattr(cpy, k, deepcopy(v, memo))
 
@@ -218,7 +225,7 @@ class PyCMSMixin(object):
 
         _form = self.__form__(request)
         _form.data.update(self.__data__)
-        for key in data.keys():
+        for key in list(data.keys()):
             try:
                 data[key] = _form.getFieldValue(
                     key, lexical=lexical, only_relevant=True)
@@ -226,7 +233,7 @@ class PyCMSMixin(object):
                 pass
 
         # Handle dates
-        for key, val in data.items():
+        for key, val in list(data.items()):
 
             if type(val) in [datetime, date]:
                 data[key] = val.isoformat()

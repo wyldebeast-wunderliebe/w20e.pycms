@@ -1,6 +1,7 @@
+from __future__ import absolute_import
 from logging import getLogger
 import datetime
-from interfaces import ITemporaryObject
+from .interfaces import ITemporaryObject
 from persistent.mapping import PersistentMapping
 from w20e.hitman.utils import path_to_object, object_to_path
 
@@ -67,7 +68,7 @@ class TempRegister(PersistentMapping):
 
         now = datetime.datetime.now()
 
-        uuids = [k for k in self.keys()]
+        uuids = [k for k in list(self.keys())]
 
         for uuid in uuids:
 

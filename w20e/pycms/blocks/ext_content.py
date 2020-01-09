@@ -1,5 +1,8 @@
-from base import Block, BlockView
-import urllib
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from .base import Block, BlockView
+import urllib.request, urllib.parse, urllib.error
 from lxml.html import fromstring, tostring
 
 
@@ -33,7 +36,7 @@ class ExternalContentBlockView(BlockView):
     @property
     def fragment(self):
 
-        handle = urllib.urlopen(self.context['url'])
+        handle = urllib.request.urlopen(self.context['url'])
         content = handle.readlines()
         handle.close()
 

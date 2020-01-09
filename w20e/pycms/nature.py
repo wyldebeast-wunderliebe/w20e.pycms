@@ -1,3 +1,4 @@
+from builtins import object
 from zope.interface import Interface, providedBy
 
 
@@ -64,4 +65,4 @@ class Natures(object):
 
     def list_natures(self):
 
-        return self.registry.values()
+        return list(self.registry.values())

@@ -1,3 +1,4 @@
+from builtins import object
 from zope.interface import Interface
 
 
@@ -20,4 +21,4 @@ class Indexes(object):
 
     def get_indexes(self):
 
-        return self.registry.items()
+        return list(self.registry.items())

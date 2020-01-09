@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+from builtins import object
 import os
 import sys
 import transaction
@@ -7,13 +9,14 @@ from pyramid_zodbconn import get_connection
 from pyramid.session import (
     UnencryptedCookieSessionFactoryConfig as SessionFactory)
 import pyramid_zcml
-from events import AppRootReady
+from .events import AppRootReady
 from w20e.forms.registry import Registry
 from w20e.forms.pyramid.file import PyramidFile
-from models.imagefolder import ImageFolder
-from json_adapters import register_json_adapters
-from migration import migrate
+from .models.imagefolder import ImageFolder
+from .json_adapters import register_json_adapters
+from .migration import migrate
 import pkg_resources
+from functools import reduce
 
 
 Registry.register_renderable("file", PyramidFile)
@@ -73,17 +76,16 @@ def update(app):
             setattr(app, "pycms_version", tgt_version)
 
 
-def appmaker(config):
+def appmaker(config, zodb_root=None):
 
     """ Create the application. Call this method from your main Pyramid
     setup """
-
     initreq = InitRequest()
     initreq.registry = config.registry
 
-    conn = get_connection(initreq)
-
-    zodb_root = conn.root()
+    if not zodb_root:
+        conn = get_connection(initreq)
+        zodb_root = conn.root()
 
     if not 'app_root' in zodb_root:
 
@@ -126,7 +128,6 @@ def appmaker(config):
 
 
 def root_factory(request):
-
     conn = get_connection(request)
 
     return conn.root()['app_root']
@@ -136,7 +137,6 @@ def make_pycms_app(app, *includes, **settings):
 
     """ Create a w20e.pycms application and return it. The app is a
     router instance as created by Configurator.make_wsgi_app."""
-
     config = Configurator(package=app,
                           root_factory=root_factory,
                           session_factory=SessionFactory('w20e_pycms_secret'),
@@ -157,7 +157,6 @@ def make_pycms_app(app, *includes, **settings):
     getSiteManager.sethook(get_registry)
 
     config.include(pyramid_zcml)
-    config.include('pyramid_mailer')
 
     config.load_zcml('w20e.pycms:bootstrap.zcml')
 

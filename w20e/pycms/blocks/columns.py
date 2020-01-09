@@ -1,4 +1,5 @@
-from base import Group, GroupView
+from __future__ import absolute_import
+from .base import Group, GroupView
 
 
 ADD_FORM = """

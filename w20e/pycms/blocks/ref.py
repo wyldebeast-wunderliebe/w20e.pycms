@@ -1,4 +1,5 @@
-from base import Block, BlockView
+from __future__ import absolute_import
+from .base import Block, BlockView
 from pyramid.view import render_view
 
 

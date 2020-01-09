@@ -1,4 +1,5 @@
-from base import BaseView
+from __future__ import absolute_import
+from .base import BaseView
 from repoze.catalog.query import Contains
 from pyramid.url import resource_url
 

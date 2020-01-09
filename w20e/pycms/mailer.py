@@ -1,3 +1,4 @@
+from builtins import object
 from pyramid_mailer import get_mailer
 from pyramid_mailer.message import Message
 

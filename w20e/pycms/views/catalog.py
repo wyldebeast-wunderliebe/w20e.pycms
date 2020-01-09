@@ -1,5 +1,8 @@
-from base import AdminView
-from webhelpers import paginate
+from __future__ import absolute_import
+
+from paginate import Page
+
+from .base import AdminView
 
 
 class SiteCatalogView(AdminView):
@@ -7,14 +10,18 @@ class SiteCatalogView(AdminView):
     """ Site admin view """
 
     def __init__(self, context, request):
+        def url_maker(page_number):
+            query = request.GET
+            query["page"] = str(page_number)
+            return request.resource_url(self.cat, query=query)
 
-        AdminView.__init__(self, context, request)
+        super().__init__(context, request)
         self.cat = self.context.root._catalog
 
-        page_url = paginate.PageURL_WebOb(request)
         current_page = request.params.get('page', 0)
-        self.entries = paginate.Page(
-            self.catalog_entries(), current_page, url=page_url)
+
+        self.entries = Page(
+            self.catalog_entries(), current_page, url_maker=url_maker)
 
     def catalog_entries(self):
 
@@ -36,7 +43,7 @@ class SiteCatalogView(AdminView):
 
         res = []
 
-        for item in self.cat.catalog.items():
+        for item in list(self.cat.catalog.items()):
 
             res.append({
                 'id': item[0],

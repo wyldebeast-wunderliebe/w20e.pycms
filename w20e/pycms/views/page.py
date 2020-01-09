@@ -1,6 +1,7 @@
+from __future__ import absolute_import
 from pyramid.security import has_permission
 
-from base import ContentView, EditView
+from .base import ContentView, EditView
 from ..models.image import Image
 from ..parser import Parser
 from pyramid.view import render_view
@@ -287,7 +288,7 @@ class PageLayout(PageView):
 
         simple = {}
 
-        for key in params.keys():
+        for key in list(params.keys()):
 
             simple[key] = params.get(key)
 

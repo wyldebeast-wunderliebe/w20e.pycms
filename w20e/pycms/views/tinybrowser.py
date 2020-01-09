@@ -1,3 +1,4 @@
+from builtins import object
 from pyramid.url import resource_url
 from ..models.image import Image
 from w20e.hitman.models.exceptions import UniqueConstraint
@@ -7,7 +8,7 @@ def _remove_prefix(string, prefix):
     return string[len(prefix):] if string.startswith(prefix) else string
 
 
-class TinyBrowser:
+class TinyBrowser(object):
     """ browse and upload files from TinyMCE """
 
     def __init__(self, context, request):

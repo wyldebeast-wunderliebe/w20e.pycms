@@ -1,3 +1,4 @@
+from builtins import object
 from zope.interface import Interface
 
 
@@ -20,7 +21,7 @@ class Macros(object):
 
     def list_macros(self):
 
-        return self.registry.keys()
+        return list(self.registry.keys())
 
     def get_macro(self, name, context):
 

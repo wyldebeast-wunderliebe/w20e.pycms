@@ -1,11 +1,13 @@
-from blocks.base import *
-from blocks.text import TextBlock
-from blocks.snippet import SnippetBlock
-from blocks.image import ImageBlock
-from blocks.feed import FeedBlock
-from blocks.ext_content import ExternalContentBlock
+from __future__ import absolute_import
+from builtins import object
+from .blocks.base import *
+from .blocks.text import TextBlock
+from .blocks.snippet import SnippetBlock
+from .blocks.image import ImageBlock
+from .blocks.feed import FeedBlock
+from .blocks.ext_content import ExternalContentBlock
 from lxml.html import fromstring, tostring
-from blocks.registry import Registry
+from .blocks.registry import Registry
 
 
 class Parser(object):

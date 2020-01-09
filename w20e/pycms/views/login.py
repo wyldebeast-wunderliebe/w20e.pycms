@@ -1,8 +1,10 @@
+from __future__ import absolute_import
+from builtins import object
 from pyramid.httpexceptions import HTTPFound
 from pyramid.url import resource_url
 
 from pyramid.security import remember, forget
-from base import BaseView
+from .base import BaseView
 
 
 class loginview(BaseView):
@@ -44,7 +46,7 @@ class loginview(BaseView):
             password = self.request.params['password']
 
             try:
-                if acl.users[login].challenge(password):
+                if acl.users[login].challenge(password.encode('utf-8')):
                     headers = remember(self.request, login)
                     return HTTPFound(location=came_from,
                                      headers=headers)

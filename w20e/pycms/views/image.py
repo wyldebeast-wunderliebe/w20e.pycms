@@ -1,4 +1,7 @@
-from base import AdminView
+from __future__ import absolute_import
+from builtins import str
+from builtins import object
+from .base import AdminView
 from pyramid.response import FileResponse, Response
 import mimetypes
 from w20e.forms.submission.blob import TheBlob
@@ -53,7 +56,7 @@ class ImageView(object):
                     content_type=mimeType)
 
         else:
-            raise "Not a valid image type"
+            raise ValueError("Not a valid image type")
 
         # set response caching headers..
 

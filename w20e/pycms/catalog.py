@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+from builtins import object
 from repoze.catalog.catalog import Catalog as RepozeCatalog
 from repoze.catalog.indexes.field import CatalogFieldIndex
 from repoze.catalog.indexes.text import CatalogTextIndex
@@ -6,12 +8,14 @@ from repoze.catalog.indexes.path import CatalogPathIndex
 from repoze.catalog.document import DocumentMap
 from logging import getLogger
 from w20e.hitman.utils import path_to_object, object_to_path
-from index import IIndexes
-from zope.interface import implements, Attribute, Interface
+from w20e.pycms.interfaces import ITemporaryObject
+
+from .index import IIndexes
+from zope.interface import implementer, Attribute, Interface
 from zope.component import getSiteManager
 
 
-LOGGER = getLogger("w20e.pycms")
+LOGGER = getLogger(__name__)
 
 
 def init(event):
@@ -31,7 +35,7 @@ def init(event):
     indexes = event.registry.getUtility(IIndexes)
 
     for idx in indexes.get_indexes():
-        if not idx[0] in app._catalog.catalog.keys():
+        if not idx[0] in list(app._catalog.catalog.keys()):
             if idx[1]['type'] == "field":
                 app._catalog.catalog[idx[0]] = CatalogFieldIndex(
                     idx[1]['field'])
@@ -150,6 +154,8 @@ class Catalog(object):
             LOGGER.exception("Could not index object!")
 
     def reindex_object(self, object):
+        if ITemporaryObject.providedBy(object):
+            return
 
         sm = getSiteManager()
         sm.notify(ObjectStartIndex(object))
@@ -210,7 +216,7 @@ class Catalog(object):
 
         summ = {}
 
-        for key in self.catalog.keys():
+        for key in list(self.catalog.keys()):
             idx = self.catalog[key]
             if hasattr(idx, "_rev_index"):
                 summ[key] = idx._rev_index.get(uuid, '')
@@ -228,7 +234,7 @@ class Catalog(object):
 
     def list_object_ids(self):
 
-        return self._document_map.docid_to_address.keys()
+        return list(self._document_map.docid_to_address.keys())
 
 
 class IObjectStartIndex(Interface):
@@ -238,10 +244,9 @@ class IObjectStartIndex(Interface):
     object = Attribute("The object to be indexed")
 
 
+@implementer(IObjectStartIndex)
 class ObjectStartIndex(object):
 
-    implements(IObjectStartIndex)
+    def __init__(self, obj):
 
-    def __init__(self, object):
-
-        self.object = object
+        self.obj = obj

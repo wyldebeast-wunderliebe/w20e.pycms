@@ -1,4 +1,5 @@
-from folder import Folder
+from __future__ import absolute_import
+from .folder import Folder
 
 
 class ImageFolder(Folder):
