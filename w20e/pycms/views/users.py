@@ -139,7 +139,7 @@ class UserAdminView(AdminView):
             status = "error"
         elif self.request.params['password'] == \
                 self.request.params['password_confirm']:
-            user.set_pwd(self.request.params['password'])
+            user.set_pwd(self.request.params['password'].encode('utf-8'))
             if token:
                 self.context.acl.unset_activation_key(token)
             message = "Password reset"
