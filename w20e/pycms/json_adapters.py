@@ -13,7 +13,7 @@ def register_json_adapters(config):
         return obj.open('r').read()
 
     def theblob_adapter(obj, request):
-        return obj.get()
+        return obj.get().decode('utf-8')
 
     def date_adapter(obj, request):
         return obj.isoformat() if hasattr(obj, 'isoformat') else obj

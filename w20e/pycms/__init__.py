@@ -108,21 +108,20 @@ def appmaker(config, zodb_root=None):
 
         transaction.commit()
 
-    # create a globale images folder
     app_root = zodb_root['app_root']
+
+    # Do necessary updates
+    update(zodb_root['app_root'])
+    initreq.registry.notify(AppRootReady(app_root, config.registry))
+    transaction.commit()
+
+    #  create a globale images folder
     IMAGES_ID = 'images'
     if not IMAGES_ID in app_root:
         images = ImageFolder(IMAGES_ID)
         images.__data__['name'] = 'Images'
         app_root.add_content(images)
         transaction.commit()
-
-    # Do necessary updates
-    update(zodb_root['app_root'])
-
-    initreq.registry.notify(AppRootReady(app_root, config.registry))
-
-    transaction.commit()
 
     return zodb_root['app_root']
 
