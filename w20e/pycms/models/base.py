@@ -286,6 +286,13 @@ class BaseFolder(PyCMSMixin, HitmanBaseFolder):
 
     def list_content(self, content_type=None, iface=None, **kwargs):
         """ use base listing, but filter out temp objects """
+        
+        if 'order_by' not in kwargs:
+            order_by = getattr(self, 'order_by_attr', 'changed')
+            kwargs['order_by'] = order_by
+        if 'order_by_reversed' not in kwargs:
+            order_by_reversed = getattr(self, 'order_by_reversed', 1)
+            kwargs['order_by_reversed'] = order_by_reversed
 
         result = HitmanBaseFolder.list_content(
             self, content_type, iface, **kwargs)
