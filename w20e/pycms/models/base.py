@@ -288,7 +288,7 @@ class BaseFolder(PyCMSMixin, HitmanBaseFolder):
         """ use base listing, but filter out temp objects """
         
         if 'order_by' not in kwargs:
-            order_by = getattr(self, 'order_by_attr', 'changed')
+            order_by = getattr(self, 'order_by_attr', 'created')
             kwargs['order_by'] = order_by
         if 'order_by_reversed' not in kwargs:
             order_by_reversed = getattr(self, 'order_by_reversed', 1)
