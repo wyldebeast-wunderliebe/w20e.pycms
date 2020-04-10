@@ -44,10 +44,9 @@ class PackCommand(command.Command):
 
         opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cj))
         urllib.request.install_opener(opener)
+        data = "login=%s&password=%s&form.submitted=1&came_from=/script_pack" % (usr, pwd)
 
-        req = urllib.request.Request(url,
-                              "login=%s&password=%s&form.submitted=1&came_from=/script_pack" % \
-                              (usr, pwd))
+        req = urllib.request.Request(url, data.encode('utf-8'))
 
         handle = urllib.request.urlopen(req)
 
