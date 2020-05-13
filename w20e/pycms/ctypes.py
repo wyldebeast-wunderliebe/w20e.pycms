@@ -1,6 +1,7 @@
 from builtins import object
 from zope.interface import Interface
 from w20e.hitman.models import Registry
+from pyramid.path import DottedNameResolver
 
 
 class ICTypes(Interface):
@@ -25,12 +26,10 @@ class CTypes(object):
 
         if kwargs.get('factory', None):
             clazz = kwargs['factory']
-            path, clazz = ".".join(clazz.split(".")[:-1]), clazz.split(".")[-1]
-
-            exec("from %s import %s" % (path, clazz))
-
-            Registry.register(name, eval(clazz))
+            klass = DottedNameResolver().resolve(clazz)
+            Registry.register(name, klass)
 
     def get_ctype_info(self, name):
 
         return self.registry.get(name, {})
+

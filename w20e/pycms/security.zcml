@@ -5,12 +5,12 @@
   <include package="pyramid_zcml" />
   <include file="meta.zcml" />
 
-  <aclauthorizationpolicy/>
+  <!--aclauthorizationpolicy/-->
 
-  <authtktauthenticationpolicy
+  <!--authtktauthenticationpolicy
     secret="evilsecret"
     callback=".security.groupfinder"
-  />
+  /-->
 
   <view
     view=".views.login.loginview"
@@ -23,6 +23,16 @@
     view=".views.login.loginview"
     renderer="templates/login.pt"
     name="login"
+    />
+
+  <view
+    context="w20e.pycms.models.interfaces.ISite"
+    view=".views.login.loginview"
+    attr="login_json"
+    request_method="POST"
+    header="Accept:application\/json"
+    renderer="json"
+    name="login_json"
     />
 
   <view

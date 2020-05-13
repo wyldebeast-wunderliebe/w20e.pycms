@@ -25,6 +25,23 @@ class loginview(BaseView):
 
         return ''
 
+    def login_json(self):
+        acl = self.context.root.acl
+
+        login = self.request.json.get('login')
+        password = self.request.json.get('password')
+
+        if acl.users[login].challenge(password.encode('utf-8')):
+            return {
+                'result': 'success',
+                'token': self.request.create_jwt_token(login)
+            }
+        else:
+            return {
+                'result': 'error',
+                'token': None
+            }
+
     def __call__(self):
 
         res = super(loginview, self).__call__()
@@ -32,7 +49,8 @@ class loginview(BaseView):
         login_url = resource_url(self.context, self.request, 'login')
         referrer = self.request.url
         if referrer == login_url:
-            referrer = self.request.registry.settings.get("pycms.logged_in_redirect", "/")
+            referrer = self.request.registry.settings.get(
+                "pycms.logged_in_redirect", "/")
         came_from = self.request.params.get('came_from', referrer)
         message = ''
         login = ''
@@ -60,7 +78,7 @@ class loginview(BaseView):
             'came_from': came_from,
             'login': login,
             'password': password}
-                   )
+        )
         return res
 
 

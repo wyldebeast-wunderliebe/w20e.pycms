@@ -17,6 +17,11 @@ from .json_adapters import register_json_adapters
 from .migration import migrate
 import pkg_resources
 from functools import reduce
+from pyramid.authentication import AuthTktAuthenticationPolicy
+from pyramid_authstack import AuthenticationStackPolicy
+from pyramid.authorization import ACLAuthorizationPolicy
+from .security import groupfinder
+from pyramid_jwt.policy import JWTAuthenticationPolicy
 
 
 Registry.register_renderable("file", PyramidFile)
@@ -31,7 +36,6 @@ version = pkg_resources.get_distribution("w20e.pycms").version
 
 
 def class_from_string(clazz_name):
-
     """ We'll need to follow the dotted path, and find the module that
     starts with some part, and provides the rest of the path... """
 
@@ -62,7 +66,6 @@ class InitRequest(object):
 
 
 def update(app):
-
     """ Any updates can go here... """
 
     curr_version = getattr(app, "pycms_version", "unknown")
@@ -77,7 +80,6 @@ def update(app):
 
 
 def appmaker(config, zodb_root=None):
-
     """ Create the application. Call this method from your main Pyramid
     setup """
     initreq = InitRequest()
@@ -133,13 +135,49 @@ def root_factory(request):
 
 
 def make_pycms_app(app, *includes, **settings):
-
     """ Create a w20e.pycms application and return it. The app is a
     router instance as created by Configurator.make_wsgi_app."""
     config = Configurator(package=app,
                           root_factory=root_factory,
                           session_factory=SessionFactory('w20e_pycms_secret'),
                           settings=settings)
+
+    # securiy policies
+    auth_policy = AuthenticationStackPolicy()
+    auth_policy.add_policy(
+        'cookie',
+        AuthTktAuthenticationPolicy(
+            secret="evilsecret",
+            callback=groupfinder
+        )
+    )
+
+    # Enable JWT authentication.
+    config.include('pyramid_jwt')
+
+    jwt_policy = JWTAuthenticationPolicy(
+        'evilsecret2',
+        callback=groupfinder
+    )
+
+    auth_policy.add_policy(
+        'token',
+        jwt_policy
+    )
+
+    def request_create_token(
+            request, principal, expiration=None, audience=None, **claims):
+        return jwt_policy.create_token(principal, expiration, audience, **claims)
+
+    def request_claims(request):
+        return jwt_policy.get_claims(request)
+
+    config.add_request_method(request_create_token, 'create_jwt_token')
+    config.add_request_method(request_claims, "jwt_claims", reify=True)
+
+    config.set_authentication_policy(auth_policy)
+    auth_policy = ACLAuthorizationPolicy()
+    config.set_authorization_policy(auth_policy)
 
     # enable Chameleon rendering
     #

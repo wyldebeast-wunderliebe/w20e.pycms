@@ -24,6 +24,8 @@ requires = [
     'w20e.hitman',
     'PasteScript>=1.3',
     'paginate',
+    'pyramid_authstack',
+    'pyramid_jwt',
     ]
 
 setup(name='w20e.pycms',
