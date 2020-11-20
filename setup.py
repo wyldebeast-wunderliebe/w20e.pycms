@@ -16,6 +16,7 @@ requires = [
     'pyramid_zcml',
     'pyramid_debugtoolbar',
     'pyramid_mailer',
+    'pyramid_tm',
     'ZODB3',
     'repoze.catalog',
     'cssmin',
