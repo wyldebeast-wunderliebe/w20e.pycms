@@ -67,7 +67,8 @@ class FileView(object):
         response.etag = str(etag)
         response.cache_expires = (3600 * 24 * 7)
 
-        name = slugify(value['name'], lowercase=False)
+        regex_pattern=r'[^-A-Za-z0-9_\.]+'
+        name = slugify(value['name'], lowercase=False, regex_pattern=regex_pattern)
         response.content_disposition = u'attachment; filename="{0}"'.format(
             name)
 
