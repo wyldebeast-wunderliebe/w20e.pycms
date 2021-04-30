@@ -6,6 +6,7 @@ from pyramid.response import FileResponse, Response
 from w20e.forms.submission.blob import TheBlob
 import mimetypes
 from ZODB.blob import Blob as Blob
+from slugify import slugify
 
 
 class FileView(object):
@@ -18,6 +19,7 @@ class FileView(object):
     def _return_file_response(self, value):
 
         blob = value['data']
+
         filename = value['name']
         mimeType = "application/octet-stream"
 
@@ -65,8 +67,9 @@ class FileView(object):
         response.etag = str(etag)
         response.cache_expires = (3600 * 24 * 7)
 
+        name = slugify(value['name'], lowercase=False)
         response.content_disposition = u'attachment; filename="{0}"'.format(
-            value['name'])
+            name)
 
         return response
 

@@ -26,6 +26,7 @@ requires = [
     'paginate',
     'pyramid_authstack',
     'pyramid_jwt',
+    'python-slugify',
     ]
 
 setup(name='w20e.pycms',
