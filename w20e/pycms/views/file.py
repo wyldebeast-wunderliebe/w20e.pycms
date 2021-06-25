@@ -65,7 +65,7 @@ class FileView(object):
         # set response caching headers..
 
         response.etag = str(etag)
-        response.cache_expires = (3600 * 24 * 7)
+        # response.cache_expires = (3600 * 24 * 7)
 
         regex_pattern=r'[^-A-Za-z0-9_\.]+'
         name = slugify(value['name'], lowercase=False, regex_pattern=regex_pattern)
