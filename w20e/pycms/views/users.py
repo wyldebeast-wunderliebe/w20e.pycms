@@ -1,7 +1,6 @@
 from __future__ import absolute_import
 from .base import AdminView
 from ..interfaces import IMailer
-from pyramid.security import has_permission
 
 
 class UserAdminView(AdminView):
@@ -120,7 +119,7 @@ class UserAdminView(AdminView):
 
         # we could be admin...
         if not token:
-            if user_id and has_permission("admin", self.context, self.request):
+            if user_id and self.request.has_permission("admin", self.context):
                 user = self.context.acl.users[user_id]
         else:
             user = self.context.acl.get_user_for_activation(token)

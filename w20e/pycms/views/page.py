@@ -1,5 +1,4 @@
 from __future__ import absolute_import
-from pyramid.security import has_permission
 
 from .base import ContentView, EditView
 from ..models.image import Image
@@ -27,7 +26,7 @@ class PageView(ContentView):
     @property
     def can_edit(self):
 
-        return has_permission("edit", self.context, self.request)
+        return self.request.has_permission("edit", self.context)
 
     @property
     def content(self):

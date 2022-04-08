@@ -16,10 +16,9 @@ from w20e.hitman.utils import path_to_object
 from pyramid.renderers import get_renderer, render
 from pyramid.httpexceptions import HTTPFound
 from pyramid.interfaces import IView, IViewClassifier
-from pyramid.security import authenticated_userid
+#from pyramid.security import authenticated_userid
 from w20e.pycms.utils import has_permission
 from pyramid.url import resource_url
-from pyramid.compat import map_
 from w20e.pycms.nature import INatures
 from w20e.pycms.interfaces import IAdmin, ITemporaryObject
 from w20e.pycms.events import TemporaryObjectCreated, TemporaryObjectFinalized
@@ -179,19 +178,21 @@ class ViewMixin(object):
     @property
     def user(self):
 
-        return authenticated_userid(self.request) or ""
+        # return authenticated_userid(self.request) or ""
+        return self.request.authenticated_userid
 
     @property
     def logged_in(self):
 
-        return authenticated_userid(self.request) or None
+        # return authenticated_userid(self.request) or None
+        return self.user or None
 
     def render_viewlet(self, name, **kwargs):
 
         """ Render a viewlet """
 
-        provides = [IViewClassifier] + map_(providedBy,
-                                            (self.request, self.context))
+        provides = [IViewClassifier] + list(map(providedBy, (self.request, self.context)))
+
         view = self.request.registry.adapters.lookup(
             provides, IView, name=name)
 

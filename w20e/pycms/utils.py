@@ -9,7 +9,7 @@ from io import StringIO
 import time
 import random
 import hashlib
-from pyramid.security import has_permission as base_has_permission
+#from pyramid.request import has_permission as base_has_permission
 from w20e.forms.submission.blob import TheBlob
 
 
@@ -24,7 +24,8 @@ def has_permission(permission, context, request):
     key = 'permission_%s_%s' % (permission, context.dottedpath)
 
     if not key in request.environ:
-        request.environ[key] = base_has_permission(permission, context, request)
+        # request.environ[key] = base_has_permission(permission, context, request)
+        request.environ[key] = request.has_permission(permission, context)
         
     return request.environ[key]
 

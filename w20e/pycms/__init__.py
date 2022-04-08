@@ -7,7 +7,7 @@ from zope.component import getSiteManager
 from pyramid.config import Configurator
 from pyramid_zodbconn import get_connection
 from pyramid.session import (
-    UnencryptedCookieSessionFactoryConfig as SessionFactory)
+    SignedCookieSessionFactory as SessionFactory)
 import pyramid_zcml
 from .events import AppRootReady
 from w20e.forms.registry import Registry
