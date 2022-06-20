@@ -207,8 +207,13 @@ def make_pycms_app(app, *includes, **settings):
     for include in includes:
         config.include(include)
 
+    # load pycms_prerequisites
+    for ep in pkg_resources.iter_entry_points(group='pycms_prerequisite_plugin'):
+        fun = ep.load()
+        config.include(fun)
+        config.commit()
+
     # load plugin entry points of the pycms_plugin persuasion
-    #
     for ep in pkg_resources.iter_entry_points(group='pycms_plugin'):
         fun = ep.load()
         config.include(fun)
