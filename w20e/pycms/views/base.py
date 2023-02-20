@@ -10,13 +10,19 @@ from w20e.hitman.views.base import DelView as DelBase
 from w20e.hitman.views.base import EditView as EditBase
 from w20e.hitman.views.base import BaseView as BaseBase
 from w20e.hitman.models import Registry
-from w20e.hitman.events import ContentAdded, ContentRemoved, ContentChanged
+from w20e.hitman.events import (
+    ContentAdded,
+    ContentCopied,
+    ContentRemoved,
+    ContentChanged,
+)
 from w20e.hitman.utils import path_to_object
 
 from pyramid.renderers import get_renderer, render
 from pyramid.httpexceptions import HTTPFound
 from pyramid.interfaces import IView, IViewClassifier
-#from pyramid.security import authenticated_userid
+
+# from pyramid.security import authenticated_userid
 from w20e.pycms.utils import has_permission
 from pyramid.url import resource_url
 from w20e.pycms.nature import INatures
@@ -39,7 +45,7 @@ class ViewMixin(object):
 
     def add_macros(self, data):
 
-        """ Add macros to rendering """
+        """Add macros to rendering"""
 
         if isinstance(data, dict):
 
@@ -48,17 +54,18 @@ class ViewMixin(object):
             for macro in macros.list_macros():
 
                 data[macro] = get_renderer(
-                    macros.get_macro(macro, self.context)).implementation()
+                    macros.get_macro(macro, self.context)
+                ).implementation()
 
     @property
     def viewname(self):
 
-        return self.request.path.split('/')[-1]
+        return self.request.path.split("/")[-1]
 
     @property
     def admin_title(self):
 
-        """ title to be used in admin interface """
+        """title to be used in admin interface"""
 
         reg = self.request.registry
         util = reg.getUtility(IAdmin)
@@ -67,7 +74,7 @@ class ViewMixin(object):
     @property
     def brand_title(self):
 
-        """ brand title to be used in admin interface """
+        """brand title to be used in admin interface"""
 
         reg = self.request.registry
         util = reg.getUtility(IAdmin)
@@ -77,8 +84,7 @@ class ViewMixin(object):
     def keywords(self):
 
         try:
-            return ",".join(
-                (self.context.__data__['keywords'] or "").splitlines())
+            return ",".join((self.context.__data__["keywords"] or "").splitlines())
         except:
             return ""
 
@@ -86,13 +92,13 @@ class ViewMixin(object):
     def description(self):
 
         try:
-            return self.context.__data__['description'] or ''
+            return self.context.__data__["description"] or ""
         except:
             return ""
 
     @property
     def breadcrumbs(self):
-        """ Find all parent objects to root """
+        """Find all parent objects to root"""
 
         path = [self.context]
         _root = self.context
@@ -111,9 +117,14 @@ class ViewMixin(object):
 
         actions = reg.getUtility(IActions)
 
-        return [action for action in actions.get_actions("perspective",
-                ctype=self.context.content_type) if (not action.permission) or
-                has_permission(action.permission, self.context, self.request)]
+        return [
+            action
+            for action in actions.get_actions(
+                "perspective", ctype=self.context.content_type
+            )
+            if (not action.permission)
+            or has_permission(action.permission, self.context, self.request)
+        ]
 
     @property
     def siteactions(self):
@@ -124,10 +135,12 @@ class ViewMixin(object):
 
         actions = util.get_actions("site", ctype=self.context.content_type)
 
-        return [action for action in actions
-                if (not action.permission) or has_permission(action.permission,
-                                                             self.context,
-                                                             self.request)]
+        return [
+            action
+            for action in actions
+            if (not action.permission)
+            or has_permission(action.permission, self.context, self.request)
+        ]
 
     @property
     def contentactions(self):
@@ -136,9 +149,14 @@ class ViewMixin(object):
 
         actions = reg.getUtility(IActions)
 
-        return [action for action in actions.get_actions("content",
-                ctype=self.context.content_type) if (not action.permission) or
-                has_permission(action.permission, self.context, self.request)]
+        return [
+            action
+            for action in actions.get_actions(
+                "content", ctype=self.context.content_type
+            )
+            if (not action.permission)
+            or has_permission(action.permission, self.context, self.request)
+        ]
 
     @property
     def icon(self):
@@ -153,7 +171,7 @@ class ViewMixin(object):
 
     @property
     def footer(self):
-        return render('../templates/footer.pt', {})
+        return render("../templates/footer.pt", {})
 
     @property
     def base_url(self):
@@ -162,7 +180,7 @@ class ViewMixin(object):
 
     def object_url(self, obj):
 
-        """ return URL for the given object"""
+        """return URL for the given object"""
 
         return resource_url(obj, self.request)
 
@@ -189,14 +207,15 @@ class ViewMixin(object):
 
     def render_viewlet(self, name, **kwargs):
 
-        """ Render a viewlet """
+        """Render a viewlet"""
 
-        provides = [IViewClassifier] + list(map(providedBy, (self.request, self.context)))
+        provides = [IViewClassifier] + list(
+            map(providedBy, (self.request, self.context))
+        )
 
-        view = self.request.registry.adapters.lookup(
-            provides, IView, name=name)
+        view = self.request.registry.adapters.lookup(provides, IView, name=name)
 
-        self.request.update({'kwargs': kwargs})
+        self.request.update({"kwargs": kwargs})
 
         return "".join(view(self.context, self.request).app_iter)
 
@@ -207,13 +226,12 @@ class ViewMixin(object):
         nature = natures.get_nature(nature_id)
 
         if nature:
-            return self.context.has_nature(nature['interface'])
+            return self.context.has_nature(nature["interface"])
         else:
             return False
 
 
 class BaseView(BaseBase, ViewMixin):
-
     def __call__(self):
 
         res = BaseBase.__call__(self)
@@ -223,7 +241,6 @@ class BaseView(BaseBase, ViewMixin):
 
 
 class ContentView(Base, ViewMixin):
-
     def __call__(self):
 
         res = Base.__call__(self)
@@ -232,14 +249,14 @@ class ContentView(Base, ViewMixin):
         return res
 
     def json(self):
-        """ return a json encoded version of the context """
+        """return a json encoded version of the context"""
 
         return self.context
 
 
 class AddView(BaseView):
 
-    """ create temporary content """
+    """create temporary content"""
 
     def __call__(self):
 
@@ -248,7 +265,7 @@ class AddView(BaseView):
         clazz = Registry.get(ctype)
 
         initial_data = self.request.params.copy()
-        del initial_data['ctype']
+        del initial_data["ctype"]
 
         content = clazz("_TMP", data=initial_data)
 
@@ -261,15 +278,13 @@ class AddView(BaseView):
 
         self.context.add_content(content)
 
-        self.request.registry.notify(
-            TemporaryObjectCreated(content, self.request))
+        self.request.registry.notify(TemporaryObjectCreated(content, self.request))
 
-        return HTTPFound(location='%sedit' %
-                         self.request.resource_url(content))
+        return HTTPFound(location="%sedit" % self.request.resource_url(content))
 
 
 class FactoryView(BaseView, pyramidformview, ViewMixin):
-    """ add form for base content """
+    """add form for base content"""
 
     is_edit = True
 
@@ -279,12 +294,14 @@ class FactoryView(BaseView, pyramidformview, ViewMixin):
 
         self.context = context
 
-        assert ITemporaryObject.providedBy(context), \
-            "This object is not in a temporary state"
+        assert ITemporaryObject.providedBy(
+            context
+        ), "This object is not in a temporary state"
 
         self.form = self.context.__form__(request)
-        pyramidformview.__init__(self, self.context, request, self.form,
-                                 retrieve_data=True)
+        pyramidformview.__init__(
+            self, self.context, request, self.form, retrieve_data=True
+        )
 
     @property
     def content_type(self):
@@ -293,8 +310,7 @@ class FactoryView(BaseView, pyramidformview, ViewMixin):
     @property
     def after_add_redirect(self):
 
-        url = self.request.registry.settings.get(
-            'pycms.after_add_redirect', 'admin')
+        url = self.request.registry.settings.get("pycms.after_add_redirect", "admin")
 
         if url[0] != "/":
             url = self.base_url + url
@@ -304,8 +320,7 @@ class FactoryView(BaseView, pyramidformview, ViewMixin):
     @property
     def cancel_add_redirect(self):
 
-        url = self.request.registry.settings.get(
-            'pycms.cancel_add_redirect', 'admin')
+        url = self.request.registry.settings.get("pycms.cancel_add_redirect", "admin")
 
         if url[0] != "/":
             parent_url = resource_url(self.context.__parent__, self.request)
@@ -319,15 +334,13 @@ class FactoryView(BaseView, pyramidformview, ViewMixin):
 
         params = self.request.params
 
-        submissions = set(["submit", "save", "w20e.forms.next",
-                           "w20e.forms.process"])
+        submissions = set(["submit", "save", "w20e.forms.next", "w20e.forms.process"])
 
         if "cancel" in params:
             return HTTPFound(location=self.cancel_add_redirect)
 
         elif submissions.intersection(list(params.keys())):
-            status, errors = self.form.view.handle_form(self.form,
-                                                        self.request.params)
+            status, errors = self.form.view.handle_form(self.form, self.request.params)
 
         else:
             status = "unknown"
@@ -338,12 +351,13 @@ class FactoryView(BaseView, pyramidformview, ViewMixin):
         self.form.submission.submit(self.form, self.context, self.request)
 
         if status == "completed":
-            status = 'stored'
+            status = "stored"
             parent = self.context.__parent__
             content_id = parent.generate_content_id(self.context.base_id)
             noLongerProvides(self.context, ITemporaryObject)
             self.request.registry.notify(
-                TemporaryObjectFinalized(self.context, self.request))
+                TemporaryObjectFinalized(self.context, self.request)
+            )
             parent.rename_content(self.context.id, content_id)
             self.request.registry.notify(ContentAdded(self.context, parent))
             return HTTPFound(location=self.after_add_redirect)
@@ -351,15 +365,20 @@ class FactoryView(BaseView, pyramidformview, ViewMixin):
         render_kwargs = {}
 
         render_args = {
-            "action": "{0}edit".format(self.base_url), }
+            "action": "{0}edit".format(self.base_url),
+        }
         render_kwargs.update(render_args)
 
         rendered = self.form.view.render(
-            self.form, errors=errors,
-            status=status, data=self.request.params, context=self.context,
-            **render_kwargs)
-        rendered = rendered.decode('utf-8')
-        res = {'status': status, 'errors': errors, 'rendered': rendered}
+            self.form,
+            errors=errors,
+            status=status,
+            data=self.request.params,
+            context=self.context,
+            **render_kwargs
+        )
+        rendered = rendered.decode("utf-8")
+        res = {"status": status, "errors": errors, "rendered": rendered}
 
         self.add_macros(res)
 
@@ -372,8 +391,7 @@ class FactoryView(BaseView, pyramidformview, ViewMixin):
         if "cancel" in self.request.params:
             redirect = self.cancel_add_redirect
         else:
-            status, errors = self.form.view.handle_form(
-                self.form, self.request.params)
+            status, errors = self.form.view.handle_form(self.form, self.request.params)
             self.form.submission.submit(self.form, self.context, self.request)
 
             if status == "completed":
@@ -382,7 +400,8 @@ class FactoryView(BaseView, pyramidformview, ViewMixin):
                 content_id = parent.generate_content_id(self.context.base_id)
                 noLongerProvides(self.context, ITemporaryObject)
                 self.request.registry.notify(
-                    TemporaryObjectFinalized(self.context, self.request))
+                    TemporaryObjectFinalized(self.context, self.request)
+                )
                 parent.rename_content(self.context.id, content_id)
                 self.request.registry.notify(ContentAdded(self.context, parent))
                 redirect = self.after_add_redirect
@@ -393,10 +412,10 @@ class FactoryView(BaseView, pyramidformview, ViewMixin):
             doc.appendChild(root)
             command = doc.createElement("command")
             command.setAttribute("selector", "")
-            command.setAttribute("name", 'redirect')
+            command.setAttribute("name", "redirect")
             command.setAttribute("value", "%s" % redirect)
             root.appendChild(command)
-            results = doc.toprettyxml(indent="  ").encode('utf-8')
+            results = doc.toprettyxml(indent="  ").encode("utf-8")
         else:
             results = pyramidformview.ajax_validate(self, "xml", True)
 
@@ -414,10 +433,9 @@ class EditView(EditBase, ViewMixin):
     @property
     def after_edit_redirect(self):
 
-        """ Where to go after successfull edit?"""
+        """Where to go after successfull edit?"""
 
-        url = self.request.registry.settings.get(
-            'pycms.after_edit_redirect', 'edit')
+        url = self.request.registry.settings.get("pycms.after_edit_redirect", "edit")
 
         if url[0] != "/":
             url = self.base_url + url
@@ -433,8 +451,7 @@ class EditView(EditBase, ViewMixin):
 
     def ajax_submit_and_validate(self):
 
-        status, errors = self.form.view.handle_form(
-            self.form, self.request.params)
+        status, errors = self.form.view.handle_form(self.form, self.request.params)
 
         self.context._changed = datetime.now()
 
@@ -447,7 +464,6 @@ class EditView(EditBase, ViewMixin):
 
 
 class DelView(DelBase, ViewMixin):
-
     @property
     def url(self):
         return "%sadmin" % super(DelBase, self).url
@@ -455,8 +471,7 @@ class DelView(DelBase, ViewMixin):
     @property
     def after_del_redirect(self):
 
-        url = self.request.registry.settings.get(
-            'pycms.after_del_redirect', 'admin')
+        url = self.request.registry.settings.get("pycms.after_del_redirect", "admin")
 
         if url[0] != "/":
             url = self.base_url + url
@@ -488,7 +503,7 @@ class AdminView(Base, ViewMixin):
 
     def remove_content(self, content_id=None):
 
-        content_id = content_id or self.request.params.get('content_id', None)
+        content_id = content_id or self.request.params.get("content_id", None)
 
         if content_id:
 
@@ -504,7 +519,7 @@ class AdminView(Base, ViewMixin):
 
     def order_content(self, order=None):
 
-        order = order or self.request.params.get('order', None)
+        order = order or self.request.params.get("order", None)
 
         if order:
 
@@ -514,8 +529,7 @@ class AdminView(Base, ViewMixin):
             # perhaps a OrderChanged event.. and only reindex relevant index
             children = self.context.list_content()
             for child in children:
-                self.request.registry.notify(
-                    ContentChanged(child))
+                self.request.registry.notify(ContentChanged(child))
 
             return True
         else:
@@ -523,10 +537,10 @@ class AdminView(Base, ViewMixin):
 
     def paste_content(self):
 
-        """ Ajax paste. This should recive a 'buffer' parameter """
+        """Ajax paste. This should recive a 'buffer' parameter"""
 
         actions = self.request.params.get("buffer", "").split("::")
-        result = {'status': 'ok'}
+        result = {"status": "ok"}
         mv = []
         cp = []
 
@@ -538,7 +552,7 @@ class AdminView(Base, ViewMixin):
                 else:
                     mv.append(path)
             except:
-                result['status'] = "error"
+                result["status"] = "error"
 
         if mv:
             self.move_content(objs=mv)
@@ -554,7 +568,7 @@ class AdminView(Base, ViewMixin):
         """
         copied = []
 
-        objs = objs or self.request.params.get('objs', "").split("::")
+        objs = objs or self.request.params.get("objs", "").split("::")
         for path in objs:
             obj = path_to_object(path, self.context.root, path_sep=".")
             if obj is not None:
@@ -563,15 +577,16 @@ class AdminView(Base, ViewMixin):
                 cpy.set_id(self.context.generate_content_id(obj.id))
                 self.context.add_content(cpy)
                 self.request.registry.notify(ContentAdded(cpy, self.context))
+                self.request.registry.notify(ContentCopied(cpy, obj))
                 copied.append(cpy.id)
 
         return copied
 
     def move_content(self, objs=[]):
 
-        """ Should receive a list of dotted paths """
+        """Should receive a list of dotted paths"""
 
-        objs = objs or self.request.params.get('objs', "").split("::")
+        objs = objs or self.request.params.get("objs", "").split("::")
 
         moved = []
 
@@ -582,19 +597,18 @@ class AdminView(Base, ViewMixin):
             if obj is not None:
                 content = obj.__parent__.remove_content(obj.id)
                 self.context.add_content(content)
-                self.request.registry.notify(
-                    ContentChanged(content))
+                self.request.registry.notify(ContentChanged(content))
                 moved.append(obj.id)
 
         return moved
 
     def rename_content(self, rename_map=None):
 
-        """ Rename all content ids based on rename map"""
+        """Rename all content ids based on rename map"""
 
         rename = rename_map or self.request.params
 
-        ret = {'status': 0, 'renamed': {}, 'errors': []}
+        ret = {"status": 0, "renamed": {}, "errors": []}
 
         for id_from in list(rename.keys()):
 
@@ -607,13 +621,12 @@ class AdminView(Base, ViewMixin):
 
                 try:
                     self.context.rename_content(id_from, id_to)
-                    ret['renamed'][id_from] = id_to
+                    ret["renamed"][id_from] = id_to
                     content = self.context.get(id_to, None)
-                    self.request.registry.notify(
-                        ContentChanged(content))
+                    self.request.registry.notify(ContentChanged(content))
                 except:
-                    ret['status'] = -1
-                    ret['errors'].append("%s already exists" % id_to)
+                    ret["status"] = -1
+                    ret["errors"].append("%s already exists" % id_to)
         return ret
 
     def list_content(self, **kwargs):
@@ -627,6 +640,6 @@ class AdminView(Base, ViewMixin):
         nature = natures.get_nature(nature_id)
 
         if nature:
-            return self.context.has_nature(nature['interface'])
+            return self.context.has_nature(nature["interface"])
         else:
             return False
