@@ -33,9 +33,9 @@ class PageView(ContentView):
 
         """ We may or may not use a complex layout... """
 
-        if not self.context.__data__['use_complex_layout']:
+        if not self.context._data_['use_complex_layout']:
 
-            return self.context.__data__['text']
+            return self.context._data_['text']
 
         html = []
 
@@ -228,7 +228,7 @@ class PageLayout(PageView):
              'title': '4 columns',
              'action': 'javascript: pycms.selectLayout("4col")',
              'permission': 'edit'
-             },                        
+             },
             ]
 
         subs = []
@@ -253,7 +253,7 @@ class PageLayout(PageView):
              'action': '',
              'permission': 'edit',
              'subs': subs
-             },            
+             },
             {'id': 'delete',
              'title': 'Delete',
              'action': 'javascript: pycms.deleteBlock()',

@@ -20,7 +20,7 @@ class Image(BaseContent):
     def _get_resized_image(self, key):
         """ retrieve a blob image """
         blob = getattr(self, key)
-        return {'name': self.__data__['data']['name'],
+        return {'name': self._data_['data']['name'],
                 'data': blob}
 
     @property
@@ -30,7 +30,7 @@ class Image(BaseContent):
         yet """
         key = '__cached_blob_thumbnail'
         if not hasattr(self, key):
-            self._store_resized_image(key, resize_image(self.__data__['data']))
+            self._store_resized_image(key, resize_image(self._data_['data']))
         return self._get_resized_image(key)
 
     def get_size(self, size=(800, 600)):
@@ -41,14 +41,14 @@ class Image(BaseContent):
         key = '_cached_blob_%s_%s' % size
         if not hasattr(self, key):
             self._store_resized_image(key, resize_image(
-                self.__data__['data'], size))
+                self._data_['data'], size))
         return self._get_resized_image(key)
 
     @property
     def base_id(self):
 
-        return self.__data__['data']['name']
+        return self._data_['data']['name']
 
     @property
     def title(self):
-        return self.__data__['name']
+        return self._data_['name']

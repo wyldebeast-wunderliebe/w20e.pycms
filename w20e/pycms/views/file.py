@@ -78,7 +78,7 @@ class FileView(object):
 
         # caching headers should not be set here hardcoded,
         # but it'll have to do for now..
-        return self._return_file_response(self.context.__data__['data'])
+        return self._return_file_response(self.context._data_['data'])
 
     def download_file(self):
         """ This assumes the file is stored as an attribute on the context """
@@ -89,10 +89,10 @@ class FileView(object):
         form_id = self.request.params['form_id']
         # check of the default form is what we expect it to be..
         # TODO: have some sort of default loading other forms on a context
-        if self.context.__form__(self.request).id != form_id:
+        if self.context._form_(self.request).id != form_id:
             raise Exception("Only downloads from default form is supported "
                             "at this moment.")
-        return self._return_file_response(self.context.__data__[file_field])
+        return self._return_file_response(self.context._data_[file_field])
 
 
 class FileAdminView(AdminView):

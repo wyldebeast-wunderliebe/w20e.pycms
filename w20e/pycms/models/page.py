@@ -22,9 +22,9 @@ class Page(Folder, BlockContainer):
 
         # TODO: handle page complex layout!
 
-        return "%s %s" % (self.title, self.__data__['text'] or "")
+        return "%s %s" % (self.title, self._data_['text'] or "")
 
     @property
     def title(self):
 
-        return self.__data__['name']
+        return self._data_['name']

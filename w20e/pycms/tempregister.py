@@ -27,6 +27,7 @@ def init(event):
         app._tempregister._timeout = timeout
         app._p_changed = 1
 
+    app._tempregister.cleanup()
 
 # event handlers
 #
@@ -81,7 +82,7 @@ class TempRegister(PersistentMapping):
             elif ITemporaryObject.providedBy(object):
 
                 # check timout..
-                if (now - object.changed).seconds > self._timeout:
+                if (now - object.changed).total_seconds() > self._timeout:
 
                     self.unindex_object(object)
                     object.__parent__.remove_content(object.id)

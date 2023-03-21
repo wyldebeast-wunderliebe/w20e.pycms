@@ -84,7 +84,7 @@ class ViewMixin(object):
     def keywords(self):
 
         try:
-            return ",".join((self.context.__data__["keywords"] or "").splitlines())
+            return ",".join((self.context._data_["keywords"] or "").splitlines())
         except:
             return ""
 
@@ -92,7 +92,7 @@ class ViewMixin(object):
     def description(self):
 
         try:
-            return self.context.__data__["description"] or ""
+            return self.context._data_["description"] or ""
         except:
             return ""
 
@@ -298,7 +298,7 @@ class FactoryView(BaseView, pyramidformview, ViewMixin):
             context
         ), "This object is not in a temporary state"
 
-        self.form = self.context.__form__(request)
+        self.form = self.context._form_(request)
         pyramidformview.__init__(
             self, self.context, request, self.form, retrieve_data=True
         )

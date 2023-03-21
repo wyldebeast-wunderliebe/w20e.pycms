@@ -101,7 +101,7 @@ def appmaker(config, zodb_root=None):
         root_clazz = class_from_string(root_clazz_name)
 
         app_root = root_clazz("root")
-        app_root.__data__['name'] = root_title
+        app_root._data_['name'] = root_title
         app_root.__parent__ = app_root.__name__ = None
 
         setattr(app_root, 'pycms_version', version)
@@ -121,7 +121,7 @@ def appmaker(config, zodb_root=None):
     IMAGES_ID = 'images'
     if not IMAGES_ID in app_root:
         images = ImageFolder(IMAGES_ID)
-        images.__data__['name'] = 'Images'
+        images._data_['name'] = 'Images'
         app_root.add_content(images)
         transaction.commit()
 

@@ -67,7 +67,7 @@ class ImageView(object):
 
     def __call__(self):
 
-        return self._return_file_response(self.context.__data__['data'])
+        return self._return_file_response(self.context._data_['data'])
 
     def thumbnail(self):
 

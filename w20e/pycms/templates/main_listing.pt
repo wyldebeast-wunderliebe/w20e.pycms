@@ -25,20 +25,20 @@
   	        <tal:repeat repeat="page view.list_content()">
 	            <tr>
 		            <td>
-                  <a href="#" tal:attributes="href page.id" 
-		                 tal:content="page.__data__['name']">
+                  <a href="#" tal:attributes="href page.id"
+		                 tal:content="page._data_['name']">
 		                content id
 		              </a>
 		            </td>
-		            <td tal:content="page.__data__['status']"></td>
+		            <td tal:content="page._data_['status']"></td>
 	            </tr>
 	          </tal:repeat>
           </tbody>
 	      </table>
       </div>
-      
+
     </div>
-    
+
   </div>
 </body>
 </html>

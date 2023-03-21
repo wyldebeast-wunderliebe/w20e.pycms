@@ -260,12 +260,12 @@ class SomethingSimple(BaseContent):
 
     def base_id(self):
 
-        return self.__data__['title']
+        return self._data_['title']
 
     @property
     def title(self):
 
-        return self.__data__['title']
+        return self._data_['title']
 
 You can configure how your form for editing and adding is
 found. Default is that PyCMS looks for a file in <your package
@@ -277,8 +277,8 @@ If you want something completely different, configure an adapter for your
 content type that provides a form factory:
 
   <adapter
-      factory=".your.Factory" 
-      for=".your.content.Type" 
+      factory=".your.Factory"
+      for=".your.content.Type"
       provides="w20e.forms.interfaces.IFormFactory" />
 
 And make sure it actually implements IFormFactory and can create a

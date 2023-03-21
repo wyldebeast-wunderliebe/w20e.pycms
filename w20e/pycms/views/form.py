@@ -12,7 +12,7 @@ class FormView(BaseView, pyramidformview):
 
         BaseView.__init__(self, context, request)
 
-        form = context.__data__['form']['data']
+        form = context._data_['form']['data']
 
         pyramidformview.__init__(self, context, request, form)
 
@@ -25,20 +25,20 @@ class FormView(BaseView, pyramidformview):
 
     @property
     def header(self):
-        return self.context.__data__['header_text']
+        return self.context._data_['header_text']
 
     @property
     def footer(self):
-        return self.context.__data__['footer_text']    
+        return self.context._data_['footer_text']
 
 
 class FormAdminView(AdminView):
 
     def download_xml(self):
 
-        value = self.context.__data__['form']
+        value = self.context._data_['form']
 
-        response = Response(body=value['data'], 
+        response = Response(body=value['data'],
                             content_type="text/xml")
 
         # set response caching headers..

@@ -9,9 +9,9 @@ class File(BaseContent):
     @property
     def base_id(self):
 
-        return self.__data__['data']['name']
+        return self._data_['data']['name']
 
     @property
     def title(self):
 
-        return self.__data__['name']
+        return self._data_['name']
