@@ -40,31 +40,25 @@ import copy
 
 
 class ViewMixin(object):
-
     is_edit = False
 
     def add_macros(self, data):
-
         """Add macros to rendering"""
 
         if isinstance(data, dict):
-
             macros = self.request.registry.getUtility(IMacros)
 
             for macro in macros.list_macros():
-
                 data[macro] = get_renderer(
                     macros.get_macro(macro, self.context)
                 ).implementation()
 
     @property
     def viewname(self):
-
         return self.request.path.split("/")[-1]
 
     @property
     def admin_title(self):
-
         """title to be used in admin interface"""
 
         reg = self.request.registry
@@ -73,7 +67,6 @@ class ViewMixin(object):
 
     @property
     def brand_title(self):
-
         """brand title to be used in admin interface"""
 
         reg = self.request.registry
@@ -82,7 +75,6 @@ class ViewMixin(object):
 
     @property
     def keywords(self):
-
         try:
             return ",".join((self.context._data_["keywords"] or "").splitlines())
         except:
@@ -90,7 +82,6 @@ class ViewMixin(object):
 
     @property
     def description(self):
-
         try:
             return self.context._data_["description"] or ""
         except:
@@ -112,7 +103,6 @@ class ViewMixin(object):
 
     @property
     def perspectives(self):
-
         reg = self.request.registry
 
         actions = reg.getUtility(IActions)
@@ -128,7 +118,6 @@ class ViewMixin(object):
 
     @property
     def siteactions(self):
-
         reg = self.request.registry
 
         util = reg.getUtility(IActions)
@@ -144,7 +133,6 @@ class ViewMixin(object):
 
     @property
     def contentactions(self):
-
         reg = self.request.registry
 
         actions = reg.getUtility(IActions)
@@ -175,38 +163,31 @@ class ViewMixin(object):
 
     @property
     def base_url(self):
-
         return resource_url(self.context, self.request)
 
     def object_url(self, obj):
-
         """return URL for the given object"""
 
         return resource_url(obj, self.request)
 
     @property
     def can_edit(self):
-
         return has_permission("edit", self.context, self.request)
 
     def user_has_permission(self, permission):
-
         return has_permission(permission, self.context, self.request)
 
     @property
     def user(self):
-
         # return authenticated_userid(self.request) or ""
         return self.request.authenticated_userid
 
     @property
     def logged_in(self):
-
         # return authenticated_userid(self.request) or None
         return self.user or None
 
     def render_viewlet(self, name, **kwargs):
-
         """Render a viewlet"""
 
         provides = [IViewClassifier] + list(
@@ -220,7 +201,6 @@ class ViewMixin(object):
         return "".join(view(self.context, self.request).app_iter)
 
     def has_nature(self, nature_id):
-
         natures = self.request.registry.getUtility(INatures)
 
         nature = natures.get_nature(nature_id)
@@ -233,7 +213,6 @@ class ViewMixin(object):
 
 class BaseView(BaseBase, ViewMixin):
     def __call__(self):
-
         res = BaseBase.__call__(self)
         self.add_macros(res)
 
@@ -242,7 +221,6 @@ class BaseView(BaseBase, ViewMixin):
 
 class ContentView(Base, ViewMixin):
     def __call__(self):
-
         res = Base.__call__(self)
         self.add_macros(res)
 
@@ -259,7 +237,6 @@ class AddView(BaseView):
     """create temporary content"""
 
     def __call__(self):
-
         ctype = self.request.params.get("ctype", None)
 
         clazz = Registry.get(ctype)
@@ -289,7 +266,6 @@ class FactoryView(BaseView, pyramidformview, ViewMixin):
     is_edit = True
 
     def __init__(self, context, request):
-
         BaseView.__init__(self, context, request)
 
         self.context = context
@@ -309,7 +285,6 @@ class FactoryView(BaseView, pyramidformview, ViewMixin):
 
     @property
     def after_add_redirect(self):
-
         url = self.request.registry.settings.get("pycms.after_add_redirect", "admin")
 
         if url[0] != "/":
@@ -319,7 +294,6 @@ class FactoryView(BaseView, pyramidformview, ViewMixin):
 
     @property
     def cancel_add_redirect(self):
-
         url = self.request.registry.settings.get("pycms.cancel_add_redirect", "admin")
 
         if url[0] != "/":
@@ -329,7 +303,6 @@ class FactoryView(BaseView, pyramidformview, ViewMixin):
         return url
 
     def __call__(self):
-
         errors = {}
 
         params = self.request.params
@@ -385,7 +358,6 @@ class FactoryView(BaseView, pyramidformview, ViewMixin):
         return res
 
     def ajax_submit_and_validate(self):
-
         redirect = None
 
         if "cancel" in self.request.params:
@@ -423,7 +395,6 @@ class FactoryView(BaseView, pyramidformview, ViewMixin):
 
 
 class EditView(EditBase, ViewMixin):
-
     is_edit = True
 
     @property
@@ -432,7 +403,6 @@ class EditView(EditBase, ViewMixin):
 
     @property
     def after_edit_redirect(self):
-
         """Where to go after successfull edit?"""
 
         url = self.request.registry.settings.get("pycms.after_edit_redirect", "edit")
@@ -443,14 +413,12 @@ class EditView(EditBase, ViewMixin):
         return url
 
     def __call__(self):
-
         res = EditBase.__call__(self)
         self.add_macros(res)
 
         return res
 
     def ajax_submit_and_validate(self):
-
         status, errors = self.form.view.handle_form(self.form, self.request.params)
 
         self.context._changed = datetime.now()
@@ -470,7 +438,6 @@ class DelView(DelBase, ViewMixin):
 
     @property
     def after_del_redirect(self):
-
         url = self.request.registry.settings.get("pycms.after_del_redirect", "admin")
 
         if url[0] != "/":
@@ -483,7 +450,6 @@ class DelView(DelBase, ViewMixin):
         return "%sadmin" % super(DelBase, self).parent_url
 
     def __call__(self):
-
         res = DelBase.__call__(self)
         self.add_macros(res)
 
@@ -491,22 +457,18 @@ class DelView(DelBase, ViewMixin):
 
 
 class AdminView(Base, ViewMixin):
-
     is_edit = True
 
     def __call__(self):
-
         res = Base.__call__(self)
         self.add_macros(res)
 
         return res
 
     def remove_content(self, content_id=None):
-
         content_id = content_id or self.request.params.get("content_id", None)
 
         if content_id:
-
             content = self.context.get(content_id, None)
 
             self.context.remove_content(content_id)
@@ -514,15 +476,12 @@ class AdminView(Base, ViewMixin):
             return True
 
         else:
-
             return False
 
     def order_content(self, order=None):
-
         order = order or self.request.params.get("order", None)
 
         if order:
-
             self.context.set_order(order.split(","))
             # reindex all subobjects, since position_in_parent has changed
             # TODO: can be done more efficient: only order has changed, so
@@ -536,7 +495,6 @@ class AdminView(Base, ViewMixin):
             return False
 
     def paste_content(self):
-
         """Ajax paste. This should recive a 'buffer' parameter"""
 
         actions = self.request.params.get("buffer", "").split("::")
@@ -583,7 +541,6 @@ class AdminView(Base, ViewMixin):
         return copied
 
     def move_content(self, objs=[]):
-
         """Should receive a list of dotted paths"""
 
         objs = objs or self.request.params.get("objs", "").split("::")
@@ -591,7 +548,6 @@ class AdminView(Base, ViewMixin):
         moved = []
 
         for path in objs:
-
             obj = path_to_object(path, self.context.root, path_sep=".")
 
             if obj is not None:
@@ -603,7 +559,6 @@ class AdminView(Base, ViewMixin):
         return moved
 
     def rename_content(self, rename_map=None):
-
         """Rename all content ids based on rename map"""
 
         rename = rename_map or self.request.params
@@ -611,12 +566,10 @@ class AdminView(Base, ViewMixin):
         ret = {"status": 0, "renamed": {}, "errors": []}
 
         for id_from in list(rename.keys()):
-
             if id_from == rename[id_from]:
                 continue
 
             if id_from in self.context:
-
                 id_to = rename[id_from]
 
                 try:
@@ -630,11 +583,9 @@ class AdminView(Base, ViewMixin):
         return ret
 
     def list_content(self, **kwargs):
-
         return super(AdminView, self).list_content(**kwargs)
 
     def has_nature(self, nature_id):
-
         natures = self.request.registry.getUtility(INatures)
 
         nature = natures.get_nature(nature_id)

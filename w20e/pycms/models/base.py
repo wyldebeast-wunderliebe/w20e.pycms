@@ -45,11 +45,9 @@ class XMLFormFactory(object):
     context object"""
 
     def __init__(self, context, request):
-
         self.context = context
 
     def createForm(self, form_name=None):
-
         form_path = os.path.join(
             os.path.dirname(inspect.getfile(self.context.__class__)),
             "..",
@@ -66,7 +64,6 @@ class SiteFormFactory(XMLFormFactory):
     """Site uses page form"""
 
     def createForm(self):
-
         return super(SiteFormFactory, self).createForm(form_name="page")
 
 
@@ -80,14 +77,12 @@ class PyCMSMixin(object):
 
     @property
     def __acl__(self):
-
         try:
             return ISecure(self).__acl__
         except:
             return []
 
     def __deepcopy__(self, memo):
-
         # note that we blacklist the parent or else the deepcopy
         # recurively copies the parent as well, which is probably
         # wrong and takes ages to complete. We fix the parent paths
@@ -158,7 +153,6 @@ class PyCMSMixin(object):
         return position
 
     def _form_(self, request):
-
         """Override for hitman form property, so as to enable
         form overrides and modifiers"""
 
@@ -169,7 +163,6 @@ class PyCMSMixin(object):
             form = factory.createForm()
 
             for modifier in subscribers([self], IFormModifier):
-
                 modifier.modify(form)
 
             self._v_form = form
@@ -177,38 +170,32 @@ class PyCMSMixin(object):
             return self._v_form
 
     def add_nature(self, nature):
-
         alsoProvides(self, nature)
 
         if hasattr(self, "_v_form"):
             del self._v_form
 
     def has_nature(self, nature):
-
         return nature in self.list_natures()
 
     def remove_nature(self, nature):
-
         noLongerProvides(self, nature)
 
         if hasattr(self, "_v_form"):
             del self._v_form
 
     def set_natures(self, *natures):
-
         directlyProvides(self, *natures)
 
         if hasattr(self, "_v_form"):
             del self._v_form
 
     def list_natures(self):
-
         return [i for i in providedBy(self) if i.extends(INature)]
 
     @property
     def natures(self):
         def to_str(iface):
-
             return "%s.%s" % (iface.__module__, iface.__name__)
 
         return [to_str(nature) for nature in self.list_natures()]
@@ -243,7 +230,6 @@ class PyCMSMixin(object):
 
         # Handle dates
         for key, val in list(data.items()):
-
             if type(val) in [datetime, date]:
                 data[key] = val.isoformat()
 
@@ -279,7 +265,6 @@ class BaseFolder(PyCMSMixin, HitmanBaseFolder):
         contained_items = []
 
         for item in items:
-
             # candidate for refactoring.. some kind of generic 'brain' needed
             attributes = ["uuid", "id", "title", "content_type"]
             props = {"ctype": item.content_type}
@@ -308,7 +293,6 @@ class BaseFolder(PyCMSMixin, HitmanBaseFolder):
         return result
 
     def allowed_content_types(self, request):
-
         ctypes = request.registry.getUtility(ICTypes)
 
         return ctypes.get_ctype_info(self.content_type).get("subtypes", "").split(",")
