@@ -1,4 +1,3 @@
-from __future__ import absolute_import
 from builtins import object
 from repoze.catalog.catalog import Catalog as RepozeCatalog
 from repoze.catalog.indexes.field import CatalogFieldIndex
@@ -133,19 +132,23 @@ class Catalog(object):
         else:
             return res
 
-    def index_object(self, object):
+    def index_object(self, obj):
+
+        if not obj.id:
+            LOGGER.exception("Cannot index object without ID!")
+            return
 
         sm = getSiteManager()
-        sm.notify(ObjectStartIndex(object))
+        sm.notify(ObjectStartIndex(obj))
 
-        path = object_to_path(object)
-        uuid = object.uuid
+        path = object_to_path(obj)
+        uuid = obj.uuid
 
         docid = self._document_map.add(uuid)
         self._document_map.add_metadata(docid, {'path': path})
 
         try:
-            self.catalog.index_doc(docid, object)
+            self.catalog.index_doc(docid, obj)
             self._p_changed = 1
             self.catalog._p_changed = 1
             self._document_map._p_changed = 1
@@ -153,27 +156,27 @@ class Catalog(object):
         except:
             LOGGER.exception("Could not index object!")
 
-    def reindex_object(self, object):
-        if ITemporaryObject.providedBy(object):
+    def reindex_object(self, obj):
+        if ITemporaryObject.providedBy(obj):
             return
 
         sm = getSiteManager()
-        sm.notify(ObjectStartIndex(object))
+        sm.notify(ObjectStartIndex(obj))
 
-        uuid = object.uuid
+        uuid = obj.uuid
 
         docid = self._document_map.docid_for_address(uuid)
         if not docid:
-            self.index_object(object)
+            self.index_object(obj)
             docid = self._document_map.docid_for_address(uuid)
 
         # update the path of the object in the documentmap since the
         # object might have been renamed / moved
-        path = object_to_path(object)
+        path = object_to_path(obj)
         self._document_map.add_metadata(docid, {'path': path})
 
         try:
-            self.catalog.reindex_doc(docid, object)
+            self.catalog.reindex_doc(docid, obj)
             self._p_changed = 1
             self.catalog._p_changed = 1
             self._document_map._p_changed = 1
@@ -181,9 +184,9 @@ class Catalog(object):
         except:
             LOGGER.exception("Could not index object!")
 
-    def unindex_object(self, object):
+    def unindex_object(self, obj):
 
-        uuid = object.uuid
+        uuid = obj.uuid
 
         docid = self._document_map.docid_for_address(uuid)
         if docid:
