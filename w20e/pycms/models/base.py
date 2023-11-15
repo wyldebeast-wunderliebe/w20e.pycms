@@ -1,5 +1,5 @@
-from builtins import str
-from builtins import object
+
+
 import os
 import inspect
 from uuid import uuid1

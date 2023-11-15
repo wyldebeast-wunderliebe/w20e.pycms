@@ -1,6 +1,6 @@
-from future import standard_library
-standard_library.install_aliases()
-from builtins import str
+
+
+
 import sys
 import os
 from PIL import Image as PILImage

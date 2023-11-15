@@ -1,5 +1,5 @@
-from builtins import str
-from builtins import object
+
+
 import hashlib
 from pyramid.threadlocal import get_current_registry
 from zope.interface import Interface, Attribute, implementer, implementer

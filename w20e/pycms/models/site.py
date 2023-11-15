@@ -1,4 +1,3 @@
-from __future__ import absolute_import
 from .page import Page
 from zope.interface import implementer_only, implementer
 from w20e.hitman.models.base import IFolder

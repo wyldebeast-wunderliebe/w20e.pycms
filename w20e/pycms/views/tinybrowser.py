@@ -1,4 +1,4 @@
-from builtins import object
+
 from pyramid.url import resource_url
 from ..models.image import Image
 from w20e.hitman.models.exceptions import UniqueConstraint

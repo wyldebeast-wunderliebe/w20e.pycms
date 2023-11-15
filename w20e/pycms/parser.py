@@ -1,5 +1,4 @@
-from __future__ import absolute_import
-from builtins import object
+
 from .blocks.base import *
 from .blocks.text import TextBlock
 from .blocks.snippet import SnippetBlock

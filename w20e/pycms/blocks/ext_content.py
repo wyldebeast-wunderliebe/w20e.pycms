@@ -1,6 +1,5 @@
-from __future__ import absolute_import
-from future import standard_library
-standard_library.install_aliases()
+
+
 from .base import Block, BlockView
 import urllib.request, urllib.parse, urllib.error
 from lxml.html import fromstring, tostring

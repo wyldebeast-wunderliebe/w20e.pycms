@@ -1,11 +1,13 @@
+from datetime import date, datetime
+
+from BTrees.OOBTree import OOBTree  # type: ignore
 from pyramid.renderers import JSON
-from ZODB.blob import Blob
 from w20e.forms.submission.blob import TheBlob
-from datetime import datetime, date
-from BTrees.OOBTree import OOBTree
+from ZODB.blob import Blob
+
 
 def register_json_adapters(config):
-    """ register custom JSON serializers """
+    """register custom JSON serializers"""
 
     json_renderer = JSON()
 
@@ -19,7 +21,7 @@ def register_json_adapters(config):
         return obj.isoformat() if hasattr(obj, 'isoformat') else obj
 
     def oobtree_adapter(obj, request):
-        return dict([(k,v) for k,v in list(obj.items())])
+        return dict([(k, v) for k, v in list(obj.items())])
 
     json_renderer.add_adapter(Blob, blob_adapter)
     json_renderer.add_adapter(TheBlob, theblob_adapter)
@@ -28,4 +30,3 @@ def register_json_adapters(config):
     json_renderer.add_adapter(OOBTree, oobtree_adapter)
 
     config.add_renderer('json', json_renderer)
-

@@ -1,5 +1,5 @@
-from builtins import str
-from builtins import object
+
+
 import hashlib
 import mimetypes
 

@@ -1,4 +1,4 @@
-from builtins import object
+
 class TemplatesJSView(object):
 
     def __init__(self, context, request):

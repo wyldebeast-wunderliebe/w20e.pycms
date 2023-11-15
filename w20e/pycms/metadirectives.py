@@ -1,4 +1,3 @@
-from __future__ import absolute_import
 import pkg_resources
 from zope.interface import Interface
 from zope.schema import TextLine

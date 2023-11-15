@@ -1,17 +1,22 @@
 import functools
 
-from past.builtins import cmp
-from builtins import object
+
 from zope.interface import Interface
 from pyramid.renderers import render
 
 
 class Action(object):
-
-    def __init__(self, name, target, label=None, icon=None,
-                 ctype=[], permission="", condition=True,
-                 template="w20e.pycms:templates/action.pt"):
-
+    def __init__(
+        self,
+        name,
+        target,
+        label=None,
+        icon=None,
+        ctype=[],
+        permission="",
+        condition=True,
+        template="w20e.pycms:templates/action.pt",
+    ):
         self.name = name
         self.label = label or name
         self.icon = icon
@@ -22,30 +27,38 @@ class Action(object):
         self.template = template
 
     def render(self, request, context, view=None):
-
-        return render(self.template,
-                      {'action': self, 'context': context,
-                       'view': view, 'request': request}, request=request)
+        return render(
+            self.template,
+            {"action": self, "context": context, "view": view, "request": request},
+            request=request,
+        )
 
 
 class IActions(Interface):
 
-    """ Marker class """
+    """Marker class"""
 
 
 class Actions(object):
 
-    """ Object actions tool """
+    """Object actions tool"""
 
     def __init__(self):
-
         self.order = {}
         self.registry = {}
 
-    def register_action(self, name, target, category, label=None, icon=None,
-                        ctype=[], permission="", condition=True,
-                        template="w20e.pycms:templates/action.pt"):
-
+    def register_action(
+        self,
+        name,
+        target,
+        category,
+        label=None,
+        icon=None,
+        ctype=[],
+        permission="",
+        condition=True,
+        template="w20e.pycms:templates/action.pt",
+    ):
         if not category in self.registry:
             self.registry[category] = {}
             self.order[category] = []
@@ -53,23 +66,23 @@ class Actions(object):
         if ctype:
             ctype = [typ.strip() for typ in ctype.split(",")]
 
-        self.registry[category][name] = Action(name,
-                                               target,
-                                               label=label,
-                                               icon=icon,
-                                               ctype=ctype,
-                                               permission=permission,
-                                               condition=condition,
-                                               template=template)
+        self.registry[category][name] = Action(
+            name,
+            target,
+            label=label,
+            icon=icon,
+            ctype=ctype,
+            permission=permission,
+            condition=condition,
+            template=template,
+        )
         self.order[category].append(name)
 
     def get_action(self, category, name):
-
         return self.registry.get(category, {}).get(name, None)
 
     def get_actions(self, category, ctype=None):
-
-        """ Return actions that actually have a target..."""
+        """Return actions that actually have a target..."""
 
         actions = list(self.registry.get(category, {}).values())
 
@@ -79,9 +92,8 @@ class Actions(object):
             actions = [a for a in actions if (ctype in a.ctype or not a.ctype)]
 
         def sort_actions(x, y):
+            return self.order[category].index(x.name) - self.order[category].index(
+                y.name
+            )
 
-            return cmp(self.order[category].index(x.name),
-                       self.order[category].index(y.name))
-
-        # return sorted(actions, sort_actions)
         return sorted(actions, key=functools.cmp_to_key(sort_actions))

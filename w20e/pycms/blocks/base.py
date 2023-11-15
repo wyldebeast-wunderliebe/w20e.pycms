@@ -1,4 +1,4 @@
-from builtins import object
+
 from pyramid.view import render_view
 
 

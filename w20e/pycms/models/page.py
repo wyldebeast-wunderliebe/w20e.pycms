@@ -1,4 +1,3 @@
-from __future__ import absolute_import
 from zope.interface import implementer
 from .folder import Folder
 from ..blocks.base import BlockContainer

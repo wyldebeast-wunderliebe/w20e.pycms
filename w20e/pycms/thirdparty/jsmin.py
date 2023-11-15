@@ -30,9 +30,9 @@
 # SOFTWARE.
 # */
 
-from future import standard_library
-standard_library.install_aliases()
-from builtins import object
+
+
+
 from io import StringIO
 
 def jsmin(js):

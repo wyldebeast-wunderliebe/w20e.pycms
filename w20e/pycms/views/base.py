@@ -1,5 +1,5 @@
-from builtins import str
-from builtins import object
+
+
 import uuid
 from zope.interface import providedBy
 from zope.interface import alsoProvides

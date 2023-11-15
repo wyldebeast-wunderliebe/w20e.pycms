@@ -1,4 +1,4 @@
-from builtins import object
+
 from ..interfaces import ICSSRegistry
 import cssmin
 

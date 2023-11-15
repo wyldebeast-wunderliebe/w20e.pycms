@@ -1,4 +1,3 @@
-from __future__ import absolute_import
 
 from .base import ContentView, EditView
 from ..models.image import Image
