@@ -1,8 +1,9 @@
-
 import os
 import sys
 import transaction
+from functools import reduce
 from zope.component import getSiteManager
+from importlib.metadata import version, PackageNotFoundError, entry_points
 from pyramid.config import Configurator
 from pyramid_zodbconn import get_connection
 from pyramid.session import SignedCookieSessionFactory as SessionFactory
@@ -13,8 +14,6 @@ from w20e.forms.pyramid.file import PyramidFile
 from .models.imagefolder import ImageFolder
 from .json_adapters import register_json_adapters
 from .migration import migrate
-import pkg_resources
-from functools import reduce
 from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid_authstack import AuthenticationStackPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
@@ -22,38 +21,38 @@ from .security import groupfinder
 from pyramid_jwt.policy import JWTAuthenticationPolicy
 
 
+# Fetch version dynamically
+try:
+    __version__ = version("w20e.pycms")
+except PackageNotFoundError:
+    __version__ = "unknown"
+
+# Register Pyramid form components
 Registry.register_renderable("file", PyramidFile)
 
 tpl_path = os.path.join(os.path.dirname(__file__), "templates/w20e_forms_overrides/")
 Registry.add_html_template_path(tpl_path)
 Registry.add_html_template_path("./bootstrap")
 
-here = os.path.abspath(os.path.dirname(__file__))
-version = pkg_resources.get_distribution("w20e.pycms").version
-
 
 def class_from_string(clazz_name):
-    """We'll need to follow the dotted path, and find the module that
-    starts with some part, and provides the rest of the path..."""
-
+    """Resolve a class from its full dotted string path."""
     clazz_path = clazz_name.split(".")
 
     if len(clazz_path) == 1:
-        mod_name = __name__
-        clazz = clazz_name
-    else:
-        if ".".join(clazz_path[:-1]) in sys.modules:
-            mod_name = ".".join(clazz_path[:-1])
-            clazz = clazz_path[-1]
-        else:
-            mod_name = ".".join(clazz_path[:-2])
-            clazz = ".".join(clazz_path[-2:])
-            __import__(".".join(clazz_path[:-1]))
+        return getattr(sys.modules[__name__], clazz_name)
 
-    return reduce(getattr, clazz.split("."), sys.modules[mod_name])
+    module_name = ".".join(clazz_path[:-1])
+    clazz = clazz_path[-1]
+
+    if module_name not in sys.modules:
+        __import__(module_name)
+
+    return reduce(getattr, clazz.split("."), sys.modules[module_name])
 
 
-class InitRequest(object):
+class InitRequest:
+    """Request mock for initialization purposes."""
     registry = None
     cb = None
 
@@ -62,21 +61,16 @@ class InitRequest(object):
 
 
 def update(app):
-    """Any updates can go here..."""
-
+    """Perform any required migrations."""
     curr_version = getattr(app, "pycms_version", "unknown")
-    tgt_version = version
 
-    if curr_version != tgt_version:
-        migrated = migrate(curr_version, tgt_version)
-
-        if migrated:
-            setattr(app, "pycms_version", tgt_version)
+    if curr_version != __version__:
+        if migrate(curr_version, __version__):
+            setattr(app, "pycms_version", __version__)
 
 
 def appmaker(config, zodb_root=None):
-    """Create the application. Call this method from your main Pyramid
-    setup"""
+    """Create the application and initialize if needed."""
     initreq = InitRequest()
     initreq.registry = config.registry
 
@@ -84,103 +78,93 @@ def appmaker(config, zodb_root=None):
         conn = get_connection(initreq)
         zodb_root = conn.root()
 
-    if not "app_root" in zodb_root:
-        root_clazz_name = config.registry.settings.get(
+    if "app_root" not in zodb_root:
+        root_class_name = config.registry.settings.get(
             "pycms.rootclass", "w20e.pycms.models.site.Site"
         )
         root_title = config.registry.settings.get(
             "pycms.roottitle", "Yet another w20e.pycms app!"
         )
 
-        root_clazz = class_from_string(root_clazz_name)
-
-        app_root = root_clazz("root")
+        root_class = class_from_string(root_class_name)
+        app_root = root_class("root")
         app_root._data_["name"] = root_title
         app_root.__parent__ = app_root.__name__ = None
 
-        setattr(app_root, "pycms_version", version)
-
+        setattr(app_root, "pycms_version", __version__)
         zodb_root["app_root"] = app_root
-
         transaction.commit()
 
     app_root = zodb_root["app_root"]
-
-    # Do necessary updates
-    update(zodb_root["app_root"])
+    update(app_root)
     initreq.registry.notify(AppRootReady(app_root, config.registry))
     transaction.commit()
 
-    #  create a globale images folder
-    IMAGES_ID = "images"
-    if not IMAGES_ID in app_root:
-        images = ImageFolder(IMAGES_ID)
+    # Create a global images folder if not present
+    if "images" not in app_root:
+        images = ImageFolder("images")
         images._data_["name"] = "Images"
         app_root.add_content(images)
         transaction.commit()
 
-    return zodb_root["app_root"]
+    return app_root
 
 
 def root_factory(request):
-    conn = get_connection(request)
-
-    return conn.root()["app_root"]
+    """Return the application root."""
+    return get_connection(request).root()["app_root"]
 
 
 def make_pycms_app(app, *includes, **settings):
-    """Create a w20e.pycms application and return it. The app is a
-    router instance as created by Configurator.make_wsgi_app."""
+    """Create and configure the Pyramid app."""
+    
+    # Use settings for secret keys instead of hardcoded values
+    session_secret = settings.get("pycms.session_secret", "default_session_secret")
+    auth_cookie_secret = settings.get("pycms.auth_cookie_secret", "default_auth_secret")
+    jwt_secret = settings.get("pycms.jwt_secret", "default_jwt_secret")
+
     config = Configurator(
         package=app,
         root_factory=root_factory,
-        session_factory=SessionFactory("w20e_pycms_secret"),
+        session_factory=SessionFactory(session_secret),  # Now configurable
         settings=settings,
     )
 
-    # securiy policies
+    # Authentication setup
     auth_policy = AuthenticationStackPolicy()
+
     auth_policy.add_policy(
-        "cookie", AuthTktAuthenticationPolicy(secret="evilsecret", callback=groupfinder)
+        "cookie",
+        AuthTktAuthenticationPolicy(
+            secret=auth_cookie_secret,  # Now configurable
+            callback=groupfinder
+        ),
     )
 
-    # Enable JWT authentication.
     config.include("pyramid_jwt")
-
-    jwt_policy = JWTAuthenticationPolicy("evilsecret2", callback=groupfinder)
+    jwt_policy = JWTAuthenticationPolicy(
+        jwt_secret,  # Now configurable
+        callback=groupfinder
+    )
 
     auth_policy.add_policy("token", jwt_policy)
-
-    def request_create_token(
-        request, principal, expiration=None, audience=None, **claims
-    ):
-        return jwt_policy.create_token(principal, expiration, audience, **claims)
-
-    def request_claims(request):
-        return jwt_policy.get_claims(request)
-
-    config.add_request_method(request_create_token, "create_jwt_token")
-    config.add_request_method(request_claims, "jwt_claims", reify=True)
+    config.add_request_method(jwt_policy.create_token, "create_jwt_token")
+    config.add_request_method(jwt_policy.get_claims, "jwt_claims", reify=True)
 
     config.set_authentication_policy(auth_policy)
-    auth_policy = ACLAuthorizationPolicy()
-    config.set_authorization_policy(auth_policy)
+    config.set_authorization_policy(ACLAuthorizationPolicy())
 
-    # enable Chameleon rendering
-    #
+    # Include Chameleon rendering
     config.include("pyramid_chameleon")
 
+    # Register JSON adapters
     register_json_adapters(config)
 
-    def get_registry(*args):
-        return config.registry
+    # Hook up registry
+    getSiteManager.sethook(lambda *args: config.registry)
 
-    # hook up registry
-    #
-    getSiteManager.sethook(get_registry)
-
+    # Load ZCML if required
     config.include(pyramid_zcml)
-
     config.load_zcml("w20e.pycms:bootstrap.zcml")
 
     config.scan("w20e.pycms")
@@ -188,24 +172,27 @@ def make_pycms_app(app, *includes, **settings):
     config.load_zcml("configure.zcml")
     config.commit()
 
-    # Other includes
-    #
+    # Include additional modules
     for include in includes:
         config.include(include)
 
-    # load pycms_prerequisites
-    for ep in pkg_resources.iter_entry_points(group="pycms_prerequisite_plugin"):
-        fun = ep.load()
-        config.include(fun)
-        config.commit()
+    # Load prerequisite plugins using `importlib.metadata`
+    try:
+        for ep in entry_points(group="pycms_prerequisite_plugin"):
+            config.include(ep.load())
+            config.commit()
+    except Exception as e:
+        print(f"Failed to load prerequisite plugins: {e}")
 
-    # load plugin entry points of the pycms_plugin persuasion
-    for ep in pkg_resources.iter_entry_points(group="pycms_plugin"):
-        fun = ep.load()
-        config.include(fun)
-        config.commit()
-    config.commit()
+    # Load core plugins using `importlib.metadata`
+    try:
+        for ep in entry_points(group="pycms_plugin"):
+            config.include(ep.load())
+            config.commit()
+    except Exception as e:
+        print(f"Failed to load core plugins: {e}")
 
     appmaker(config)
 
     return config.make_wsgi_app()
+

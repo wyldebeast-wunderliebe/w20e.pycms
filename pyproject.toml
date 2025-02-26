@@ -1,0 +1,61 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "w20e.pycms"
+version = "0.1.0"
+description = "Pyramid CMS"
+readme = "README.txt"
+authors = [
+    { name = "D.A.Dokter", email = "dokter@w20e.com" },
+    { name = "H.Bouma", email = "bouma@w20e.com" }
+]
+license = { text = "beer-ware" }
+keywords = ["cms", "pyramid"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Framework :: Pyramid",
+    "Intended Audience :: Developers",
+    "License :: Freely Distributable",
+    "Programming Language :: Python",
+    "Topic :: Internet :: WWW/HTTP :: Site Management",
+    "Topic :: Software Development :: Libraries :: Application Frameworks"
+]
+dependencies = [
+    "setuptools",
+    "pyramid",
+    "pyramid_chameleon",
+    "pyramid_zodbconn",
+    "pyramid_retry",
+    "pyramid_tm",
+    "pyramid_zcml",
+    "pyramid_debugtoolbar",
+    "pyramid_mailer",
+    "ZODB",
+    "repoze.catalog",
+    "cssmin",
+    "w20e.hitman",
+    "paginate",
+    "pyramid_authstack",
+    "pyramid_jwt",
+    "python-slugify"
+]
+
+[project.urls]
+Homepage = "https://github.com/wyldebeast-wunderliebe/w20e.pycms"
+
+[tool.setuptools]
+packages = ["w20e.pycms"]
+include-package-data = true
+
+[tool.setuptools.package-data]
+"w20e.pycms" = ["locale/*"]
+
+[project.scripts]
+pycms-pack = "w20e.pycms.pack:PackCommand"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--strict-markers"
+
